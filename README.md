@@ -1,4 +1,4 @@
-### Dotfiles ####
+# Dotfiles #
 
 ## Nick Hentschel ##
 
