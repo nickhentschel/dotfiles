@@ -1,3 +1,6 @@
+" Most taken from the second post on this page:
+" http://stackoverflow.com/questions/164847/what-is-in-your-vimrc
+
 "{{{Auto Commands
 
 " Automatically cd into the directory that the file is in
