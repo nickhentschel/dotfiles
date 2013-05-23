@@ -19,5 +19,6 @@ plugins=(git git-extras sublime)
 
 source $ZSH/oh-my-zsh.sh
 
-# Saving path
+# Path should be exported in ~/.zprofile
+# Makes zshrc more generic, allows working with OS X and Linux
 export PATH=$PATH
