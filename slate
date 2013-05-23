@@ -1,0 +1,51 @@
+# This is the default .slate file.
+# If no ~/.slate file exists this is the file that will be used.
+
+config defaultToCurrentScreen true
+config nudgePercentOf screenSize
+config resizePercentOf screenSize
+
+alias hyper ctrl;shift;alt;cmd
+
+
+# Resize Bindings
+bind right:alt;ctrl       resize +10% +0
+bind left:alt;ctrl        resize -10% +0
+bind up:alt;ctrl          resize +0   -10%
+bind down:alt;ctrl        resize +0   +10%
+
+# Push Bindings
+bind right:ctrl;cmd  push right bar-resize:screenSizeX/2
+bind left:ctrl;cmd   push left  bar-resize:screenSizeX/2
+bind up:ctrl;cmd     push up    bar-resize:screenSizeY
+bind down:ctrl;cmd   push down  bar-resize:screenSizeY/2
+
+# Nudge Bindings
+# bind right:shift;ctrl nudge +1% +0
+# bind left:shift;ctrl  nudge -1% +0
+# bind up:shift;ctrl    nudge +0   -1%
+# bind down:shift;ctrl  nudge +0   +1%
+
+bind right:shift;ctrl move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY/2
+bind left:shift;ctrl  move screenOriginX;screenOriginY+screenSizeY/2    screenSizeX/2;screenSizeY/2
+bind up:shift;ctrl    move screenOriginX;screenOriginY screenSizeX/2;screenSizeY/2
+bind down:shift;ctrl  move screenOriginX+screenSizeX/2;screenOriginY+screenSizeY/2    screenSizeX/2;screenSizeY/2
+
+# Throw Bindings
+bind 1:ctrl;alt         throw 0 resize
+bind 2:ctrl;alt         throw 1 resize
+# bind 3:ctrl;alt         throw 2 resize
+bind right:ctrl;alt;cmd throw right
+bind left:ctrl;alt;cmd  throw left
+# bind up:ctrl;alt;cmd    throw up    resize
+# bind down:ctrl;alt;cmd  throw down  resize
+
+# bind 1:ctrl grid padding:5 
+
+# Focus Bindings
+# bind right:cmd    focus right
+# bind left:cmd     focus left
+# bind up:cmd       focus up
+# bind down:cmd     focus down
+# bind up:cmd;alt   focus behind
+# bind down:cmd;alt focus behind
