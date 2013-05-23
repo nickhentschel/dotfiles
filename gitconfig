@@ -37,3 +37,4 @@
     co = checkout
     di = diff
     aa = add --all
+    br = branch

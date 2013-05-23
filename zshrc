@@ -19,5 +19,5 @@ plugins=(git git-extras sublime)
 
 source $ZSH/oh-my-zsh.sh
 
-# Customize to your needs...
-export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
+# Saving path
+export PATH=$PATH
