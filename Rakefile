@@ -22,7 +22,7 @@ task :switchToZSH do
 		print "Would you like to change to ZSH? [ynq]"
 		case $stdin.gets.chomp
 		when 'y'
-			puts "Changing to zsh"
+			puts "Changing shell to zsh"
 			system("chsh -s `which zsh`")
 		when 'q'
 			exit
