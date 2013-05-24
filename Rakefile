@@ -5,16 +5,51 @@
 # a few dependencies. Will be developed over time. Currently not functional.
 # Currently based on Zach Holman's rakefile. https://github.com/holman/dotfiles
 
+# backupDir = File.join(ENV['HOME'], "dotfiles_old")
+$backupDir = File.join(ENV['HOME'], "/Documents/script_test/dotfiles_old")
+# dotfiles = File.join(ENV['HOME'], "/dotfiles/")
+$dotfiles = File.join(ENV['HOME'], "/Documents/script_test/dotfiles/")
+
 task :default do
 	puts "To install, run rake install. To see a list of options, run rake -T"
 end
 
 desc "Perform a full installation to the home directory"
 task :install => [:switchToZSH, :installOhMyZSH] do
-    # check linux or mac for slate linking, yo
-	os = `uname -s`
-	puts os
+	files = Dir.entries($dotfiles) - ["Rakefile", "README.md"]
+	editedFiles = files.select { |file| !(file == '.' || file == '..' || file.chars.first == '.') }
+
+	backupOldFiles(editedFiles)
+
+	# os = `uname -s`
+	# oldFiles = File.join(ENV['HOME'], "dotfiles_old")
+	# oldFiles = File.join(ENV['HOME'], "/Documents/script_test/dotfiles_old")
+	# if !File.directory?(oldFiles)
+	# 	FileUtils.mkdir oldFiles
+	# end
+
+	editedFiles.each do |file|
+		puts file
+	end
+
 	puts "\nDotfile installation complete!"
+end
+
+def backupOldFiles newFiles
+	if !File.directory?($backupDir)
+		FileUtils.mkdir($backupDir)
+	end
+
+	newFiles.each do |file|
+		# if !File.exists? File.join(ENV["HOME"], "/." + file)
+		if !File.exists?(File.join("/Users/nick/Documents/script_test/", "/." + file))
+			# FileUtils.mv File.join(ENV["HOME"], "/." + file), backupDir
+			puts $backupDir
+			t = File.join("/Users/nick/Documents/script_test/", "." + file)
+			puts t
+			FileUtils.mv(t, $backupDir)
+		end
+	end
 end
 
 desc "Switch the user from whatever to ZSH"
