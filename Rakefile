@@ -28,9 +28,9 @@ task :install => [:switchToZSH, :installOhMyZSH] do
 	# 	FileUtils.mkdir oldFiles
 	# end
 
-	editedFiles.each do |file|
-		puts file
-	end
+	# editedFiles.each do |file|
+	# 	puts file
+	# end
 
 	puts "\nDotfile installation complete!"
 end
@@ -42,12 +42,9 @@ def backupOldFiles newFiles
 
 	newFiles.each do |file|
 		# if !File.exists? File.join(ENV["HOME"], "/." + file)
-		if !File.exists?(File.join("/Users/nick/Documents/script_test/", "/." + file))
+		if File.exists?(File.join("/Users/nick/Documents/script_test/", "/." + file))
 			# FileUtils.mv File.join(ENV["HOME"], "/." + file), backupDir
-			puts $backupDir
-			t = File.join("/Users/nick/Documents/script_test/", "." + file)
-			puts t
-			FileUtils.mv(t, $backupDir)
+			FileUtils.mv(File.join("/Users/nick/Documents/script_test/", "." + file), $backupDir)
 		end
 	end
 end
