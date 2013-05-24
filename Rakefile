@@ -11,6 +11,7 @@ end
 
 desc "Perform a full installation to the home directory"
 task :install => [:switchToZSH, :installOhMyZSH] do
+    # check linux or mac for slate linking, yo
 	os = `uname -s`
 	puts os
 	puts "\nDotfile installation complete!"
