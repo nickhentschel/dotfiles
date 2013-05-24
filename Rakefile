@@ -63,8 +63,12 @@ end
 
 def backupOldFiles(newFiles)
 	puts 'Backing up old files...'
-	FileUtils.mkdir(File.join(ENV['HOME'], 'dotfiles_old')) if !File.directory?(File.join(ENV['HOME'], 'dotfiles_old'))
+	if !File.directory?(File.join(ENV['HOME'], 'dotfiles_old'))
+		FileUtils.mkdir(File.join(ENV['HOME'], 'dotfiles_old'))
+	end
 	newFiles.each do |file|
-		FileUtils.mv(File.join(ENV['HOME'], ".#{file}"), backupDir) if !File.exists?(File.join(ENV['HOME'], ".#{file}"))
+		if File.exists?(File.join(ENV['HOME'], ".#{file}"))
+			FileUtils.mv(File.join(ENV['HOME'], ".#{file}"), File.join(ENV['HOME'], 'dotfiles_old'))
+		end
 	end
 end
