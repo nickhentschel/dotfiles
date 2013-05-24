@@ -9,28 +9,13 @@ task :default do
 end
 
 ## TO DO: take in files to be ignored as parameters
-desc 'Perform a full installation to the home directory'
-task :install => [:switchToZSH, :installOhMyZSH] do
-	files = Dir.entries(File.join(ENV['HOME'], 'dotfiles')) - ['Rakefile', 'README.md']
-	editedFiles = files.select { |file| !(file == '.' || file == '..' || file.chars.first == '.') }
-	backupOldFiles(editedFiles)
-	puts 'linking...'
-	editedFiles.each do |file|
-		FileUtils.ln_s(File.join(ENV['HOME'], "dotfiles/#{file}"), File.join(ENV['HOME'], ".#{file}"))
-	end
-	puts "\nDotfile installation complete!"
-end
-
-def backupOldFiles(newFiles)
-	puts 'Backing up old files...'
-	FileUtils.mkdir(File.join(ENV['HOME'], 'dotfiles_old')) if !File.directory?(File.join(ENV['HOME'], 'dotfiles_old'))
-	newFiles.each do |file|
-		FileUtils.mv(File.join(ENV['HOME'], ".#{file}"), backupDir) if !File.exists?(File.join(ENV['HOME'], ".#{file}"))
-	end
+desc 'Perform a full installation to the current home directory'
+task :install => [:switch_to_zsh, :install_oh_my_zsh, :simple_install] do
+	puts 'Full installation complete'
 end
 
 desc 'Switch the user from whatever to ZSH'
-task :switchToZSH do
+task :switch_to_zsh do
 	if ENV['SHELL'] =~ /zsh/
 		puts 'Currently running ZSH. Good for you!'
 	else
@@ -48,7 +33,7 @@ task :switchToZSH do
 end
 
 desc 'Install oh-my-zsh'
-task :installOhMyZSH do
+task :install_oh_my_zsh do
 	if File.exist?(File.join(ENV['HOME'], '.oh-my-zsh'))
 		puts 'oh-my-zsh exists'
 	else
@@ -61,5 +46,25 @@ task :installOhMyZSH do
 		else
 			puts 'Skipping oh-my-zsh. Please modify .zshrc'
 		end
+	end
+end
+
+desc 'Simple install script. Only backs up and links files'
+task :simple_install do
+	files = Dir.entries(File.join(ENV['HOME'], 'dotfiles')) - ['Rakefile', 'README.md']
+	editedFiles = files.select { |file| !(file == '.' || file == '..' || file.chars.first == '.') }
+	backupOldFiles(editedFiles)
+	puts 'linking...'
+	editedFiles.each do |file|
+		FileUtils.ln_s(File.join(ENV['HOME'], "dotfiles/#{file}"), File.join(ENV['HOME'], ".#{file}"))
+	end
+	puts "\nDotfile installation complete!"
+end
+
+def backupOldFiles(newFiles)
+	puts 'Backing up old files...'
+	FileUtils.mkdir(File.join(ENV['HOME'], 'dotfiles_old')) if !File.directory?(File.join(ENV['HOME'], 'dotfiles_old'))
+	newFiles.each do |file|
+		FileUtils.mv(File.join(ENV['HOME'], ".#{file}"), backupDir) if !File.exists?(File.join(ENV['HOME'], ".#{file}"))
 	end
 end
