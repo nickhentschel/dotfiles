@@ -49,7 +49,7 @@ task :install_oh_my_zsh do
 	end
 end
 
-desc 'Simple install script. Only backs up and links files'
+desc 'Simple install script, only backs up and links files'
 task :simple_install do
 	files = Dir.entries(File.join(ENV['HOME'], 'dotfiles')) - ['Rakefile', 'README.md']
 	editedFiles = files.select { |file| !(file == '.' || file == '..' || file.chars.first == '.') }
