@@ -19,32 +19,25 @@ task :install => [:switchToZSH, :installOhMyZSH] do
 	files = Dir.entries($dotfiles) - ["Rakefile", "README.md"]
 	editedFiles = files.select { |file| !(file == '.' || file == '..' || file.chars.first == '.') }
 
-	backupOldFiles(editedFiles)
+	# backupOldFiles(editedFiles)
 
-	# os = `uname -s`
-	# oldFiles = File.join(ENV['HOME'], "dotfiles_old")
-	# oldFiles = File.join(ENV['HOME'], "/Documents/script_test/dotfiles_old")
-	# if !File.directory?(oldFiles)
-	# 	FileUtils.mkdir oldFiles
-	# end
+	# link files
+	editedFiles.each do |file|
 
-	# editedFiles.each do |file|
-	# 	puts file
-	# end
+	end
 
 	puts "\nDotfile installation complete!"
 end
 
-def backupOldFiles newFiles
+def backupOldFiles(newFiles)
 	if !File.directory?($backupDir)
 		FileUtils.mkdir($backupDir)
 	end
-
 	newFiles.each do |file|
-		# if !File.exists? File.join(ENV["HOME"], "/." + file)
-		if File.exists?(File.join("/Users/nick/Documents/script_test/", "/." + file))
-			# FileUtils.mv File.join(ENV["HOME"], "/." + file), backupDir
-			FileUtils.mv(File.join("/Users/nick/Documents/script_test/", "." + file), $backupDir)
+		if !File.exists?(File.join(ENV["HOME"], "/.#{file}"))
+		# if File.exists?(File.join("/Users/nick/Documents/script_test/", "/." + file))
+			FileUtils.mv(File.join(ENV["HOME"], "/.#{file}"), backupDir)
+			# FileUtils.mv(File.join("/Users/nick/Documents/script_test/", "." + file), $backupDir)
 		end
 	end
 end
@@ -77,7 +70,7 @@ task :installOhMyZSH do
 		case $stdin.gets.chomp
 		when 'y'
 			# system('git clone https://github.com/robbyrussell/oh-my-zsh.git ' << ENV['HOME'] << "/.oh-my-zsh/")
-			system('git clone https://github.com/robbyrussell/oh-my-zsh.git ' << ENV['HOME'] << "/Documents/script_test/dotfiles/.oh-my-zsh/")
+			system("git clone https://github.com/robbyrussell/oh-my-zsh.git #{ENV['HOME']}/Documents/script_test/dotfiles/.oh-my-zsh/")
 		when 'q'
 			exit
 		else
