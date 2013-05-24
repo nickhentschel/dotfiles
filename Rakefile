@@ -11,6 +11,8 @@ end
 
 desc "Perform a full installation to the home directory"
 task :install => [:switchToZSH, :installOhMyZSH] do
+	os = `uname -s`
+	puts os
 	puts "\nDotfile installation complete!"
 end
 
