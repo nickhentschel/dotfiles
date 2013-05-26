@@ -71,7 +71,7 @@ task :install_highlighting do
 	if File.exist?(File.join(ENV['HOME'], '.oh-my-zsh/plugins/zsh-syntax-highlighting'))
 		puts 'command-line highlighting plugin already installed'
 	else
-		print 'Install z? [ynq]: '
+		print 'Install command-line highlighting? [ynq]: '
 		case $stdin.gets.chomp
 		when 'y'
 			system("git clone https://github.com/zsh-users/zsh-syntax-highlighting.git #{File.join(ENV['HOME'], '.oh-my-zsh/plugins/zsh-syntax-highlighting')}")
