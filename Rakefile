@@ -57,11 +57,11 @@ task :install_z do
 		print 'Install z? [ynq]: '
 		case $stdin.gets.chomp
 		when 'y'
-			system("git clone https://github.com/rupa/z.git #{File.join(ENV['HOME'], 'z')} && touch .zprofile && echo 'PATH=$PATH:$HOME/z/z.sh' >> .zprofile")
+			system("git clone https://github.com/rupa/z.git #{File.join(ENV['HOME'], 'z')}")
 		when 'q'
 			exit
 		else
-			puts 'Skipping z.'
+			puts 'Skipping z. Please update .zshrc'
 		end
 	end
 end
