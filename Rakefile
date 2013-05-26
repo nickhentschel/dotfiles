@@ -49,6 +49,23 @@ task :install_oh_my_zsh do
 	end
 end
 
+desc 'Install z'
+task :install_z do
+	if File.exist?(File.join(ENV['HOME'], 'z'))
+		puts 'z already installed'
+	else
+		print 'Install z? [ynq]: '
+		case $stdin.gets.chomp
+		when 'y'
+			system("git clone https://github.com/rupa/z.git #{File.join(ENV['HOME'], 'z')}")
+		when 'q'
+			exit
+		else
+			puts 'Skipping z.'
+		end
+	end
+end
+
 desc 'Simple install script, only backs up and links files'
 task :simple_install do
 	files = Dir.entries(File.join(ENV['HOME'], 'dotfiles')) - ['Rakefile', 'README.md']
