@@ -15,7 +15,7 @@ COMPLETION_WAITING_DOTS="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Enable plugins
-plugins=(git git-extras sublime)
+plugins=(git git-extras sublime zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 source $HOME/z/z.sh

@@ -10,7 +10,7 @@ end
 
 ## TO DO: take in files to be ignored as parameters
 desc 'Perform a full installation to the current home directory'
-task :install => [:switch_to_zsh, :install_oh_my_zsh, :install_z, :simple_install] do
+task :install => [:switch_to_zsh, :install_oh_my_zsh, :install_z, :install_highlighting, :simple_install] do
 	puts 'Full installation complete'
 end
 
@@ -62,6 +62,23 @@ task :install_z do
 			exit
 		else
 			puts 'Skipping z. Please update .zshrc'
+		end
+	end
+end
+
+desc 'Install zsh command-line highlighting plugin for oh-my-zsh'
+task :install_highlighting do
+	if File.exist?(File.join(ENV['HOME'], '.oh-my-zsh/plugins/zsh-syntax-highlighting'))
+		puts 'command-line highlighting plugin already installed'
+	else
+		print 'Install z? [ynq]: '
+		case $stdin.gets.chomp
+		when 'y'
+			system("git clone https://github.com/zsh-users/zsh-syntax-highlighting.git #{File.join(ENV['HOME'], '.oh-my-zsh/plugins/zsh-syntax-highlighting')}")
+		when 'q'
+			exit
+		else
+			puts 'Skipping zsh-syntax-highlighting. Please remove plugin from .zshrc'
 		end
 	end
 end
