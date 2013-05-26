@@ -18,6 +18,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 plugins=(git git-extras sublime)
 
 source $ZSH/oh-my-zsh.sh
+source $HOME/z/z.sh
 
 # Path should be exported in ~/.zprofile
 # Makes zshrc more generic, allows working with OS X and Linux
