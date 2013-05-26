@@ -10,7 +10,7 @@ end
 
 ## TO DO: take in files to be ignored as parameters
 desc 'Perform a full installation to the current home directory'
-task :install => [:switch_to_zsh, :install_oh_my_zsh, :simple_install] do
+task :install => [:switch_to_zsh, :install_oh_my_zsh, :install_z, :simple_install] do
 	puts 'Full installation complete'
 end
 
