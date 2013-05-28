@@ -2,7 +2,7 @@
 ZSH=$HOME/.oh-my-zsh
 
 # Select ZSH theme
-ZSH_THEME="af-magic"
+ZSH_THEME="agnoster"
 
 # Aliases
 alias zshconfig="vim ~/.zshrc"
@@ -23,3 +23,4 @@ source $HOME/z/z.sh
 # Path should be exported in ~/.zprofile
 # Makes zshrc more generic, allows working with OS X and Linux
 export PATH=$PATH
+
