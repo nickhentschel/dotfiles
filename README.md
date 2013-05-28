@@ -7,6 +7,7 @@ These dotfiles have been scraped and taken from many different sources. I tried 
 - Changes shell to zsh
 - Installs oh-my-zsh
 - Installs z
+- Adds command line coloring plugin for oh-my-zsh
 - Backs up user's existing dotfiles
 
 ### Usage ###
