@@ -4,6 +4,9 @@ ZSH=$HOME/.oh-my-zsh
 # Select ZSH theme
 ZSH_THEME="agnoster"
 
+# Set default user
+DEFAULT_USER=`whoami`
+
 # Aliases
 alias zshconfig="vim ~/.zshrc"
 alias lhd='ls -lhd .??*'
