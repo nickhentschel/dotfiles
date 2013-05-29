@@ -10,7 +10,7 @@ end
 
 ## TO DO: take in files to be ignored as parameters
 desc 'Perform a full installation to the current home directory'
-task :install => [:switch_to_zsh, :install_oh_my_zsh, :install_z, :install_highlighting, :simple_install] do
+task :install => [:switch_to_zsh, :install_oh_my_zsh, :install_z, :install_highlighting, :install_vundle, :simple_install] do
 	puts 'Full installation complete'
 end
 
@@ -79,6 +79,27 @@ task :install_highlighting do
 			exit
 		else
 			puts 'Skipping zsh-syntax-highlighting. Please remove plugin from .zshrc'
+		end
+	end
+end
+
+desc 'Install vundle package manager for VIM'
+task :install_vundle do
+	if File.exist?(File.join(ENV['HOME'], '.vim/bundle/vundle'))
+		puts 'vundle already installed'
+	else
+		print 'Install vundle? [ynq]: '
+		case $stdin.gets.chomp
+		when 'y'
+			if !File.directory?(File.join(ENV['HOME'], '.vim'))
+				FileUtils.mkdir(File.join(ENV['HOME'], '.vim'))
+			end
+			system("git clone https://github.com/gmarik/vundle.git #{File.join(ENV['HOME'], '.vim/bundle/vundle')}")
+			puts "Be sure to run :BundleInstall in vim after installing"
+		when 'q'
+			exit
+		else
+			puts 'Skipping Vundle'
 		end
 	end
 end
