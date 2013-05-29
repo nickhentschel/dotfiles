@@ -116,8 +116,13 @@ highlight MatchParen ctermbg=4
 " }}}
 
 "{{{Look and Feel
+" set laststatus=2
+" set statusline=%F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]
+
 set laststatus=2
-set statusline=%F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]
+set encoding=utf-8
+set t_Co=256
+let g:Powerline_symbols = 'fancy'
 
 " }}}
 
@@ -180,7 +185,20 @@ map n nzz
 nnoremap ; :
 nnoremap : ;
 
-"}}}
+ "}}}
+
+" {{{ Bundles and Such
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+" required!
+Bundle 'gmarik/vundle'
+
+Bundle 'Lokaltog/vim-powerline'
+
+" }}}
 
 filetype plugin indent on
 syntax on
