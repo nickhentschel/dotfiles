@@ -39,6 +39,9 @@ augroup END
 
 "{{{Misc Settings
 
+" Title
+set title
+
 " Necesary  for lots of cool vim things
 set nocompatible
 
@@ -169,7 +172,7 @@ nnoremap <silent> j gj
 inoremap <silent> <Up> <Esc>gka
 inoremap <silent> <Down> <Esc>gja
 
-z" Create Blank Newlines and stay in Normal mode
+" Create Blank Newlines and stay in Normal mode
 nnoremap <silent> zj o<Esc>
 nnoremap <silent> zk O<Esc>
 
@@ -184,6 +187,11 @@ map n nzz
 " Swap ; and :  Convenient.
 nnoremap ; :
 nnoremap : ;
+
+" Map ctrl+s to save
+noremap <C-S> :update<CR>
+vnoremap <C-S> <C-C>:update<CR>
+inoremap <C-S> <C-O>:update<CR>
 
  "}}}
 

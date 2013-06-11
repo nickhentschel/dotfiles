@@ -10,6 +10,8 @@ DEFAULT_USER=`whoami`
 # Aliases
 alias zshconfig="vim ~/.zshrc"
 alias lhd='ls -lhd .??*'
+alias vim="stty stop '' -ixoff ; vim"
+ttyctl -f
 
 # Waiting dots
 COMPLETION_WAITING_DOTS="true"
