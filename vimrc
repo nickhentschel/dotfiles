@@ -147,7 +147,6 @@ endfunc
 "{{{ Mappings
 
 " Next Tab
-nnoremap <silent> <C-s> :tabn<CR>
 nnoremap <silent> <C-d> :tabn<CR>
 
 " Previous Tab
@@ -155,9 +154,6 @@ nnoremap <silent> <C-a> :tabp<CR>
 
 " New Tab
 nnoremap <silent> <C-t> :tabnew<CR>
-
-" Rotate Color Scheme <F8>
-nnoremap <silent> <F8> :execute RotateColorTheme()<CR>
 
 " DOS is for fools.
 nnoremap <silent> <F9> :%s/$//g<CR>:%s// /g<CR>
@@ -193,6 +189,12 @@ noremap <C-S> :update<CR>
 vnoremap <C-S> <C-C>:update<CR>
 inoremap <C-S> <C-O>:update<CR>
 
+" CtrlP mapping
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+
+let g:ctrlp_working_path_mode = 'c'
+
  "}}}
 
 " {{{ Bundles and Such
@@ -205,6 +207,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 Bundle 'Lokaltog/vim-powerline'
+Bundle 'kien/ctrlp.vim'
 
 " }}}
 
