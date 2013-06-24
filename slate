@@ -40,7 +40,7 @@ bind left:ctrl;alt;cmd  throw left
 # bind up:ctrl;alt;cmd    throw up    resize
 # bind down:ctrl;alt;cmd  throw down  resize
 
-# bind 1:ctrl grid padding:5 
+# bind 1:ctrl grid padding:5
 
 # Focus Bindings
 # bind right:cmd    focus right
@@ -49,3 +49,6 @@ bind left:ctrl;alt;cmd  throw left
 # bind down:cmd     focus down
 # bind up:cmd;alt   focus behind
 # bind down:cmd;alt focus behind
+#
+
+# bind tab:cmd switch
