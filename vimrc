@@ -146,15 +146,6 @@ endfunc
 
 "{{{ Mappings
 
-" Next Tab
-nnoremap <silent> <C-d> :tabn<CR>
-
-" Previous Tab
-nnoremap <silent> <C-a> :tabp<CR>
-
-" New Tab
-nnoremap <silent> <C-t> :tabnew<CR>
-
 " DOS is for fools.
 nnoremap <silent> <F9> :%s/$//g<CR>:%s// /g<CR>
 
