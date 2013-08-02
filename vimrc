@@ -239,6 +239,8 @@ Bundle 'Lokaltog/vim-powerline'
 Bundle 'kien/ctrlp.vim'
 Bundle 'Bogdanp/browser-connect.vim'
 Bundle 'tomtom/tcomment_vim'
+Bundle 'sukima/xmledit'
+Bundle 'tpope/vim-surround'
 
 " }}}
 
