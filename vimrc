@@ -39,6 +39,9 @@ augroup END
 
 "{{{Misc Settings
 
+" Disable line wrap by default
+set nowrap
+
 " Title
 set title
 
@@ -121,6 +124,8 @@ highlight MatchParen ctermbg=4
 "{{{Look and Feel
 " set laststatus=2
 " set statusline=%F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]
+
+set guifont=PragmataPro:h12
 
 set laststatus=2
 set encoding=utf-8
@@ -232,6 +237,8 @@ Bundle 'gmarik/vundle'
 
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'kien/ctrlp.vim'
+Bundle 'Bogdanp/browser-connect.vim'
+Bundle 'tomtom/tcomment_vim'
 
 " }}}
 
