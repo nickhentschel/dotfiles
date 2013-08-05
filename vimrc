@@ -71,6 +71,7 @@ set smarttab
 set shiftwidth=4
 set softtabstop=4
 set ts=4
+set sts=4
 
 " Use english for spellchecking, but don't spellcheck by default
 if version >= 700
@@ -151,6 +152,11 @@ endfunc
 
 "{{{ Mappings
 
+" Nerd Tree
+map <C-n> :NERDTreeToggle<CR>
+inoremap <C-n> :NERDTreeToggle<CR>
+nnoremap <C-n> :NERDTreeToggle<CR>
+
 " DOS is for fools.
 nnoremap <silent> <F9> :%s/$//g<CR>:%s// /g<CR>
 
@@ -223,6 +229,15 @@ map! <Esc>OR *
 map! <kPlus> +
 map! <Esc>OS -
 
+" Split navigation mappings
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" More natural splitting
+set splitbelow
+set splitright
 
  "}}}
 
@@ -239,10 +254,25 @@ Bundle 'Lokaltog/vim-powerline'
 Bundle 'kien/ctrlp.vim'
 Bundle 'Bogdanp/browser-connect.vim'
 Bundle 'tomtom/tcomment_vim'
+Bundle 'scrooloose/nerdtree'
 Bundle 'sukima/xmledit'
 Bundle 'tpope/vim-surround'
+Bundle 'scrooloose/syntastic'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'plasticboy/vim-markdown'
+Bundle 'zeis/vim-kolor'
+Bundle 'chriskempson/base16-vim'
+
+" }}}
+
+" {{{ File type specific settings
+
+" Settings for markdown files
+au BufRead,BufNewFile *.md setl sw=2 sts=2 spell et wrap linebreak
 
 " }}}
 
 filetype plugin indent on
 syntax on
+set background=dark
+colorscheme base16-default
