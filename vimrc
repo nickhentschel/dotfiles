@@ -1,7 +1,13 @@
 " Most taken from the second post on this page:
 " http://stackoverflow.com/questions/164847/what-is-in-your-vimrc
 
+" Necesary  for lots of cool vim things
+set nocompatible
+
 "{{{Auto Commands
+
+" extend the matching capability with % key
+runtime macros/matchit.vim
 
 " Automatically cd into the directory that the file is in
 autocmd BufEnter * execute "chdir ".escape(expand("%:p:h"), ' ')
@@ -35,6 +41,7 @@ augroup JumpCursorOnEdit
             \ endif
 augroup END
 
+" Functions for opening and closing things. used later
 function ClosePair(char)
     if getline('.')[col('.') - 1] == a:char
         return "\<Right>"
@@ -70,17 +77,21 @@ endf
 
 "{{{Misc Settings
 
+" extend the history length
+set history=1000
+
+" Relaod files after change outside of VIM
+set autoread
+
 let g:syntastic_check_on_open=1
 let g:syntastic_enable_signs=1
 
 " Disable line wrap by default
 set nowrap
+set linebreak
 
 " Title
 set title
-
-" Necesary  for lots of cool vim things
-set nocompatible
 
 " This shows what you are typing as a command.  I love this!
 set showcmd
@@ -96,10 +107,9 @@ set grepprg=grep\ -nH\ $*
 
 " Who doesn't like autoindent?
 set autoindent
-
-" Spaces are better than a tab character
 set expandtab
 set smarttab
+set smartindent
 
 " Who wants an 8 character tab?  Not me!
 set shiftwidth=4
@@ -113,18 +123,27 @@ if version >= 700
    set nospell
 endif
 
-" Real men use gcc
-"compiler gcc
-
 " Cool tab completion stuff
 set wildmenu
 set wildmode=list:longest,full
 
+" Ignore while searching
+set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
+set wildignore+=*vim/backups*
+set wildignore+=*sass-cache*
+set wildignore+=*DS_Store*
+set wildignore+=vendor/rails/**
+set wildignore+=vendor/cache/**
+set wildignore+=*.gem
+set wildignore+=log/**
+set wildignore+=tmp/**
+set wildignore+=*.png,*.jpg,*.gif
+
 " Enable mouse support in console
 set mouse=a
 
-" Got backspace?
-set backspace=2
+" Enable backspace in visual mode
+set backspace=indent,eol,start
 
 " Line Numbers PWN!
 set number
@@ -146,14 +165,29 @@ set incsearch
 " Highlight things that we find with the search
 set hlsearch
 
-" Since I use linux, I want this
-let g:clipbrdDefaultReg = '+'
-
-" When I close a tab, remove the buffer
-set nohidden
+" buffers can exist in the background without being in a window.
+set hidden
 
 " Set off the other paren
 highlight MatchParen ctermbg=4
+
+" map leader to comma
+let mapleader=","
+
+" Disable swap files
+set noswapfile
+set nobackup
+set nowb
+
+" Start scrolling when we're 8 lines away from margins
+set scrolloff=8
+set sidescrolloff=15
+set sidescroll=1
+
+" Scroll viewport 3 lines instead of 1
+nnoremap <C-e> 3<C-e>
+nnoremap <C-y> 3<C-y>
+
 " }}}
 
 "{{{Look and Feel
@@ -202,9 +236,6 @@ map <C-n> :NERDTreeToggle<CR>
 inoremap <C-n> :NERDTreeToggle<CR>
 nnoremap <C-n> :NERDTreeToggle<CR>
 
-" DOS is for fools.
-nnoremap <silent> <F9> :%s/$//g<CR>:%s// /g<CR>
-
 " Paste Mode!  Dang! <F10>
 nnoremap <silent> <F10> :call Paste_on_off()<CR>
 set pastetoggle=<F10>
@@ -231,15 +262,9 @@ map n nzz
 nnoremap ; :
 nnoremap : ;
 
-" Map ctrl+s to save
-noremap <C-S> :update<CR>
-vnoremap <C-S> <C-C>:update<CR>
-inoremap <C-S> <C-O>:update<CR>
-
 " CtrlP mapping
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
-
 let g:ctrlp_working_path_mode = 'c'
 
 " make keypad work in vim with iTerm on OS X!
@@ -307,6 +332,8 @@ Bundle 'altercation/vim-colors-solarized'
 Bundle 'plasticboy/vim-markdown'
 Bundle 'zeis/vim-kolor'
 Bundle 'chriskempson/base16-vim'
+Bundle 'itspriddle/vim-jquery'
+Bundle "pangloss/vim-javascript"
 
 " }}}
 
