@@ -35,9 +35,43 @@ augroup JumpCursorOnEdit
             \ endif
 augroup END
 
+function ClosePair(char)
+    if getline('.')[col('.') - 1] == a:char
+        return "\<Right>"
+    else
+        return a:char
+    endif
+endf
+
+function CloseBracket()
+    if match(getline(line('.') + 1), '\s*}') < 0
+        return "\<CR>}"
+    else
+        return "\<Esc>j0f}a"
+    endif
+endf
+
+function QuoteDelim(char)
+    let line = getline('.')
+    let col = col('.')
+    if line[col - 2] == "\\"
+        "Inserting a quoted quotation mark into the string
+        return a:char
+    elseif line[col - 1] == a:char
+        "Escaping out of the string
+        return "\<Right>"
+    else
+        "Starting a string
+        return a:char.a:char."\<Esc>i"
+    endif
+endf
+
 "}}}
 
 "{{{Misc Settings
+
+let g:syntastic_check_on_open=1
+let g:syntastic_enable_signs=1
 
 " Disable line wrap by default
 set nowrap
@@ -151,6 +185,17 @@ endfunc
 "}}}
 
 "{{{ Mappings
+
+" Close things
+inoremap ( ()<Esc>i
+inoremap [ []<Esc>i
+inoremap { {<CR>}<Esc>O
+autocmd Syntax html,vim inoremap < <lt>><Esc>i| inoremap > <c-r>=ClosePair('>')<CR>
+inoremap ) <c-r>=ClosePair(')')<CR>
+inoremap ] <c-r>=ClosePair(']')<CR>
+inoremap } <c-r>=CloseBracket()<CR>
+inoremap " <c-r>=QuoteDelim('"')<CR>
+inoremap ' <c-r>=QuoteDelim("'")<CR>
 
 " Nerd Tree
 map <C-n> :NERDTreeToggle<CR>
@@ -269,6 +314,25 @@ Bundle 'chriskempson/base16-vim'
 
 " Settings for markdown files
 au BufRead,BufNewFile *.md setl sw=2 sts=2 spell et wrap linebreak
+au BufRead,BufNewFile *.txt setl sw=2 sts=2 spell et wrap linebreak
+
+" }}}
+
+" {{{ Syntastic
+
+let g:syntastic_check_on_open=1
+let g:syntastic_check_on_wq=0
+let g:syntastic_echo_current_error=1
+let g:syntastic_enable_signs=1
+let g:syntastic_enable_balloons = 1
+let g:syntastic_auto_jump=1
+let g:syntastic_loc_list_height=5
+let g:syntastic_javascript_checkers = ['jsl']
+let g:syntastic_html_checkers = ['tidy']
+let g:syntastic_php_checkers = ['php']
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
 " }}}
 

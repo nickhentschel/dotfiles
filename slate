@@ -9,7 +9,7 @@ alias hyper ctrl;shift;alt;cmd
 
 
 # Resize Bindings
-bind right:alt;ctrl       resize +10% +0
+bind wight:alt;ctrl       resize +10% +0
 bind left:alt;ctrl        resize -10% +0
 bind up:alt;ctrl          resize +0   -10%
 bind down:alt;ctrl        resize +0   +10%
