@@ -5,6 +5,8 @@ set nocompatible
 
 "{{{Auto Commands
 
+autocmd Syntax javascript set syntax=jquery   " JQuery syntax support
+
 " extend the matching capability with % key
 runtime macros/matchit.vim
 
@@ -40,41 +42,18 @@ augroup JumpCursorOnEdit
             \ endif
 augroup END
 
-" Functions for opening and closing things. used later
-function ClosePair(char)
-    if getline('.')[col('.') - 1] == a:char
-        return "\<Right>"
-    else
-        return a:char
-    endif
-endf
-
-function CloseBracket()
-    if match(getline(line('.') + 1), '\s*}') < 0
-        return "\<CR>}"
-    else
-        return "\<Esc>j0f}a"
-    endif
-endf
-
-function QuoteDelim(char)
-    let line = getline('.')
-    let col = col('.')
-    if line[col - 2] == "\\"
-        "Inserting a quoted quotation mark into the string
-        return a:char
-    elseif line[col - 1] == a:char
-        "Escaping out of the string
-        return "\<Right>"
-    else
-        "Starting a string
-        return a:char.a:char."\<Esc>i"
-    endif
-endf
-
 "}}}
 
 "{{{Misc Settings
+"
+" disable sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+" encoding dectection
+set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 
 " Get rid of the delay when hitting esc!
 set noesckeys
@@ -85,8 +64,40 @@ set history=1000
 " Relaod files after change outside of VIM
 set autoread
 
+" Syntastic
 let g:syntastic_check_on_open=1
 let g:syntastic_enable_signs=1
+
+" NeoComplCache
+let g:neocomplcache_enable_at_startup=1
+let g:neoComplcache_disableautocomplete=1
+"let g:neocomplcache_enable_underbar_completion = 1
+"let g:neocomplcache_enable_camel_case_completion = 1
+let g:neocomplcache_enable_smart_case=1
+let g:neocomplcache_min_syntax_length = 3
+let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+set completeopt-=preview
+
+imap <C-k> <Plug>(neocomplcache_snippets_force_expand)
+smap <C-k> <Plug>(neocomplcache_snippets_force_expand)
+imap <C-l> <Plug>(neocomplcache_snippets_force_jump)
+smap <C-l> <Plug>(neocomplcache_snippets_force_jump)
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType c setlocal omnifunc=ccomplete#Complete
+
+" SuperTab
+"let g:SuperTabDefultCompletionType='context'
+let g:SuperTabDefaultCompletionType = '<C-X><C-U>'
+let g:SuperTabRetainCompletionType=2
+
+" ctrlp
+set wildignore+=*/tmp/*,*.so,*.o,*.a,*.obj,*.swp,*.zip,*.pyc,*.pyo,*.class,.DS_Store  " MacOSX/Linux
+let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
 
 " Disable line wrap by default
 set nowrap
@@ -174,6 +185,12 @@ highlight MatchParen ctermbg=4
 
 " map leader to comma
 let mapleader=","
+let g:mapleader=","
+
+" Bash like keys for the command line
+cnoremap <C-A>      <Home>
+cnoremap <C-E>      <End>
+cnoremap <C-K>      <C-U>
 
 " Disable swap files
 set noswapfile
@@ -200,7 +217,8 @@ set guifont=PragmataPro:h12
 set laststatus=2
 set encoding=utf-8
 set t_Co=256
-let g:Powerline_symbols = 'fancy'
+set cursorline        " highlight current line
+" let g:Powerline_symbols = 'fancy'
 
 " }}}
 
@@ -221,21 +239,10 @@ endfunc
 
 "{{{ Mappings
 
-" Close things
-autocmd Syntax html,vim inoremap < <lt>><Esc>i| inoremap > <c-r>=ClosePair('>')<CR>
-inoremap ( ()<Esc>i
-inoremap [ []<Esc>i
-inoremap { {<CR>}<Esc>O
-inoremap ) <c-r>=ClosePair(')')<CR>
-inoremap ] <c-r>=ClosePair(']')<CR>
-inoremap } <c-r>=CloseBracket()<CR>
-inoremap " <c-r>=QuoteDelim('"')<CR>
-inoremap ' <c-r>=QuoteDelim("'")<CR>
-
 " Nerd Tree
-map <C-n> :NERDTreeToggle<CR>
-inoremap <C-n> :NERDTreeToggle<CR>
-nnoremap <C-n> :NERDTreeToggle<CR>
+map <C-t> :NERDTreeToggle<CR>
+inoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
 
 " Paste Mode!  Dang! <F10>
 nnoremap <silent> <F10> :call Paste_on_off()<CR>
@@ -326,16 +333,18 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'Bogdanp/browser-connect.vim'
 Bundle 'tomtom/tcomment_vim'
 Bundle 'scrooloose/nerdtree'
-Bundle 'sukima/xmledit'
 Bundle 'tpope/vim-surround'
 Bundle 'scrooloose/syntastic'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'plasticboy/vim-markdown'
 Bundle 'zeis/vim-kolor'
 Bundle 'chriskempson/base16-vim'
 Bundle 'itspriddle/vim-jquery'
 Bundle "pangloss/vim-javascript"
 Bundle "nono/vim-handlebars"
+Bundle "terryma/vim-multiple-cursors"
+Bundle "Shougo/neocomplcache.vim"
+Bundle "ervandew/supertab"
+" Bundle "ervandew/matchem"
+Bundle "sukima/xmledit"
 
 " }}}
 
