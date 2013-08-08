@@ -1,5 +1,4 @@
-" Most taken from the second post on this page:
-" http://stackoverflow.com/questions/164847/what-is-in-your-vimrc
+" Super Awesome Vimrc
 
 " Necesary  for lots of cool vim things
 set nocompatible
@@ -77,6 +76,9 @@ endf
 
 "{{{Misc Settings
 
+" Get rid of the delay when hitting esc!
+set noesckeys
+
 " extend the history length
 set history=1000
 
@@ -100,8 +102,7 @@ set showcmd
 set foldmethod=marker
 
 " Needed for Syntax Highlighting and stuff
-filetype on
-filetype plugin on
+filetype plugin indent on
 syntax enable
 set grepprg=grep\ -nH\ $*
 
@@ -221,10 +222,10 @@ endfunc
 "{{{ Mappings
 
 " Close things
+autocmd Syntax html,vim inoremap < <lt>><Esc>i| inoremap > <c-r>=ClosePair('>')<CR>
 inoremap ( ()<Esc>i
 inoremap [ []<Esc>i
 inoremap { {<CR>}<Esc>O
-autocmd Syntax html,vim inoremap < <lt>><Esc>i| inoremap > <c-r>=ClosePair('>')<CR>
 inoremap ) <c-r>=ClosePair(')')<CR>
 inoremap ] <c-r>=ClosePair(']')<CR>
 inoremap } <c-r>=CloseBracket()<CR>
@@ -334,6 +335,7 @@ Bundle 'zeis/vim-kolor'
 Bundle 'chriskempson/base16-vim'
 Bundle 'itspriddle/vim-jquery'
 Bundle "pangloss/vim-javascript"
+Bundle "nono/vim-handlebars"
 
 " }}}
 
