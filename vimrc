@@ -5,7 +5,11 @@ set nocompatible
 
 "{{{Auto Commands
 
-autocmd Syntax javascript set syntax=jquery   " JQuery syntax support
+" auto reload vimrc when editing it
+autocmd! bufwritepost .vimrc source ~/.vimrc
+
+" JQuery syntax support
+autocmd Syntax javascript set syntax=jquery
 
 " extend the matching capability with % key
 runtime macros/matchit.vim
@@ -96,7 +100,6 @@ let g:SuperTabDefaultCompletionType = '<C-X><C-U>'
 let g:SuperTabRetainCompletionType=2
 
 " ctrlp
-set wildignore+=*/tmp/*,*.so,*.o,*.a,*.obj,*.swp,*.zip,*.pyc,*.pyo,*.class,.DS_Store  " MacOSX/Linux
 let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
 
 " Disable line wrap by default
@@ -113,8 +116,6 @@ set showcmd
 set foldmethod=marker
 
 " Needed for Syntax Highlighting and stuff
-filetype plugin indent on
-syntax enable
 set grepprg=grep\ -nH\ $*
 
 " Who doesn't like autoindent?
@@ -140,7 +141,7 @@ set wildmenu
 set wildmode=list:longest,full
 
 " Ignore while searching
-set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
+set wildignore=*.o,*.obj,*~
 set wildignore+=*vim/backups*
 set wildignore+=*sass-cache*
 set wildignore+=*DS_Store*
@@ -187,11 +188,6 @@ highlight MatchParen ctermbg=4
 let mapleader=","
 let g:mapleader=","
 
-" Bash like keys for the command line
-cnoremap <C-A>      <Home>
-cnoremap <C-E>      <End>
-cnoremap <C-K>      <C-U>
-
 " Disable swap files
 set noswapfile
 set nobackup
@@ -213,46 +209,38 @@ nnoremap <C-y> 3<C-y>
 " set statusline=%F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]
 
 set guifont=PragmataPro:h12
-
+" Cursor shows matching ) and }
+set showmatch
 set laststatus=2
 set encoding=utf-8
 set t_Co=256
-set cursorline        " highlight current line
+set cursorline	" highlight current line
+highlight CursorLine  guibg=#003853 ctermbg=24  gui=none cterm=none
 " let g:Powerline_symbols = 'fancy'
+" disable sound on errors
+set noerrorbells visualbell t_vb=
+set tm=500
 
 " }}}
 
-"{{{ Paste Toggle
-let paste_mode = 0 " 0 = normal, 1 = paste
-
-func! Paste_on_off()
-   if g:paste_mode == 0
-      set paste
-      let g:paste_mode = 1
-   else
-      set nopaste
-      let g:paste_mode = 0
-   endif
-   return
-endfunc
-"}}}
-
 "{{{ Mappings
+
+" allow multiple indentation/deindentation in visual mode
+vnoremap < <gv
+vnoremap > >gv
+vnoremap = =gv
+
+" Loop to switch windows
+nmap <S-w> :wincmd w<CR>
 
 " Nerd Tree
 map <C-t> :NERDTreeToggle<CR>
 inoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 
-" Paste Mode!  Dang! <F10>
-nnoremap <silent> <F10> :call Paste_on_off()<CR>
-set pastetoggle=<F10>
-
 " Up and down are more logical with g..
 nnoremap <silent> k gk
 nnoremap <silent> j gj
-inoremap <silent> <Up> <Esc>gka
-inoremap <silent> <Down> <Esc>gja
 
 " Create Blank Newlines and stay in Normal mode
 nnoremap <silent> zj o<Esc>
@@ -343,8 +331,8 @@ Bundle "nono/vim-handlebars"
 Bundle "terryma/vim-multiple-cursors"
 Bundle "Shougo/neocomplcache.vim"
 Bundle "ervandew/supertab"
-" Bundle "ervandew/matchem"
 Bundle "sukima/xmledit"
+Bundle "Townk/vim-autoclose"
 
 " }}}
 
