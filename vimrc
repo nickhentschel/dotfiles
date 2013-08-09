@@ -209,6 +209,7 @@ nnoremap <C-y> 3<C-y>
 " set statusline=%F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]
 
 set guifont=PragmataPro:h12
+
 " Cursor shows matching ) and }
 set showmatch
 set laststatus=2
@@ -217,6 +218,7 @@ set t_Co=256
 set cursorline	" highlight current line
 highlight CursorLine  guibg=#003853 ctermbg=24  gui=none cterm=none
 " let g:Powerline_symbols = 'fancy'
+
 " disable sound on errors
 set noerrorbells visualbell t_vb=
 set tm=500
@@ -323,16 +325,22 @@ Bundle 'tomtom/tcomment_vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'tpope/vim-surround'
 Bundle 'scrooloose/syntastic'
+Bundle 'itspriddle/vim-jquery'
+Bundle 'pangloss/vim-javascript'
+Bundle 'nono/vim-handlebars'
+Bundle 'terryma/vim-multiple-cursors'
+Bundle 'Shougo/neocomplcache.vim'
+Bundle 'ervandew/supertab'
+Bundle 'sukima/xmledit'
+Bundle 'Townk/vim-autoclose'
+Bundle 'concise/vim-html5-fix'
+
+" colorschemes
+Bundle 'chmllr/vim-colorscheme-elrodeo'
 Bundle 'zeis/vim-kolor'
 Bundle 'chriskempson/base16-vim'
-Bundle 'itspriddle/vim-jquery'
-Bundle "pangloss/vim-javascript"
-Bundle "nono/vim-handlebars"
-Bundle "terryma/vim-multiple-cursors"
-Bundle "Shougo/neocomplcache.vim"
-Bundle "ervandew/supertab"
-Bundle "sukima/xmledit"
-Bundle "Townk/vim-autoclose"
+Bundle 'junegunn/seoul256.vim'
+Bundle 'chriskempson/vim-tomorrow-theme'
 
 " }}}
 
@@ -366,3 +374,4 @@ filetype plugin indent on
 syntax on
 set background=dark
 colorscheme base16-default
+
