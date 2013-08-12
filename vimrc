@@ -227,6 +227,14 @@ set tm=500
 
 "{{{ Mappings
 
+" map save to ctrl+s
+inoremap <c-s> <Esc>:Update<CR>
+
+" map buffer toggles with leader
+map <leader>n :bn<cr>
+map <Leader>b :bp<cr>
+map <leader>w :bd<cr>
+
 " allow multiple indentation/deindentation in visual mode
 vnoremap < <gv
 vnoremap > >gv
