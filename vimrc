@@ -49,7 +49,7 @@ augroup END
 "}}}
 
 "{{{Misc Settings
-"
+
 " disable sound on errors
 set noerrorbells
 set novisualbell
@@ -334,6 +334,7 @@ Bundle 'ervandew/supertab'
 Bundle 'sukima/xmledit'
 Bundle 'Townk/vim-autoclose'
 Bundle 'concise/vim-html5-fix'
+Bundle 'skammer/vim-css-color'
 
 " colorschemes
 Bundle 'chmllr/vim-colorscheme-elrodeo'
