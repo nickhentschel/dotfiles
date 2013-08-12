@@ -49,7 +49,7 @@ augroup END
 "}}}
 
 "{{{Misc Settings
-"
+
 " disable sound on errors
 set noerrorbells
 set novisualbell
@@ -227,6 +227,14 @@ set tm=500
 
 "{{{ Mappings
 
+" map save to ctrl+s
+inoremap <c-s> <Esc>:Update<CR>
+
+" map buffer toggles with leader
+map <leader>n :bn<cr>
+map <Leader>b :bp<cr>
+map <leader>w :bd<cr>
+
 " allow multiple indentation/deindentation in visual mode
 vnoremap < <gv
 vnoremap > >gv
@@ -332,11 +340,15 @@ Bundle 'ervandew/supertab'
 Bundle 'sukima/xmledit'
 Bundle 'Townk/vim-autoclose'
 Bundle 'concise/vim-html5-fix'
+<<<<<<< HEAD
 Bundle 'vim-scripts/TagHighlight'
 
 " syntax
 Bundle 'itspriddle/vim-jquery'
 Bundle 'pangloss/vim-javascript'
+=======
+Bundle 'skammer/vim-css-color'
+>>>>>>> 88d7ab5a6e5968db51205049011f56dd7bb1f6d4
 
 " colorschemes
 Bundle 'chmllr/vim-colorscheme-elrodeo'
