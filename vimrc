@@ -74,18 +74,11 @@ let g:syntastic_enable_signs=1
 
 " NeoComplCache
 let g:neocomplcache_enable_at_startup=1
-let g:neoComplcache_disableautocomplete=1
-"let g:neocomplcache_enable_underbar_completion = 1
-"let g:neocomplcache_enable_camel_case_completion = 1
+let g:neoComplcache_disableautocomplete=0
 let g:neocomplcache_enable_smart_case=1
 let g:neocomplcache_min_syntax_length = 3
 let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 set completeopt-=preview
-
-imap <C-k> <Plug>(neocomplcache_snippets_force_expand)
-smap <C-k> <Plug>(neocomplcache_snippets_force_expand)
-imap <C-l> <Plug>(neocomplcache_snippets_force_jump)
-smap <C-l> <Plug>(neocomplcache_snippets_force_jump)
 
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -93,12 +86,21 @@ autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType c setlocal omnifunc=ccomplete#Complete
+autocmd FileType php setlocal omnifunc=phpcomplete#Complete
+
+" Enable heavy omni completion.
+if !exists('g:neocomplcache_omni_patterns')
+  let g:neocomplcache_omni_patterns = {}
+endif
+let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+let g:neocomplcache_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+let g:neocomplcache_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
 " SuperTab
-"let g:SuperTabDefultCompletionType='context'
-let g:SuperTabDefaultCompletionType = '<C-X><C-U>'
-let g:SuperTabRetainCompletionType=2
-
+let g:SuperTabDefaultCompletionType = '<C-x><C-o>'
+" let g:SuperTabDefaultCompletionType = 'context'
+" let g:SuperTabRetainCompletionType=2
+"
 " ctrlp
 let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
 
@@ -227,8 +229,14 @@ set tm=500
 
 "{{{ Mappings
 
+" escape text for hmtl
+nnoremap <leader>1 :%s/’/\&rsquo\;/g<cr><bar>:%s/“/\&ldquo\;/g<cr><bar>:%s/”/\&rdquo\;/g<cr><bar>:%s/^\n//g<cr>
+nnoremap <leader>2 :%s/^/<p>/g<cr><bar>:%s/$/<\/p>/g<cr>
+nnoremap <leader>3 :%s/^/<p style=\"margin: 0 0 10px\; padding: 0\; color: rgb(0, 0, 0)\; line-height: 16px\; font-size: 13px\;\">/g<cr><bar>:%s/$/<\/p>/g<cr>
+
 " map save to ctrl+s
-inoremap <c-s> <Esc>:Update<CR>
+inoremap <c-s> <Esc>:w<CR>
+nnoremap <c-s> <Esc>:w<CR>
 
 " map buffer toggles with leader
 map <leader>n :bn<cr>
@@ -333,12 +341,22 @@ Bundle 'tomtom/tcomment_vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'tpope/vim-surround'
 Bundle 'scrooloose/syntastic'
+<<<<<<< HEAD
 Bundle 'nono/vim-handlebars'
+=======
+>>>>>>> 476c14b8fe0d0e60dc33a97a605bd49ec42c678f
 Bundle 'terryma/vim-multiple-cursors'
 Bundle 'Shougo/neocomplcache.vim'
 Bundle 'ervandew/supertab'
 Bundle 'sukima/xmledit'
 Bundle 'Townk/vim-autoclose'
+Bundle 'vim-scripts/ZoomWin'
+Bundle 'shawncplus/phpcomplete.vim'
+Bundle 'joonty/vdebug.git'
+
+" syntax
+Bundle 'itspriddle/vim-jquery'
+Bundle 'pangloss/vim-javascript'
 Bundle 'concise/vim-html5-fix'
 <<<<<<< HEAD
 Bundle 'vim-scripts/TagHighlight'
@@ -348,7 +366,11 @@ Bundle 'itspriddle/vim-jquery'
 Bundle 'pangloss/vim-javascript'
 =======
 Bundle 'skammer/vim-css-color'
+<<<<<<< HEAD
 >>>>>>> 88d7ab5a6e5968db51205049011f56dd7bb1f6d4
+=======
+Bundle 'nono/vim-handlebars'
+>>>>>>> 476c14b8fe0d0e60dc33a97a605bd49ec42c678f
 
 " colorschemes
 Bundle 'chmllr/vim-colorscheme-elrodeo'
@@ -374,7 +396,7 @@ let g:syntastic_check_on_wq=0
 let g:syntastic_echo_current_error=1
 let g:syntastic_enable_signs=1
 let g:syntastic_enable_balloons = 1
-let g:syntastic_auto_jump=1
+let g:syntastic_auto_jump=0
 let g:syntastic_loc_list_height=5
 let g:syntastic_javascript_checkers = ['jsl']
 let g:syntastic_html_checkers = ['tidy']
