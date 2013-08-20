@@ -341,10 +341,6 @@ Bundle 'tomtom/tcomment_vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'tpope/vim-surround'
 Bundle 'scrooloose/syntastic'
-<<<<<<< HEAD
-Bundle 'nono/vim-handlebars'
-=======
->>>>>>> 476c14b8fe0d0e60dc33a97a605bd49ec42c678f
 Bundle 'terryma/vim-multiple-cursors'
 Bundle 'Shougo/neocomplcache.vim'
 Bundle 'ervandew/supertab'
@@ -358,19 +354,9 @@ Bundle 'joonty/vdebug.git'
 Bundle 'itspriddle/vim-jquery'
 Bundle 'pangloss/vim-javascript'
 Bundle 'concise/vim-html5-fix'
-<<<<<<< HEAD
 Bundle 'vim-scripts/TagHighlight'
-
-" syntax
-Bundle 'itspriddle/vim-jquery'
-Bundle 'pangloss/vim-javascript'
-=======
 Bundle 'skammer/vim-css-color'
-<<<<<<< HEAD
->>>>>>> 88d7ab5a6e5968db51205049011f56dd7bb1f6d4
-=======
 Bundle 'nono/vim-handlebars'
->>>>>>> 476c14b8fe0d0e60dc33a97a605bd49ec42c678f
 
 " colorschemes
 Bundle 'chmllr/vim-colorscheme-elrodeo'
