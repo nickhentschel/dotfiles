@@ -50,6 +50,12 @@ augroup END
 
 "{{{Misc Settings
 
+" MiniBuff
+let g:miniBufExplBuffersNeeded = 1
+let g:miniBufExplorerAutoStart = 1
+let g:miniBufExplCycleArround = 1
+let g:miniBufExplBRSplit = 0
+
 " disable sound on errors
 set noerrorbells
 set novisualbell
@@ -217,7 +223,8 @@ set showmatch
 set laststatus=2
 set encoding=utf-8
 set t_Co=256
-set cursorline	" highlight current line
+" highlight current line and column
+set cursorline cursorcolumn
 highlight CursorLine  guibg=#003853 ctermbg=24  gui=none cterm=none
 " let g:Powerline_symbols = 'fancy'
 
@@ -229,27 +236,27 @@ set tm=500
 
 "{{{ Mappings
 
+" Minibuff
+noremap <C-TAB>   :MBEbn<CR>
+noremap <C-S-TAB> :MBEbp<CR>
+
 " escape text for hmtl
 nnoremap <leader>1 :%s/’/\&rsquo\;/g<cr><bar>:%s/“/\&ldquo\;/g<cr><bar>:%s/”/\&rdquo\;/g<cr><bar>:%s/^\n//g<cr>
 nnoremap <leader>2 :%s/^/<p>/g<cr><bar>:%s/$/<\/p>/g<cr>
 nnoremap <leader>3 :%s/^/<p style=\"margin: 0 0 10px\; padding: 0\; color: rgb(0, 0, 0)\; line-height: 16px\; font-size: 13px\;\">/g<cr><bar>:%s/$/<\/p>/g<cr>
 
+" close current buffer, leaving window open
+nnoremap <c-c> <Esc>:MBEbd<CR>
+
 " map save to ctrl+s
 inoremap <c-s> <Esc>:w<CR>
 nnoremap <c-s> <Esc>:w<CR>
-
-" map buffer toggles with leader
-map <leader>n :bn<cr>
-map <Leader>b :bp<cr>
-map <leader>w :bd<cr>
+vnoremap <c-s> <Esc>:w<CR>
 
 " allow multiple indentation/deindentation in visual mode
 vnoremap < <gv
 vnoremap > >gv
 vnoremap = =gv
-
-" Loop to switch windows
-nmap <S-w> :wincmd w<CR>
 
 " Nerd Tree
 map <C-t> :NERDTreeToggle<CR>
@@ -280,38 +287,6 @@ nnoremap : ;
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'c'
-
-" make keypad work in vim with iTerm on OS X!
-map <Esc>Oq 1
-map <Esc>Or 2
-map <Esc>Os 3
-map <Esc>Ot 4
-map <Esc>Ou 5
-map <Esc>Ov 6
-map <Esc>Ow 7
-map <Esc>Ox 8
-map <Esc>Oy 9
-map <Esc>Op 0
-map <Esc>On .
-map <Esc>OQ /
-map <Esc>OR *
-map <kPlus> +
-map <Esc>OS -
-map! <Esc>Oq 1
-map! <Esc>Or 2
-map! <Esc>Os 3
-map! <Esc>Ot 4
-map! <Esc>Ou 5
-map! <Esc>Ov 6
-map! <Esc>Ow 7
-map! <Esc>Ox 8
-map! <Esc>Oy 9
-map! <Esc>Op 0
-map! <Esc>On .
-map! <Esc>OQ /
-map! <Esc>OR *
-map! <kPlus> +
-map! <Esc>OS -
 
 " Split navigation mappings
 nnoremap <C-J> <C-W><C-J>
@@ -344,11 +319,9 @@ Bundle 'scrooloose/syntastic'
 Bundle 'terryma/vim-multiple-cursors'
 Bundle 'Shougo/neocomplcache.vim'
 Bundle 'ervandew/supertab'
-Bundle 'sukima/xmledit'
 Bundle 'Townk/vim-autoclose'
-Bundle 'vim-scripts/ZoomWin'
-Bundle 'shawncplus/phpcomplete.vim'
 Bundle 'joonty/vdebug.git'
+Bundle 'fholgado/minibufexpl.vim'
 
 " syntax
 Bundle 'itspriddle/vim-jquery'
@@ -357,6 +330,8 @@ Bundle 'concise/vim-html5-fix'
 Bundle 'vim-scripts/TagHighlight'
 Bundle 'skammer/vim-css-color'
 Bundle 'nono/vim-handlebars'
+Bundle 'shawncplus/phpcomplete.vim'
+Bundle 'sukima/xmledit'
 
 " colorschemes
 Bundle 'chmllr/vim-colorscheme-elrodeo'
@@ -396,5 +371,4 @@ set statusline+=%*
 filetype plugin indent on
 syntax on
 set background=dark
-colorscheme base16-default
-
+colorscheme elrodeo
