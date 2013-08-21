@@ -130,7 +130,6 @@ set grepprg=grep\ -nH\ $*
 set autoindent
 set expandtab
 set smarttab
-set smartindent
 
 " Who wants an 8 character tab?  Not me!
 set shiftwidth=4
