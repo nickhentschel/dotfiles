@@ -61,6 +61,7 @@ let g:airline#extensions#whitespace#enabled = 1
 let g:airline#extensions#whitespace#symbol = '!'
 let g:airline#extensions#whitespace#show_message = 1
 let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#branch#enabled = 1
 let g:airline_theme="powerlineish"
 
 " MiniBuff
@@ -352,6 +353,7 @@ Bundle 'Townk/vim-autoclose'
 Bundle 'fholgado/minibufexpl.vim'
 Bundle 'bling/vim-airline'
 Bundle 'mileszs/ack.vim'
+Bundle 'tpope/vim-fugitive'
 
 " syntax
 Bundle 'itspriddle/vim-jquery'
