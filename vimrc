@@ -2,6 +2,7 @@
 
 " Necesary  for lots of cool vim things
 set nocompatible
+filetype plugin indent on
 
 "{{{Auto Commands
 
@@ -50,11 +51,30 @@ augroup END
 
 "{{{Misc Settings
 
+" autoclose and indent on {}
+let g:AutoCloseExpandEnterOn = "{"
+
+" Vim Airline
+let g:airline_left_sep=''
+let g:airline_right_sep=''
+let g:airline#extensions#whitespace#enabled = 1
+let g:airline#extensions#whitespace#symbol = '!'
+let g:airline#extensions#whitespace#show_message = 1
+let g:airline#extensions#syntastic#enabled = 1
+let g:airline_theme="powerlineish"
+
 " MiniBuff
 let g:miniBufExplBuffersNeeded = 1
 let g:miniBufExplorerAutoStart = 1
 let g:miniBufExplCycleArround = 1
 let g:miniBufExplBRSplit = 0
+
+" More natural splitting
+set splitbelow
+set splitright
+
+" Remove insert->normal delay
+set ttimeoutlen=50
 
 " disable sound on errors
 set noerrorbells
@@ -122,9 +142,6 @@ set showcmd
 
 " Folding Stuffs
 set foldmethod=marker
-
-" Needed for Syntax Highlighting and stuff
-set grepprg=grep\ -nH\ $*
 
 " Who doesn't like autoindent?
 set autoindent
@@ -215,17 +232,20 @@ nnoremap <C-y> 3<C-y>
 " set laststatus=2
 " set statusline=%F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]
 
-set guifont=PragmataPro:h12
+set guifont=PragmataPro:h12,Inconsolata\ for\ Powerline:h10
+" set guifont=Inconsolata\ for\ Powerline:h12
+" set guifont=Meslo\ LG\ L\ Regular\ for\ Powerline:h10
+" set guifont=Source\ Code\ Pro\ for\ Powerline:h12
+" set guifont=Consolas\ for\ Powerline:h12
 
 " Cursor shows matching ) and }
-set showmatch
-set laststatus=2
+" set showmatch
+" set laststatus=2
 set encoding=utf-8
 set t_Co=256
 " highlight current line and column
 set cursorline cursorcolumn
 highlight CursorLine  guibg=#003853 ctermbg=24  gui=none cterm=none
-" let g:Powerline_symbols = 'fancy'
 
 " disable sound on errors
 set noerrorbells visualbell t_vb=
@@ -235,6 +255,20 @@ set tm=500
 
 "{{{ Mappings
 
+" Sane regex with /
+nnoremap / /\v
+vnoremap / /\v
+nnoremap ? ?\v
+vnoremap ? ?\v
+cnoremap s/ s/\v
+
+" Insert mode movement
+inoremap <C-l> <right>
+inoremap <C-h> <left>
+
+" Syntastic
+nnoremap <Leader>e <Esc>:Errors<CR>
+
 " Minibuff
 noremap <C-TAB>   :MBEbn<CR>
 noremap <C-S-TAB> :MBEbp<CR>
@@ -243,6 +277,7 @@ noremap <C-S-TAB> :MBEbp<CR>
 nnoremap <leader>1 :%s/’/\&rsquo\;/g<cr><bar>:%s/“/\&ldquo\;/g<cr><bar>:%s/”/\&rdquo\;/g<cr><bar>:%s/^\n//g<cr>
 nnoremap <leader>2 :%s/^/<p>/g<cr><bar>:%s/$/<\/p>/g<cr>
 nnoremap <leader>3 :%s/^/<p style=\"margin: 0 0 10px\; padding: 0\; color: rgb(0, 0, 0)\; line-height: 16px\; font-size: 13px\;\">/g<cr><bar>:%s/$/<\/p>/g<cr>
+nnoremap <Leader>4 %s/<\/body>/<script src="http:\/\/localhost:9001\/ws"><\/script><\/body>/g<cr>
 
 " close current buffer, leaving window open
 nnoremap <c-c> <Esc>:MBEbd<CR>
@@ -293,10 +328,6 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-" More natural splitting
-set splitbelow
-set splitright
-
  "}}}
 
 " {{{ Bundles and Such
@@ -308,7 +339,6 @@ call vundle#rc()
 " required!
 Bundle 'gmarik/vundle'
 
-Bundle 'Lokaltog/vim-powerline'
 Bundle 'kien/ctrlp.vim'
 Bundle 'Bogdanp/browser-connect.vim'
 Bundle 'tomtom/tcomment_vim'
@@ -319,8 +349,9 @@ Bundle 'terryma/vim-multiple-cursors'
 Bundle 'Shougo/neocomplcache.vim'
 Bundle 'ervandew/supertab'
 Bundle 'Townk/vim-autoclose'
-Bundle 'joonty/vdebug.git'
 Bundle 'fholgado/minibufexpl.vim'
+Bundle 'bling/vim-airline'
+Bundle 'mileszs/ack.vim'
 
 " syntax
 Bundle 'itspriddle/vim-jquery'
@@ -367,7 +398,6 @@ set statusline+=%*
 
 " }}}
 
-filetype plugin indent on
 syntax on
 set background=dark
 colorscheme elrodeo
