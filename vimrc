@@ -4,7 +4,7 @@
 set nocompatible
 filetype plugin indent on
 
-"{{{Auto Commands
+"{{{ Auto Commands
 
 " Syntax specific stuff
 autocmd Syntax javascript set syntax=jquery
@@ -16,7 +16,22 @@ runtime macros/matchit.vim
 
 "}}}
 
-"{{{Misc Settings
+"{{{ Misc Settings
+
+" Syntastic settings
+let g:syntastic_check_on_open=1
+let g:syntastic_check_on_wq=0
+let g:syntastic_echo_current_error=1
+let g:syntastic_enable_signs=1
+let g:syntastic_enable_balloons = 1
+let g:syntastic_auto_jump=0
+let g:syntastic_loc_list_height=5
+let g:syntastic_javascript_checkers = ['jsl']
+let g:syntastic_html_checkers = ['tidy']
+let g:syntastic_php_checkers = ['php']
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
 " autoclose and indent on {}
 let g:AutoCloseExpandEnterOn = "{"
@@ -240,11 +255,11 @@ nnoremap <Leader>e <Esc>:Errors<CR>
 noremap <C-TAB>   :MBEbn<CR>
 noremap <C-S-TAB> :MBEbp<CR>
 
-" escape text for hmtl
+" escape text for html
 nnoremap <leader>1 :%s/’/\&rsquo\;/g<cr><bar>:%s/“/\&ldquo\;/g<cr><bar>:%s/”/\&rdquo\;/g<cr><bar>:%s/^\n//g<cr>
 nnoremap <leader>2 :%s/^/<p>/g<cr><bar>:%s/$/<\/p>/g<cr>
 nnoremap <leader>3 :%s/^/<p style=\"margin: 0 0 10px\; padding: 0\; color: rgb(0, 0, 0)\; line-height: 16px\; font-size: 13px\;\">/g<cr><bar>:%s/$/<\/p>/g<cr>
-nnoremap <Leader>4 %s/<\/body>/<script src="http:\/\/localhost:9001\/ws"><\/script><\/body>/g<cr>
+nnoremap <Leader>4 :%s/<\/body>/<script src="http:\/\/localhost:9001\/ws"><\/script><\/body>/g<cr>
 
 " close current buffer, leaving window open
 nnoremap <c-c> <Esc>:MBEbd<CR>
@@ -337,24 +352,6 @@ Bundle 'zeis/vim-kolor'
 Bundle 'chriskempson/base16-vim'
 Bundle 'junegunn/seoul256.vim'
 Bundle 'chriskempson/vim-tomorrow-theme'
-
-" }}}
-
-" {{{ Syntastic
-
-let g:syntastic_check_on_open=1
-let g:syntastic_check_on_wq=0
-let g:syntastic_echo_current_error=1
-let g:syntastic_enable_signs=1
-let g:syntastic_enable_balloons = 1
-let g:syntastic_auto_jump=0
-let g:syntastic_loc_list_height=5
-let g:syntastic_javascript_checkers = ['jsl']
-let g:syntastic_html_checkers = ['tidy']
-let g:syntastic_php_checkers = ['php']
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
 
 " }}}
 
