@@ -6,46 +6,13 @@ filetype plugin indent on
 
 "{{{Auto Commands
 
-" auto reload vimrc when editing it
-autocmd! bufwritepost .vimrc source ~/.vimrc
-
-" JQuery syntax support
+" Syntax specific stuff
 autocmd Syntax javascript set syntax=jquery
+au BufRead,BufNewFile *.md setl sw=2 sts=2 spell et wrap linebreak
+au BufRead,BufNewFile *.txt setl sw=2 sts=2 spell et wrap linebreak
 
 " extend the matching capability with % key
 runtime macros/matchit.vim
-
-" Automatically cd into the directory that the file is in
-autocmd BufEnter * execute "chdir ".escape(expand("%:p:h"), ' ')
-
-" Remove any trailing whitespace that is in the file
-autocmd BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
-
-" Restore cursor position to where it was before
-augroup JumpCursorOnEdit
-   au!
-   autocmd BufReadPost *
-            \ if expand("<afile>:p:h") !=? $TEMP |
-            \   if line("'\"") > 1 && line("'\"") <= line("$") |
-            \     let JumpCursorOnEdit_foo = line("'\"") |
-            \     let b:doopenfold = 1 |
-            \     if (foldlevel(JumpCursorOnEdit_foo) > foldlevel(JumpCursorOnEdit_foo - 1)) |
-            \        let JumpCursorOnEdit_foo = JumpCursorOnEdit_foo - 1 |
-            \        let b:doopenfold = 2 |
-            \     endif |
-            \     exe JumpCursorOnEdit_foo |
-            \   endif |
-            \ endif
-   " Need to postpone using "zv" until after reading the modelines.
-   autocmd BufWinEnter *
-            \ if exists("b:doopenfold") |
-            \   exe "normal zv" |
-            \   if(b:doopenfold > 1) |
-            \       exe  "+".1 |
-            \   endif |
-            \   unlet b:doopenfold |
-            \ endif
-augroup END
 
 "}}}
 
@@ -229,9 +196,7 @@ nnoremap <C-y> 3<C-y>
 
 " }}}
 
-"{{{Look and Feel
-" set laststatus=2
-" set statusline=%F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]
+"{{{ Look and Feel
 
 set guifont=PragmataPro:h12,Inconsolata\ for\ Powerline:h10
 " set guifont=Inconsolata\ for\ Powerline:h12
@@ -240,10 +205,11 @@ set guifont=PragmataPro:h12,Inconsolata\ for\ Powerline:h10
 " set guifont=Consolas\ for\ Powerline:h12
 
 " Cursor shows matching ) and }
-" set showmatch
-" set laststatus=2
+set showmatch
+set laststatus=2
 set encoding=utf-8
 set t_Co=256
+
 " highlight current line and column
 set cursorline cursorcolumn
 highlight CursorLine  guibg=#003853 ctermbg=24  gui=none cterm=none
@@ -252,7 +218,7 @@ highlight CursorLine  guibg=#003853 ctermbg=24  gui=none cterm=none
 set noerrorbells visualbell t_vb=
 set tm=500
 
-" }}}
+"}}}
 
 "{{{ Mappings
 
@@ -371,14 +337,6 @@ Bundle 'zeis/vim-kolor'
 Bundle 'chriskempson/base16-vim'
 Bundle 'junegunn/seoul256.vim'
 Bundle 'chriskempson/vim-tomorrow-theme'
-
-" }}}
-
-" {{{ File type specific settings
-
-" Settings for markdown files
-au BufRead,BufNewFile *.md setl sw=2 sts=2 spell et wrap linebreak
-au BufRead,BufNewFile *.txt setl sw=2 sts=2 spell et wrap linebreak
 
 " }}}
 
