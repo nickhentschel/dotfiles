@@ -37,14 +37,15 @@ set statusline+=%*
 let g:AutoCloseExpandEnterOn = "{"
 
 " Vim Airline
-let g:airline_left_sep=''
-let g:airline_right_sep=''
+" let g:airline_left_sep=''
+" let g:airline_right_sep=''
 let g:airline#extensions#whitespace#enabled = 1
 let g:airline#extensions#whitespace#symbol = '!'
 let g:airline#extensions#whitespace#show_message = 1
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline_theme="luna"
+let g:airline_powerline_fonts = 1
 
 " MiniBuff
 let g:miniBufExplBuffersNeeded = 1
@@ -218,8 +219,8 @@ nnoremap <C-y> 3<C-y>
 " set guifont=Meslo\ LG\ L\ Regular\ for\ Powerline:h10
 " set guifont=Source\ Code\ Pro\ for\ Powerline:h12
 " set guifont=Consolas\ for\ Powerline:h12
-set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h10
-" set guifont=Terminus\ (TTF):h12
+" set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h10
+set guifont=Terminus\ (TTF)\ for\ Powerline:h12
 " disable antialiasing
 " set noantialias
 
@@ -357,5 +358,5 @@ Bundle 'junegunn/seoul256.vim'
 " }}}
 
 syntax on
-let g:seoul256_background = 234
-colorscheme seoul256
+set background=dark
+colorscheme base16-default
