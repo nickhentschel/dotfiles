@@ -44,7 +44,7 @@ let g:airline#extensions#whitespace#symbol = '!'
 let g:airline#extensions#whitespace#show_message = 1
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
-let g:airline_theme="powerlineish"
+let g:airline_theme="luna"
 
 " MiniBuff
 let g:miniBufExplBuffersNeeded = 1
@@ -213,11 +213,15 @@ nnoremap <C-y> 3<C-y>
 
 "{{{ Look and Feel
 
-set guifont=PragmataPro:h12,Inconsolata\ for\ Powerline:h10
+" set guifont=PragmataPro:h12,Inconsolata\ for\ Powerline:h10
 " set guifont=Inconsolata\ for\ Powerline:h12
 " set guifont=Meslo\ LG\ L\ Regular\ for\ Powerline:h10
 " set guifont=Source\ Code\ Pro\ for\ Powerline:h12
 " set guifont=Consolas\ for\ Powerline:h12
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h10
+" set guifont=Terminus\ (TTF):h12
+" disable antialiasing
+" set noantialias
 
 " Cursor shows matching ) and }
 set showmatch
@@ -227,7 +231,6 @@ set t_Co=256
 
 " highlight current line and column
 set cursorline cursorcolumn
-highlight CursorLine  guibg=#003853 ctermbg=24  gui=none cterm=none
 
 " disable sound on errors
 set noerrorbells visualbell t_vb=
@@ -348,13 +351,11 @@ Bundle 'sukima/xmledit'
 
 " colorschemes
 Bundle 'chmllr/vim-colorscheme-elrodeo'
-Bundle 'zeis/vim-kolor'
 Bundle 'chriskempson/base16-vim'
 Bundle 'junegunn/seoul256.vim'
-Bundle 'chriskempson/vim-tomorrow-theme'
 
 " }}}
 
 syntax on
-set background=dark
-colorscheme elrodeo
+let g:seoul256_background = 234
+colorscheme seoul256
