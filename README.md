@@ -17,6 +17,6 @@ I do the majority of my work on OS X, using iTerm2 and MacVim. That's not to say
 
 Pull the repo, and run `rake install` for a full installation, or run `rake -T` to view all of the available options.
 
-I have found that fonts look better on OS X with font smoothing disabled. That can be achieved easily with this command:
+I have found that fonts look better on OS X with uniform font smoothing. That can be achieved easily with this command:
 
-  defaults write -g AppleFontSmoothing -int 0
+  defaults -currentHost write -globalDomain AppleFontSmoothing -int 1 

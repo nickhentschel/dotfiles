@@ -16,7 +16,7 @@ runtime macros/matchit.vim
 
 "}}}
 
-"{{{ Misc Settings
+" {{{ Misc Settings
 
 " Syntastic settings
 let g:syntastic_check_on_open=1
@@ -212,8 +212,14 @@ nnoremap <C-y> 3<C-y>
 
 "{{{ Look and Feel
 
-" set guifont=PragmataPro:h12
-set guifont=Terminus\ (TTF)\ for\ Powerline:h12
+set guifont=PragmataPro\ for\ Powerline:h12
+" set guifont=ProFont:h12
+" set guifont=M+\ 1m:h12
+" set guifont=Envy\ Code\ R:h12
+" set guifont=Terminus\ (TTF)\ for\ Powerline:h12
+" set guifont=Terminus\ (TTF):h12
+
+set noantialias
 
 " Cursor shows matching ) and }
 set showmatch
