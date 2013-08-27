@@ -37,8 +37,6 @@ set statusline+=%*
 let g:AutoCloseExpandEnterOn = "{"
 
 " Vim Airline
-" let g:airline_left_sep=''
-" let g:airline_right_sep=''
 let g:airline#extensions#whitespace#enabled = 1
 let g:airline#extensions#whitespace#symbol = '!'
 let g:airline#extensions#whitespace#show_message = 1
@@ -214,15 +212,8 @@ nnoremap <C-y> 3<C-y>
 
 "{{{ Look and Feel
 
-" set guifont=PragmataPro:h12,Inconsolata\ for\ Powerline:h10
-" set guifont=Inconsolata\ for\ Powerline:h12
-" set guifont=Meslo\ LG\ L\ Regular\ for\ Powerline:h10
-" set guifont=Source\ Code\ Pro\ for\ Powerline:h12
-" set guifont=Consolas\ for\ Powerline:h12
-" set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h10
+" set guifont=PragmataPro:h12
 set guifont=Terminus\ (TTF)\ for\ Powerline:h12
-" disable antialiasing
-" set noantialias
 
 " Cursor shows matching ) and }
 set showmatch
@@ -353,7 +344,6 @@ Bundle 'sukima/xmledit'
 " colorschemes
 Bundle 'chmllr/vim-colorscheme-elrodeo'
 Bundle 'chriskempson/base16-vim'
-Bundle 'junegunn/seoul256.vim'
 
 " }}}
 
