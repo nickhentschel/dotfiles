@@ -32,25 +32,6 @@ task :switch_to_zsh do
 	end
 end
 
-=begin rdoc
-desc 'Install oh-my-zsh'
-task :install_oh_my_zsh do
-	if File.exist?(File.join(ENV['HOME'], '.oh-my-zsh'))
-		puts 'oh-my-zsh exists'
-	else
-		print 'Install oh-my-zsh? [ynq]: '
-		case $stdin.gets.chomp
-		when 'y'
-			system("git clone https://github.com/robbyrussell/oh-my-zsh.git #{File.join(ENV['HOME'], '.oh-my-zsh')}")
-		when 'q'
-			exit
-		else
-			puts 'Skipping oh-my-zsh. Please modify .zshrc'
-		end
-	end
-end
-=end
-
 desc 'Install Prezto zsh'
 task :install_prezto_zsh do
 	if File.exist?(File.join(ENV['HOME'], '.zprezto'))
@@ -82,7 +63,7 @@ task :install_vundle do
 				FileUtils.mkdir(File.join(ENV['HOME'], '.vim'))
 			end
 			system("git clone https://github.com/gmarik/vundle.git #{File.join(ENV['HOME'], '.vim/bundle/vundle')}")
-			puts "Be sure to run :BundleInstall in vim after installing"
+			system("vim +PluginInstall +qall")
 		when 'q'
 			exit
 		else
@@ -93,14 +74,14 @@ end
 
 desc 'Simple install script, only backs up and links files'
 task :simple_install do
-	files = Dir.entries(File.join(ENV['HOME'], 'dotfiles')) - ['Rakefile', 'README.md']
+  files = Dir.entries(File.join(ENV['HOME'], 'dotfiles')) - ['Rakefile', 'README.md', 'com.googlecode.iterm2.plist']
 	editedFiles = files.select { |file| !(file == '.' || file == '..' || file.chars.first == '.') }
 	backupOldFiles(editedFiles)
 	puts 'linking...'
 	editedFiles.each do |file|
 		FileUtils.ln_s(File.join(ENV['HOME'], "dotfiles/#{file}"), File.join(ENV['HOME'], ".#{file}"))
 	end
-	puts "\nDotfile installation complete!"
+	puts "\nDotfile copying complete!"
 end
 
 def backupOldFiles(newFiles)
