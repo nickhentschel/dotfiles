@@ -10,7 +10,7 @@ end
 
 ## TO DO: take in files to be ignored as parameters
 desc 'Perform a full installation to the current home directory'
-task :install => [:switch_to_zsh, :install_oh_my_zsh, :install_z, :install_highlighting, :install_vundle, :simple_install] do
+task :install => [:switch_to_zsh, :install_prezto_zsh, :install_vundle, :simple_install] do
 	puts 'Full installation complete'
 end
 
@@ -32,6 +32,7 @@ task :switch_to_zsh do
 	end
 end
 
+=begin rdoc
 desc 'Install oh-my-zsh'
 task :install_oh_my_zsh do
 	if File.exist?(File.join(ENV['HOME'], '.oh-my-zsh'))
@@ -48,37 +49,23 @@ task :install_oh_my_zsh do
 		end
 	end
 end
+=end
 
-desc 'Install z'
-task :install_z do
-	if File.exist?(File.join(ENV['HOME'], 'z'))
-		puts 'z already installed'
+desc 'Install Prezto zsh'
+task :install_prezto_zsh do
+	if File.exist?(File.join(ENV['HOME'], '.zprezto'))
+		puts 'prezto exists'
 	else
-		print 'Install z? [ynq]: '
+		print 'Install prezto? [ynq]: '
 		case $stdin.gets.chomp
 		when 'y'
-			system("git clone https://github.com/rupa/z.git #{File.join(ENV['HOME'], 'z')}")
+			system("git clone --recursive https://github.com/sorin-ionescu/prezto.git #{File.join(ENV['HOME'], '.zprezto')}")
+      system("zsh #{File.join(ENV['HOME'], 'dotfiles/zprezto_install.sh')}")
+			# system("git clone https://github.com/robbyrussell/oh-my-zsh.git #{File.join(ENV['HOME'], '.oh-my-zsh')}")
 		when 'q'
 			exit
 		else
-			puts 'Skipping z. Please update .zshrc'
-		end
-	end
-end
-
-desc 'Install zsh command-line highlighting plugin for oh-my-zsh'
-task :install_highlighting do
-	if File.exist?(File.join(ENV['HOME'], '.oh-my-zsh/plugins/zsh-syntax-highlighting'))
-		puts 'command-line highlighting plugin already installed'
-	else
-		print 'Install command-line highlighting? [ynq]: '
-		case $stdin.gets.chomp
-		when 'y'
-			system("git clone https://github.com/zsh-users/zsh-syntax-highlighting.git #{File.join(ENV['HOME'], '.oh-my-zsh/plugins/zsh-syntax-highlighting')}")
-		when 'q'
-			exit
-		else
-			puts 'Skipping zsh-syntax-highlighting. Please remove plugin from .zshrc'
+			puts 'Skipping .zprezto'
 		end
 	end
 end
