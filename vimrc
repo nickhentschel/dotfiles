@@ -9,7 +9,7 @@
 " *                                                                           *
 " *                                                                           *
 " * Author: Nicholas Hentschel                                                *
-" * Source: https://github.com/nickhentschel/dotfiles-2                       *
+" * Source: https://github.com/nickhentschel/dotfiles                         *
 " *                                                                           *
 " * WARNING: This file is modified frequently                                 *
 " *                                                                           *
@@ -18,24 +18,13 @@
 " Necesary  for lots of cool vim things
 set nocompatible
 filetype plugin indent on
+set t_Co=256
 
 set shell=/bin/bash
 
 " * * * * * * * * * * * * * * * * * * *
 " * FUNCTIONS                         *
 " * * * * * * * * * * * * * * * * * * *
-
-function! HLNext (blinktime)
-    set invcursorline
-    redraw
-    exec 'sleep ' . float2nr(a:blinktime * 1000) . 'm'
-    set invcursorline
-    redraw
-endfunction
-
-function! s:my_cr_function()
-    return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-endfunction
 
 function! s:editProse()
     setlocal colorcolumn&
@@ -46,31 +35,37 @@ function! s:editProse()
     setlocal textwidth=80
 endfunction
 
+function! Multiple_cursors_before()
+    exe 'NeoCompleteLock'
+    echo 'Disabled autocomplete'
+endfunction
+
+function! Multiple_cursors_after()
+    exe 'NeoCompleteUnlock'
+    echo 'Enabled autocomplete'
+endfunction
+
 " * * * * * * * * * * * * * * * * * * *
 " * AUTO COMMANDS                     *
 " * * * * * * * * * * * * * * * * * * *
 
-au BufNewFile,BufRead *.ss set filetype=html
-
-" Toggle relative line numbers in different modes
-" autocmd InsertEnter * set number
+" Enable omnicomplete
+autocmd FileType javascript     setlocal omnifunc=tern#Complete
+autocmd FileType coffee         setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html,markdown  setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css            setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType xml            setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType php            setlocal omnifunc=phpcomplete#CompletePHP
+autocmd FileType c              setlocal omnifunc=ccomplete#Complete
+autocmd FileType ruby           setlocal omnifunc=rubycomplete#Complete
 
 " cd to current directory automatically
-autocmd BufEnter * silent! lcd %:p:h
-
-" Enable omni completion
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-autocmd FileType java setlocal omnifunc=javacomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+au BufEnter * silent! lcd %:p:h
 
 " Syntax specific stuff
 au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set filetype=markdown
-au Filetype html,css,scss,sass,ruby setlocal ts=2 sts=2 sw=2
-au Filetype javascript setlocal ts=4 sts=4 sw=4
+au BufNewFile,BufRead *.ss set filetype=html
+au Filetype html,css,scss,sass,ruby,javascript setlocal ts=2 sts=2 sw=2
 
 augroup pencil
     autocmd!
@@ -81,15 +76,16 @@ augroup END
 " * VIM SETTINGS                      *
 " * * * * * * * * * * * * * * * * * * *
 
-" set relative line numbers
+" set 'hybrid' line number
 set relativenumber
+" set number
 
 " Settings for ctags
 set tags=tags;/
 
 " Better screen redraw
 set ttyfast
-set lazyredraw
+" set lazyredraw
 
 " More natural splitting
 set splitbelow
@@ -123,7 +119,7 @@ set linebreak
 " Title
 set title
 
-" This shows what you are typing as a command.  I love this!
+" This shows what you are typing as a command
 set showcmd
 
 " Folding Stuffs
@@ -194,7 +190,6 @@ set sidescroll=1
 
 " Completion in command mode
 if v:version >= 700
-  " set completeopt=menuone,menu,longest
   set completeopt=menuone,menu
 endif
 
@@ -202,22 +197,21 @@ endif
 " * MAPPINGS                          *
 " * * * * * * * * * * * * * * * * * * *
 
+" Toggle paste mode with F2
+set pastetoggle=<F2>
+
 " map leader to space
 let mapleader=" "
 let g:mapleader=" "
 
+" Space does nothing in normal mode (prevent cursor from moving)
+nnoremap <Space> <nop>
+
+" Set leader n to stop highlighting
+nnoremap <leader>n :<C-u>noh<CR>
+
 " save as root
 cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>
-
-" Just stop with the arrow keys ok?
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-nnoremap <left> <nop>
-nnoremap <right> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap <left> <nop>
-inoremap <right> <nop>
 
 " Remap to yank to end of line
 nnoremap Y y$
@@ -226,8 +220,8 @@ nnoremap Y y$
 nnoremap U <c-r>
 
 " Call hlnext function on N or n
-nnoremap <silent> n n:call HLNext(0.4)<cr>
-nnoremap <silent> N N:call HLNext(0.4)<cr>
+" nnoremap <silent> n n:call HLNext(0.4)<cr>
+" nnoremap <silent> N N:call HLNext(0.4)<cr>
 
 " Scroll viewport 3 lines instead of 1
 nnoremap <C-e> 3<C-e>
@@ -243,11 +237,7 @@ nnoremap ? ?\v
 vnoremap ? ?\v
 cnoremap s/ s/\v
 
-" Insert mode movement
-inoremap <C-l> <right>
-inoremap <C-h> <left>
-
-" map save to ctrl+s
+" map save to ctrl+s, requires some shell/terminal tweaking if not in gvim/macvim
 inoremap <c-s> <Esc>:w<CR>
 nnoremap <c-s> <Esc>:w<CR>
 vnoremap <c-s> <Esc>:w<CR>
@@ -265,9 +255,6 @@ nnoremap <silent> j gj
 nnoremap <silent> zj o<Esc>
 nnoremap <silent> zk O<Esc>
 
-" Space will toggle folds!
-" nnoremap <space> za
-
 " Swap ; and :  Convenient.
 nnoremap ; :
 nnoremap : ;
@@ -277,17 +264,9 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
-nnoremap <S-Down> <C-W><C-J>
-nnoremap <S-Up> <C-W><C-K>
-nnoremap <S-Left> <C-W><C-H>
-nnoremap <S-Right> <C-W><C-L>
 
-inoremap gt :bn<CR>
 nnoremap gt :bn<CR>
-vnoremap gt :bn<CR>
-inoremap gT :bp<CR>
 nnoremap gT :bp<CR>
-vnoremap gT :bp<CR>
 nnoremap <C-c> :bp\|bd #<CR>
 
 " * * * * * * * * * * * * * * * * * * *
@@ -304,29 +283,29 @@ Bundle 'gmarik/vundle'
 Bundle 'tomtom/tcomment_vim'
 Bundle 'tpope/vim-surround'
 Bundle 'scrooloose/syntastic'
-Bundle 'kris89/vim-multiple-cursors'
 Bundle 'Shougo/neocomplete.vim'
 Bundle 'bling/vim-airline'
 Bundle 'tpope/vim-fugitive'
 Bundle 'LaTeX-Box-Team/LaTeX-Box'
 Bundle 'marijnh/tern_for_vim'
-Bundle 'docunext/closetag.vim'
 " Bundle 'klen/python-mode'
-Bundle 'tristen/vim-sparkup'
 Bundle 'reedes/vim-pencil'
 Bundle 'reedes/vim-thematic'
 Bundle 'Raimondi/delimitMate'
-Bundle 'gregsexton/MatchTag'
 Bundle 'kien/ctrlp.vim'
 Bundle 'sgur/ctrlp-extensions.vim'
+Bundle 'FelikZ/ctrlp-py-matcher'
 Bundle 'fholgado/minibufexpl.vim'
 Bundle 'mhinz/vim-startify'
+Bundle 'valloric/MatchTagAlways'
+Bundle 'kris89/vim-multiple-cursors'
+Bundle 'osyo-manga/vim-over'
+Bundle 'christoomey/vim-tmux-navigator'
+Bundle 'xolox/vim-misc'
+Bundle 'xolox/vim-notes'
 
-" Unite bundles
-" Bundle 'Shougo/vimproc.vim'
-" Bundle 'Shougo/unite.vim'
-" Bundle 'tsukkee/unite-tag'
-" Bundle 'h1mesuke/unite-outline'
+" Must sym-link xml.vim in ftplugin directory for completions
+Bundle 'sukima/xmledit'
 
 " colorscheme bundles
 Bundle 'djjcast/mirodark'
@@ -334,12 +313,10 @@ Bundle 'chriskempson/base16-vim'
 Bundle 'w0ng/vim-hybrid'
 Bundle 'reedes/vim-colors-pencil'
 Bundle 'altercation/vim-colors-solarized'
+Bundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 
 " syntax related bundles
-Bundle 'itspriddle/vim-jquery'
 Bundle 'concise/vim-html5-fix'
-Bundle 'vim-scripts/TagHighlight'
-" Bundle 'skammer/vim-css-color'
 Bundle 'nono/vim-handlebars'
 Bundle 'elzr/vim-json'
 Bundle 'jelera/vim-javascript-syntax'
@@ -347,97 +324,24 @@ Bundle 'tpope/vim-markdown'
 Bundle 'chase/vim-ansible-yaml'
 Bundle 'evanmiller/nginx-vim-syntax'
 Bundle 'cakebaker/scss-syntax.vim'
+Bundle 'Keithbsmiley/tmux.vim'
 
 " * * * * * * * * * * * * * * * * * * *
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
 
+" VIM Notes
+let g:notes_directories = ['~/Dropbox/notes']
+
 " Markdown
 let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript',
     \ 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'sql']
 
-" Unite settings
-" let g:unite_enable_start_insert = 1
-" let g:unite_split_rule = "botright"
-" let g:unite_force_overwrite_statusline = 0
-" let g:unite_enable_short_source_mes = 0
-" let g:unite_winheight = 10
-" let g:unite_prompt = '>>> '
-" let g:unite_marked_icon = '✓'
-" let g:unite_source_file_rec_max_cache_files = 1000
-" let g:unite_source_rec_max_cache_files = 5000
-" let g:unite_data_directory = '~/.vim/.cache/unite'
-" let g:unite_source_history_yank_enable = 1
-"
-" if executable('ag')
-"     let g:unite_source_grep_command='ag'
-"     let g:unite_source_grep_default_opts='--nocolor --nogroup -S -C4'
-"     let g:unite_source_grep_recursive_opt=''
-"     let g:unite_source_grep_search_word_highlight = 1
-" elseif executable('ack')
-"     let g:unite_source_grep_command='ack'
-"     let g:unite_source_grep_default_opts='--no-heading --no-color -C4'
-"     let g:unite_source_grep_recursive_opt=''
-"     let g:unite_source_grep_search_word_highlight = 1
-" endif
-"
-" call unite#filters#matcher_default#use(['matcher_fuzzy'])
-" call unite#filters#sorter_default#use(['sorter_rank'])
-" call unite#set_profile('files', 'smartcase', 1)
-" call unite#custom#source('file,file/new,buffer,file_rec',
-"      \ 'matchers', 'matcher_fuzzy')
-" call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
-"       \ 'ignore_pattern', join([
-"       \ '\.git/',
-"       \ '\.bundle/',
-"       \ '\.cups/',
-"       \ '\.svn/',
-"       \ '\.subversion/',
-"       \ '\.andriod/',
-"       \ '\.codeintel/',
-"       \ '\.cache/',
-"       \ '\.bundler/',
-"       \ '\.sass/',
-"       \ '\.sass-cache/',
-"       \ '\.gem/',
-"       \ '\.dropbox/',
-"       \ '\.codeintel/',
-"       \ '\.config/',
-"       \ '\.fontconfig/',
-"       \ '\.meteor/',
-"       \ '\.meteorite/',
-"       \ '\.neocomplcache/',
-"       \ '\.npm/',
-"       \ '\.node-gyp/',
-"       \ ], '\|'))
-
-" autocmd FileType unite call s:unite_settings()
-" function! s:unite_settings()
-"     imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-"     imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-"     imap <buffer> <C-f>   <Plug>(unite_rotate_next_source)
-"     nmap <buffer> <C-f>   <Plug>(unite_rotate_next_source)
-"     imap <buffer> jk      <Plug>(unite_insert_leave)
-"     imap <buffer> <TAB>   <Plug>(unite_select_next_line)
-"     imap <buffer><expr> <C-x> unite#do_action('split')
-"     imap <buffer><expr> <C-v> unite#do_action('vsplit')
-"     imap <buffer> <C-y>     <Plug>(unite_narrowing_path)
-"     nmap <buffer> <C-y>     <Plug>(unite_narrowing_path)
-"     nmap <buffer> <ESC> <Plug>(unite_exit)
-"     nmap <buffer> <C-p> <Plug>(unite_exit)
-"     imap <buffer> <C-p> <Plug>(unite_exit)
-"     nmap <buffer> <C-o> <Plug>(unite_exit)
-"     imap <buffer> <C-o> <Plug>(unite_exit)
-"     nmap <buffer> <C-i> <Plug>(unite_exit)
-"     imap <buffer> <C-i> <Plug>(unite_exit)
-" endfunction
-
-" Unite mappings
-" nnoremap <C-p> :<C-u>Unite -buffer-name=files file_rec/async:! file<cr>
-" nnoremap <C-i> :<C-u>Unite -buffer-name=buffers buffer<cr>
-" nnoremap <C-y> :<C-u>Unite -buffer-name=yank -start-insert history/yank<cr>
-" nnoremap <C-t> :<C-u>Unite -buffer-name=tags -start-insert tag<cr>
-" nnoremap <C-o> :<C-u>Unite -buffer-name=outline -start-insert line outline<cr>
+" DelimitMate
+let g:delimitMate_expand_cr = 1
+let g:delimitMate_expand_space = 0
+" don't match <>, save that for separate tag closing plugin
+let g:delimitMate_matchpairs = "(:),[:],{:}"
 
 " ctrlp
 let g:ctrlp_custom_ignore='\.git$\|\.hg$\|\.svn$'
@@ -452,7 +356,20 @@ let g:ctrlp_show_hidden = 1
 let g:ctrlp_open_new_file = 'r'
 let g:ctrlp_extensions = ['tag', 'buffertag', 'dir',
                       \ 'undo', 'line', 'yankring']
+if !has('python')
+    echo 'In order to use pymatcher plugin, you need +python compiled vim'
+else
+    let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+endif
+let g:ctrlp_lazy_update = 350
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_max_files = 5000
+if executable("ag")
+    set grepprg=ag\ --nogroup\ --nocolor
+    let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --ignore ''.git'' --ignore ''.svn'' --ignore ''.DS_Store'' --ignore ''node_modules'' --hidden -g ""'
+endif
 
+" ctrlp mappings
 nnoremap <leader>i :<C-u>CtrlPLine<CR>
 nnoremap <leader>p :<C-u>CtrlP<CR>
 nnoremap <leader>o :<C-u>CtrlPBuffer<CR>
@@ -471,7 +388,6 @@ nnoremap <silent> <leader>pp :ShiftPencil<cr>
 
 " NeoComplete
 let g:neocomplete#enable_at_startup = 1
-" let g:neocomplete#auto_completion_start_length = 3
 let g:neocomplete#max_list = 10
 let g:neocomplete#enable_refresh_always = 1
 let g:neocomplete#sources#buffer#cache_limit_size = 10000
@@ -479,14 +395,14 @@ let g:neocomplete#data_directory = $HOME.'/.vim/cache/noecompl'
 let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#enable_auto_select = 0
 let g:neocomplete#sources#syntax#min_keyword_length = 1
+" let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
 
 " NeoComplete mappings
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 inoremap <expr><Space> pumvisible() ? neocomplete#smart_close_popup().
                        \ "\<Space>" : "\<Space>"
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 
 " Tern.js
 let g:tern_map_keys=1
@@ -531,9 +447,6 @@ let g:miniBufExplorerMoreThanOne = 0
 let g:miniBufExplCycleArround = 1
 let g:miniBufExplBRSplit = 0
 
-" Sparkup - remap to avoid conflict
-let g:sparkupNextMapping='<c-x>'
-
 " * * * * * * * * * * * * * * * * * * *
 " * LOOK AND FEEL                     *
 " * * * * * * * * * * * * * * * * * * *
@@ -543,13 +456,14 @@ set guioptions-=r
 set guioptions-=L
 
 " Make tabs, trailing whitespace, and non-breaking spaces visible
-" set listchars=tab:→\ ,eol:↵,trail:·,extends:↷,precedes:↶
-" set list
+set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶
+set list
 
 " highlight past 80 characters
-execute "set colorcolumn=" . join(range(81,335), ',')
+" execute "set colorcolumn=" . join(range(81,335), ',')
 
-" Thematic
+" Thematic settings, most will not apply in terminal, mostly helpful for
+" gvim/macvim
 let g:thematic#themes = {
 \ 'pencil_light_code'       :{ 'typeface': 'Meslo LG M DZ for Powerline',
 \                  'colorscheme': 'pencil',
@@ -570,10 +484,7 @@ let g:thematic#themes = {
 \ 'hybrid_dark'      :{ 'typeface': 'PragmataPro for Powerline',
 \                  'colorscheme': 'hybrid',
 \                  'background': 'dark',
-\                  'font-size': 12,
-\                  'transparency': 0,
 \                  'airline-theme': 'luna',
-\                  'linespace': 1,
 \                },
 \ 'solarized_dark'   :{ 'typeface': 'PragmataPro for Powerline',
 \                  'colorscheme': 'solarized',
@@ -591,11 +502,9 @@ let g:thematic#themes = {
 \                  'airline-theme': 'solarized',
 \                  'linespace': 1,
 \                },
-\ 'matrix'      :{ 'colorscheme': 'base16-greenscreen',
+\ 'railscasts'      :{ 'colorscheme': 'base16-railscasts',
 \                  'background': 'dark',
-\                  'typeface': 'Meyrin',
-\                  'linespace': 8,
-\                  'font-size': 14,
+\                  'airline-theme': 'luna',
 \                },
 \ 'pencil_dark' :{ 'colorscheme': 'pencil',
 \                  'background': 'dark',
@@ -618,17 +527,12 @@ let g:thematic#themes = {
 \                },
 \ }
 
-let g:thematic#theme_name = 'solarized_dark'
-
-" Thematic mappings
-nnoremap <Leader>h :Thematic solarized_dark<CR>
-nnoremap <Leader>l :Thematic pencil_lite_prose<CR>
+let g:thematic#theme_name = 'railscasts'
 
 " Cursor shows matching ) and }
 set showmatch
 set laststatus=2
 set encoding=utf-8
-set t_Co=256
 
 " Set off the other paren
 highlight MatchParen ctermbg=4
@@ -638,5 +542,6 @@ set noerrorbells visualbell t_vb=
 set tm=500
 
 " highlight current line and column
+" set cursorline
 
 syntax on
