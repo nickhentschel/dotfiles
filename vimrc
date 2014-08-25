@@ -431,6 +431,7 @@ set statusline+=%*
 nnoremap <Leader>e <Esc>:Errors<CR>
 
 " Vim Airline
+let g:airline_theme = "luna"
 let g:airline_powerline_fonts = 0
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
@@ -462,72 +463,24 @@ set list
 " highlight past 80 characters
 " execute "set colorcolumn=" . join(range(81,335), ',')
 
-" Thematic settings, most will not apply in terminal, mostly helpful for
-" gvim/macvim
-let g:thematic#themes = {
-\ 'pencil_light_code'       :{ 'typeface': 'Meslo LG M DZ for Powerline',
-\                  'colorscheme': 'pencil',
-\                  'background': 'light',
-\                  'font-size': 12,
-\                  'transparency': 0,
-\                  'airline-theme': 'sol',
-\                  'linespace': 1,
-\                },
-\ 'pencil_dark_code'       :{ 'typeface': 'Meslo LG M DZ for Powerline',
-\                  'colorscheme': 'pencil',
-\                  'background': 'dark',
-\                  'font-size': 12,
-\                  'transparency': 0,
-\                  'airline-theme': 'sol',
-\                  'linespace': 1,
-\                },
-\ 'hybrid_dark'      :{ 'typeface': 'PragmataPro for Powerline',
-\                  'colorscheme': 'hybrid',
-\                  'background': 'dark',
-\                  'airline-theme': 'luna',
-\                },
-\ 'solarized_dark'   :{ 'typeface': 'PragmataPro for Powerline',
-\                  'colorscheme': 'solarized',
-\                  'background': 'dark',
-\                  'font-size': 12,
-\                  'transparency': 0,
-\                  'airline-theme': 'solarized',
-\                  'linespace': 1,
-\                },
-\ 'solarized_light'   :{ 'typeface': 'PragmataPro for Powerline',
-\                  'colorscheme': 'solarized',
-\                  'background': 'light',
-\                  'font-size': 12,
-\                  'transparency': 0,
-\                  'airline-theme': 'solarized',
-\                  'linespace': 1,
-\                },
-\ 'railscasts'      :{ 'colorscheme': 'base16-railscasts',
-\                  'background': 'dark',
-\                  'airline-theme': 'luna',
-\                },
-\ 'pencil_dark' :{ 'colorscheme': 'pencil',
-\                  'background': 'dark',
-\                  'ruler': 1,
-\                  'laststatus': 0,
-\                  'typeface': 'Cousine',
-\                  'font-size': 14,
-\                  'linespace': 10,
-\                  'columns': 120,
-\                },
-\ 'pencil_lite_prose' :{ 'colorscheme': 'pencil',
-\                  'background': 'light',
-\                  'laststatus': 0,
-\                  'ruler': 1,
-\                  'typeface': 'Courier Prime',
-\                  'sign-column-color-fix': 1,
-\                  'font-size': 14,
-\                  'linespace': 10,
-\                  'columns': 120,
-\                },
-\ }
+set background=dark
+" colorscheme base16-railscasts
+colorscheme base16-railscasts
 
-let g:thematic#theme_name = 'railscasts'
+" highlight clear SignColumn
+" highlight VertSplit    ctermbg=236
+" highlight ColorColumn  ctermbg=237
+" highlight LineNr       ctermbg=236 ctermfg=240
+" highlight CursorLineNr ctermbg=236 ctermfg=240
+" highlight CursorLine   ctermbg=236
+" highlight StatusLineNC ctermbg=238 ctermfg=0
+" highlight StatusLine   ctermbg=240 ctermfg=12
+" highlight IncSearch    ctermbg=3   ctermfg=1
+" highlight Search       ctermbg=1   ctermfg=3
+" highlight Visual       ctermbg=3   ctermfg=0
+" highlight Pmenu        ctermbg=240 ctermfg=12
+" highlight PmenuSel     ctermbg=3   ctermfg=1
+" highlight SpellBad     ctermbg=0   ctermfg=1
 
 " Cursor shows matching ) and }
 set showmatch
