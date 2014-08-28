@@ -46,20 +46,20 @@ slate.bindAll({
 
     // Push Bindings
     // NOTE: some of these may *not* work if you have not removed the expose/spaces/mission control bindings
-    'right:ctrl;shift' : S.op('push', { 'direction' : 'right', 'style' : 'bar-resize:screenSizeX/2' }),
-    'left:ctrl;shift' : S.op('push', { 'direction' : 'left', 'style' : 'bar-resize:screenSizeX/2' }),
-    'up:ctrl;shift' : S.op('push', { 'direction' : 'up', 'style' : 'bar-resize:screenSizeY' }),
-    'down:ctrl;shift' : S.op('push', { 'direction' : 'down', 'style' : 'bar-resize:screenSizeY/2' }),
+    'd:ctrl;shift' : S.op('push', { 'direction' : 'right', 'style' : 'bar-resize:screenSizeX/2' }),
+    'a:ctrl;shift' : S.op('push', { 'direction' : 'left', 'style' : 'bar-resize:screenSizeX/2' }),
+    'w:ctrl;shift' : S.op('push', { 'direction' : 'up', 'style' : 'bar-resize:screenSizeY' }),
+    's:ctrl;shift' : S.op('push', { 'direction' : 'down', 'style' : 'bar-resize:screenSizeY/2' }),
 
     // Nudge Bindings
     // NOTE: some of these may *not* work if you have not removed the expose/spaces/mission control bindings
-    'right:ctrl;alt' : S.op('nudge', { 'x' : '+10%', 'y' : '+0' }),
-    'left:ctrl;alt' : S.op('nudge', { 'x' : '-10%', 'y' : '+0' }),
-    'up:ctrl;alt' : S.op('nudge', { 'x' : '+0', 'y' : '-10%' }),
-    'down:ctrl;alt' : S.op('nudge', { 'x' : '+0', 'y' : '+10%' }),
+    'd:ctrl;alt' : S.op('nudge', { 'x' : '+10%', 'y' : '+0' }),
+    'a:ctrl;alt' : S.op('nudge', { 'x' : '-10%', 'y' : '+0' }),
+    'w:ctrl;alt' : S.op('nudge', { 'x' : '+0', 'y' : '-10%' }),
+    's:ctrl;alt' : S.op('nudge', { 'x' : '+0', 'y' : '+10%' }),
 
     // Throw Bindings
     // NOTE: some of these may *not* work if you have not removed the expose/spaces/mission control bindings
-    'right:ctrl;alt;cmd' : S.op('throw', { 'screen' : 'right' }),
-    'left:ctrl;alt;cmd' : S.op('throw', { 'screen' : 'left' })
+    'd:ctrl;alt;cmd' : S.op('throw', { 'screen' : 'right' }),
+    'a:ctrl;alt;cmd' : S.op('throw', { 'screen' : 'left' })
 });

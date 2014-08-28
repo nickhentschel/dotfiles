@@ -76,6 +76,8 @@ augroup END
 " * VIM SETTINGS                      *
 " * * * * * * * * * * * * * * * * * * *
 
+set ofu=syntaxcomplete#Complete
+
 " set 'hybrid' line number
 set relativenumber
 " set number
@@ -85,7 +87,7 @@ set tags=tags;/
 
 " Better screen redraw
 set ttyfast
-" set lazyredraw
+set lazyredraw
 
 " More natural splitting
 set splitbelow
@@ -193,6 +195,17 @@ if v:version >= 700
   set completeopt=menuone,menu
 endif
 
+" set autocompletion when CTRL-P or CTRL-N are used.
+" It is also used for whole-line
+" . ... scan the current buffer
+" b ... scan other loaded buffers that are in the buffer list
+" w ... buffers from other windows
+" u ... scan unloaded buffers that are in the buffer list
+" U ... scan buffers that are not in the buffer list
+" ] ... tag completion
+" i ... scan current and included files
+" set complete=i,.,b,w,u,U,]
+
 " * * * * * * * * * * * * * * * * * * *
 " * MAPPINGS                          *
 " * * * * * * * * * * * * * * * * * * *
@@ -288,6 +301,7 @@ Bundle 'bling/vim-airline'
 Bundle 'tpope/vim-fugitive'
 Bundle 'LaTeX-Box-Team/LaTeX-Box'
 Bundle 'marijnh/tern_for_vim'
+Bundle 'vim-ruby/vim-ruby'
 " Bundle 'klen/python-mode'
 Bundle 'reedes/vim-pencil'
 Bundle 'reedes/vim-thematic'
@@ -301,8 +315,8 @@ Bundle 'valloric/MatchTagAlways'
 Bundle 'kris89/vim-multiple-cursors'
 Bundle 'osyo-manga/vim-over'
 Bundle 'christoomey/vim-tmux-navigator'
-Bundle 'xolox/vim-misc'
-Bundle 'xolox/vim-notes'
+Bundle 'tpope/vim-endwise'
+Bundle 'craigemery/vim-autotag'
 
 " Must sym-link xml.vim in ftplugin directory for completions
 Bundle 'sukima/xmledit'
@@ -314,6 +328,7 @@ Bundle 'w0ng/vim-hybrid'
 Bundle 'reedes/vim-colors-pencil'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+Bundle 'morhetz/gruvbox'
 
 " syntax related bundles
 Bundle 'concise/vim-html5-fix'
@@ -388,7 +403,7 @@ nnoremap <silent> <leader>pp :ShiftPencil<cr>
 
 " NeoComplete
 let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#max_list = 10
+let g:neocomplete#max_list = 15
 let g:neocomplete#enable_refresh_always = 1
 let g:neocomplete#sources#buffer#cache_limit_size = 10000
 let g:neocomplete#data_directory = $HOME.'/.vim/cache/noecompl'
@@ -402,7 +417,7 @@ inoremap <expr><Space> pumvisible() ? neocomplete#smart_close_popup().
                        \ "\<Space>" : "\<Space>"
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-" inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 
 " Tern.js
 let g:tern_map_keys=1
@@ -423,6 +438,7 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_javascript_checkers = ['jsl']
 let g:syntastic_html_checkers = ['tidy']
 let g:syntastic_php_checkers=['php', 'phpcs']
+let g:syntastic_ruby_checkers=['mri']
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -431,10 +447,10 @@ set statusline+=%*
 nnoremap <Leader>e <Esc>:Errors<CR>
 
 " Vim Airline
-let g:airline_theme = "luna"
-let g:airline_powerline_fonts = 0
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
+let g:airline_theme = "powerlineish"
+let g:airline_powerline_fonts = 1
+" let g:airline_left_sep = ''
+" let g:airline_right_sep = ''
 let g:airline#extensions#bufferline#overwrite_variables = 0
 let g:airline#extensions#bufferline#enabled = 0
 let g:airline#extensions#syntastic#enabled = 1
@@ -465,22 +481,7 @@ set list
 
 set background=dark
 " colorscheme base16-railscasts
-colorscheme base16-railscasts
-
-" highlight clear SignColumn
-" highlight VertSplit    ctermbg=236
-" highlight ColorColumn  ctermbg=237
-" highlight LineNr       ctermbg=236 ctermfg=240
-" highlight CursorLineNr ctermbg=236 ctermfg=240
-" highlight CursorLine   ctermbg=236
-" highlight StatusLineNC ctermbg=238 ctermfg=0
-" highlight StatusLine   ctermbg=240 ctermfg=12
-" highlight IncSearch    ctermbg=3   ctermfg=1
-" highlight Search       ctermbg=1   ctermfg=3
-" highlight Visual       ctermbg=3   ctermfg=0
-" highlight Pmenu        ctermbg=240 ctermfg=12
-" highlight PmenuSel     ctermbg=3   ctermfg=1
-" highlight SpellBad     ctermbg=0   ctermfg=1
+colorscheme hybrid
 
 " Cursor shows matching ) and }
 set showmatch
