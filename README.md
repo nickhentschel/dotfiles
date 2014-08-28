@@ -18,3 +18,5 @@ Pull the repo, and run `rake install` for a full installation, or run `rake -T` 
 I have found that fonts look better on OS X with uniform font smoothing. That can be achieved easily with this command:
 
   defaults -currentHost write -globalDomain AppleFontSmoothing -int 1 
+
+Make sure to edit /etc/shells and add homebrew zsh installation directory /usr/local/bin/zsh
