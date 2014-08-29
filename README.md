@@ -20,3 +20,4 @@ I have found that fonts look better on OS X with uniform font smoothing. That ca
   defaults -currentHost write -globalDomain AppleFontSmoothing -int 1 
 
 Make sure to edit /etc/shells and add homebrew zsh installation directory /usr/local/bin/zsh
+Prereq: git, wget, ruby

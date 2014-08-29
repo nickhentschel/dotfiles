@@ -4,94 +4,151 @@
 # The early workings of a rakefile to install these dotfiles.
 # Loosely based on Zach Holman's rakefile. https://github.com/holman/dotfiles
 
+# USER_INSTALL_DIRECTORY = ENV['HOME']
+USER_INSTALL_DIRECTORY = '/Users/nhentschel/temp/test_home'
+DOTFILES_INSTALL_DIRECTORY = File.expand_path(File.dirname(__FILE__))
+BACKUP_DIR_PATH = File.join(USER_INSTALL_DIRECTORY, '.dotfiles_backup')
+
+# Colors are fun
+class String
+  def red;            "\033[31m#{self}\033[0m" end
+  def green;          "\033[32m#{self}\033[0m" end
+  def yellow;         "\033[33m#{self}\033[0m" end
+end
+
+# Utility function for displaying messages.
+def info(text)
+  STDOUT.puts text
+end
+
+# Utility function for displaying messages.
+def warning(text)
+  STDOUT.puts "Warning: #{text}".yellow
+end
+
+# Utility function for displaying error messages.
+def error(text)
+  STDERR.puts "Error: #{text}".red
+end
+
+def success(text)
+  STDOUT.puts "Success: #{text}".green
+end
+
+def command_exists?(command)
+  ENV['PATH'].split(':').any? do |directory|
+    File.exists?(File.join(directory, command))
+  end
+end
+
+# Will also return true if file is an existing directory
+def file_exists?(file)
+  File.exists?(File.join(USER_INSTALL_DIRECTORY, file))
+end
+
+def create_symlink(source, dest)
+  FileUtils.ln_s(File.join(DOTFILES_INSTALL_DIRECTORY, source), File.join(USER_INSTALL_DIRECTORY, dest))
+end
+
+def backup_file(file)
+  unless File.exists?(BACKUP_DIR_PATH)
+    Dir.mkdir(BACKUP_DIR_PATH)
+  end
+  if file_exists?(".#{file}")
+    File.rename(File.join(USER_INSTALL_DIRECTORY, ".#{file}"), File.join(BACKUP_DIR_PATH, ".#{file}"))
+  end
+end
+
 task :default do
   puts 'To install, run rake install. To see a list of options, run rake -T'
 end
 
-## TO DO: take in files to be ignored as parameters
-desc 'Perform a full installation to the current home directory'
-task :install => [:switch_to_zsh, :install_prezto_zsh, :install_vundle, :simple_install] do
-  puts 'Full installation complete'
-end
-
-desc 'Switch the user from whatever to ZSH'
+desc 'Switch shell to ZSH'
 task :switch_to_zsh do
+  warning('If using zsh installed from homebrew be sure to add path to /etc/shells before switching')
+  if !command_exists?('zsh')
+    error('zsh is not installed on this system or it could not be found in $PATH')
+    warning('Not switching to zsh')
+    exit
+  end
   if ENV['SHELL'] =~ /zsh/
-    puts 'Currently running ZSH. Good for you!'
+    info('Currently running ZSH. Good for you!')
   else
     print 'Would you like to change to ZSH? [ynq]'
     case $stdin.gets.chomp
     when 'y'
-      puts 'Changing shell to zsh'
-      system('chsh -s `which zsh`')
+      info('Changing shell to zsh. Enter password when prompted')
+      s = system('chsh -s `which zsh`')
+      if s
+        success('Vundle installed successfully')
+      end
     when 'q'
       exit
     else
-      puts 'Skipping ZSH change'
+      info('Skipping ZSH change')
     end
   end
 end
 
 desc 'Install Prezto zsh'
 task :install_prezto_zsh do
-  if File.exist?(File.join(ENV['HOME'], '.zprezto'))
-    puts 'prezto exists'
+  if file_exists?('.zprezto')
+    warning('Prezto already installed, skipping')
   else
     print 'Install prezto? [ynq]: '
     case $stdin.gets.chomp
     when 'y'
-      system("git clone --recursive https://github.com/sorin-ionescu/prezto.git #{File.join(ENV['HOME'], '.zprezto')}")
-      system("zsh #{File.join(ENV['HOME'], 'dotfiles/zprezto_install.sh')}")
-      # system("git clone https://github.com/robbyrussell/oh-my-zsh.git #{File.join(ENV['HOME'], '.oh-my-zsh')}")
+      create_symlink('prezto', '.zprezto')
+      prezto_files = Dir.entries(File.join(USER_INSTALL_DIRECTORY, '.zprezto/runcoms/')) - ['.', '..', 'README.md']
+      prezto_files.each do |file|
+        backup_file(file)
+        create_symlink(file, ".#{file}")
+      end
     when 'q'
       exit
     else
-      puts 'Skipping .zprezto'
+      warning("Skipping prezto")
     end
   end
 end
 
-desc 'Install vundle package manager for VIM'
+desc 'Install vundle package manager for VIM and install packages'
 task :install_vundle do
-  if File.exist?(File.join(ENV['HOME'], '.vim/bundle/vundle'))
-    puts 'vundle already installed'
+  if file_exists?('.vim/bundle/vundle')
+    warning('Vundle already installed, skipping')
   else
     print 'Install vundle? [ynq]: '
     case $stdin.gets.chomp
     when 'y'
-      if !File.directory?(File.join(ENV['HOME'], '.vim'))
-        FileUtils.mkdir(File.join(ENV['HOME'], '.vim'))
+      unless file_exists?('.vim')
+        FileUtils.mkdir(File.join(USER_INSTALL_DIRECTORY, '.vim'))
       end
-      system("git clone https://github.com/gmarik/vundle.git #{File.join(ENV['HOME'], '.vim/bundle/vundle')}")
-      system("vim +PluginInstall +qall")
+      g = system("git clone https://github.com/gmarik/vundle.git #{File.join(USER_INSTALL_DIRECTORY, '.vim/bundle/vundle')} && vim +PluginInstall +qall")
+      if g
+        success('Vundle installed successfully')
+      else
+        error('Error installing vundle')
+      end
     when 'q'
       exit
     else
-      puts 'Skipping Vundle'
+      warning('Skipping Vundle')
     end
   end
 end
 
-desc 'Simple install script, only backs up and links files'
-task :simple_install do
-  files = Dir.entries(File.join(ENV['HOME'], 'dotfiles')) - ['Rakefile', 'README.md', 'com.googlecode.iterm2.plist']
-  editedFiles = files.select { |file| !(file == '.' || file == '..' || file.chars.first == '.') }
-  backupOldFiles(editedFiles)
-  puts 'linking...'
-  editedFiles.each do |file|
-    FileUtils.ln_s(File.join(ENV['HOME'], "dotfiles/#{file}"), File.join(ENV['HOME'], ".#{file}"))
-  end
-  puts "\nDotfile copying complete!"
-end
-
-def backupOldFiles(newFiles)
-  puts 'Backing up old files...'
-  if !File.directory?(File.join(ENV['HOME'], 'dotfiles_old'))
-    FileUtils.mkdir(File.join(ENV['HOME'], 'dotfiles_old'))
-  end
-  newFiles.each do |file|
-    if File.exists?(File.join(ENV['HOME'], ".#{file}"))
-      FileUtils.mv(File.join(ENV['HOME'], ".#{file}"), File.join(ENV['HOME'], 'dotfiles_old'))
+desc 'Symlink remaining dotfiles'
+task :symlink_dotfiles do
+  Dir.glob("#{DOTFILES_INSTALL_DIRECTORY}/*").each do |file|
+    file = File.basename(file)
+    unless file == 'prezto' || file == 'README.md' || file == 'Rakefile'
+      backup_file(file)
+      create_symlink(file, ".#{file}")
     end
   end
+end
+
+desc 'Perform a full installation'
+task :install => [:switch_to_zsh, :install_vundle, :install_prezto_zsh, :symlink_dotfiles] do
+  puts 'Full installation complete'
 end
