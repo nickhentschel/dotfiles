@@ -2,7 +2,7 @@
 # Much refactoring to come.
 
 # The early workings of a rakefile to install these dotfiles.
-# Loosely based on Zach Holman's rakefile. https://github.com/holman/dotfiles
+# TODO: Add a clean task for uninstall, add task to enable submodules
 
 # USER_INSTALL_DIRECTORY = ENV['HOME']
 USER_INSTALL_DIRECTORY = '/Users/nhentschel/temp/test_home'
