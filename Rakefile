@@ -4,8 +4,7 @@
 # The early workings of a rakefile to install these dotfiles.
 # TODO: Add a clean task for uninstall, add task to enable submodules
 
-# USER_INSTALL_DIRECTORY = ENV['HOME']
-USER_INSTALL_DIRECTORY = '/Users/nhentschel/temp/test_home'
+USER_INSTALL_DIRECTORY = ENV['HOME']
 DOTFILES_INSTALL_DIRECTORY = File.expand_path(File.dirname(__FILE__))
 BACKUP_DIR_PATH = File.join(USER_INSTALL_DIRECTORY, '.dotfiles_backup')
 
