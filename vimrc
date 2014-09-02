@@ -31,7 +31,6 @@ function! s:editProse()
     setlocal spell
     setlocal nonumber
     setlocal guicursor+=a:blinkon0
-    setlocal foldcolumn=12
     setlocal textwidth=80
 endfunction
 
