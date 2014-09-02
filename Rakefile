@@ -45,10 +45,6 @@ def file_exists?(file)
   File.exists?(File.join(USER_INSTALL_DIRECTORY, file))
 end
 
-def create_symlink(source, dest)
-  FileUtils.ln_s(File.join(DOTFILES_INSTALL_DIRECTORY, source), File.join(USER_INSTALL_DIRECTORY, dest))
-end
-
 def backup_file(file)
   unless File.exists?(BACKUP_DIR_PATH)
     Dir.mkdir(BACKUP_DIR_PATH)
@@ -97,11 +93,11 @@ task :install_prezto_zsh do
     print 'Install prezto? [ynq]: '
     case $stdin.gets.chomp
     when 'y'
-      create_symlink('prezto', '.zprezto')
+      FileUtils.ln_s(File.join(DOTFILES_INSTALL_DIRECTORY, 'prezto'), File.join(USER_INSTALL_DIRECTORY, '.zprezto'))
       prezto_files = Dir.entries(File.join(USER_INSTALL_DIRECTORY, '.zprezto/runcoms/')) - ['.', '..', 'README.md']
       prezto_files.each do |file|
         backup_file(file)
-        create_symlink(file, ".#{file}")
+        FileUtils.ln_s(File.join(USER_INSTALL_DIRECTORY, File.join('.zprezto/runcoms/', file)), File.join(USER_INSTALL_DIRECTORY, ".#{file}"))
       end
     when 'q'
       exit
@@ -142,7 +138,7 @@ task :symlink_dotfiles do
     file = File.basename(file)
     unless file == 'prezto' || file == 'README.md' || file == 'Rakefile'
       backup_file(file)
-      create_symlink(file, ".#{file}")
+      FileUtils.ln_s(File.join(DOTFILES_INSTALL_DIRECTORY, file), File.join(USER_INSTALL_DIRECTORY, ".#{file}"))
     end
   end
 end
