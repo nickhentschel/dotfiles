@@ -194,17 +194,6 @@ if v:version >= 700
   set completeopt=menuone,menu
 endif
 
-" set autocompletion when CTRL-P or CTRL-N are used.
-" It is also used for whole-line
-" . ... scan the current buffer
-" b ... scan other loaded buffers that are in the buffer list
-" w ... buffers from other windows
-" u ... scan unloaded buffers that are in the buffer list
-" U ... scan buffers that are not in the buffer list
-" ] ... tag completion
-" i ... scan current and included files
-" set complete=i,.,b,w,u,U,]
-
 " * * * * * * * * * * * * * * * * * * *
 " * MAPPINGS                          *
 " * * * * * * * * * * * * * * * * * * *
@@ -344,9 +333,6 @@ Bundle 'Keithbsmiley/tmux.vim'
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
 
-" VIM Notes
-let g:notes_directories = ['~/Dropbox/notes']
-
 " Markdown
 let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript',
     \ 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'sql']
@@ -476,10 +462,9 @@ set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶
 set list
 
 " highlight past 80 characters
-" execute "set colorcolumn=" . join(range(81,335), ',')
+execute "set colorcolumn=" . join(range(81,335), ',')
 
 set background=dark
-" colorscheme base16-railscasts
 colorscheme hybrid
 
 " Cursor shows matching ) and }
@@ -493,8 +478,5 @@ highlight MatchParen ctermbg=4
 " disable sound on errors
 set noerrorbells visualbell t_vb=
 set tm=500
-
-" highlight current line and column
-" set cursorline
 
 syntax on
