@@ -15,17 +15,14 @@ class String
   def yellow;         "\033[33m#{self}\033[0m" end
 end
 
-# Utility function for displaying messages.
 def info(text)
   STDOUT.puts text
 end
 
-# Utility function for displaying messages.
 def warning(text)
   STDOUT.puts "Warning: #{text}".yellow
 end
 
-# Utility function for displaying error messages.
 def error(text)
   STDERR.puts "Error: #{text}".red
 end
@@ -40,7 +37,6 @@ def command_exists?(command)
   end
 end
 
-# Will also return true if file is an existing directory
 def file_exists?(file)
   File.exists?(File.join(USER_INSTALL_DIRECTORY, file))
 end
@@ -118,12 +114,7 @@ task :install_vundle do
       unless file_exists?('.vim')
         FileUtils.mkdir(File.join(USER_INSTALL_DIRECTORY, '.vim'))
       end
-      g = system("git clone https://github.com/gmarik/vundle.git #{File.join(USER_INSTALL_DIRECTORY, '.vim/bundle/vundle')} && vim +PluginInstall +qall")
-      if g
-        success('Vundle installed successfully')
-      else
-        error('Error installing vundle')
-      end
+      system("git clone https://github.com/gmarik/vundle.git #{File.join(USER_INSTALL_DIRECTORY, '.vim/bundle/vundle')} && vim +PluginInstall +qall")
     when 'q'
       exit
     else
@@ -145,5 +136,5 @@ end
 
 desc 'Perform a full installation'
 task :install => [:switch_to_zsh, :install_vundle, :install_prezto_zsh, :symlink_dotfiles] do
-  puts 'Full installation complete'
+  success('Full install complete')
 end

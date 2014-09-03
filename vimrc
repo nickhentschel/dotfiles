@@ -50,7 +50,6 @@ endfunction
 
 " Enable omnicomplete
 autocmd FileType javascript     setlocal omnifunc=tern#Complete
-autocmd FileType coffee         setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html,markdown  setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css            setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType xml            setlocal omnifunc=xmlcomplete#CompleteTags
@@ -219,10 +218,6 @@ nnoremap Y y$
 
 " Easy redo
 nnoremap U <c-r>
-
-" Call hlnext function on N or n
-" nnoremap <silent> n n:call HLNext(0.4)<cr>
-" nnoremap <silent> N N:call HLNext(0.4)<cr>
 
 " Scroll viewport 3 lines instead of 1
 nnoremap <C-e> 3<C-e>
