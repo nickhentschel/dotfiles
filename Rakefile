@@ -10,9 +10,9 @@ BACKUP_DIR_PATH = File.join(USER_INSTALL_DIRECTORY, '.dotfiles_backup')
 
 # Colors are fun
 class String
-  def red;            "\033[31m#{self}\033[0m" end
-  def green;          "\033[32m#{self}\033[0m" end
-  def yellow;         "\033[33m#{self}\033[0m" end
+  def red;    "\033[31m#{self}\033[0m" end
+  def green;  "\033[32m#{self}\033[0m" end
+  def yellow; "\033[33m#{self}\033[0m" end
 end
 
 def info(text)
@@ -69,10 +69,7 @@ task :switch_to_zsh do
     case $stdin.gets.chomp
     when 'y'
       info('Changing shell to zsh. Enter password when prompted')
-      s = system('chsh -s `which zsh`')
-      if s
-        success('Vundle installed successfully')
-      end
+      system('chsh -s `which zsh`')
     when 'q'
       exit
     else
