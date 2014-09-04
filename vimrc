@@ -45,34 +45,13 @@ function! Multiple_cursors_after()
 endfunction
 
 " * * * * * * * * * * * * * * * * * * *
-" * AUTO COMMANDS                     *
-" * * * * * * * * * * * * * * * * * * *
-
-" Enable omnicomplete
-autocmd FileType javascript     setlocal omnifunc=tern#Complete
-autocmd FileType html,markdown  setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css            setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType xml            setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType php            setlocal omnifunc=phpcomplete#CompletePHP
-autocmd FileType c              setlocal omnifunc=ccomplete#Complete
-autocmd FileType ruby           setlocal omnifunc=rubycomplete#Complete
-
-" cd to current directory automatically
-au BufEnter * silent! lcd %:p:h
-
-" Syntax specific stuff
-au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set filetype=markdown
-au BufNewFile,BufRead *.ss set filetype=html
-au Filetype html,css,scss,sass,ruby,javascript setlocal ts=2 sts=2 sw=2
-
-augroup pencil
-    autocmd!
-    autocmd FileType markdown,text call s:editProse()|call pencil#init()|NeoCompleteLock
-augroup END
-
-" * * * * * * * * * * * * * * * * * * *
 " * VIM SETTINGS                      *
 " * * * * * * * * * * * * * * * * * * *
+
+if executable('ag')
+    " Use Ag over Grep
+    set grepprg=ag\ --nogroup\ --nocolor
+endif
 
 set ofu=syntaxcomplete#Complete
 
@@ -167,6 +146,10 @@ set backspace=indent,eol,start
 set ignorecase
 
 " And so is Artificial Intellegence!
+" Call hlnext function on N or n
+" nnoremap <silent> n n:call HLNext(0.4)<cr>
+" nnoremap <silent> N N:call HLNext(0.4)<cr>
+
 set smartcase
 
 " Incremental searching is sexy
@@ -284,8 +267,6 @@ Bundle 'bling/vim-airline'
 Bundle 'tpope/vim-fugitive'
 Bundle 'LaTeX-Box-Team/LaTeX-Box'
 Bundle 'marijnh/tern_for_vim'
-Bundle 'vim-ruby/vim-ruby'
-" Bundle 'klen/python-mode'
 Bundle 'reedes/vim-pencil'
 Bundle 'reedes/vim-thematic'
 Bundle 'Raimondi/delimitMate'
@@ -300,6 +281,11 @@ Bundle 'osyo-manga/vim-over'
 Bundle 'christoomey/vim-tmux-navigator'
 Bundle 'tpope/vim-endwise'
 Bundle 'craigemery/vim-autotag'
+Bundle 'vim-ruby/vim-ruby'
+Bundle 'tpope/vim-rails'
+Plugin 'honza/vim-snippets'
+Bundle 'Shougo/neosnippet'
+Bundle 'Shougo/neosnippet-snippets'
 
 " Must sym-link xml.vim in ftplugin directory for completions
 Bundle 'sukima/xmledit'
@@ -308,16 +294,12 @@ Bundle 'sukima/xmledit'
 Bundle 'djjcast/mirodark'
 Bundle 'chriskempson/base16-vim'
 Bundle 'w0ng/vim-hybrid'
-Bundle 'reedes/vim-colors-pencil'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
-Bundle 'morhetz/gruvbox'
 
 " syntax related bundles
-Bundle 'concise/vim-html5-fix'
+Bundle 'othree/html5.vim'
+Bundle 'pangloss/vim-javascript'
 Bundle 'nono/vim-handlebars'
 Bundle 'elzr/vim-json'
-Bundle 'jelera/vim-javascript-syntax'
 Bundle 'tpope/vim-markdown'
 Bundle 'chase/vim-ansible-yaml'
 Bundle 'evanmiller/nginx-vim-syntax'
@@ -339,29 +321,33 @@ let g:delimitMate_expand_space = 0
 let g:delimitMate_matchpairs = "(:),[:],{:}"
 
 " ctrlp
-let g:ctrlp_custom_ignore='\.git$\|\.hg$\|\.svn$'
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:10'
 let g:ctrlp_switch_buffer = 'Et'
-let g:ctrlp_use_caching = 1
 let g:ctrlp_show_hidden = 1
 " Open new files in current window
 let g:ctrlp_open_new_file = 'r'
 let g:ctrlp_extensions = ['tag', 'buffertag', 'dir',
                       \ 'undo', 'line', 'yankring']
-if !has('python')
-    echo 'In order to use pymatcher plugin, you need +python compiled vim'
+if executable('ag')
+    " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+    " ag is fast enough that CtrlP doesn't need to cache
+    let g:ctrlp_use_caching = 0
 else
-    let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
-endif
-let g:ctrlp_lazy_update = 350
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_max_files = 5000
-if executable("ag")
-    set grepprg=ag\ --nogroup\ --nocolor
-    let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --ignore ''.git'' --ignore ''.svn'' --ignore ''.DS_Store'' --ignore ''node_modules'' --hidden -g ""'
+    let g:ctrlp_custom_ignore = {
+          \ 'dir': '\v[\/](\.git|\.hg|\.svn|CVS|tmp|Library|Applications|Music|[^\/]*-store)$',
+          \ 'file': '\v\.(exe|so|dll)$',
+          \ }
+    let g:ctrlp_user_command = {
+          \ 'types' : {
+          \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+          \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+          \ }
+          \ }
 endif
 
 " ctrlp mappings
@@ -383,13 +369,30 @@ nnoremap <silent> <leader>pp :ShiftPencil<cr>
 
 " NeoComplete
 let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#force_overwrite_completefunc = 1
+let g:neocomplete#data_directory = $HOME.'/.vim/cache/noecompl'
+let g:neocomplete#auto_completion_start_length = 2
+let g:neocomplete#manual_completion_start_length = 0
+let g:neocomplete#enable_auto_close_preview = 1
 let g:neocomplete#max_list = 15
 let g:neocomplete#enable_refresh_always = 1
-let g:neocomplete#sources#buffer#cache_limit_size = 10000
-let g:neocomplete#data_directory = $HOME.'/.vim/cache/noecompl'
 let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#enable_auto_select = 0
-let g:neocomplete#sources#syntax#min_keyword_length = 1
+
+let g:neocomplete#keyword_patterns = {}
+let g:neocomplete#keyword_patterns._  = '\h\w*'
+
+let g:neocomplete#sources#omni#input_patterns = {}
+let g:neocomplete#sources#omni#input_patterns.php  = '[^. \t]->\h\w*\|\h\w*::'
+
+let g:neocomplete#force_omni_input_patterns = {}
+let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::\w*'
+
+let g:neocomplete#same_filetypes = {}
+let g:neocomplete#same_filetypes.gitconfig = '_'
+let g:neocomplete#same_filetypes._ = '_'
+
+" let g:neocomplete#enable_auto_select = 0
+" let g:neocomplete#sources#syntax#min_keyword_length = 1
 " let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
 
 " NeoComplete mappings
@@ -398,6 +401,21 @@ inoremap <expr><Space> pumvisible() ? neocomplete#smart_close_popup().
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" NeoSnippet
+let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
+
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+          \ "\<Plug>(neosnippet_expand_or_jump)"
+          \: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+      \ "\<Plug>(neosnippet_expand_or_jump)"
+      \: "\<TAB>"
 
 " Tern.js
 let g:tern_map_keys=1
@@ -415,10 +433,15 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_echo_current_error = 0
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_auto_loc_list = 1
+let g:syntastic_error_symbol = '✗✗'
+let g:syntastic_warning_symbol = '⚠⚠'
+let g:syntastic_style_error_symbol = '✗'
+let g:syntastic_style_warning_symbol = '⚠'
 let g:syntastic_javascript_checkers = ['jsl']
 let g:syntastic_html_checkers = ['tidy']
-let g:syntastic_php_checkers=['php', 'phpcs']
-let g:syntastic_ruby_checkers=['mri']
+let g:syntastic_php_checkers = ['php', 'phpcs']
+let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+let g:syntastic_ruby_rubocop_args = '--display-cop-names'
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -443,6 +466,38 @@ let g:miniBufExplAutoStart = 1
 let g:miniBufExplorerMoreThanOne = 0
 let g:miniBufExplCycleArround = 1
 let g:miniBufExplBRSplit = 0
+
+" * * * * * * * * * * * * * * * * * * *
+" * AUTO COMMANDS                     *
+" * * * * * * * * * * * * * * * * * * *
+
+" Enable omnicomplete
+autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
+autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
+
+" cd to current directory automatically
+au BufEnter * silent! lcd %:p:h
+
+" Syntax specific stuff
+au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set filetype=markdown
+au BufNewFile,BufRead *.ss set filetype=html
+au Filetype html,css,scss,sass,ruby,javascript setlocal ts=2 sts=2 sw=2
+au FileType help nnoremap <silent><buffer> q :q<CR>
+autocmd FileType cucumber let b:dispatch = 'cucumber %' | imap <buffer><expr> <Tab> pumvisible() ? "\<C-N>" : (CucumberComplete(1,'') >= 0 ? "\<C-X>\<C-O>" : (getline('.') =~ '\S' ? ' ' : "\<C-I>"))
+autocmd FileType ruby
+          \ let b:start = executable('pry') ? 'pry -r "%:p"' : 'irb -r "%:p"' |
+          \ if expand('%') =~# '_test\.rb$' |
+          \   let b:dispatch = 'testrb %' |
+          \ elseif expand('%') =~# '_spec\.rb$' |
+          \   let b:dispatch = 'rspec %' |
+          \ elseif !exists('b:dispatch') |
+          \   let b:dispatch = 'ruby -wc %' |
+          \ endif
+
+augroup pencil
+    autocmd!
+    autocmd FileType markdown,text call s:editProse()|call pencil#init()|NeoCompleteLock
+augroup END
 
 " * * * * * * * * * * * * * * * * * * *
 " * LOOK AND FEEL                     *

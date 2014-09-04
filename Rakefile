@@ -1,6 +1,3 @@
-# This is my first go at Ruby, so things may be more explicit than they should be.
-# Much refactoring to come.
-
 # The early workings of a rakefile to install these dotfiles.
 # TODO: Add a clean task for uninstall, add task to enable submodules
 
@@ -10,9 +7,17 @@ BACKUP_DIR_PATH = File.join(USER_INSTALL_DIRECTORY, '.dotfiles_backup')
 
 # Colors are fun
 class String
-  def red;    "\033[31m#{self}\033[0m" end
-  def green;  "\033[32m#{self}\033[0m" end
-  def yellow; "\033[33m#{self}\033[0m" end
+  def red
+    "\033[31m#{self}\033[0m"
+  end
+
+  def green
+    "\033[32m#{self}\033[0m"
+  end
+
+  def yellow
+    "\033[33m#{self}\033[0m"
+  end
 end
 
 def info(text)
@@ -33,32 +38,35 @@ end
 
 def command_exists?(command)
   ENV['PATH'].split(':').any? do |directory|
-    File.exists?(File.join(directory, command))
+    File.exist?(File.join(directory, command))
   end
 end
 
 def file_exists?(file)
-  File.exists?(File.join(USER_INSTALL_DIRECTORY, file))
+  File.exist?(File.join(USER_INSTALL_DIRECTORY, file))
 end
 
 def backup_file(file)
-  unless File.exists?(BACKUP_DIR_PATH)
-    Dir.mkdir(BACKUP_DIR_PATH)
-  end
-  if file_exists?(".#{file}")
-    File.rename(File.join(USER_INSTALL_DIRECTORY, ".#{file}"), File.join(BACKUP_DIR_PATH, ".#{file}"))
-  end
+  Dir.mkdir(BACKUP_DIR_PATH) unless File.exist?(BACKUP_DIR_PATH)
+  File.rename(
+    File.join(USER_INSTALL_DIRECTORY, ".#{file}"),
+    File.join(BACKUP_DIR_PATH, ".#{file}")
+  ) if file_exist?(".#{file}")
 end
-
 task :default do
   puts 'To install, run rake install. To see a list of options, run rake -T'
 end
 
 desc 'Switch shell to ZSH'
 task :switch_to_zsh do
-  warning('If using zsh installed from homebrew be sure to add path to /etc/shells before switching')
-  if !command_exists?('zsh')
-    error('zsh is not installed on this system or it could not be found in $PATH')
+  warning(
+    'If using zsh installed from homebrew be sure to add path to /etc/shells
+    before switching'
+  )
+  unless command_exists?('zsh')
+    error(
+      'zsh is not installed on this system or it could not be found in $PATH'
+    )
     warning('Not switching to zsh')
     exit
   end
@@ -86,16 +94,27 @@ task :install_prezto_zsh do
     print 'Install prezto? [ynq]: '
     case $stdin.gets.chomp
     when 'y'
-      FileUtils.ln_s(File.join(DOTFILES_INSTALL_DIRECTORY, 'prezto'), File.join(USER_INSTALL_DIRECTORY, '.zprezto'))
-      prezto_files = Dir.entries(File.join(USER_INSTALL_DIRECTORY, '.zprezto/runcoms/')) - ['.', '..', 'README.md']
+      FileUtils.ln_s(
+        File.join(DOTFILES_INSTALL_DIRECTORY, 'prezto'),
+        File.join(USER_INSTALL_DIRECTORY, '.zprezto')
+      )
+      prezto_files = Dir.entries(
+                       File.join(USER_INSTALL_DIRECTORY, '.zprezto/runcoms/')
+                     ) - ['.', '..', 'README.md']
       prezto_files.each do |file|
         backup_file(file)
-        FileUtils.ln_s(File.join(USER_INSTALL_DIRECTORY, File.join('.zprezto/runcoms/', file)), File.join(USER_INSTALL_DIRECTORY, ".#{file}"))
+        FileUtils.ln_s(
+          File.join(
+            USER_INSTALL_DIRECTORY,
+            File.join('.zprezto/runcoms/', file)
+          ),
+          File.join(USER_INSTALL_DIRECTORY, ".#{file}")
+        )
       end
     when 'q'
       exit
     else
-      warning("Skipping prezto")
+      warning('Skipping prezto')
     end
   end
 end
@@ -111,7 +130,10 @@ task :install_vundle do
       unless file_exists?('.vim')
         FileUtils.mkdir(File.join(USER_INSTALL_DIRECTORY, '.vim'))
       end
-      system("git clone https://github.com/gmarik/vundle.git #{File.join(USER_INSTALL_DIRECTORY, '.vim/bundle/vundle')} && vim +PluginInstall +qall")
+      vundle_command = "git clone https://github.com/gmarik/vundle.git
+        #{File.join(USER_INSTALL_DIRECTORY, '.vim/bundle/vundle')}
+        && vim +PluginInstall +qall"
+      system(vundle_command)
     when 'q'
       exit
     else
@@ -124,14 +146,18 @@ desc 'Symlink remaining dotfiles'
 task :symlink_dotfiles do
   Dir.glob("#{DOTFILES_INSTALL_DIRECTORY}/*").each do |file|
     file = File.basename(file)
-    unless file == 'prezto' || file == 'README.md' || file == 'Rakefile'
-      backup_file(file)
-      FileUtils.ln_s(File.join(DOTFILES_INSTALL_DIRECTORY, file), File.join(USER_INSTALL_DIRECTORY, ".#{file}"))
-    end
+    next unless file == 'prezto' || file == 'README.md' || file == 'Rakefile'
+    backup_file(file)
+    FileUtils.ln_s(
+      File.join(DOTFILES_INSTALL_DIRECTORY, file),
+      File.join(USER_INSTALL_DIRECTORY, ".#{file}")
+    )
   end
 end
 
 desc 'Perform a full installation'
-task :install => [:switch_to_zsh, :install_vundle, :install_prezto_zsh, :symlink_dotfiles] do
+task install: [
+  :switch_to_zsh, :install_vundle, :install_prezto_zsh, :symlink_dotfiles
+] do
   success('Full install complete')
 end
