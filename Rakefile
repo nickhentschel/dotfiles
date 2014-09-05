@@ -86,7 +86,7 @@ task :install_prezto_zsh do
       )
       prezto_files = Dir.entries(
                        File.join(USER_INSTALL_DIRECTORY, '.zprezto/runcoms/')
-                     ) - ['.', '..', 'README.md']
+                     ) - ['.', '..', 'README.md', 'osx']
       prezto_files.each do |file|
         backup_file(file)
         FileUtils.ln_s(
@@ -128,6 +128,24 @@ task :install_vundle do
   end
 end
 
+desc 'Run osx script if on a mac'
+task :run_osx do
+  os = system('uname -s')
+  if os == 'Darwin'
+    print 'Install vundle? [ynq]: '
+    case $stdin.gets.chomp
+    when 'y'
+      system("bash #{File.join(DOTFILES_INSTALL_DIRECTORY, 'osx')}")
+    when 'q'
+      exit
+    else
+      warning('Not installing osx')
+    end
+  else
+    error('Not on OS X, not running osx script')
+  end
+end
+
 desc 'Symlink remaining dotfiles'
 task :symlink_dotfiles do
   Dir.glob("#{DOTFILES_INSTALL_DIRECTORY}/*").each do |file|
@@ -144,7 +162,8 @@ end
 
 desc 'Perform a full installation'
 task install: [
-  :switch_to_zsh, :install_vundle, :install_prezto_zsh, :symlink_dotfiles
+  :switch_to_zsh, :install_vundle, :install_prezto_zsh, :run_osx,
+  :symlink_dotfiles
 ] do
   success('Full install complete')
 end
