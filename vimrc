@@ -60,7 +60,7 @@ set relativenumber
 " set number
 
 " Settings for ctags
-set tags=tags;/
+" set tags=tags;/
 
 " Better screen redraw
 set ttyfast
@@ -280,12 +280,12 @@ Bundle 'kris89/vim-multiple-cursors'
 Bundle 'osyo-manga/vim-over'
 Bundle 'christoomey/vim-tmux-navigator'
 Bundle 'tpope/vim-endwise'
-Bundle 'craigemery/vim-autotag'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'tpope/vim-rails'
 Plugin 'honza/vim-snippets'
 Bundle 'Shougo/neosnippet'
 Bundle 'Shougo/neosnippet-snippets'
+Bundle 'ludovicchabant/vim-gutentags'
 
 " Must sym-link xml.vim in ftplugin directory for completions
 Bundle 'sukima/xmledit'
@@ -309,6 +309,11 @@ Bundle 'Keithbsmiley/tmux.vim'
 " * * * * * * * * * * * * * * * * * * *
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
+
+" Gutentags
+set statusline+=%{gutentags#statusline('[Generating...]')}
+let g:autotags_project_root = ['Makefile', '.svn', '.tern.js']
+let g:gutentags_cache_dir = '/Users/nhentschel/.vim/cache/tags'
 
 " Markdown
 let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript',
