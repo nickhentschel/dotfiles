@@ -38,3 +38,5 @@
     di = diff
     aa = add --all
     br = branch
+[url "https://github.com"]
+	insteadOf = git://github.com
