@@ -286,6 +286,8 @@ Plugin 'honza/vim-snippets'
 Bundle 'Shougo/neosnippet'
 Bundle 'Shougo/neosnippet-snippets'
 Bundle 'ludovicchabant/vim-gutentags'
+Bundle 'scrooloose/nerdtree'
+Bundle 'Yggdroot/indentLine'
 
 " Must sym-link xml.vim in ftplugin directory for completions
 Bundle 'sukima/xmledit'
@@ -309,6 +311,12 @@ Bundle 'Keithbsmiley/tmux.vim'
 " * * * * * * * * * * * * * * * * * * *
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
+
+" vertical line indentation
+let g:indentLine_color_term = 239
+
+" NERDTree
+nnoremap <leader>t :NERDTreeToggle<CR>
 
 " Gutentags
 set statusline+=%{gutentags#statusline('[Generating...]')}

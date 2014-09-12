@@ -117,9 +117,9 @@ task :install_vundle do
         FileUtils.mkdir(File.join(USER_INSTALL_DIRECTORY, '.vim'))
       end
       vundle_command = "git clone https://github.com/gmarik/vundle.git
-        #{File.join(USER_INSTALL_DIRECTORY, '.vim/bundle/vundle')}
-        && vim +PluginInstall +qall"
+        #{File.join(USER_INSTALL_DIRECTORY, '.vim/bundle/vundle')}"
       system(vundle_command)
+      system('vim +PluginInstall +qall')
     when 'q'
       exit
     else
@@ -142,7 +142,7 @@ task :run_osx do
       warning('Not installing osx')
     end
   else
-    error('Not on OS X, not running osx script')
+    warning('Not on OS X, not running osx script')
   end
 end
 
