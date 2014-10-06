@@ -248,6 +248,17 @@ nnoremap gt :bn<CR>
 nnoremap gT :bp<CR>
 nnoremap <C-c> :bp\|bd #<CR>
 
+" Help file bindings
+autocmd filetype help nnoremap <buffer><cr> <c-]>
+autocmd filetype help nnoremap <buffer><bs> <c-T>
+autocmd filetype help nnoremap <buffer>q :q<CR>
+
+" Change cursor shape in insert mode" Change cursor shape to an underscore
+" when in insert mode
+let &t_SI = "\<Esc>]50;CursorShape=2\x7"
+" Change back to a block in normal mode
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
 " * * * * * * * * * * * * * * * * * * *
 " * BUNDLES AND SUCH                  *
 " * * * * * * * * * * * * * * * * * * *
@@ -288,6 +299,7 @@ Bundle 'Shougo/neosnippet-snippets'
 Bundle 'ludovicchabant/vim-gutentags'
 Bundle 'scrooloose/nerdtree'
 Bundle 'Yggdroot/indentLine'
+Bundle 'jeffkreeftmeijer/vim-numbertoggle'
 
 " Must sym-link xml.vim in ftplugin directory for completions
 Bundle 'sukima/xmledit'
@@ -311,6 +323,9 @@ Bundle 'Keithbsmiley/tmux.vim'
 " * * * * * * * * * * * * * * * * * * *
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
+
+" Numbertoggle remapping to avoid conflict
+let g:NumberToggleTrigger="<F2>"
 
 " vertical line indentation
 let g:indentLine_color_term = 239
@@ -442,7 +457,8 @@ let g:LatexBox_latexmk_preview_continuously=1
 let g:syntastic_mode_map = { 'mode': 'active',
     \ 'active_filetypes': [],
     \ 'passive_filetypes': ['html'] }
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
 let g:syntastic_echo_current_error = 0
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_auto_loc_list = 1
@@ -484,17 +500,22 @@ let g:miniBufExplBRSplit = 0
 " * AUTO COMMANDS                     *
 " * * * * * * * * * * * * * * * * * * *
 
+autocmd VimEnter * NERDTree
+autocmd BufEnter * NERDTreeMirror
+
+autocmd VimEnter * wincmd w
+
 " Enable omnicomplete
 autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
 autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
 
 " cd to current directory automatically
-au BufEnter * silent! lcd %:p:h
+" au BufEnter * silent! lcd %:p:h
 
 " Syntax specific stuff
 au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set filetype=markdown
 au BufNewFile,BufRead *.ss set filetype=html
-au Filetype html,css,scss,sass,ruby,javascript setlocal ts=2 sts=2 sw=2
+au Filetype html,css,scss,sass,ruby,javascript,yml,yaml setlocal ts=2 sts=2 sw=2
 au FileType help nnoremap <silent><buffer> q :q<CR>
 autocmd FileType cucumber let b:dispatch = 'cucumber %' | imap <buffer><expr> <Tab> pumvisible() ? "\<C-N>" : (CucumberComplete(1,'') >= 0 ? "\<C-X>\<C-O>" : (getline('.') =~ '\S' ? ' ' : "\<C-I>"))
 autocmd FileType ruby
