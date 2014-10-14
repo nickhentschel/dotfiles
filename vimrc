@@ -173,7 +173,7 @@ set sidescroll=1
 
 " Completion in command mode
 if v:version >= 700
-  set completeopt=menuone,menu
+    set completeopt=menuone,menu
 endif
 
 " * * * * * * * * * * * * * * * * * * *
@@ -341,7 +341,7 @@ let g:gutentags_cache_dir = '/Users/nhentschel/.vim/cache/tags'
 
 " Markdown
 let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript',
-    \ 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'sql']
+            \ 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'sql']
 
 " DelimitMate
 let g:delimitMate_expand_cr = 1
@@ -359,7 +359,7 @@ let g:ctrlp_show_hidden = 1
 " Open new files in current window
 let g:ctrlp_open_new_file = 'r'
 let g:ctrlp_extensions = ['tag', 'buffertag', 'dir',
-                      \ 'undo', 'line', 'yankring']
+            \ 'undo', 'line', 'yankring']
 if executable('ag')
     " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
     let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
@@ -368,15 +368,15 @@ if executable('ag')
     let g:ctrlp_use_caching = 0
 else
     let g:ctrlp_custom_ignore = {
-          \ 'dir': '\v[\/](\.git|\.hg|\.svn|CVS|tmp|Library|Applications|Music|[^\/]*-store)$',
-          \ 'file': '\v\.(exe|so|dll)$',
-          \ }
+                \ 'dir': '\v[\/](\.git|\.hg|\.svn|CVS|tmp|Library|Applications|Music|[^\/]*-store)$',
+                \ 'file': '\v\.(exe|so|dll)$',
+                \ }
     let g:ctrlp_user_command = {
-          \ 'types' : {
-          \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-          \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-          \ }
-          \ }
+                \ 'types' : {
+                \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+                \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+                \ }
+                \ }
 endif
 
 " ctrlp mappings
@@ -426,7 +426,7 @@ let g:neocomplete#same_filetypes._ = '_'
 
 " NeoComplete mappings
 inoremap <expr><Space> pumvisible() ? neocomplete#smart_close_popup().
-                       \ "\<Space>" : "\<Space>"
+            \ "\<Space>" : "\<Space>"
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
@@ -440,11 +440,11 @@ smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-          \ "\<Plug>(neosnippet_expand_or_jump)"
-          \: pumvisible() ? "\<C-n>" : "\<TAB>"
+            \ "\<Plug>(neosnippet_expand_or_jump)"
+            \: pumvisible() ? "\<C-n>" : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-      \ "\<Plug>(neosnippet_expand_or_jump)"
-      \: "\<TAB>"
+            \ "\<Plug>(neosnippet_expand_or_jump)"
+            \: "\<TAB>"
 
 " Tern.js
 let g:tern_map_keys=1
@@ -456,8 +456,8 @@ let g:LatexBox_latexmk_preview_continuously=1
 
 " Syntastic settings
 let g:syntastic_mode_map = { 'mode': 'active',
-    \ 'active_filetypes': [],
-    \ 'passive_filetypes': ['html'] }
+            \ 'active_filetypes': [],
+            \ 'passive_filetypes': ['html'] }
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_echo_current_error = 0
@@ -520,14 +520,14 @@ au Filetype html,css,scss,sass,ruby,javascript,yml,yaml setlocal ts=2 sts=2 sw=2
 au FileType help nnoremap <silent><buffer> q :q<CR>
 autocmd FileType cucumber let b:dispatch = 'cucumber %' | imap <buffer><expr> <Tab> pumvisible() ? "\<C-N>" : (CucumberComplete(1,'') >= 0 ? "\<C-X>\<C-O>" : (getline('.') =~ '\S' ? ' ' : "\<C-I>"))
 autocmd FileType ruby
-          \ let b:start = executable('pry') ? 'pry -r "%:p"' : 'irb -r "%:p"' |
-          \ if expand('%') =~# '_test\.rb$' |
-          \   let b:dispatch = 'testrb %' |
-          \ elseif expand('%') =~# '_spec\.rb$' |
-          \   let b:dispatch = 'rspec %' |
-          \ elseif !exists('b:dispatch') |
-          \   let b:dispatch = 'ruby -wc %' |
-          \ endif
+            \ let b:start = executable('pry') ? 'pry -r "%:p"' : 'irb -r "%:p"' |
+            \ if expand('%') =~# '_test\.rb$' |
+            \   let b:dispatch = 'testrb %' |
+            \ elseif expand('%') =~# '_spec\.rb$' |
+            \   let b:dispatch = 'rspec %' |
+            \ elseif !exists('b:dispatch') |
+            \   let b:dispatch = 'ruby -wc %' |
+            \ endif
 
 augroup pencil
     autocmd!
@@ -547,10 +547,12 @@ set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶
 set list
 
 " highlight past 80 characters
-execute "set colorcolumn=" . join(range(81,335), ',')
+" execute "set colorcolumn=" . join(range(81,335), ',')
 
 set background=dark
 colorscheme hybrid
+set guifont=Terminus\ (TTF):h12
+set noantialias
 
 " Cursor shows matching ) and }
 set showmatch
