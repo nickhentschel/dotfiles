@@ -300,6 +300,7 @@ Bundle 'ludovicchabant/vim-gutentags'
 Bundle 'scrooloose/nerdtree'
 Bundle 'Yggdroot/indentLine'
 Bundle 'jeffkreeftmeijer/vim-numbertoggle'
+Bundle 'szw/vim-tags'
 
 " Must sym-link xml.vim in ftplugin directory for completions
 Bundle 'sukima/xmledit'
@@ -403,7 +404,7 @@ let g:neocomplete#auto_completion_start_length = 2
 let g:neocomplete#manual_completion_start_length = 0
 let g:neocomplete#enable_auto_close_preview = 1
 let g:neocomplete#max_list = 15
-let g:neocomplete#enable_refresh_always = 1
+let g:neocomplete#enable_refresh_always = 0
 let g:neocomplete#enable_smart_case = 1
 
 let g:neocomplete#keyword_patterns = {}
