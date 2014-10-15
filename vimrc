@@ -276,31 +276,24 @@ Bundle 'scrooloose/syntastic'
 Bundle 'Shougo/neocomplete.vim'
 Bundle 'bling/vim-airline'
 Bundle 'tpope/vim-fugitive'
-Bundle 'LaTeX-Box-Team/LaTeX-Box'
+" Bundle 'LaTeX-Box-Team/LaTeX-Box'
 Bundle 'marijnh/tern_for_vim'
 Bundle 'reedes/vim-pencil'
 Bundle 'reedes/vim-thematic'
 Bundle 'Raimondi/delimitMate'
 Bundle 'kien/ctrlp.vim'
 Bundle 'sgur/ctrlp-extensions.vim'
-Bundle 'FelikZ/ctrlp-py-matcher'
 Bundle 'fholgado/minibufexpl.vim'
 Bundle 'mhinz/vim-startify'
 Bundle 'valloric/MatchTagAlways'
 Bundle 'kris89/vim-multiple-cursors'
-Bundle 'osyo-manga/vim-over'
 Bundle 'christoomey/vim-tmux-navigator'
 Bundle 'tpope/vim-endwise'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'tpope/vim-rails'
-Plugin 'honza/vim-snippets'
-Bundle 'Shougo/neosnippet'
-Bundle 'Shougo/neosnippet-snippets'
-Bundle 'ludovicchabant/vim-gutentags'
 Bundle 'scrooloose/nerdtree'
 Bundle 'Yggdroot/indentLine'
 Bundle 'jeffkreeftmeijer/vim-numbertoggle'
-Bundle 'szw/vim-tags'
 
 " Must sym-link xml.vim in ftplugin directory for completions
 Bundle 'sukima/xmledit'
@@ -333,11 +326,6 @@ let g:indentLine_color_term = 239
 
 " NERDTree
 nnoremap <leader>t :NERDTreeToggle<CR>
-
-" Gutentags
-set statusline+=%{gutentags#statusline('[Generating...]')}
-let g:autotags_project_root = ['Makefile', '.svn', '.tern.js']
-let g:gutentags_cache_dir = '/Users/nhentschel/.vim/cache/tags'
 
 " Markdown
 let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript',
@@ -400,11 +388,11 @@ nnoremap <silent> <leader>pp :ShiftPencil<cr>
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#force_overwrite_completefunc = 1
 let g:neocomplete#data_directory = $HOME.'/.vim/cache/noecompl'
-let g:neocomplete#auto_completion_start_length = 2
+let g:neocomplete#auto_completion_start_length = 1
 let g:neocomplete#manual_completion_start_length = 0
 let g:neocomplete#enable_auto_close_preview = 1
 let g:neocomplete#max_list = 15
-let g:neocomplete#enable_refresh_always = 0
+let g:neocomplete#enable_refresh_always = 1
 let g:neocomplete#enable_smart_case = 1
 
 let g:neocomplete#keyword_patterns = {}
@@ -420,9 +408,9 @@ let g:neocomplete#same_filetypes = {}
 let g:neocomplete#same_filetypes.gitconfig = '_'
 let g:neocomplete#same_filetypes._ = '_'
 
-" let g:neocomplete#enable_auto_select = 0
-" let g:neocomplete#sources#syntax#min_keyword_length = 1
-" let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
+let g:neocomplete#enable_auto_select = 0
+let g:neocomplete#sources#syntax#min_keyword_length = 1
+let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
 
 " NeoComplete mappings
 inoremap <expr><Space> pumvisible() ? neocomplete#smart_close_popup().
@@ -432,27 +420,13 @@ inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><C-l>     neocomplete#complete_common_string()
 
-" NeoSnippet
-let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
-
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-            \ "\<Plug>(neosnippet_expand_or_jump)"
-            \: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-            \ "\<Plug>(neosnippet_expand_or_jump)"
-            \: "\<TAB>"
-
 " Tern.js
 let g:tern_map_keys=1
 let g:tern_show_argument_hints='on_hold'
 
 " LatexBox
-let g:LatexBox_latexmk_options='-xelatex'
-let g:LatexBox_latexmk_preview_continuously=1
+" let g:LatexBox_latexmk_options='-xelatex'
+" let g:LatexBox_latexmk_preview_continuously=1
 
 " Syntastic settings
 let g:syntastic_mode_map = { 'mode': 'active',
@@ -518,16 +492,6 @@ au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set filetype=markdown
 au BufNewFile,BufRead *.ss set filetype=html
 au Filetype html,css,scss,sass,ruby,javascript,yml,yaml setlocal ts=2 sts=2 sw=2
 au FileType help nnoremap <silent><buffer> q :q<CR>
-autocmd FileType cucumber let b:dispatch = 'cucumber %' | imap <buffer><expr> <Tab> pumvisible() ? "\<C-N>" : (CucumberComplete(1,'') >= 0 ? "\<C-X>\<C-O>" : (getline('.') =~ '\S' ? ' ' : "\<C-I>"))
-autocmd FileType ruby
-            \ let b:start = executable('pry') ? 'pry -r "%:p"' : 'irb -r "%:p"' |
-            \ if expand('%') =~# '_test\.rb$' |
-            \   let b:dispatch = 'testrb %' |
-            \ elseif expand('%') =~# '_spec\.rb$' |
-            \   let b:dispatch = 'rspec %' |
-            \ elseif !exists('b:dispatch') |
-            \   let b:dispatch = 'ruby -wc %' |
-            \ endif
 
 augroup pencil
     autocmd!
@@ -547,7 +511,7 @@ set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶
 set list
 
 " highlight past 80 characters
-" execute "set colorcolumn=" . join(range(81,335), ',')
+execute "set colorcolumn=" . join(range(81,335), ',')
 
 set background=dark
 colorscheme hybrid
