@@ -17,76 +17,31 @@
 
 " Necesary  for lots of cool vim things
 set nocompatible
-filetype plugin indent on
-set t_Co=256
-
 set shell=/bin/bash
-
-" * * * * * * * * * * * * * * * * * * *
-" * FUNCTIONS                         *
-" * * * * * * * * * * * * * * * * * * *
-
-function! s:editProse()
-    setlocal colorcolumn&
-    setlocal spell
-    setlocal nonumber
-    setlocal guicursor+=a:blinkon0
-    setlocal textwidth=80
-endfunction
-
-function! Multiple_cursors_before()
-    exe 'NeoCompleteLock'
-    echo 'Disabled autocomplete'
-endfunction
-
-function! Multiple_cursors_after()
-    exe 'NeoCompleteUnlock'
-    echo 'Enabled autocomplete'
-endfunction
-
-" * * * * * * * * * * * * * * * * * * *
-" * VIM SETTINGS                      *
-" * * * * * * * * * * * * * * * * * * *
 
 if executable('ag')
     " Use Ag over Grep
     set grepprg=ag\ --nogroup\ --nocolor
 endif
 
-set ofu=syntaxcomplete#Complete
+" * * * * * * * * * * * * * * * * * * *
+" * VIM SETTINGS                      *
+" * * * * * * * * * * * * * * * * * * *
 
-" set 'hybrid' line number
-set relativenumber
-" set number
-
-" Settings for ctags
-" set tags=tags;/
+set number
 
 " Better screen redraw
 set ttyfast
 set lazyredraw
 
-" More natural splitting
-set splitbelow
-set splitright
-
 " Remove insert->normal delay
 set ttimeoutlen=50
-
-" disable sound on errors
-set noerrorbells
-set novisualbell
-set t_vb=
-set tm=500
 
 " encoding dectection
 set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 
 " Get rid of the delay when hitting esc!
 set noesckeys
-
-" extend the history length
-set history=1000
 
 " Relaod files after change outside of VIM
 set autoread
@@ -100,10 +55,6 @@ set title
 
 " This shows what you are typing as a command
 set showcmd
-
-" Folding Stuffs
-set foldmethod=syntax
-set foldlevelstart=99
 
 " Who doesn't like autoindent?
 set autoindent
@@ -139,21 +90,9 @@ set wildignore+=*.png,*.jpg,*.gif
 " Enable mouse support in console
 set mouse=a
 
-" Enable backspace in visual mode
-set backspace=indent,eol,start
-
 " Ignoring case is a fun trick
 set ignorecase
-
-" And so is Artificial Intellegence!
-" Call hlnext function on N or n
-" nnoremap <silent> n n:call HLNext(0.4)<cr>
-" nnoremap <silent> N N:call HLNext(0.4)<cr>
-
 set smartcase
-
-" Incremental searching is sexy
-set incsearch
 
 " Highlight things that we find with the search
 set hlsearch
@@ -176,13 +115,6 @@ if v:version >= 700
     set completeopt=menuone,menu
 endif
 
-" * * * * * * * * * * * * * * * * * * *
-" * MAPPINGS                          *
-" * * * * * * * * * * * * * * * * * * *
-
-" Toggle paste mode with F2
-set pastetoggle=<F2>
-
 " map leader to space
 let mapleader=" "
 let g:mapleader=" "
@@ -193,28 +125,12 @@ nnoremap <Space> <nop>
 " Set leader n to stop highlighting
 nnoremap <leader>n :<C-u>noh<CR>
 
-" save as root
-cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>
-
-" Remap to yank to end of line
-nnoremap Y y$
-
-" Easy redo
-nnoremap U <c-r>
-
 " Scroll viewport 3 lines instead of 1
 nnoremap <C-e> 3<C-e>
 nnoremap <C-y> 3<C-y>
 
 " Easier excape from insert
 inoremap jk <Esc>
-
-" Sane regex with /
-nnoremap / /\v
-vnoremap / /\v
-nnoremap ? ?\v
-vnoremap ? ?\v
-cnoremap s/ s/\v
 
 " map save to ctrl+s, requires some shell/terminal tweaking if not in gvim/macvim
 inoremap <c-s> <Esc>:w<CR>
@@ -248,52 +164,53 @@ nnoremap gt :bn<CR>
 nnoremap gT :bp<CR>
 nnoremap <C-c> :bp\|bd #<CR>
 
-" Help file bindings
-autocmd filetype help nnoremap <buffer><cr> <c-]>
-autocmd filetype help nnoremap <buffer><bs> <c-T>
-autocmd filetype help nnoremap <buffer>q :q<CR>
+" * * * * * * * * * * * * * * * * * * *
+" * AUTO COMMANDS                     *
+" * * * * * * * * * * * * * * * * * * *
 
-" Change cursor shape in insert mode" Change cursor shape to an underscore
-" when in insert mode
-let &t_SI = "\<Esc>]50;CursorShape=2\x7"
-" Change back to a block in normal mode
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+autocmd VimEnter * NERDTree
+autocmd BufEnter * NERDTreeMirror
+
+autocmd VimEnter * wincmd w
+
+" Enable omnicomplete
+autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
+autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
+
+" Syntax specific stuff
+au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set filetype=markdown
+au BufNewFile,BufRead *.ss set filetype=html
+au Filetype html,css,scss,sass,ruby,javascript,yml,yaml setlocal ts=2 sts=2 sw=2
+au FileType help nnoremap <silent><buffer> q :q<CR>
 
 " * * * * * * * * * * * * * * * * * * *
 " * BUNDLES AND SUCH                  *
 " * * * * * * * * * * * * * * * * * * *
 
+filetype off
+
 set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+call vundle#begin()
 
 " let Vundle manage Vundle
 " required!
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/vundle'
 
-Bundle 'tomtom/tcomment_vim'
-Bundle 'tpope/vim-surround'
-Bundle 'scrooloose/syntastic'
-Bundle 'Shougo/neocomplete.vim'
-Bundle 'bling/vim-airline'
-Bundle 'tpope/vim-fugitive'
-" Bundle 'LaTeX-Box-Team/LaTeX-Box'
-Bundle 'marijnh/tern_for_vim'
-Bundle 'reedes/vim-pencil'
-Bundle 'reedes/vim-thematic'
-Bundle 'Raimondi/delimitMate'
-Bundle 'kien/ctrlp.vim'
-Bundle 'sgur/ctrlp-extensions.vim'
-Bundle 'fholgado/minibufexpl.vim'
-Bundle 'mhinz/vim-startify'
-Bundle 'valloric/MatchTagAlways'
-Bundle 'kris89/vim-multiple-cursors'
-Bundle 'christoomey/vim-tmux-navigator'
-Bundle 'tpope/vim-endwise'
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'tpope/vim-rails'
-Bundle 'scrooloose/nerdtree'
-Bundle 'Yggdroot/indentLine'
-Bundle 'jeffkreeftmeijer/vim-numbertoggle'
+Plugin 'tomtom/tcomment_vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'sgur/ctrlp-extensions.vim'
+Plugin 'tpope/vim-surround'
+Plugin 'bling/vim-airline'
+Plugin 'Raimondi/delimitMate'
+Plugin 'fholgado/minibufexpl.vim'
+Plugin 'valloric/MatchTagAlways'
+Plugin 'kris89/vim-multiple-cursors'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'tpope/vim-endwise'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'tpope/vim-rails'
+Plugin 'scrooloose/nerdtree'
+Plugin 'Shougo/neocomplete.vim'
 
 " Must sym-link xml.vim in ftplugin directory for completions
 Bundle 'sukima/xmledit'
@@ -314,22 +231,15 @@ Bundle 'evanmiller/nginx-vim-syntax'
 Bundle 'cakebaker/scss-syntax.vim'
 Bundle 'Keithbsmiley/tmux.vim'
 
+call vundle#end()
+filetype plugin indent on
+
 " * * * * * * * * * * * * * * * * * * *
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
 
-" Numbertoggle remapping to avoid conflict
-let g:NumberToggleTrigger="<F2>"
-
-" vertical line indentation
-let g:indentLine_color_term = 239
-
 " NERDTree
 nnoremap <leader>t :NERDTreeToggle<CR>
-
-" Markdown
-let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript',
-            \ 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'sql']
 
 " DelimitMate
 let g:delimitMate_expand_cr = 1
@@ -338,7 +248,6 @@ let g:delimitMate_expand_space = 0
 let g:delimitMate_matchpairs = "(:),[:],{:}"
 
 " ctrlp
-let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:10'
@@ -373,17 +282,6 @@ nnoremap <leader>p :<C-u>CtrlP<CR>
 nnoremap <leader>o :<C-u>CtrlPBuffer<CR>
 nnoremap <leader>y :<C-u>CtrlPYankring<CR>
 
-" Pencil
-let g:pencil#wrapModeDefault = 'hard'
-let g:pencil#textwidth = 80
-let g:pencil#autoformat = 1
-
-" Pencil mappings
-nnoremap <silent> <leader>ps :SoftPencil<cr>
-nnoremap <silent> <leader>ph :HardPencil<cr>
-nnoremap <silent> <leader>pt :TogglePencil<cr>
-nnoremap <silent> <leader>pp :ShiftPencil<cr>
-
 " NeoComplete
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#force_overwrite_completefunc = 1
@@ -398,19 +296,19 @@ let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#keyword_patterns = {}
 let g:neocomplete#keyword_patterns._  = '\h\w*'
 
-let g:neocomplete#sources#omni#input_patterns = {}
-let g:neocomplete#sources#omni#input_patterns.php  = '[^. \t]->\h\w*\|\h\w*::'
+" let g:neocomplete#sources#omni#input_patterns = {}
+" let g:neocomplete#sources#omni#input_patterns.php  = '[^. \t]->\h\w*\|\h\w*::'
 
-let g:neocomplete#force_omni_input_patterns = {}
-let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::\w*'
+" let g:neocomplete#force_omni_input_patterns = {}
+" let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::\w*'
 
-let g:neocomplete#same_filetypes = {}
-let g:neocomplete#same_filetypes.gitconfig = '_'
-let g:neocomplete#same_filetypes._ = '_'
+" let g:neocomplete#same_filetypes = {}
+" let g:neocomplete#same_filetypes.gitconfig = '_'
+" let g:neocomplete#same_filetypes._ = '_'
 
 let g:neocomplete#enable_auto_select = 0
 let g:neocomplete#sources#syntax#min_keyword_length = 1
-let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
+" let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
 
 " NeoComplete mappings
 inoremap <expr><Space> pumvisible() ? neocomplete#smart_close_popup().
@@ -420,41 +318,8 @@ inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><C-l>     neocomplete#complete_common_string()
 
-" Tern.js
-let g:tern_map_keys=1
-let g:tern_show_argument_hints='on_hold'
-
-" LatexBox
-" let g:LatexBox_latexmk_options='-xelatex'
-" let g:LatexBox_latexmk_preview_continuously=1
-
-" Syntastic settings
-let g:syntastic_mode_map = { 'mode': 'active',
-            \ 'active_filetypes': [],
-            \ 'passive_filetypes': ['html'] }
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_echo_current_error = 0
-let g:syntastic_aggregate_errors = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_error_symbol = '✗✗'
-let g:syntastic_warning_symbol = '⚠⚠'
-let g:syntastic_style_error_symbol = '✗'
-let g:syntastic_style_warning_symbol = '⚠'
-let g:syntastic_javascript_checkers = ['jsl']
-let g:syntastic_html_checkers = ['tidy']
-let g:syntastic_php_checkers = ['php', 'phpcs']
-let g:syntastic_ruby_checkers = ['mri', 'rubocop']
-let g:syntastic_ruby_rubocop_args = '--display-cop-names'
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-" Syntastic mappings
-nnoremap <Leader>e <Esc>:Errors<CR>
-
 " Vim Airline
-let g:airline_theme = "powerlineish"
+" let g:airline_theme = "powerlineish"
 let g:airline_powerline_fonts = 1
 " let g:airline_left_sep = ''
 " let g:airline_right_sep = ''
@@ -470,33 +335,6 @@ let g:miniBufExplAutoStart = 1
 let g:miniBufExplorerMoreThanOne = 0
 let g:miniBufExplCycleArround = 1
 let g:miniBufExplBRSplit = 0
-
-" * * * * * * * * * * * * * * * * * * *
-" * AUTO COMMANDS                     *
-" * * * * * * * * * * * * * * * * * * *
-
-autocmd VimEnter * NERDTree
-autocmd BufEnter * NERDTreeMirror
-
-autocmd VimEnter * wincmd w
-
-" Enable omnicomplete
-autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
-autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
-
-" cd to current directory automatically
-" au BufEnter * silent! lcd %:p:h
-
-" Syntax specific stuff
-au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set filetype=markdown
-au BufNewFile,BufRead *.ss set filetype=html
-au Filetype html,css,scss,sass,ruby,javascript,yml,yaml setlocal ts=2 sts=2 sw=2
-au FileType help nnoremap <silent><buffer> q :q<CR>
-
-augroup pencil
-    autocmd!
-    autocmd FileType markdown,text call s:editProse()|call pencil#init()|NeoCompleteLock
-augroup END
 
 " * * * * * * * * * * * * * * * * * * *
 " * LOOK AND FEEL                     *
@@ -527,7 +365,10 @@ set encoding=utf-8
 highlight MatchParen ctermbg=4
 
 " disable sound on errors
-set noerrorbells visualbell t_vb=
+autocmd! GUIEnter * set vb t_vb=
+set noerrorbells
+set novisualbell
+set t_vb=
 set tm=500
 
 syntax on
