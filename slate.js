@@ -1,7 +1,7 @@
 var relaunch = slate.operation('relaunch');
 
 slate.bindAll({
-    // '3:ctrl' : relaunch,
+    '4:ctrl' : relaunch,
     'esc:ctrl' : S.op('grid'),
 
     // Resize Bindings
