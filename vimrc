@@ -25,14 +25,35 @@ if executable('ag')
 endif
 
 " * * * * * * * * * * * * * * * * * * *
+" * FUNCTIONS                         *
+" * * * * * * * * * * * * * * * * * * *
+
+function! Multiple_cursors_before()
+    exe 'NeoCompleteLock'
+    echo 'Disabled autocomplete'
+endfunction
+
+function! Multiple_cursors_after()
+    exe 'NeoCompleteUnlock'
+    echo 'Enabled autocomplete'
+endfunction
+
+" * * * * * * * * * * * * * * * * * * *
 " * VIM SETTINGS                      *
 " * * * * * * * * * * * * * * * * * * *
+
+" More natural splitting
+set splitbelow
+set splitright
+
+set incsearch
 
 set number
 
 " Better screen redraw
 set ttyfast
 set lazyredraw
+set ttyscroll=1
 
 " Remove insert->normal delay
 set ttimeoutlen=50
@@ -107,8 +128,9 @@ set nowb
 
 " Start scrolling when we're 8 lines away from margins
 set scrolloff=8
-set sidescrolloff=15
-set sidescroll=1
+" set sidescrolloff=15
+" set sidescroll=1
+" set scrolljump=10
 
 " Completion in command mode
 if v:version >= 700
@@ -118,6 +140,12 @@ endif
 " map leader to space
 let mapleader=" "
 let g:mapleader=" "
+
+" Remap ex mode cause it sucks
+nnoremap Q <nop>
+
+" Ctrl + v already does this
+nnoremap <C-q> <nop>
 
 " Space does nothing in normal mode (prevent cursor from moving)
 nnoremap <Space> <nop>
@@ -131,6 +159,7 @@ nnoremap <C-y> 3<C-y>
 
 " Easier excape from insert
 inoremap jk <Esc>
+inoremap jj <Esc>
 
 " map save to ctrl+s, requires some shell/terminal tweaking if not in gvim/macvim
 inoremap <c-s> <Esc>:w<CR>
@@ -142,7 +171,7 @@ vnoremap < <gv
 vnoremap > >gv
 vnoremap = =gv
 
-" Up and down are more logical with g..
+" Up and down are more logical with g
 nnoremap <silent> k gk
 nnoremap <silent> j gj
 
@@ -196,40 +225,79 @@ call vundle#begin()
 " required!
 Plugin 'gmarik/vundle'
 
+" Allows easy code commenting of lines and blocks
 Plugin 'tomtom/tcomment_vim'
+"
+" Allows easy addition/changing of surrounding text
+Plugin 'tpope/vim-surround'
+
+" Provides insert mode auto-completion for quotes, parens, brackets, etc.
+Plugin 'Raimondi/delimitMate'
+
+" Always highlight the enclosing html/xml tags
+Plugin 'valloric/MatchTagAlways'
+
+" True Sublime Text style multiple selections for Vim
+Plugin 'kris89/vim-multiple-cursors'
+
+" Plugin to toggle, display and navigate marks
+Plugin 'kshenoy/vim-signature'
+
+" Display the indention levels with thin vertical lines
+Plugin 'Yggdroot/indentLine'
+
+" Easy tag completion for xml-like languages
+" Must sym-link xml.vim in ftplugin directory for completions
+Plugin 'sukima/xmledit'
+
+" Fuzzy file, buffer, mru, tag, etc finder
+" Similar to cmd + p for SublimeText
 Plugin 'kien/ctrlp.vim'
 Plugin 'sgur/ctrlp-extensions.vim'
-Plugin 'tpope/vim-surround'
+
+" Custom and configurable status line for vim
+" Much lighter than powerline
 Plugin 'bling/vim-airline'
-Plugin 'Raimondi/delimitMate'
+
+" Display open buffers pinned to top of window
 Plugin 'fholgado/minibufexpl.vim'
-Plugin 'valloric/MatchTagAlways'
-Plugin 'kris89/vim-multiple-cursors'
+
+" Allows ctrl h,j,k,l to navigate tmux panes and vim splits
 Plugin 'christoomey/vim-tmux-navigator'
+
+" wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
 Plugin 'tpope/vim-endwise'
-Plugin 'vim-ruby/vim-ruby'
-Plugin 'tpope/vim-rails'
+
+" Tree-like sidebar file manager for vim
 Plugin 'scrooloose/nerdtree'
+
+" Toggles between relative and absolute line numbers automatically
+Plugin 'jeffkreeftmeijer/vim-numbertoggle'
+
+" Next generation completion framework after neocomplcache
+" Requires vim to be compiled with lua enabled
 Plugin 'Shougo/neocomplete.vim'
 
-" Must sym-link xml.vim in ftplugin directory for completions
-Bundle 'sukima/xmledit'
+" Highlight preview for substitutions
+Plugin 'osyo-manga/vim-over'
 
 " colorscheme bundles
-Bundle 'djjcast/mirodark'
-Bundle 'chriskempson/base16-vim'
-Bundle 'w0ng/vim-hybrid'
+Plugin 'djjcast/mirodark'
+Plugin 'chriskempson/base16-vim'
+Plugin 'w0ng/vim-hybrid'
 
-" syntax related bundles
-Bundle 'othree/html5.vim'
-Bundle 'pangloss/vim-javascript'
-Bundle 'nono/vim-handlebars'
-Bundle 'elzr/vim-json'
-Bundle 'tpope/vim-markdown'
-Bundle 'chase/vim-ansible-yaml'
-Bundle 'evanmiller/nginx-vim-syntax'
-Bundle 'cakebaker/scss-syntax.vim'
-Bundle 'Keithbsmiley/tmux.vim'
+" syntax and language related bundles
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'tpope/vim-rails'
+Plugin 'othree/html5.vim'
+Plugin 'pangloss/vim-javascript'
+Plugin 'nono/vim-handlebars'
+Plugin 'elzr/vim-json'
+Plugin 'tpope/vim-markdown'
+Plugin 'chase/vim-ansible-yaml'
+Plugin 'evanmiller/nginx-vim-syntax'
+Plugin 'cakebaker/scss-syntax.vim'
+Plugin 'Keithbsmiley/tmux.vim'
 
 call vundle#end()
 filetype plugin indent on
@@ -296,16 +364,6 @@ let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#keyword_patterns = {}
 let g:neocomplete#keyword_patterns._  = '\h\w*'
 
-" let g:neocomplete#sources#omni#input_patterns = {}
-" let g:neocomplete#sources#omni#input_patterns.php  = '[^. \t]->\h\w*\|\h\w*::'
-
-" let g:neocomplete#force_omni_input_patterns = {}
-" let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::\w*'
-
-" let g:neocomplete#same_filetypes = {}
-" let g:neocomplete#same_filetypes.gitconfig = '_'
-" let g:neocomplete#same_filetypes._ = '_'
-
 let g:neocomplete#enable_auto_select = 0
 let g:neocomplete#sources#syntax#min_keyword_length = 1
 " let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
@@ -319,10 +377,11 @@ inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><C-l>     neocomplete#complete_common_string()
 
 " Vim Airline
-" let g:airline_theme = "powerlineish"
-let g:airline_powerline_fonts = 1
+" Uncomment below if not using a font with powerline symbols
 " let g:airline_left_sep = ''
 " let g:airline_right_sep = ''
+let g:airline_theme = "luna"
+let g:airline_powerline_fonts = 1
 let g:airline#extensions#bufferline#overwrite_variables = 0
 let g:airline#extensions#bufferline#enabled = 0
 let g:airline#extensions#syntastic#enabled = 1
@@ -350,11 +409,17 @@ set list
 
 " highlight past 80 characters
 execute "set colorcolumn=" . join(range(81,335), ',')
+set synmaxcol=128
 
 set background=dark
 colorscheme hybrid
-set guifont=Terminus\ (TTF):h12
-set noantialias
+
+if has("gui_macvim")
+    " set noantialias
+    set guifont=PragmataPro\ for\ Powerline:h12
+endif
+
+" set cursorline
 
 " Cursor shows matching ) and }
 set showmatch
