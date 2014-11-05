@@ -211,6 +211,10 @@ au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set filetype=markdown
 au BufNewFile,BufRead *.ss set filetype=html
 au Filetype html,css,scss,sass,ruby,javascript,yml,yaml setlocal ts=2 sts=2 sw=2
 au FileType help nnoremap <silent><buffer> q :q<CR>
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
 
 " * * * * * * * * * * * * * * * * * * *
 " * BUNDLES AND SUCH                  *
@@ -281,6 +285,9 @@ Plugin 'Shougo/neocomplete.vim'
 " Highlight preview for substitutions
 Plugin 'osyo-manga/vim-over'
 
+" Ruby documentation support
+Plugin 'danchoi/ri.vim'
+
 " colorscheme bundles
 Plugin 'djjcast/mirodark'
 Plugin 'chriskempson/base16-vim'
@@ -298,6 +305,10 @@ Plugin 'chase/vim-ansible-yaml'
 Plugin 'evanmiller/nginx-vim-syntax'
 Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'Keithbsmiley/tmux.vim'
+Plugin 'guns/vim-clojure-static'
+Plugin 'tpope/vim-fireplace'
+Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'guns/vim-clojure-highlight'
 
 call vundle#end()
 filetype plugin indent on
@@ -306,8 +317,12 @@ filetype plugin indent on
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
 
+" Numbertoggle
+let g:NumberToggleTrigger="<F2>"
+
 " NERDTree
 nnoremap <leader>t :NERDTreeToggle<CR>
+let NERDTreeShowHidden=1
 
 " DelimitMate
 let g:delimitMate_expand_cr = 1
@@ -316,6 +331,7 @@ let g:delimitMate_expand_space = 0
 let g:delimitMate_matchpairs = "(:),[:],{:}"
 
 " ctrlp
+let g:ctrlp_show_hidden = 1
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:10'
@@ -408,8 +424,7 @@ set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶
 set list
 
 " highlight past 80 characters
-execute "set colorcolumn=" . join(range(81,335), ',')
-set synmaxcol=128
+" execute "set colorcolumn=" . join(range(81,335), ',')
 
 set background=dark
 colorscheme hybrid
