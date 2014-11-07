@@ -32,5 +32,7 @@ slate.bindAll({
     // Throw Bindings
     // NOTE: some of these may *not* work if you have not removed the expose/spaces/mission control bindings
     'd:ctrl;alt;cmd' : S.op('throw', { 'screen' : 'right' }),
-    'a:ctrl;alt;cmd' : S.op('throw', { 'screen' : 'left' })
+    'a:ctrl;alt;cmd' : S.op('throw', { 'screen' : 'left' }),
+    's:ctrl;alt;cmd' : S.op('throw', { 'screen' : 'down' }),
+    'w:ctrl;alt;cmd' : S.op('throw', { 'screen' : 'up' })
 });

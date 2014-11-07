@@ -21,7 +21,6 @@
     new = green bold
     commit = yellow bold
     func = green dim
-    #plain = white bold
 [color "status"]
     added = yellow
     changed = green
@@ -39,4 +38,4 @@
     aa = add --all
     br = branch
 [url "https://github.com"]
-	insteadOf = git://github.com
+    insteadOf = git://github.com

@@ -151,7 +151,7 @@ nnoremap <C-q> <nop>
 nnoremap <Space> <nop>
 
 " Set leader n to stop highlighting
-nnoremap <leader>n :<C-u>noh<CR>
+" nnoremap <leader>n :<C-u>noh<CR>
 
 " Scroll viewport 3 lines instead of 1
 nnoremap <C-e> 3<C-e>
@@ -211,10 +211,6 @@ au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set filetype=markdown
 au BufNewFile,BufRead *.ss set filetype=html
 au Filetype html,css,scss,sass,ruby,javascript,yml,yaml setlocal ts=2 sts=2 sw=2
 au FileType help nnoremap <silent><buffer> q :q<CR>
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
 
 " * * * * * * * * * * * * * * * * * * *
 " * BUNDLES AND SUCH                  *
@@ -239,7 +235,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'Raimondi/delimitMate'
 
 " Always highlight the enclosing html/xml tags
-Plugin 'valloric/MatchTagAlways'
+" Plugin 'valloric/MatchTagAlways'
 
 " True Sublime Text style multiple selections for Vim
 Plugin 'kris89/vim-multiple-cursors'
@@ -292,6 +288,9 @@ Plugin 'danchoi/ri.vim'
 Plugin 'djjcast/mirodark'
 Plugin 'chriskempson/base16-vim'
 Plugin 'w0ng/vim-hybrid'
+Plugin 'tomasr/molokai'
+Plugin 'altercation/vim-colors-solarized'
+" Plugin 'biskark/vim-ultimate-colorscheme-utility'
 
 " syntax and language related bundles
 Plugin 'vim-ruby/vim-ruby'
@@ -305,10 +304,6 @@ Plugin 'chase/vim-ansible-yaml'
 Plugin 'evanmiller/nginx-vim-syntax'
 Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'Keithbsmiley/tmux.vim'
-Plugin 'guns/vim-clojure-static'
-Plugin 'tpope/vim-fireplace'
-Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'guns/vim-clojure-highlight'
 
 call vundle#end()
 filetype plugin indent on
@@ -396,7 +391,7 @@ inoremap <expr><C-l>     neocomplete#complete_common_string()
 " Uncomment below if not using a font with powerline symbols
 " let g:airline_left_sep = ''
 " let g:airline_right_sep = ''
-let g:airline_theme = "luna"
+" let g:airline_theme = "luna"
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#bufferline#overwrite_variables = 0
 let g:airline#extensions#bufferline#enabled = 0
@@ -426,15 +421,19 @@ set list
 " highlight past 80 characters
 " execute "set colorcolumn=" . join(range(81,335), ',')
 
-set background=dark
-colorscheme hybrid
+set background=light
+colorscheme solarized
+" let g:molokai_original = 1
 
 if has("gui_macvim")
     " set noantialias
-    set guifont=PragmataPro\ for\ Powerline:h12
+    " set guifont=Envy\ Code\ R\ for\ Powerline:h12
+    " set guifont=Terminus\ (TTF):h12
+    " set guifont=PragmataPro\ for\ Powerline:h12
+    set guifont=Meslo\ LG\ L\ DZ\ Regular\ for\ Powerline:h12
 endif
 
-" set cursorline
+set cursorline
 
 " Cursor shows matching ) and }
 set showmatch
