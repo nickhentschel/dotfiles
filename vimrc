@@ -235,13 +235,10 @@ Plugin 'tpope/vim-surround'
 Plugin 'Raimondi/delimitMate'
 
 " Always highlight the enclosing html/xml tags
-" Plugin 'valloric/MatchTagAlways'
+Plugin 'valloric/MatchTagAlways'
 
 " True Sublime Text style multiple selections for Vim
 Plugin 'kris89/vim-multiple-cursors'
-
-" Plugin to toggle, display and navigate marks
-Plugin 'kshenoy/vim-signature'
 
 " Display the indention levels with thin vertical lines
 Plugin 'Yggdroot/indentLine'
@@ -267,7 +264,6 @@ Plugin 'christoomey/vim-tmux-navigator'
 
 " wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
 Plugin 'tpope/vim-endwise'
-
 " Tree-like sidebar file manager for vim
 Plugin 'scrooloose/nerdtree'
 
@@ -278,11 +274,11 @@ Plugin 'jeffkreeftmeijer/vim-numbertoggle'
 " Requires vim to be compiled with lua enabled
 Plugin 'Shougo/neocomplete.vim'
 
-" Highlight preview for substitutions
-Plugin 'osyo-manga/vim-over'
-
 " Ruby documentation support
 Plugin 'danchoi/ri.vim'
+
+" Javascript code completion stuff
+Plugin 'marijnh/tern_for_vim'
 
 " colorscheme bundles
 Plugin 'djjcast/mirodark'
@@ -290,10 +286,10 @@ Plugin 'chriskempson/base16-vim'
 Plugin 'w0ng/vim-hybrid'
 Plugin 'tomasr/molokai'
 Plugin 'altercation/vim-colors-solarized'
-" Plugin 'biskark/vim-ultimate-colorscheme-utility'
 
 " syntax and language related bundles
 Plugin 'vim-ruby/vim-ruby'
+Plugin 'ngmy/vim-rubocop'
 Plugin 'tpope/vim-rails'
 Plugin 'othree/html5.vim'
 Plugin 'pangloss/vim-javascript'
@@ -328,7 +324,8 @@ let g:delimitMate_matchpairs = "(:),[:],{:}"
 " ctrlp
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
+" let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_working_path_mode = 2
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:10'
 let g:ctrlp_switch_buffer = 'Et'
 let g:ctrlp_show_hidden = 1
@@ -421,7 +418,7 @@ set list
 " highlight past 80 characters
 " execute "set colorcolumn=" . join(range(81,335), ',')
 
-set background=light
+set background=dark
 colorscheme solarized
 " let g:molokai_original = 1
 
@@ -430,10 +427,10 @@ if has("gui_macvim")
     " set guifont=Envy\ Code\ R\ for\ Powerline:h12
     " set guifont=Terminus\ (TTF):h12
     " set guifont=PragmataPro\ for\ Powerline:h12
-    set guifont=Meslo\ LG\ L\ DZ\ Regular\ for\ Powerline:h12
+    set guifont=Meslo\ LG\ L\ DZ\ Regular\ for\ Powerline:h10
 endif
 
-set cursorline
+" set cursorline
 
 " Cursor shows matching ) and }
 set showmatch
