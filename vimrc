@@ -189,9 +189,14 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-nnoremap gt :bn<CR>
-nnoremap gT :bp<CR>
-nnoremap <C-c> :bp\|bd #<CR>
+nnoremap gt :MBEbn<CR>
+nnoremap gT :MBEbp<CR>
+nnoremap <C-c> :MBEbd<CR>
+" nnoremap <C-c> :bp\|bd #<CR>
+" nnoremap <C-c> :bp\|bd #<CR>
+
+" search for word under cursor with K
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " * * * * * * * * * * * * * * * * * * *
 " * AUTO COMMANDS                     *
@@ -275,7 +280,7 @@ Plugin 'jeffkreeftmeijer/vim-numbertoggle'
 Plugin 'Shougo/neocomplete.vim'
 
 " Ruby documentation support
-Plugin 'danchoi/ri.vim'
+" Plugin 'danchoi/ri.vim'
 
 " Javascript code completion stuff
 Plugin 'marijnh/tern_for_vim'
