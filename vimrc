@@ -42,6 +42,12 @@ endfunction
 " * VIM SETTINGS                      *
 " * * * * * * * * * * * * * * * * * * *
 
+" Performance increase in syntax highlighting
+set regexpengine=1
+
+" Set fold method
+set foldmethod=manual
+
 " More natural splitting
 set splitbelow
 set splitright
@@ -52,7 +58,7 @@ set number
 
 " Better screen redraw
 set ttyfast
-set lazyredraw
+" set lazyredraw
 set ttyscroll=1
 
 " Remove insert->normal delay
@@ -151,7 +157,7 @@ nnoremap <C-q> <nop>
 nnoremap <Space> <nop>
 
 " Set leader n to stop highlighting
-" nnoremap <leader>n :<C-u>noh<CR>
+nnoremap <leader>n :<C-u>noh<CR>
 
 " Scroll viewport 3 lines instead of 1
 nnoremap <C-e> 3<C-e>
@@ -202,20 +208,43 @@ nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 " * AUTO COMMANDS                     *
 " * * * * * * * * * * * * * * * * * * *
 
-autocmd VimEnter * NERDTree
-autocmd BufEnter * NERDTreeMirror
-
-autocmd VimEnter * wincmd w
+augroup nerd_tree
+    autocmd!
+    autocmd VimEnter * NERDTree
+    " autocmd BufEnter * NERDTreeMirror
+    autocmd VimEnter * wincmd w
+augroup END
 
 " Enable omnicomplete
-autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
-autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
+augroup enable_omnicomplete
+    autocmd!
+    autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
+    autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
+augroup END
 
 " Syntax specific stuff
-au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set filetype=markdown
-au BufNewFile,BufRead *.ss set filetype=html
-au Filetype html,css,scss,sass,ruby,javascript,yml,yaml setlocal ts=2 sts=2 sw=2
-au FileType help nnoremap <silent><buffer> q :q<CR>
+
+augroup markdown_syntax
+    autocmd!
+    autocmd BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set filetype=markdown
+augroup END
+
+augroup silverstripe_syntax
+    autocmd!
+    au BufNewFile,BufRead *.ss set filetype=html
+augroup END
+
+augroup web_syntax
+    autocmd!
+    au Filetype html,css,scss,sass,ruby,javascript,yml,yaml setlocal ts=2 sts=2 sw=2
+augroup END
+
+augroup autocommand_mappings
+    autocmd!
+    au FileType help nnoremap <silent><buffer> q :q<CR>
+    autocmd! GUIEnter * set vb t_vb=
+augroup END
+
 
 " * * * * * * * * * * * * * * * * * * *
 " * BUNDLES AND SUCH                  *
@@ -269,21 +298,31 @@ Plugin 'christoomey/vim-tmux-navigator'
 
 " wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
 Plugin 'tpope/vim-endwise'
+
 " Tree-like sidebar file manager for vim
 Plugin 'scrooloose/nerdtree'
 
 " Toggles between relative and absolute line numbers automatically
-Plugin 'jeffkreeftmeijer/vim-numbertoggle'
+" Plugin 'jeffkreeftmeijer/vim-numbertoggle'
+"
+" Plugin that displays tags in a window, ordered by scope
+Plugin 'majutsushi/tagbar'
 
 " Next generation completion framework after neocomplcache
 " Requires vim to be compiled with lua enabled
 Plugin 'Shougo/neocomplete.vim'
 
-" Ruby documentation support
-" Plugin 'danchoi/ri.vim'
-
 " Javascript code completion stuff
 Plugin 'marijnh/tern_for_vim'
+
+" Dep for easytags
+Plugin 'xolox/vim-misc'
+
+" Automated tag file generation and syntax highlighting of tags in Vim
+Plugin 'xolox/vim-easytags'
+
+" Highlights the line of the cursor only in the current window
+" Plugin 'miyakogi/conoline.vim'
 
 " colorscheme bundles
 Plugin 'djjcast/mirodark'
@@ -313,6 +352,14 @@ filetype plugin indent on
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
 
+" Conoline
+" let g:conoline_auto_enable = 1
+" let g:conoline_use_colorscheme_default_normal=1
+" let g:conoline_use_colorscheme_default_insert=1
+
+" Tagbar
+nnoremap <silent> <F3> :TagbarToggle<CR>
+
 " Numbertoggle
 let g:NumberToggleTrigger="<F2>"
 
@@ -336,8 +383,7 @@ let g:ctrlp_switch_buffer = 'Et'
 let g:ctrlp_show_hidden = 1
 " Open new files in current window
 let g:ctrlp_open_new_file = 'r'
-let g:ctrlp_extensions = ['tag', 'buffertag', 'dir',
-            \ 'undo', 'line', 'yankring']
+let g:ctrlp_extensions = ['tag', 'buffertag', 'dir', 'undo', 'line']
 if executable('ag')
     " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
     let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
@@ -384,10 +430,10 @@ let g:neocomplete#sources#syntax#min_keyword_length = 1
 " NeoComplete mappings
 inoremap <expr><Space> pumvisible() ? neocomplete#smart_close_popup().
             \ "\<Space>" : "\<Space>"
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-l>     neocomplete#complete_common_string()
+inoremap <expr><BS>  neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><C-l> neocomplete#complete_common_string()
 
 " Vim Airline
 " Uncomment below if not using a font with powerline symbols
@@ -439,14 +485,15 @@ endif
 
 " Cursor shows matching ) and }
 set showmatch
+
 set laststatus=2
 set encoding=utf-8
+set synmaxcol=1000
 
 " Set off the other paren
 highlight MatchParen ctermbg=4
 
 " disable sound on errors
-autocmd! GUIEnter * set vb t_vb=
 set noerrorbells
 set novisualbell
 set t_vb=
