@@ -344,6 +344,7 @@ Plugin 'chase/vim-ansible-yaml'
 Plugin 'evanmiller/nginx-vim-syntax'
 Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'Keithbsmiley/tmux.vim'
+Plugin 'dag/vim-fish'
 
 call vundle#end()
 filetype plugin indent on
@@ -352,10 +353,8 @@ filetype plugin indent on
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
 
-" Conoline
-" let g:conoline_auto_enable = 1
-" let g:conoline_use_colorscheme_default_normal=1
-" let g:conoline_use_colorscheme_default_insert=1
+" Easytags
+let g:eastags_async=1
 
 " Tagbar
 nnoremap <silent> <F3> :TagbarToggle<CR>
