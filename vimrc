@@ -25,20 +25,6 @@ if executable('ag')
 endif
 
 " * * * * * * * * * * * * * * * * * * *
-" * FUNCTIONS                         *
-" * * * * * * * * * * * * * * * * * * *
-
-function! Multiple_cursors_before()
-    exe 'NeoCompleteLock'
-    echo 'Disabled autocomplete'
-endfunction
-
-function! Multiple_cursors_after()
-    exe 'NeoCompleteUnlock'
-    echo 'Enabled autocomplete'
-endfunction
-
-" * * * * * * * * * * * * * * * * * * *
 " * VIM SETTINGS                      *
 " * * * * * * * * * * * * * * * * * * *
 
@@ -215,13 +201,6 @@ augroup nerd_tree
     autocmd VimEnter * wincmd w
 augroup END
 
-" Enable omnicomplete
-augroup enable_omnicomplete
-    autocmd!
-    autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
-    autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
-augroup END
-
 " Syntax specific stuff
 
 augroup markdown_syntax
@@ -236,7 +215,7 @@ augroup END
 
 augroup web_syntax
     autocmd!
-    au Filetype html,css,scss,sass,ruby,javascript,yml,yaml setlocal ts=2 sts=2 sw=2
+    au Filetype html,css,scss,sass,ruby,javascript,yml,yaml,eruby setlocal ts=2 sts=2 sw=2
 augroup END
 
 augroup autocommand_mappings
@@ -301,16 +280,12 @@ Plugin 'tpope/vim-endwise'
 
 " Tree-like sidebar file manager for vim
 Plugin 'scrooloose/nerdtree'
-
-" Toggles between relative and absolute line numbers automatically
-" Plugin 'jeffkreeftmeijer/vim-numbertoggle'
 "
 " Plugin that displays tags in a window, ordered by scope
 Plugin 'majutsushi/tagbar'
 
-" Next generation completion framework after neocomplcache
-" Requires vim to be compiled with lua enabled
-Plugin 'Shougo/neocomplete.vim'
+" A code-completion engine for Vim http://valloric.github.io/YouCompleteMe/
+Plugin 'Valloric/YouCompleteMe'
 
 " Javascript code completion stuff
 Plugin 'marijnh/tern_for_vim'
@@ -321,8 +296,17 @@ Plugin 'xolox/vim-misc'
 " Automated tag file generation and syntax highlighting of tags in Vim
 Plugin 'xolox/vim-easytags'
 
-" Highlights the line of the cursor only in the current window
-" Plugin 'miyakogi/conoline.vim'
+" Syntax checking hacks for vim
+Plugin 'scrooloose/syntastic'
+
+" speeddating.vim: use CTRL-A/CTRL-X to increment dates, times, and more
+Plugin 'tpope/vim-speeddating'
+
+" pairs of handy bracket mappings
+Plugin 'tpope/vim-unimpaired'
+
+" Vim plugin for the_silver_searcher, 'ag', a replacement for the Perl module / CLI script 'ack'
+Plugin 'rking/ag.vim'
 
 " colorscheme bundles
 Plugin 'djjcast/mirodark'
@@ -408,32 +392,6 @@ nnoremap <leader>p :<C-u>CtrlP<CR>
 nnoremap <leader>o :<C-u>CtrlPBuffer<CR>
 nnoremap <leader>y :<C-u>CtrlPYankring<CR>
 
-" NeoComplete
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#force_overwrite_completefunc = 1
-let g:neocomplete#data_directory = $HOME.'/.vim/cache/noecompl'
-let g:neocomplete#auto_completion_start_length = 1
-let g:neocomplete#manual_completion_start_length = 0
-let g:neocomplete#enable_auto_close_preview = 1
-let g:neocomplete#max_list = 15
-let g:neocomplete#enable_refresh_always = 1
-let g:neocomplete#enable_smart_case = 1
-
-let g:neocomplete#keyword_patterns = {}
-let g:neocomplete#keyword_patterns._  = '\h\w*'
-
-let g:neocomplete#enable_auto_select = 0
-let g:neocomplete#sources#syntax#min_keyword_length = 1
-" let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
-
-" NeoComplete mappings
-inoremap <expr><Space> pumvisible() ? neocomplete#smart_close_popup().
-            \ "\<Space>" : "\<Space>"
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS>  neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-l> neocomplete#complete_common_string()
-
 " Vim Airline
 " Uncomment below if not using a font with powerline symbols
 " let g:airline_left_sep = ''
@@ -452,6 +410,11 @@ let g:miniBufExplAutoStart = 1
 let g:miniBufExplorerMoreThanOne = 0
 let g:miniBufExplCycleArround = 1
 let g:miniBufExplBRSplit = 0
+
+" Syntastic
+let g:syntastic_ruby_checkers = ['rubocop']
+let g:syntastic_javascript_ruby_checkers = ['jslint']
+let g:syntastic_aggregate_errors = 1
 
 " * * * * * * * * * * * * * * * * * * *
 " * LOOK AND FEEL                     *
