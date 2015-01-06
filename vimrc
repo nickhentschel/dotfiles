@@ -412,9 +412,12 @@ let g:miniBufExplCycleArround = 1
 let g:miniBufExplBRSplit = 0
 
 " Syntastic
-let g:syntastic_ruby_checkers = ['rubocop']
+let g:syntastic_ruby_checkers = ['ruby-lint', 'rubocop']
 let g:syntastic_javascript_ruby_checkers = ['jslint']
 let g:syntastic_aggregate_errors = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_error_symbol = "✗"
+let g:syntastic_warning_symbol = "⚠"
 
 " * * * * * * * * * * * * * * * * * * *
 " * LOOK AND FEEL                     *
