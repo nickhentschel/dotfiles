@@ -310,10 +310,10 @@ Plugin 'rking/ag.vim'
 
 " colorscheme bundles
 Plugin 'djjcast/mirodark'
-Plugin 'chriskempson/base16-vim'
 Plugin 'w0ng/vim-hybrid'
-Plugin 'tomasr/molokai'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'endel/vim-github-colorscheme'
+Plugin 'freeo/vim-kalisi'
 
 " syntax and language related bundles
 Plugin 'vim-ruby/vim-ruby'
@@ -413,7 +413,7 @@ let g:miniBufExplBRSplit = 0
 
 " Syntastic
 let g:syntastic_ruby_checkers = ['ruby-lint', 'rubocop']
-let g:syntastic_javascript_ruby_checkers = ['jslint']
+let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_error_symbol = "✗"
@@ -434,16 +434,15 @@ set list
 " highlight past 80 characters
 " execute "set colorcolumn=" . join(range(81,335), ',')
 
-set background=dark
-colorscheme solarized
-" let g:molokai_original = 1
+colorscheme kalisi
+set background=light
 
 if has("gui_macvim")
     " set noantialias
-    " set guifont=Envy\ Code\ R\ for\ Powerline:h12
+    set guifont=Envy\ Code\ R\ for\ Powerline:h12
     " set guifont=Terminus\ (TTF):h12
     " set guifont=PragmataPro\ for\ Powerline:h12
-    set guifont=Meslo\ LG\ L\ DZ\ Regular\ for\ Powerline:h10
+    " set guifont=Meslo\ LG\ L\ DZ\ Regular\ for\ Powerline:h10
 endif
 
 " set cursorline
