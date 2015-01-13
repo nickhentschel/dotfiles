@@ -229,109 +229,101 @@ augroup END
 " * BUNDLES AND SUCH                  *
 " * * * * * * * * * * * * * * * * * * *
 
-filetype off
-
-set rtp+=~/.vim/bundle/vundle/
-call vundle#begin()
-
-" let Vundle manage Vundle
-" required!
-Plugin 'gmarik/vundle'
+call plug#begin('~/.vim/plugged')
 
 " Allows easy code commenting of lines and blocks
-Plugin 'tomtom/tcomment_vim'
+Plug 'tomtom/tcomment_vim'
 "
 " Allows easy addition/changing of surrounding text
-Plugin 'tpope/vim-surround'
+Plug 'tpope/vim-surround'
 
 " Provides insert mode auto-completion for quotes, parens, brackets, etc.
-Plugin 'Raimondi/delimitMate'
+Plug 'Raimondi/delimitMate'
 
 " Always highlight the enclosing html/xml tags
-Plugin 'valloric/MatchTagAlways'
+Plug 'valloric/MatchTagAlways'
 
 " True Sublime Text style multiple selections for Vim
-Plugin 'kris89/vim-multiple-cursors'
+Plug 'kris89/vim-multiple-cursors'
 
 " Display the indention levels with thin vertical lines
-Plugin 'Yggdroot/indentLine'
+Plug 'Yggdroot/indentLine'
 
 " Easy tag completion for xml-like languages
 " Must sym-link xml.vim in ftplugin directory for completions
-Plugin 'sukima/xmledit'
+Plug 'sukima/xmledit', { 'do': 'rm ftplugin/html.vim && ln -s ftplugin/xml.vim ftplugin/html.vim' }
 
 " Fuzzy file, buffer, mru, tag, etc finder
 " Similar to cmd + p for SublimeText
-Plugin 'kien/ctrlp.vim'
-Plugin 'sgur/ctrlp-extensions.vim'
+Plug 'kien/ctrlp.vim'
+Plug 'sgur/ctrlp-extensions.vim'
 
 " Custom and configurable status line for vim
 " Much lighter than powerline
-Plugin 'bling/vim-airline'
+Plug 'bling/vim-airline'
 
 " Display open buffers pinned to top of window
-Plugin 'fholgado/minibufexpl.vim'
+Plug 'fholgado/minibufexpl.vim'
 
 " Allows ctrl h,j,k,l to navigate tmux panes and vim splits
-Plugin 'christoomey/vim-tmux-navigator'
+Plug 'christoomey/vim-tmux-navigator'
 
 " wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
-Plugin 'tpope/vim-endwise'
+Plug 'tpope/vim-endwise', { 'for': ['eruby', 'ruby'] }
 
 " Tree-like sidebar file manager for vim
-Plugin 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 "
-" Plugin that displays tags in a window, ordered by scope
-Plugin 'majutsushi/tagbar'
+" Plug that displays tags in a window, ordered by scope
+Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
 
 " A code-completion engine for Vim http://valloric.github.io/YouCompleteMe/
-Plugin 'Valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer --system-libclang' }
 
 " Javascript code completion stuff
-Plugin 'marijnh/tern_for_vim'
+Plug 'marijnh/tern_for_vim', { 'for': ['javascript', 'html', 'eruby'] }
 
 " Dep for easytags
-Plugin 'xolox/vim-misc'
+Plug 'xolox/vim-misc'
 
 " Automated tag file generation and syntax highlighting of tags in Vim
-Plugin 'xolox/vim-easytags'
+Plug 'xolox/vim-easytags'
 
 " Syntax checking hacks for vim
-Plugin 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic'
 
 " speeddating.vim: use CTRL-A/CTRL-X to increment dates, times, and more
-Plugin 'tpope/vim-speeddating'
+Plug 'tpope/vim-speeddating'
 
 " pairs of handy bracket mappings
-Plugin 'tpope/vim-unimpaired'
+Plug 'tpope/vim-unimpaired'
 
 " Vim plugin for the_silver_searcher, 'ag', a replacement for the Perl module / CLI script 'ack'
-Plugin 'rking/ag.vim'
+Plug 'rking/ag.vim'
 
 " colorscheme bundles
-Plugin 'djjcast/mirodark'
-Plugin 'w0ng/vim-hybrid'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'endel/vim-github-colorscheme'
-Plugin 'freeo/vim-kalisi'
+Plug 'djjcast/mirodark'
+Plug 'w0ng/vim-hybrid'
+Plug 'altercation/vim-colors-solarized'
+Plug 'endel/vim-github-colorscheme'
+Plug 'freeo/vim-kalisi'
 
 " syntax and language related bundles
-Plugin 'vim-ruby/vim-ruby'
-Plugin 'ngmy/vim-rubocop'
-Plugin 'tpope/vim-rails'
-Plugin 'othree/html5.vim'
-Plugin 'pangloss/vim-javascript'
-Plugin 'nono/vim-handlebars'
-Plugin 'elzr/vim-json'
-Plugin 'tpope/vim-markdown'
-Plugin 'chase/vim-ansible-yaml'
-Plugin 'evanmiller/nginx-vim-syntax'
-Plugin 'cakebaker/scss-syntax.vim'
-Plugin 'Keithbsmiley/tmux.vim'
-Plugin 'dag/vim-fish'
+Plug 'vim-ruby/vim-ruby', { 'for': ['eruby', 'ruby'] }
+Plug 'ngmy/vim-rubocop', { 'for': ['eruby', 'ruby'] }
+Plug 'tpope/vim-rails', { 'for': ['eruby', 'ruby'] }
+Plug 'othree/html5.vim', { 'for': ['html', 'eruby'] }
+Plug 'pangloss/vim-javascript', { 'for': ['html', 'eruby', 'javascript'] }
+" Plug 'nono/vim-handlebars'
+Plug 'elzr/vim-json', { 'for': ['json', 'eruby', 'html', 'javascript'] }
+Plug 'tpope/vim-markdown', { 'for': 'markdown' }
+" Plug 'chase/vim-ansible-yaml'
+" Plug 'evanmiller/nginx-vim-syntax'
+Plug 'cakebaker/scss-syntax.vim', { 'for': ['sass', 'scss'] }
+Plug 'Keithbsmiley/tmux.vim', { 'for': 'tmux' }
+Plug 'dag/vim-fish', { 'for': 'fish' }
 
-call vundle#end()
-filetype plugin indent on
+call plug#end()
 
 " * * * * * * * * * * * * * * * * * * *
 " * PLUGIN SETTINGS AND MAPPINGS      *
