@@ -275,7 +275,7 @@ Plug 'tpope/vim-endwise', { 'for': ['eruby', 'ruby'] }
 Plug 'scrooloose/nerdtree'
 "
 " Plug that displays tags in a window, ordered by scope
-Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
+Plug 'majutsushi/tagbar'
 
 " A code-completion engine for Vim http://valloric.github.io/YouCompleteMe/
 Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer --system-libclang' }
@@ -424,7 +424,8 @@ set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶
 set list
 
 " highlight past 80 characters
-" execute "set colorcolumn=" . join(range(81,335), ',')
+" execute "set colorcolumn=" . join(range(82,335), ',')
+" set colorcolumn=80
 
 colorscheme kalisi
 set background=light
