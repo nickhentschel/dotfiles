@@ -25,6 +25,30 @@ if executable('ag')
 endif
 
 " * * * * * * * * * * * * * * * * * * *
+" * FUNCTIONS                         *
+" * * * * * * * * * * * * * * * * * * *
+
+function! ProseOn()
+    Thematic prose
+    Goyo 100
+    MBEClose
+    wincmd w
+    setlocal wrap
+    setlocal spell
+endfunction
+
+function! ProseOff()
+    Thematic default
+    Goyo!
+    MBEOpen
+    setlocal nowrap
+    setlocal nospell
+endfunction
+
+command ProseOn call ProseOn()
+command ProseOff call ProseOff()
+
+" * * * * * * * * * * * * * * * * * * *
 " * VIM SETTINGS                      *
 " * * * * * * * * * * * * * * * * * * *
 
@@ -32,7 +56,7 @@ endif
 set regexpengine=1
 
 " Set fold method
-set foldmethod=manual
+" set foldmethod=manual
 
 " More natural splitting
 set splitbelow
@@ -44,8 +68,8 @@ set number
 
 " Better screen redraw
 set ttyfast
-" set lazyredraw
-set ttyscroll=1
+set lazyredraw
+set ttyscroll=3
 
 " Remove insert->normal delay
 set ttimeoutlen=50
@@ -81,7 +105,7 @@ set ts=4
 set sts=4
 
 " Use english for spellchecking, but don't spellcheck by default
-set spl=en spell
+" set spl=en spell
 set nospell
 
 " Cool tab completion stuff
@@ -99,6 +123,7 @@ set wildignore+=*.gem
 set wildignore+=log/**
 set wildignore+=tmp/**
 set wildignore+=*.png,*.jpg,*.gif
+set wildignore+=*.log
 
 " Enable mouse support in console
 set mouse=a
@@ -218,6 +243,7 @@ augroup web_syntax
     au Filetype html,css,scss,sass,ruby,javascript,yml,yaml,eruby setlocal ts=2 sts=2 sw=2
 augroup END
 
+" Close help sections with q
 augroup autocommand_mappings
     autocmd!
     au FileType help nnoremap <silent><buffer> q :q<CR>
@@ -275,7 +301,7 @@ Plug 'tpope/vim-endwise', { 'for': ['eruby', 'ruby'] }
 Plug 'scrooloose/nerdtree'
 "
 " Plug that displays tags in a window, ordered by scope
-Plug 'majutsushi/tagbar'
+" Plug 'majutsushi/tagbar'
 
 " A code-completion engine for Vim http://valloric.github.io/YouCompleteMe/
 Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer --system-libclang' }
@@ -302,26 +328,32 @@ Plug 'tpope/vim-unimpaired'
 Plug 'rking/ag.vim'
 
 " colorscheme bundles
-Plug 'djjcast/mirodark'
-Plug 'w0ng/vim-hybrid'
-Plug 'altercation/vim-colors-solarized'
-Plug 'endel/vim-github-colorscheme'
+" Plug 'djjcast/mirodark'
+" Plug 'w0ng/vim-hybrid'
+" Plug 'altercation/vim-colors-solarized'
+" Plug 'endel/vim-github-colorscheme'
 Plug 'freeo/vim-kalisi'
+Plug 'reedes/vim-colors-pencil'
+Plug 'reedes/vim-thematic'
 
 " syntax and language related bundles
 Plug 'vim-ruby/vim-ruby', { 'for': ['eruby', 'ruby'] }
-Plug 'ngmy/vim-rubocop', { 'for': ['eruby', 'ruby'] }
 Plug 'tpope/vim-rails', { 'for': ['eruby', 'ruby'] }
 Plug 'othree/html5.vim', { 'for': ['html', 'eruby'] }
 Plug 'pangloss/vim-javascript', { 'for': ['html', 'eruby', 'javascript'] }
 " Plug 'nono/vim-handlebars'
 Plug 'elzr/vim-json', { 'for': ['json', 'eruby', 'html', 'javascript'] }
-Plug 'tpope/vim-markdown', { 'for': 'markdown' }
+Plug 'godlygeek/tabular'
+Plug 'tpope/vim-markdown'
 " Plug 'chase/vim-ansible-yaml'
 " Plug 'evanmiller/nginx-vim-syntax'
-Plug 'cakebaker/scss-syntax.vim', { 'for': ['sass', 'scss'] }
-Plug 'Keithbsmiley/tmux.vim', { 'for': 'tmux' }
-Plug 'dag/vim-fish', { 'for': 'fish' }
+" Plug 'cakebaker/scss-syntax.vim', { 'for': ['sass', 'scss'] }
+" Plug 'Keithbsmiley/tmux.vim', { 'for': 'tmux' }
+" Plug 'dag/vim-fish', { 'for': 'fish' }
+
+" Plugins for prose writing
+Plug 'junegunn/goyo.vim'
+
 
 call plug#end()
 
@@ -331,12 +363,6 @@ call plug#end()
 
 " Easytags
 let g:eastags_async=1
-
-" Tagbar
-nnoremap <silent> <F3> :TagbarToggle<CR>
-
-" Numbertoggle
-let g:NumberToggleTrigger="<F2>"
 
 " NERDTree
 nnoremap <leader>t :NERDTreeToggle<CR>
@@ -382,7 +408,6 @@ endif
 nnoremap <leader>i :<C-u>CtrlPLine<CR>
 nnoremap <leader>p :<C-u>CtrlP<CR>
 nnoremap <leader>o :<C-u>CtrlPBuffer<CR>
-nnoremap <leader>y :<C-u>CtrlPYankring<CR>
 
 " Vim Airline
 " Uncomment below if not using a font with powerline symbols
@@ -411,6 +436,25 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_error_symbol = "✗"
 let g:syntastic_warning_symbol = "⚠"
 
+" Thematic theme setup
+let g:thematic#themes = {
+\ 'default' :{'colorscheme': 'kalisi',
+\                 'background': 'light',
+\                 'ruler': 1,
+\                 'font-size': 12,
+\                 'typeface': 'Envy Code R for Powerline',
+\                 'linespace': 1,
+\                 'airline-theme': 'kalisi'
+\                },
+\ 'prose' :{'colorscheme': 'pencil',
+\                 'background': 'light',
+\                 'typeface': 'Cousine',
+\                 'font-size': 14,
+\                 'linespace': 6,
+\                 'airline-theme': 'pencil'
+\                },
+\ }
+
 " * * * * * * * * * * * * * * * * * * *
 " * LOOK AND FEEL                     *
 " * * * * * * * * * * * * * * * * * * *
@@ -427,25 +471,24 @@ set list
 " execute "set colorcolumn=" . join(range(82,335), ',')
 " set colorcolumn=80
 
-colorscheme kalisi
-set background=light
+let g:thematic#theme_name = 'default'
 
-if has("gui_macvim")
-    " set noantialias
-    set guifont=Envy\ Code\ R\ for\ Powerline:h12
-    " set guifont=Terminus\ (TTF):h12
-    " set guifont=PragmataPro\ for\ Powerline:h12
-    " set guifont=Meslo\ LG\ L\ DZ\ Regular\ for\ Powerline:h10
-endif
+" if has("gui_macvim")
+"     " set noantialias
+"     set guifont=Envy\ Code\ R\ for\ Powerline:h12
+"     " set guifont=Terminus\ (TTF):h12
+"     " set guifont=PragmataPro\ for\ Powerline:h12
+"     " set guifont=Meslo\ LG\ L\ DZ\ Regular\ for\ Powerline:h10
+" endif
 
 " set cursorline
 
 " Cursor shows matching ) and }
-set showmatch
+" set showmatch
 
-set laststatus=2
-set encoding=utf-8
-set synmaxcol=1000
+" set laststatus=2
+" set encoding=utf-8
+set synmaxcol=200
 
 " Set off the other paren
 highlight MatchParen ctermbg=4

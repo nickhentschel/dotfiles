@@ -1,0 +1,36 @@
+AllCops:
+  Include:
+    - Gemfile
+    - Rakefile
+  Exclude:
+    - agent_client/docs/**/*
+    - bin/**/*
+    - bosh_aws_cpi/**/*
+    - bosh_cli/**/*
+    - bosh_cli_plugin_aws/**/*
+    - bosh_common/**/*
+    - bosh_cpi/**/*
+    - bosh_openstack_cpi/**/*
+    - bosh-registry/**/*
+    - bosh_vsphere_cpi/**/*
+    - bosh_warden_cpi/**/*
+    - bosh-monitor/**/*
+    - bosh-release/**/*
+    - bosh-stemcell/spec/stemcells/centos_spec.rb
+    - release/**/*
+    - simple_blobstore_server/**/*
+    - spec/**/*
+    - stemcell_builder/**/*
+    - vendor/**/*
+    - tmp/**/*
+
+
+LineLength:
+  Max: 100
+
+Documentation:
+  Enabled: false
+
+Style/EmptyLines:
+  Description: "Don't use several empty lines in a row."
+  Enabled: false
