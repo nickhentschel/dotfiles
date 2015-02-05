@@ -21,7 +21,7 @@ set shell=/bin/bash
 
 if executable('ag')
     " Use Ag over Grep
-    set grepprg=ag\ --nogroup\ --nocolor
+    set grepprg=ag\ --nogroup\ --nocolor\ --ignore=log/\*\ --ignore=tags
 endif
 
 " * * * * * * * * * * * * * * * * * * *
@@ -228,11 +228,6 @@ augroup END
 
 " Syntax specific stuff
 
-augroup markdown_syntax
-    autocmd!
-    autocmd BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set filetype=markdown
-augroup END
-
 augroup silverstripe_syntax
     autocmd!
     au BufNewFile,BufRead *.ss set filetype=html
@@ -326,6 +321,9 @@ Plug 'tpope/vim-unimpaired'
 
 " Vim plugin for the_silver_searcher, 'ag', a replacement for the Perl module / CLI script 'ack'
 Plug 'rking/ag.vim'
+
+" Hyperfocus writing in VIM
+Plug 'junegunn/limelight.vim'
 
 " colorscheme bundles
 " Plug 'djjcast/mirodark'
@@ -469,17 +467,9 @@ set list
 
 " highlight past 80 characters
 " execute "set colorcolumn=" . join(range(82,335), ',')
-" set colorcolumn=80
+set colorcolumn=80
 
 let g:thematic#theme_name = 'default'
-
-" if has("gui_macvim")
-"     " set noantialias
-"     set guifont=Envy\ Code\ R\ for\ Powerline:h12
-"     " set guifont=Terminus\ (TTF):h12
-"     " set guifont=PragmataPro\ for\ Powerline:h12
-"     " set guifont=Meslo\ LG\ L\ DZ\ Regular\ for\ Powerline:h10
-" endif
 
 " set cursorline
 
