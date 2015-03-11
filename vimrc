@@ -19,6 +19,9 @@
 set nocompatible
 set shell=/bin/bash
 
+" Needed for enabling omnicomplete
+filetype plugin on
+
 if executable('ag')
     " Use Ag over Grep
     set grepprg=ag\ --nogroup\ --nocolor\ --ignore=log/\*\ --ignore=tags
@@ -28,25 +31,24 @@ endif
 " * FUNCTIONS                         *
 " * * * * * * * * * * * * * * * * * * *
 
+" Functions for editing prose/markdown
 function! ProseOn()
     Thematic prose
     Goyo 100
-    MBEClose
     wincmd w
     setlocal wrap
     setlocal spell
 endfunction
 
 function! ProseOff()
-    Thematic default
+    Thematic hybrid
     Goyo!
-    MBEOpen
     setlocal nowrap
     setlocal nospell
 endfunction
 
-command ProseOn call ProseOn()
-command ProseOff call ProseOff()
+command! ProseOn call ProseOn()
+command! ProseOff call ProseOff()
 
 " * * * * * * * * * * * * * * * * * * *
 " * VIM SETTINGS                      *
@@ -55,8 +57,8 @@ command ProseOff call ProseOff()
 " Performance increase in syntax highlighting
 set regexpengine=1
 
-" Set fold method
-" set foldmethod=manual
+" Where to look for tag files
+set tags=./tags;,~/.vimtags
 
 " More natural splitting
 set splitbelow
@@ -73,9 +75,6 @@ set ttyscroll=3
 
 " Remove insert->normal delay
 set ttimeoutlen=50
-
-" encoding dectection
-set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 
 " Get rid of the delay when hitting esc!
 set noesckeys
@@ -105,12 +104,12 @@ set ts=4
 set sts=4
 
 " Use english for spellchecking, but don't spellcheck by default
-" set spl=en spell
+set spl=en spell
 set nospell
 
 " Cool tab completion stuff
-set wildmenu
 set wildmode=list:longest,full
+set wildmenu
 
 " Ignore while searching
 set wildignore=*.o,*.obj,*~
@@ -122,7 +121,7 @@ set wildignore+=vendor/cache/**
 set wildignore+=*.gem
 set wildignore+=log/**
 set wildignore+=tmp/**
-set wildignore+=*.png,*.jpg,*.gif
+set wildignore+=*.png,*.jpg,*.gif,*.pdf,*.psd
 set wildignore+=*.log
 
 " Enable mouse support in console
@@ -145,21 +144,19 @@ set nowb
 
 " Start scrolling when we're 8 lines away from margins
 set scrolloff=8
-" set sidescrolloff=15
-" set sidescroll=1
-" set scrolljump=10
+set sidescrolloff=15
+set sidescroll=1
+set scrolljump=10
 
 " Completion in command mode
-if v:version >= 700
-    set completeopt=menuone,menu
-endif
+" set complete=.,],b,u
+" set completeopt=menuone,preview
+set complete=.,w,b,u,t
+set completeopt=longest,menuone,preview
 
 " map leader to space
 let mapleader=" "
 let g:mapleader=" "
-
-" Remap ex mode cause it sucks
-nnoremap Q <nop>
 
 " Ctrl + v already does this
 nnoremap <C-q> <nop>
@@ -167,16 +164,12 @@ nnoremap <C-q> <nop>
 " Space does nothing in normal mode (prevent cursor from moving)
 nnoremap <Space> <nop>
 
-" Set leader n to stop highlighting
-nnoremap <leader>n :<C-u>noh<CR>
-
 " Scroll viewport 3 lines instead of 1
 nnoremap <C-e> 3<C-e>
 nnoremap <C-y> 3<C-y>
 
 " Easier excape from insert
 inoremap jk <Esc>
-inoremap jj <Esc>
 
 " map save to ctrl+s, requires some shell/terminal tweaking if not in gvim/macvim
 inoremap <c-s> <Esc>:w<CR>
@@ -206,14 +199,16 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-nnoremap gt :MBEbn<CR>
-nnoremap gT :MBEbp<CR>
-nnoremap <C-c> :MBEbd<CR>
-" nnoremap <C-c> :bp\|bd #<CR>
-" nnoremap <C-c> :bp\|bd #<CR>
+nnoremap gt :bnext<CR>
+nnoremap gT :bprevious<CR>
+nnoremap <C-c> :Bdelete<CR>
 
-" search for word under cursor with K
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+" search for word under cursor with Q
+nnoremap Q :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+" Move visual block
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
 
 " * * * * * * * * * * * * * * * * * * *
 " * AUTO COMMANDS                     *
@@ -226,8 +221,6 @@ augroup nerd_tree
     autocmd VimEnter * wincmd w
 augroup END
 
-" Syntax specific stuff
-
 augroup silverstripe_syntax
     autocmd!
     au BufNewFile,BufRead *.ss set filetype=html
@@ -236,15 +229,37 @@ augroup END
 augroup web_syntax
     autocmd!
     au Filetype html,css,scss,sass,ruby,javascript,yml,yaml,eruby setlocal ts=2 sts=2 sw=2
+    " autocmd FileType html,eruby set omnifunc=htmlcomplete#CompleteTags
 augroup END
 
 " Close help sections with q
 augroup autocommand_mappings
     autocmd!
     au FileType help nnoremap <silent><buffer> q :q<CR>
-    autocmd! GUIEnter * set vb t_vb=
 augroup END
 
+" Enable omni completion. (Ctrl-X Ctrl-O)
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+autocmd FileType c set omnifunc=ccomplete#Complete
+autocmd FileType java set omnifunc=javacomplete#Complete
+
+autocmd FileType ruby compiler ruby
+autocmd FileType eruby compiler eruby
+autocmd FileType ruby set omnifunc=rubycomplete#Complete
+autocmd FileType ruby let g:rubycomplete_buffer_loading=1
+autocmd FileType ruby let g:rubycomplete_classes_in_global=1
+
+" use syntax complete if nothing else available
+if has("autocmd") && exists("+omnifunc")
+    autocmd Filetype *
+                \ if &omnifunc == "" |
+                \     setlocal omnifunc=syntaxcomplete#Complete |
+                \ endif
+endif
 
 " * * * * * * * * * * * * * * * * * * *
 " * BUNDLES AND SUCH                  *
@@ -252,27 +267,26 @@ augroup END
 
 call plug#begin('~/.vim/plugged')
 
+" Delete buffers and close files in Vim without closing your windows or messing
+" up your layout
+Plug 'moll/vim-bbye'
+
 " Allows easy code commenting of lines and blocks
 Plug 'tomtom/tcomment_vim'
-"
+
 " Allows easy addition/changing of surrounding text
 Plug 'tpope/vim-surround'
 
 " Provides insert mode auto-completion for quotes, parens, brackets, etc.
 Plug 'Raimondi/delimitMate'
 
-" Always highlight the enclosing html/xml tags
-Plug 'valloric/MatchTagAlways'
-
-" True Sublime Text style multiple selections for Vim
-Plug 'kris89/vim-multiple-cursors'
-
 " Display the indention levels with thin vertical lines
-Plug 'Yggdroot/indentLine'
+" Plug 'Yggdroot/indentLine'
 
 " Easy tag completion for xml-like languages
 " Must sym-link xml.vim in ftplugin directory for completions
-Plug 'sukima/xmledit', { 'do': 'rm ftplugin/html.vim && ln -s ftplugin/xml.vim ftplugin/html.vim' }
+Plug 'sukima/xmledit',
+            \ { 'do': 'rm ftplugin/html.vim && ln -s ftplugin/xml.vim ftplugin/html.vim' }
 
 " Fuzzy file, buffer, mru, tag, etc finder
 " Similar to cmd + p for SublimeText
@@ -283,9 +297,6 @@ Plug 'sgur/ctrlp-extensions.vim'
 " Much lighter than powerline
 Plug 'bling/vim-airline'
 
-" Display open buffers pinned to top of window
-Plug 'fholgado/minibufexpl.vim'
-
 " Allows ctrl h,j,k,l to navigate tmux panes and vim splits
 Plug 'christoomey/vim-tmux-navigator'
 
@@ -294,21 +305,12 @@ Plug 'tpope/vim-endwise', { 'for': ['eruby', 'ruby'] }
 
 " Tree-like sidebar file manager for vim
 Plug 'scrooloose/nerdtree'
-"
-" Plug that displays tags in a window, ordered by scope
-" Plug 'majutsushi/tagbar'
 
-" A code-completion engine for Vim http://valloric.github.io/YouCompleteMe/
-Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer --system-libclang' }
+" Popup completion framework
+Plug 'Shougo/neocomplete.vim'
 
 " Javascript code completion stuff
 Plug 'marijnh/tern_for_vim', { 'for': ['javascript', 'html', 'eruby'] }
-
-" Dep for easytags
-Plug 'xolox/vim-misc'
-
-" Automated tag file generation and syntax highlighting of tags in Vim
-Plug 'xolox/vim-easytags'
 
 " Syntax checking hacks for vim
 Plug 'scrooloose/syntastic'
@@ -319,39 +321,37 @@ Plug 'tpope/vim-speeddating'
 " pairs of handy bracket mappings
 Plug 'tpope/vim-unimpaired'
 
-" Vim plugin for the_silver_searcher, 'ag', a replacement for the Perl module / CLI script 'ack'
+" Vim plugin for the_silver_searcher, 'ag', a replacement for the Perl module /
+" CLI script 'ack'
 Plug 'rking/ag.vim'
 
-" Hyperfocus writing in VIM
-Plug 'junegunn/limelight.vim'
+" Faster matcher for CtrlP
+Plug 'FelikZ/ctrlp-py-matcher'
+
+" easytags
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-easytags'
 
 " colorscheme bundles
 " Plug 'djjcast/mirodark'
-" Plug 'w0ng/vim-hybrid'
+Plug 'w0ng/vim-hybrid'
 " Plug 'altercation/vim-colors-solarized'
-" Plug 'endel/vim-github-colorscheme'
 Plug 'freeo/vim-kalisi'
 Plug 'reedes/vim-colors-pencil'
+
+" Convenient theme managment
 Plug 'reedes/vim-thematic'
 
 " syntax and language related bundles
-Plug 'vim-ruby/vim-ruby', { 'for': ['eruby', 'ruby'] }
-Plug 'tpope/vim-rails', { 'for': ['eruby', 'ruby'] }
-Plug 'othree/html5.vim', { 'for': ['html', 'eruby'] }
-Plug 'pangloss/vim-javascript', { 'for': ['html', 'eruby', 'javascript'] }
-" Plug 'nono/vim-handlebars'
-Plug 'elzr/vim-json', { 'for': ['json', 'eruby', 'html', 'javascript'] }
-Plug 'godlygeek/tabular'
+Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-rails'
+Plug 'othree/html5.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'elzr/vim-json'
 Plug 'tpope/vim-markdown'
-" Plug 'chase/vim-ansible-yaml'
-" Plug 'evanmiller/nginx-vim-syntax'
-" Plug 'cakebaker/scss-syntax.vim', { 'for': ['sass', 'scss'] }
-" Plug 'Keithbsmiley/tmux.vim', { 'for': 'tmux' }
-" Plug 'dag/vim-fish', { 'for': 'fish' }
 
 " Plugins for prose writing
 Plug 'junegunn/goyo.vim'
-
 
 call plug#end()
 
@@ -359,8 +359,22 @@ call plug#end()
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
 
-" Easytags
-let g:eastags_async=1
+" NeoComplete
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length
+let g:neocomplete#sources#syntax#min_keyword_length = 2
+
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+    return neocomplete#close_popup() . "\<CR>"
+    " For no inserting <CR> key.
+    "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " NERDTree
 nnoremap <leader>t :NERDTreeToggle<CR>
@@ -375,20 +389,25 @@ let g:delimitMate_matchpairs = "(:),[:],{:}"
 " ctrlp
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_cmd = 'CtrlP'
-" let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_working_path_mode = 2
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:10'
 let g:ctrlp_switch_buffer = 'Et'
-let g:ctrlp_show_hidden = 1
+" let g:ctrlp_lazy_update = 350
 " Open new files in current window
 let g:ctrlp_open_new_file = 'r'
 let g:ctrlp_extensions = ['tag', 'buffertag', 'dir', 'undo', 'line']
+let g:ctrlp_use_caching = 1
+
 if executable('ag')
     " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-    " ag is fast enough that CtrlP doesn't need to cache
-    let g:ctrlp_use_caching = 0
+    let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+                \ --ignore .git
+                \ --ignore .svn
+                \ --ignore .hg
+                \ --ignore .DS_Store
+                \ --ignore "**/*.pyc"
+                \ -g ""'
 else
     let g:ctrlp_custom_ignore = {
                 \ 'dir': '\v[\/](\.git|\.hg|\.svn|CVS|tmp|Library|Applications|Music|[^\/]*-store)$',
@@ -402,16 +421,18 @@ else
                 \ }
 endif
 
-" ctrlp mappings
-nnoremap <leader>i :<C-u>CtrlPLine<CR>
-nnoremap <leader>p :<C-u>CtrlP<CR>
-nnoremap <leader>o :<C-u>CtrlPBuffer<CR>
+if !has('python')
+    echo 'In order to use pymatcher plugin, you need +python compiled vim'
+else
+    let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+endif
 
 " Vim Airline
 " Uncomment below if not using a font with powerline symbols
 " let g:airline_left_sep = ''
 " let g:airline_right_sep = ''
 " let g:airline_theme = "luna"
+let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#bufferline#overwrite_variables = 0
 let g:airline#extensions#bufferline#enabled = 0
@@ -419,12 +440,8 @@ let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#ctrlp#enabled = 1
 let g:airline#extensions#ctrlp#show_adjacent_modes = 1
-
-" Minibuff Explorer
-let g:miniBufExplAutoStart = 1
-let g:miniBufExplorerMoreThanOne = 0
-let g:miniBufExplCycleArround = 1
-let g:miniBufExplBRSplit = 0
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
 
 " Syntastic
 let g:syntastic_ruby_checkers = ['ruby-lint', 'rubocop']
@@ -433,25 +450,42 @@ let g:syntastic_aggregate_errors = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_error_symbol = "✗"
 let g:syntastic_warning_symbol = "⚠"
+let g:syntastic_enable_signs = 0
+let g:syntastic_echo_current_error = 0
 
 " Thematic theme setup
 let g:thematic#themes = {
-\ 'default' :{'colorscheme': 'kalisi',
-\                 'background': 'light',
-\                 'ruler': 1,
-\                 'font-size': 12,
-\                 'typeface': 'Envy Code R for Powerline',
-\                 'linespace': 1,
-\                 'airline-theme': 'kalisi'
-\                },
-\ 'prose' :{'colorscheme': 'pencil',
-\                 'background': 'light',
-\                 'typeface': 'Cousine',
-\                 'font-size': 14,
-\                 'linespace': 6,
-\                 'airline-theme': 'pencil'
-\                },
-\ }
+            \ 'default' :{'colorscheme': 'kalisi',
+            \                 'background': 'dark',
+            \                 'ruler': 1,
+            \                 'font-size': 12,
+            \                 'typeface': 'Envy Code R for Powerline',
+            \                 'linespace': 1,
+            \                 'airline-theme': 'kalisi'
+            \                },
+            \ 'hybrid' :{'colorscheme': 'hybrid',
+            \                 'background': 'dark',
+            \                 'ruler': 1,
+            \                 'font-size': 12,
+            \                 'typeface': 'PragmataPro for Powerline',
+            \                 'linespace': 1,
+            \                 'airline-theme': 'hybrid'
+            \                },
+            \ 'prose' :{'colorscheme': 'pencil',
+            \                 'background': 'light',
+            \                 'typeface': 'Cousine',
+            \                 'font-size': 14,
+            \                 'linespace': 6,
+            \                 'airline-theme': 'pencil'
+            \                },
+            \ }
+
+" Easytags sensible defaults
+let g:easytags_events = ['BufReadPost', 'BufWritePost']
+let g:easytags_async = 1
+let g:easytags_dynamic_files = 1
+let g:easytags_resolve_links = 1
+let g:easytags_suppress_ctags_warning = 1
 
 " * * * * * * * * * * * * * * * * * * *
 " * LOOK AND FEEL                     *
@@ -462,31 +496,30 @@ set guioptions-=r
 set guioptions-=L
 
 " Make tabs, trailing whitespace, and non-breaking spaces visible
-set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶
+set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶,nbsp:×
 set list
 
 " highlight past 80 characters
-" execute "set colorcolumn=" . join(range(82,335), ',')
-set colorcolumn=80
+execute "set colorcolumn=" . join(range(82,335), ',')
 
-let g:thematic#theme_name = 'default'
+let g:thematic#theme_name = 'hybrid'
 
-" set cursorline
+set cursorline
 
 " Cursor shows matching ) and }
-" set showmatch
+set showmatch
 
-" set laststatus=2
-" set encoding=utf-8
-set synmaxcol=200
+" set noantialias
+
+set laststatus=2
+set encoding=utf-8
+set synmaxcol=100
 
 " Set off the other paren
 highlight MatchParen ctermbg=4
 
 " disable sound on errors
-set noerrorbells
-set novisualbell
-set t_vb=
-set tm=500
+set noeb vb t_vb=
+au GUIEnter * set vb t_vb=
 
 syntax on
