@@ -19,8 +19,9 @@ slate.bindAll({
     // NOTE: some of these may *not* work if you have not removed the expose/spaces/mission control bindings
     'd:ctrl;shift' : S.op('push', { 'direction' : 'right', 'style' : 'bar-resize:screenSizeX/2' }),
     'a:ctrl;shift' : S.op('push', { 'direction' : 'left', 'style' : 'bar-resize:screenSizeX/2' }),
-    'w:ctrl;shift' : S.op('push', { 'direction' : 'up', 'style' : 'bar-resize:screenSizeY' }),
+    'w:ctrl;shift' : S.op('push', { 'direction' : 'up', 'style' : 'bar-resize:screenSizeY/2' }),
     's:ctrl;shift' : S.op('push', { 'direction' : 'down', 'style' : 'bar-resize:screenSizeY/2' }),
+    'f:ctrl;shift' : S.op('push', { 'direction' : 'down', 'style' : 'bar-resize:screenSizeY' }),
 
     // Nudge Bindings
     // NOTE: some of these may *not* work if you have not removed the expose/spaces/mission control bindings

@@ -15,12 +15,15 @@
 " *                                                                           *
 " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+autocmd!
+
 " Necesary  for lots of cool vim things
 set nocompatible
 set shell=/bin/bash
 
 " Needed for enabling omnicomplete
 filetype plugin on
+filetype indent on
 
 if executable('ag')
     " Use Ag over Grep
@@ -154,6 +157,9 @@ set scrolljump=10
 set complete=.,w,b,u,t
 set completeopt=longest,menuone,preview
 
+" Don't reset cursor to start of line when moving around
+set nostartofline
+
 " map leader to space
 let mapleader=" "
 let g:mapleader=" "
@@ -261,6 +267,10 @@ if has("autocmd") && exists("+omnifunc")
                 \ endif
 endif
 
+" Disable seach highlighting in insert mode, re-enable in normal mode
+autocmd InsertEnter * :setlocal nohlsearch
+autocmd InsertLeave * :setlocal hlsearch
+
 " * * * * * * * * * * * * * * * * * * *
 " * BUNDLES AND SUCH                  *
 " * * * * * * * * * * * * * * * * * * *
@@ -309,6 +319,12 @@ Plug 'scrooloose/nerdtree'
 " Popup completion framework
 Plug 'Shougo/neocomplete.vim'
 
+" neo-snippet plugin contains neocomplcache snippets source
+Plug 'Shougo/neosnippet.vim'
+
+" vim snippets for neosnippet
+Plug 'honza/vim-snippets'
+
 " Javascript code completion stuff
 Plug 'marijnh/tern_for_vim', { 'for': ['javascript', 'html', 'eruby'] }
 
@@ -335,7 +351,7 @@ Plug 'xolox/vim-easytags'
 " colorscheme bundles
 " Plug 'djjcast/mirodark'
 Plug 'w0ng/vim-hybrid'
-" Plug 'altercation/vim-colors-solarized'
+Plug 'altercation/vim-colors-solarized'
 Plug 'freeo/vim-kalisi'
 Plug 'reedes/vim-colors-pencil'
 
@@ -375,6 +391,27 @@ function! s:my_cr_function()
 endfunction
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+" NeoSnippet
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: "\<TAB>"
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+
+" Tell Neosnippet about the other snippets
+let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 
 " NERDTree
 nnoremap <leader>t :NERDTreeToggle<CR>
@@ -471,6 +508,14 @@ let g:thematic#themes = {
             \                 'linespace': 1,
             \                 'airline-theme': 'hybrid'
             \                },
+            \ 'solarized' :{'colorscheme': 'solarized',
+            \                 'background': 'dark',
+            \                 'ruler': 1,
+            \                 'font-size': 12,
+            \                 'typeface': 'PragmataPro for Powerline',
+            \                 'linespace': 1,
+            \                 'airline-theme': 'solarized'
+            \                },
             \ 'prose' :{'colorscheme': 'pencil',
             \                 'background': 'light',
             \                 'typeface': 'Cousine',
@@ -502,7 +547,7 @@ set list
 " highlight past 80 characters
 execute "set colorcolumn=" . join(range(82,335), ',')
 
-let g:thematic#theme_name = 'hybrid'
+let g:thematic#theme_name = 'solarized'
 
 set cursorline
 
@@ -513,7 +558,7 @@ set showmatch
 
 set laststatus=2
 set encoding=utf-8
-set synmaxcol=100
+set synmaxcol=300
 
 " Set off the other paren
 highlight MatchParen ctermbg=4
