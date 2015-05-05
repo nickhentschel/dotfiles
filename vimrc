@@ -205,9 +205,16 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+" Tab navigation mappings
 nnoremap gt :bnext<CR>
 nnoremap gT :bprevious<CR>
 nnoremap <C-c> :Bdelete<CR>
+
+" Make use of the arrow keys
+nnoremap <left>  :5winc ><CR>
+nnoremap <right> :5winc <<CR>
+nnoremap <down>  :5winc -<CR>
+nnoremap <up>    :5winc +<CR>
 
 " search for word under cursor with Q
 nnoremap Q :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
@@ -253,11 +260,11 @@ autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 autocmd FileType c set omnifunc=ccomplete#Complete
 autocmd FileType java set omnifunc=javacomplete#Complete
 
-autocmd FileType ruby compiler ruby
-autocmd FileType eruby compiler eruby
+" autocmd FileType ruby compiler ruby
+" autocmd FileType eruby compiler eruby
 autocmd FileType ruby set omnifunc=rubycomplete#Complete
-autocmd FileType ruby let g:rubycomplete_buffer_loading=1
-autocmd FileType ruby let g:rubycomplete_classes_in_global=1
+" autocmd FileType ruby let g:rubycomplete_buffer_loading=1
+" autocmd FileType ruby let g:rubycomplete_classes_in_global=1
 
 " use syntax complete if nothing else available
 if has("autocmd") && exists("+omnifunc")
@@ -270,6 +277,12 @@ endif
 " Disable seach highlighting in insert mode, re-enable in normal mode
 autocmd InsertEnter * :setlocal nohlsearch
 autocmd InsertLeave * :setlocal hlsearch
+
+" Rainbow parens
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
 
 " * * * * * * * * * * * * * * * * * * *
 " * BUNDLES AND SUCH                  *
@@ -316,6 +329,9 @@ Plug 'tpope/vim-endwise', { 'for': ['eruby', 'ruby'] }
 " Tree-like sidebar file manager for vim
 Plug 'scrooloose/nerdtree'
 
+" NERDTree icons
+Plug 'ryanoasis/vim-webdevicons'
+
 " Popup completion framework
 Plug 'Shougo/neocomplete.vim'
 
@@ -344,12 +360,15 @@ Plug 'rking/ag.vim'
 " Faster matcher for CtrlP
 Plug 'FelikZ/ctrlp-py-matcher'
 
+" Better rainbow parentheses
+Plug 'kien/rainbow_parentheses.vim'
+
 " easytags
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-easytags'
 
 " colorscheme bundles
-" Plug 'djjcast/mirodark'
+Plug 'djjcast/mirodark'
 Plug 'w0ng/vim-hybrid'
 Plug 'altercation/vim-colors-solarized'
 Plug 'freeo/vim-kalisi'
@@ -362,7 +381,7 @@ Plug 'reedes/vim-thematic'
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
 Plug 'othree/html5.vim'
-Plug 'pangloss/vim-javascript'
+Plug 'othree/yajs.vim'
 Plug 'elzr/vim-json'
 Plug 'tpope/vim-markdown'
 
@@ -416,6 +435,25 @@ let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 " NERDTree
 nnoremap <leader>t :NERDTreeToggle<CR>
 let NERDTreeShowHidden=1
+" NERDTress File highlighting
+function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+endfunction
+
+call NERDTreeHighlightFile('jade', 'green', 'none', 'green', '#151515')
+call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('md', 'blue', 'none', '#3366FF', '#151515')
+call NERDTreeHighlightFile('yml', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('config', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('conf', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('html', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('styl', 'cyan', 'none', 'cyan', '#151515')
+call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
+call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
+call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
+call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
 
 " DelimitMate
 let g:delimitMate_expand_cr = 1
@@ -504,15 +542,27 @@ let g:thematic#themes = {
             \                 'background': 'dark',
             \                 'ruler': 1,
             \                 'font-size': 12,
-            \                 'typeface': 'PragmataPro for Powerline',
+            \                 'typeface': 'PragmataPro for Powerline Plus Nerd File Types Mono',
             \                 'linespace': 1,
             \                 'airline-theme': 'hybrid'
             \                },
-            \ 'solarized' :{'colorscheme': 'solarized',
+            \ 'github' :{'colorscheme': 'github',
+            \                 'background': 'light',
+            \                 'font-size': 12,
+            \                 'typeface': 'Consolas',
+            \                },
+            \ 'mirodark' :{'colorscheme': 'mirodark',
             \                 'background': 'dark',
             \                 'ruler': 1,
             \                 'font-size': 12,
-            \                 'typeface': 'PragmataPro for Powerline',
+            \                 'typeface': 'PragmataPro for Powerline Plus Nerd File Types Mono',
+            \                 'linespace': 1
+            \                },
+            \ 'solarized' :{'colorscheme': 'solarized',
+            \                 'background': 'light',
+            \                 'ruler': 1,
+            \                 'font-size': 12,
+            \                 'typeface': 'PragmataPro for Powerline Plus Nerd File Types Mono',
             \                 'linespace': 1,
             \                 'airline-theme': 'solarized'
             \                },
@@ -532,6 +582,29 @@ let g:easytags_dynamic_files = 1
 let g:easytags_resolve_links = 1
 let g:easytags_suppress_ctags_warning = 1
 
+" Rainbow Parenthesis
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['black',       'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
+
 " * * * * * * * * * * * * * * * * * * *
 " * LOOK AND FEEL                     *
 " * * * * * * * * * * * * * * * * * * *
@@ -545,7 +618,7 @@ set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶,nbsp:×
 set list
 
 " highlight past 80 characters
-execute "set colorcolumn=" . join(range(82,335), ',')
+" execute "set colorcolumn=" . join(range(82,335), ',')
 
 let g:thematic#theme_name = 'solarized'
 
