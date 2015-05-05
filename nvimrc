@@ -71,11 +71,6 @@ set incsearch
 
 set number
 
-" Better screen redraw
-set ttyfast
-set lazyredraw
-set ttyscroll=3
-
 " Remove insert->normal delay
 set ttimeoutlen=50
 
@@ -301,7 +296,7 @@ Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-surround'
 
 " Provides insert mode auto-completion for quotes, parens, brackets, etc.
-Plug 'Raimondi/delimitMate'
+" Plug 'Raimondi/delimitMate'
 
 " Display the indention levels with thin vertical lines
 " Plug 'Yggdroot/indentLine'
@@ -333,10 +328,10 @@ Plug 'scrooloose/nerdtree'
 Plug 'ryanoasis/vim-webdevicons'
 
 " Popup completion framework
-Plug 'Shougo/neocomplete.vim'
+" Plug 'Shougo/neocomplete.vim'
 
 " neo-snippet plugin contains neocomplcache snippets source
-Plug 'Shougo/neosnippet.vim'
+" Plug 'Shougo/neosnippet.vim'
 
 " vim snippets for neosnippet
 Plug 'honza/vim-snippets'
@@ -396,25 +391,25 @@ call plug#end()
 
 " NeoComplete
 " Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
+" let g:neocomplete#enable_at_startup = 1
 " Use smartcase.
-let g:neocomplete#enable_smart_case = 1
+" let g:neocomplete#enable_smart_case = 1
 " Set minimum syntax keyword length
-let g:neocomplete#sources#syntax#min_keyword_length = 2
+" let g:neocomplete#sources#syntax#min_keyword_length = 2
 
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-    return neocomplete#close_popup() . "\<CR>"
-    " For no inserting <CR> key.
-    "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-
+" inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+" function! s:my_cr_function()
+"     return neocomplete#close_popup() . "\<CR>"
+"     " For no inserting <CR> key.
+"     "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+" endfunction
+" " <TAB>: completion.
+" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+"
 " NeoSnippet
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
+" imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 " SuperTab like snippets behavior.
 imap <expr><TAB> neosnippet#expandable_or_jumpable() ?

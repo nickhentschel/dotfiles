@@ -1,25 +1,25 @@
 # The early workings of a rakefile to install these dotfiles.
-# TODO: Add a clean task for uninstall, add task to enable submodules
+# TODO: Add a clean task for uninstall
 
 DOTFILES_INSTALL_PATH = ENV['HOME']
-GIT_REPO_PATH = File.join(DOTFILES_INSTALL_PATH, 'dotfiles')
 BACKUP_DIR_PATH = File.join(DOTFILES_INSTALL_PATH, '.dotfiles_backup')
-DEPENDENCIES = %w(git fish wget)
+DEPENDENCIES = %w(fish wget)
+IGNORED_FILES = %w(RAKEFILE config.fish osx)
 
 def info(text)
-  STDOUT.puts "INFO: #{text}"
+  puts(text)
 end
 
 def warning(text)
-  STDOUT.puts "WARNING: \033[33m#{text}\033[0m"
+  puts("WARNING: \033[33m#{text}\033[0m")
 end
 
 def error(text)
-  STDERR.puts "ERROR: \033[31m#{text}\033[0m"
+  puts("ERROR: \033[31m#{text}\033[0m")
 end
 
 def success(text)
-  STDOUT.puts "SUCCESS: \033[32m#{text}\033[0m"
+  puts("SUCCESS: \033[32m#{text}\033[0m")
 end
 
 def command_exists?(command)
@@ -28,39 +28,33 @@ def command_exists?(command)
   end
 end
 
-def file_exists?(file)
-  File.exist?(File.join(USER_INSTALL_DIRECTORY, file))
-end
-
 def backup_file(file)
-  Dir.mkdir(BACKUP_DIR_PATH) unless File.exist?(BACKUP_DIR_PATH)
-  File.rename(
+  FileUtils.mv(
     File.join(USER_INSTALL_DIRECTORY, ".#{file}"),
     File.join(BACKUP_DIR_PATH, ".#{file}")
-  ) if file_exist?(".#{file}")
+  ) if File.file?(File.join(USER_INSTALL_DIRECTORY, ".#{file}"),
 end
 
 task :default do
-  # info 'To install, run rake install. To see a list of options, run rake -T'
-  info command_exists? 'fish'
+  info('To install, run rake install. To see a list of options, run rake -T')
 end
 
 desc 'check dependencies'
 task :check_dependencies do
-  failed_deps = ['someting']
+  failed_deps = []
   DEPENDENCIES.each do |dep|
     failed_deps << dep unless command_exists? dep
   end
-  abort(error 'Missing dependencies, aborting') unless failed_deps.empty?
+  abort(error('Missing dependencies, aborting')) unless failed_deps.empty?
 end
 
 desc 'change shell to fish shell'
 task :change_shell_to_fish do
-  info 'Changing shell to fish, enter password when prompted'
+  info('Changing shell to fish, enter password when prompted')
   if ENV['SHELL'] != '/usr/local/bin/fish'
-    sh %( chsh -s /usr/local/bin/fish ) do |ok, res|
+    sh %(chsh -s /usr/local/bin/fish) do |ok, res|
       if !ok
-        error "changing shell failed: #{res.exitstatus}"
+        abort(error "changing shell failed: #{res.exitstatus}")
       else
         success 'shell changed to fish'
       end
@@ -68,4 +62,9 @@ task :change_shell_to_fish do
   else
     warning 'Shell already set to fish, taking no action'
   end
+end
+
+desc 'backup existing dotfiles'
+task :backup_existing_dotfiles do
+  Dir.mkdir(BACKUP_DIR_PATH) unless File.exist?(BACKUP_DIR_PATH)
 end
