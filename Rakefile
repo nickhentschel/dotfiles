@@ -1,10 +1,12 @@
 # The early workings of a rakefile to install these dotfiles.
 # TODO: Add a clean task for uninstall
 
-DOTFILES_INSTALL_PATH = ENV['HOME']
-BACKUP_DIR_PATH = File.join(DOTFILES_INSTALL_PATH, '.dotfiles_backup')
+DOTFILES_INSTALL_PATH = '/Users/nhentschel/Downloads/tmp'
+# DOTFILES_INSTALL_PATH = ENV['HOME']
+BACKUP_DIR_PATH = File.join(DOTFILES_INSTALL_PATH, "dotfiles_backup_#{Time.now.to_i}")
 DEPENDENCIES = %w(fish wget)
-IGNORED_FILES = %w(RAKEFILE config.fish osx)
+IGNORED_FILES = %w(README.md Rakefile config.fish osx)
+FILE_LIST = Dir[File.basename(File.join(Dir.pwd, '*'))] - IGNORED_FILES
 
 def info(text)
   puts(text)
@@ -30,13 +32,21 @@ end
 
 def backup_file(file)
   FileUtils.mv(
-    File.join(USER_INSTALL_DIRECTORY, ".#{file}"),
+    File.join(DOTFILES_INSTALL_PATH, ".#{file}"),
     File.join(BACKUP_DIR_PATH, ".#{file}")
-  ) if File.file?(File.join(USER_INSTALL_DIRECTORY, ".#{file}"),
+  ) if File.file?(File.join(DOTFILES_INSTALL_PATH, ".#{file}"))
+end
+
+def link_file(file)
+  FileUtils.ln_s(
+    File.join(Dir.pwd, file),
+    File.join(DOTFILES_INSTALL_PATH, ".#{file}")
+  ) unless File.file?
 end
 
 task :default do
   info('To install, run rake install. To see a list of options, run rake -T')
+  info("#{FILE_LIST}")
 end
 
 desc 'check dependencies'
@@ -45,26 +55,38 @@ task :check_dependencies do
   DEPENDENCIES.each do |dep|
     failed_deps << dep unless command_exists? dep
   end
-  abort(error('Missing dependencies, aborting')) unless failed_deps.empty?
+  abort(error("Missing dependencies: #{failed_deps.join(',')} - aborting")) unless failed_deps.empty?
 end
 
 desc 'change shell to fish shell'
 task :change_shell_to_fish do
   info('Changing shell to fish, enter password when prompted')
-  if ENV['SHELL'] != '/usr/local/bin/fish'
+  if File.basename(ENV['SHELL']) != 'fish'
     sh %(chsh -s /usr/local/bin/fish) do |ok, res|
       if !ok
-        abort(error "changing shell failed: #{res.exitstatus}")
+        abort(error("changing shell failed: #{res.exitstatus}"))
       else
-        success 'shell changed to fish'
+        success('shell changed to fish')
       end
     end
   else
-    warning 'Shell already set to fish, taking no action'
+    warning('Shell already set to fish, taking no action')
   end
 end
 
 desc 'backup existing dotfiles'
 task :backup_existing_dotfiles do
-  Dir.mkdir(BACKUP_DIR_PATH) unless File.exist?(BACKUP_DIR_PATH)
+  Dir.mkdir(BACKUP_DIR_PATH) # always unique due to timestamp
+  FILE_LIST.each do |file|
+    backup_file(file)
+  end
+  success("Existing dotfiles backed up to #{BACKUP_DIR_PATH}")
+end
+
+desc 'link new dotfiles'
+task :link_new_dotfiles do
+  FILE_LIST.each do |file|
+    link_file(file)
+  end
+  success("New dotfiles successfully linked to #{DOTFILES_INSTALL_PATH}")
 end
