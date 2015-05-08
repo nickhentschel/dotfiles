@@ -192,13 +192,13 @@ nnoremap <silent> zk O<Esc>
 
 " Swap ; and :  Convenient.
 nnoremap ; :
-nnoremap : ;
+noremap : ;
 
 " Split navigation mappings
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+" nnoremap <C-J> <C-W><C-J>
+" nnoremap <C-K> <C-W><C-K>
+" nnoremap <C-L> <C-W><C-L>
+" nnoremap <C-H> <C-W><C-H>
 
 " Tab navigation mappings
 nnoremap gt :bnext<CR>
@@ -283,7 +283,7 @@ au Syntax * RainbowParenthesesLoadBraces
 " * BUNDLES AND SUCH                  *
 " * * * * * * * * * * * * * * * * * * *
 
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.nvim/plugged')
 
 " Delete buffers and close files in Vim without closing your windows or messing
 " up your layout
@@ -358,6 +358,9 @@ Plug 'FelikZ/ctrlp-py-matcher'
 " Better rainbow parentheses
 Plug 'kien/rainbow_parentheses.vim'
 
+" Vim + tmux navigation
+Plug 'christoomey/vim-tmux-navigator'
+
 " easytags
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-easytags'
@@ -368,6 +371,7 @@ Plug 'w0ng/vim-hybrid'
 Plug 'altercation/vim-colors-solarized'
 Plug 'freeo/vim-kalisi'
 Plug 'reedes/vim-colors-pencil'
+Plug 'sickill/vim-monokai'
 
 " Convenient theme managment
 Plug 'reedes/vim-thematic'
@@ -405,27 +409,6 @@ call plug#end()
 " endfunction
 " " <TAB>: completion.
 " inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-"
-" NeoSnippet
-" imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-" smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-" xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-" SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: "\<TAB>"
-
-" For snippet_complete marker.
-if has('conceal')
-  set conceallevel=2 concealcursor=i
-endif
-
-" Tell Neosnippet about the other snippets
-let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 
 " NERDTree
 nnoremap <leader>t :NERDTreeToggle<CR>
