@@ -1,8 +1,8 @@
 # The early workings of a rakefile to install these dotfiles.
 # TODO: Add a clean task for uninstall
 
-DOTFILES_INSTALL_PATH = '/Users/nhentschel/Downloads/tmp'
-# DOTFILES_INSTALL_PATH = ENV['HOME']
+# DOTFILES_INSTALL_PATH = '/Users/nhentschel/Downloads/tmp'
+DOTFILES_INSTALL_PATH = ENV['HOME']
 BACKUP_DIR_PATH = File.join(DOTFILES_INSTALL_PATH, "dotfiles_backup_#{Time.now.to_i}")
 DEPENDENCIES = %w(fish wget)
 IGNORED_FILES = %w(README.md Rakefile config.fish osx)
@@ -41,7 +41,7 @@ def link_file(file)
   FileUtils.ln_s(
     File.join(Dir.pwd, file),
     File.join(DOTFILES_INSTALL_PATH, ".#{file}")
-  ) unless File.file?
+  )
 end
 
 task :default do

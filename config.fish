@@ -1,15 +1,15 @@
 # Path to your oh-my-fish.
 set fish_path $HOME/.oh-my-fish
 
-set -gx DYLD_LIBRARY_PATH '/opt/oracle/instantclient_11_2'
-set -gx ORACLE_HOME '/opt/oracle/instantclient_11_2'
-set -gx RBENV_ROOT /usr/local/var/rbenv
-. (rbenv init -|psub)
+# set -gx DYLD_LIBRARY_PATH '/opt/oracle/instantclient_11_2'
+# set -gx ORACLE_HOME '/opt/oracle/instantclient_11_2'
+# set -gx RBENV_ROOT /usr/local/var/rbenv
+# . (rbenv init -|psub)
 
 set --erase fish_greeting
 
-set EDITOR mvim
-set VISUAL mvim
+set EDITOR nvim
+set VISUAL nvim
 
 # Theme
 set fish_theme toaster

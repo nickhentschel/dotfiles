@@ -333,9 +333,6 @@ Plug 'ryanoasis/vim-webdevicons'
 " neo-snippet plugin contains neocomplcache snippets source
 " Plug 'Shougo/neosnippet.vim'
 
-" vim snippets for neosnippet
-Plug 'honza/vim-snippets'
-
 " Javascript code completion stuff
 Plug 'marijnh/tern_for_vim', { 'for': ['javascript', 'html', 'eruby'] }
 
