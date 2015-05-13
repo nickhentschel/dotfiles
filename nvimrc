@@ -36,7 +36,6 @@ endif
 
 " Functions for editing prose/markdown
 function! ProseOn()
-    Thematic prose
     Goyo 100
     wincmd w
     setlocal wrap
@@ -44,7 +43,6 @@ function! ProseOn()
 endfunction
 
 function! ProseOff()
-    Thematic hybrid
     Goyo!
     setlocal nowrap
     setlocal nospell
@@ -195,10 +193,10 @@ nnoremap ; :
 noremap : ;
 
 " Split navigation mappings
-" nnoremap <C-J> <C-W><C-J>
-" nnoremap <C-K> <C-W><C-K>
-" nnoremap <C-L> <C-W><C-L>
-" nnoremap <C-H> <C-W><C-H>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 
 " Tab navigation mappings
 nnoremap gt :bnext<CR>
@@ -327,11 +325,8 @@ Plug 'scrooloose/nerdtree'
 " NERDTree icons
 Plug 'ryanoasis/vim-webdevicons'
 
-" Popup completion framework
-" Plug 'Shougo/neocomplete.vim'
-
-" neo-snippet plugin contains neocomplcache snippets source
-" Plug 'Shougo/neosnippet.vim'
+" YouCompleteMe
+Plug 'Valloric/YouCompleteMe'
 
 " Javascript code completion stuff
 Plug 'marijnh/tern_for_vim', { 'for': ['javascript', 'html', 'eruby'] }
@@ -371,7 +366,7 @@ Plug 'reedes/vim-colors-pencil'
 Plug 'sickill/vim-monokai'
 
 " Convenient theme managment
-Plug 'reedes/vim-thematic'
+" Plug 'reedes/vim-thematic'
 
 " syntax and language related bundles
 Plug 'vim-ruby/vim-ruby'
@@ -389,23 +384,6 @@ call plug#end()
 " * * * * * * * * * * * * * * * * * * *
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
-
-" NeoComplete
-" Use neocomplete.
-" let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
-" let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length
-" let g:neocomplete#sources#syntax#min_keyword_length = 2
-
-" inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-" function! s:my_cr_function()
-"     return neocomplete#close_popup() . "\<CR>"
-"     " For no inserting <CR> key.
-"     "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-" endfunction
-" " <TAB>: completion.
-" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " NERDTree
 nnoremap <leader>t :NERDTreeToggle<CR>
@@ -503,53 +481,6 @@ let g:syntastic_warning_symbol = "⚠"
 let g:syntastic_enable_signs = 0
 let g:syntastic_echo_current_error = 0
 
-" Thematic theme setup
-let g:thematic#themes = {
-            \ 'default' :{'colorscheme': 'kalisi',
-            \                 'background': 'dark',
-            \                 'ruler': 1,
-            \                 'font-size': 12,
-            \                 'typeface': 'Envy Code R for Powerline',
-            \                 'linespace': 1,
-            \                 'airline-theme': 'kalisi'
-            \                },
-            \ 'hybrid' :{'colorscheme': 'hybrid',
-            \                 'background': 'dark',
-            \                 'ruler': 1,
-            \                 'font-size': 12,
-            \                 'typeface': 'PragmataPro for Powerline Plus Nerd File Types Mono',
-            \                 'linespace': 1,
-            \                 'airline-theme': 'hybrid'
-            \                },
-            \ 'github' :{'colorscheme': 'github',
-            \                 'background': 'light',
-            \                 'font-size': 12,
-            \                 'typeface': 'Consolas',
-            \                },
-            \ 'mirodark' :{'colorscheme': 'mirodark',
-            \                 'background': 'dark',
-            \                 'ruler': 1,
-            \                 'font-size': 12,
-            \                 'typeface': 'PragmataPro for Powerline Plus Nerd File Types Mono',
-            \                 'linespace': 1
-            \                },
-            \ 'solarized' :{'colorscheme': 'solarized',
-            \                 'background': 'dark',
-            \                 'ruler': 1,
-            \                 'font-size': 12,
-            \                 'typeface': 'PragmataPro for Powerline Plus Nerd File Types Mono',
-            \                 'linespace': 1,
-            \                 'airline-theme': 'solarized'
-            \                },
-            \ 'prose' :{'colorscheme': 'pencil',
-            \                 'background': 'light',
-            \                 'typeface': 'Cousine',
-            \                 'font-size': 14,
-            \                 'linespace': 6,
-            \                 'airline-theme': 'pencil'
-            \                },
-            \ }
-
 " Easytags sensible defaults
 let g:easytags_events = ['BufReadPost', 'BufWritePost']
 let g:easytags_async = 1
@@ -593,16 +524,12 @@ set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶,nbsp:×
 set list
 
 " highlight past 80 characters
-" execute "set colorcolumn=" . join(range(82,335), ',')
-
-let g:thematic#theme_name = 'solarized'
+" execute "set colorcolumn=" . join(range(81,335), ',')
 
 set cursorline
 
 " Cursor shows matching ) and }
 set showmatch
-
-" set noantialias
 
 set laststatus=2
 set encoding=utf-8
@@ -615,4 +542,5 @@ highlight MatchParen ctermbg=4
 set noeb vb t_vb=
 au GUIEnter * set vb t_vb=
 
+colorscheme monokai
 syntax on
