@@ -220,12 +220,12 @@ vnoremap K :m '<-2<CR>gv=gv
 " * AUTO COMMANDS                     *
 " * * * * * * * * * * * * * * * * * * *
 
-augroup nerd_tree
-    autocmd!
-    autocmd VimEnter * NERDTree
-    " autocmd BufEnter * NERDTreeMirror
-    autocmd VimEnter * wincmd w
-augroup END
+" augroup nerd_tree
+"     autocmd!
+"     autocmd VimEnter * NERDTree
+"     " autocmd BufEnter * NERDTreeMirror
+"     autocmd VimEnter * wincmd w
+" augroup END
 
 augroup silverstripe_syntax
     autocmd!
@@ -364,6 +364,13 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'freeo/vim-kalisi'
 Plug 'reedes/vim-colors-pencil'
 Plug 'sickill/vim-monokai'
+Plug 'stephanedemotte/beekai'
+Plug 'stulzer/heroku-colorscheme'
+Plug 'croaky/vim-colors-github'
+Plug 'tomasr/molokai'
+Plug 'chriskempson/vim-tomorrow-theme'
+Plug 'zeis/vim-kolor'
+Plug 'chriskempson/base16-vim'
 
 " Convenient theme managment
 " Plug 'reedes/vim-thematic'
@@ -459,7 +466,7 @@ endif
 " Uncomment below if not using a font with powerline symbols
 " let g:airline_left_sep = ''
 " let g:airline_right_sep = ''
-" let g:airline_theme = "luna"
+let g:airline_theme = "base16"
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#bufferline#overwrite_variables = 0
@@ -542,5 +549,7 @@ highlight MatchParen ctermbg=4
 set noeb vb t_vb=
 au GUIEnter * set vb t_vb=
 
-colorscheme monokai
+" let base16colorspace=256
+set background=dark
+colorscheme base16-tomorrow
 syntax on
