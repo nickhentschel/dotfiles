@@ -271,12 +271,6 @@ endif
 autocmd InsertEnter * :setlocal nohlsearch
 autocmd InsertLeave * :setlocal hlsearch
 
-" Rainbow parens
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
-
 " * * * * * * * * * * * * * * * * * * *
 " * BUNDLES AND SUCH                  *
 " * * * * * * * * * * * * * * * * * * *
@@ -293,11 +287,8 @@ Plug 'tomtom/tcomment_vim'
 " Allows easy addition/changing of surrounding text
 Plug 'tpope/vim-surround'
 
-" Provides insert mode auto-completion for quotes, parens, brackets, etc.
-" Plug 'Raimondi/delimitMate'
-
 " Display the indention levels with thin vertical lines
-" Plug 'Yggdroot/indentLine'
+Plug 'Yggdroot/indentLine'
 
 " Easy tag completion for xml-like languages
 " Must sym-link xml.vim in ftplugin directory for completions
@@ -326,7 +317,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'ryanoasis/vim-webdevicons'
 
 " YouCompleteMe
-Plug 'Valloric/YouCompleteMe'
+" Plug 'Valloric/YouCompleteMe'
 
 " Javascript code completion stuff
 Plug 'marijnh/tern_for_vim', { 'for': ['javascript', 'html', 'eruby'] }
@@ -347,9 +338,6 @@ Plug 'rking/ag.vim'
 " Faster matcher for CtrlP
 Plug 'FelikZ/ctrlp-py-matcher'
 
-" Better rainbow parentheses
-Plug 'kien/rainbow_parentheses.vim'
-
 " Vim + tmux navigation
 Plug 'christoomey/vim-tmux-navigator'
 
@@ -364,16 +352,9 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'freeo/vim-kalisi'
 Plug 'reedes/vim-colors-pencil'
 Plug 'sickill/vim-monokai'
-Plug 'stephanedemotte/beekai'
 Plug 'stulzer/heroku-colorscheme'
-Plug 'croaky/vim-colors-github'
 Plug 'tomasr/molokai'
 Plug 'chriskempson/vim-tomorrow-theme'
-Plug 'zeis/vim-kolor'
-Plug 'chriskempson/base16-vim'
-
-" Convenient theme managment
-" Plug 'reedes/vim-thematic'
 
 " syntax and language related bundles
 Plug 'vim-ruby/vim-ruby'
@@ -395,31 +376,6 @@ call plug#end()
 " NERDTree
 nnoremap <leader>t :NERDTreeToggle<CR>
 let NERDTreeShowHidden=1
-" NERDTress File highlighting
-function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
-exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
-exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
-endfunction
-
-call NERDTreeHighlightFile('jade', 'green', 'none', 'green', '#151515')
-call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('md', 'blue', 'none', '#3366FF', '#151515')
-call NERDTreeHighlightFile('yml', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('config', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('conf', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('html', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('styl', 'cyan', 'none', 'cyan', '#151515')
-call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
-call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
-call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
-call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
-
-" DelimitMate
-let g:delimitMate_expand_cr = 1
-let g:delimitMate_expand_space = 0
-" don't match <>, save that for separate tag closing plugin
-let g:delimitMate_matchpairs = "(:),[:],{:}"
 
 " ctrlp
 let g:ctrlp_show_hidden = 1
@@ -466,7 +422,7 @@ endif
 " Uncomment below if not using a font with powerline symbols
 " let g:airline_left_sep = ''
 " let g:airline_right_sep = ''
-let g:airline_theme = "base16"
+" let g:airline_theme = "base16"
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#bufferline#overwrite_variables = 0
@@ -494,29 +450,6 @@ let g:easytags_async = 1
 let g:easytags_dynamic_files = 1
 let g:easytags_resolve_links = 1
 let g:easytags_suppress_ctags_warning = 1
-
-" Rainbow Parenthesis
-let g:rbpt_colorpairs = [
-    \ ['brown',       'RoyalBlue3'],
-    \ ['Darkblue',    'SeaGreen3'],
-    \ ['darkgray',    'DarkOrchid3'],
-    \ ['darkgreen',   'firebrick3'],
-    \ ['darkcyan',    'RoyalBlue3'],
-    \ ['darkred',     'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['brown',       'firebrick3'],
-    \ ['gray',        'RoyalBlue3'],
-    \ ['black',       'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['Darkblue',    'firebrick3'],
-    \ ['darkgreen',   'RoyalBlue3'],
-    \ ['darkcyan',    'SeaGreen3'],
-    \ ['darkred',     'DarkOrchid3'],
-    \ ['red',         'firebrick3'],
-    \ ]
-
-let g:rbpt_max = 16
-let g:rbpt_loadcmd_toggle = 0
 
 " * * * * * * * * * * * * * * * * * * *
 " * LOOK AND FEEL                     *
@@ -549,7 +482,6 @@ highlight MatchParen ctermbg=4
 set noeb vb t_vb=
 au GUIEnter * set vb t_vb=
 
-" let base16colorspace=256
 set background=dark
-colorscheme base16-tomorrow
+colorscheme Tomorrow-Night
 syntax on
