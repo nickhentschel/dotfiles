@@ -15,11 +15,8 @@
 " *                                                                           *
 " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-autocmd!
-
-" Necesary  for lots of cool vim things
-set nocompatible
 set shell=/bin/bash
+syntax on
 
 " Needed for enabling omnicomplete
 filetype plugin on
@@ -220,13 +217,6 @@ vnoremap K :m '<-2<CR>gv=gv
 " * AUTO COMMANDS                     *
 " * * * * * * * * * * * * * * * * * * *
 
-" augroup nerd_tree
-"     autocmd!
-"     autocmd VimEnter * NERDTree
-"     " autocmd BufEnter * NERDTreeMirror
-"     autocmd VimEnter * wincmd w
-" augroup END
-
 augroup silverstripe_syntax
     autocmd!
     au BufNewFile,BufRead *.ss set filetype=html
@@ -245,17 +235,17 @@ augroup autocommand_mappings
 augroup END
 
 " Enable omni completion. (Ctrl-X Ctrl-O)
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType c set omnifunc=ccomplete#Complete
-autocmd FileType java set omnifunc=javacomplete#Complete
+" autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+" autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+" autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+" autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+" autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+" autocmd FileType c set omnifunc=ccomplete#Complete
+" autocmd FileType java set omnifunc=javacomplete#Complete
 
 " autocmd FileType ruby compiler ruby
 " autocmd FileType eruby compiler eruby
-autocmd FileType ruby set omnifunc=rubycomplete#Complete
+" autocmd FileType ruby set omnifunc=rubycomplete#Complete
 " autocmd FileType ruby let g:rubycomplete_buffer_loading=1
 " autocmd FileType ruby let g:rubycomplete_classes_in_global=1
 
@@ -466,7 +456,7 @@ set list
 " highlight past 80 characters
 " execute "set colorcolumn=" . join(range(81,335), ',')
 
-set cursorline
+" set cursorline
 
 " Cursor shows matching ) and }
 set showmatch
@@ -480,8 +470,6 @@ highlight MatchParen ctermbg=4
 
 " disable sound on errors
 set noeb vb t_vb=
-au GUIEnter * set vb t_vb=
 
 set background=dark
 colorscheme Tomorrow-Night
-syntax on
