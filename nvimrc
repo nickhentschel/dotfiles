@@ -413,7 +413,7 @@ endif
 " Uncomment below if not using a font with powerline symbols
 " let g:airline_left_sep = ''
 " let g:airline_right_sep = ''
-let g:airline_theme = "base16"
+" let g:airline_theme = "base16"
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#bufferline#overwrite_variables = 0
@@ -473,5 +473,5 @@ highlight MatchParen ctermbg=4
 set noeb vb t_vb=
 
 set background=dark
-let base16colorspace=256
-colorscheme base16-tomorrow
+" let base16colorspace=256
+colorscheme Tomorrow-Night
