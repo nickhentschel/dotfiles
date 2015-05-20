@@ -304,7 +304,7 @@ Plug 'tpope/vim-endwise', { 'for': ['eruby', 'ruby'] }
 Plug 'scrooloose/nerdtree'
 
 " NERDTree icons
-Plug 'ryanoasis/vim-webdevicons'
+" Plug 'ryanoasis/vim-webdevicons'
 
 " YouCompleteMe
 " Plug 'Valloric/YouCompleteMe'
@@ -345,6 +345,7 @@ Plug 'sickill/vim-monokai'
 Plug 'stulzer/heroku-colorscheme'
 Plug 'tomasr/molokai'
 Plug 'chriskempson/vim-tomorrow-theme'
+Plug 'chriskempson/base16-vim'
 
 " syntax and language related bundles
 Plug 'vim-ruby/vim-ruby'
@@ -412,7 +413,7 @@ endif
 " Uncomment below if not using a font with powerline symbols
 " let g:airline_left_sep = ''
 " let g:airline_right_sep = ''
-" let g:airline_theme = "base16"
+let g:airline_theme = "base16"
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#bufferline#overwrite_variables = 0
@@ -472,4 +473,5 @@ highlight MatchParen ctermbg=4
 set noeb vb t_vb=
 
 set background=dark
-colorscheme Tomorrow-Night
+let base16colorspace=256
+colorscheme base16-tomorrow
