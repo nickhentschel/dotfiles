@@ -354,6 +354,7 @@ Plug 'othree/html5.vim'
 Plug 'othree/yajs.vim'
 Plug 'elzr/vim-json'
 Plug 'tpope/vim-markdown'
+Plug 'dag/vim-fish'
 
 " Plugins for prose writing
 Plug 'junegunn/goyo.vim'
