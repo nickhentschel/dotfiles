@@ -141,10 +141,10 @@ set sidescrolloff=15
 set sidescroll=1
 set scrolljump=10
 
-" Completion in command mode
+" Completion prefs
 " set complete=.,],b,u
 " set completeopt=menuone,preview
-set complete=.,w,b,u,t
+set complete=t,i,.
 set completeopt=longest,menuone,preview
 
 " Don't reset cursor to start of line when moving around
