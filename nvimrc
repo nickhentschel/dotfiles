@@ -342,10 +342,9 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'freeo/vim-kalisi'
 Plug 'reedes/vim-colors-pencil'
 Plug 'sickill/vim-monokai'
-Plug 'stulzer/heroku-colorscheme'
-Plug 'tomasr/molokai'
 Plug 'chriskempson/vim-tomorrow-theme'
-Plug 'chriskempson/base16-vim'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'yosiat/oceanic-next-vim'
 
 " syntax and language related bundles
 Plug 'vim-ruby/vim-ruby'
@@ -473,6 +472,9 @@ highlight MatchParen ctermbg=4
 " disable sound on errors
 set noeb vb t_vb=
 
-set background=dark
-" let base16colorspace=256
-colorscheme Tomorrow-Night
+if has("gui_running")
+    set guifont=PragmataPro\ for\ Powerline:h12
+    colorscheme OceanicNext
+endif
+
+" set background=light

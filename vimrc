@@ -15,11 +15,8 @@
 " *                                                                           *
 " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-autocmd!
-
-" Necesary  for lots of cool vim things
-set nocompatible
 set shell=/bin/bash
+syntax on
 
 " Needed for enabling omnicomplete
 filetype plugin on
@@ -36,7 +33,6 @@ endif
 
 " Functions for editing prose/markdown
 function! ProseOn()
-    Thematic prose
     Goyo 100
     wincmd w
     setlocal wrap
@@ -44,7 +40,6 @@ function! ProseOn()
 endfunction
 
 function! ProseOff()
-    Thematic hybrid
     Goyo!
     setlocal nowrap
     setlocal nospell
@@ -70,11 +65,6 @@ set splitright
 set incsearch
 
 set number
-
-" Better screen redraw
-set ttyfast
-set lazyredraw
-set ttyscroll=3
 
 " Remove insert->normal delay
 set ttimeoutlen=50
@@ -151,10 +141,10 @@ set sidescrolloff=15
 set sidescroll=1
 set scrolljump=10
 
-" Completion in command mode
+" Completion prefs
 " set complete=.,],b,u
 " set completeopt=menuone,preview
-set complete=.,w,b,u,t
+set complete=t,i,.
 set completeopt=longest,menuone,preview
 
 " Don't reset cursor to start of line when moving around
@@ -197,7 +187,7 @@ nnoremap <silent> zk O<Esc>
 
 " Swap ; and :  Convenient.
 nnoremap ; :
-nnoremap : ;
+noremap : ;
 
 " Split navigation mappings
 nnoremap <C-J> <C-W><C-J>
@@ -227,13 +217,6 @@ vnoremap K :m '<-2<CR>gv=gv
 " * AUTO COMMANDS                     *
 " * * * * * * * * * * * * * * * * * * *
 
-augroup nerd_tree
-    autocmd!
-    autocmd VimEnter * NERDTree
-    " autocmd BufEnter * NERDTreeMirror
-    autocmd VimEnter * wincmd w
-augroup END
-
 augroup silverstripe_syntax
     autocmd!
     au BufNewFile,BufRead *.ss set filetype=html
@@ -252,17 +235,17 @@ augroup autocommand_mappings
 augroup END
 
 " Enable omni completion. (Ctrl-X Ctrl-O)
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType c set omnifunc=ccomplete#Complete
-autocmd FileType java set omnifunc=javacomplete#Complete
+" autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+" autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+" autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+" autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+" autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+" autocmd FileType c set omnifunc=ccomplete#Complete
+" autocmd FileType java set omnifunc=javacomplete#Complete
 
 " autocmd FileType ruby compiler ruby
 " autocmd FileType eruby compiler eruby
-autocmd FileType ruby set omnifunc=rubycomplete#Complete
+" autocmd FileType ruby set omnifunc=rubycomplete#Complete
 " autocmd FileType ruby let g:rubycomplete_buffer_loading=1
 " autocmd FileType ruby let g:rubycomplete_classes_in_global=1
 
@@ -277,12 +260,6 @@ endif
 " Disable seach highlighting in insert mode, re-enable in normal mode
 autocmd InsertEnter * :setlocal nohlsearch
 autocmd InsertLeave * :setlocal hlsearch
-
-" Rainbow parens
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
 
 " * * * * * * * * * * * * * * * * * * *
 " * BUNDLES AND SUCH                  *
@@ -300,11 +277,8 @@ Plug 'tomtom/tcomment_vim'
 " Allows easy addition/changing of surrounding text
 Plug 'tpope/vim-surround'
 
-" Provides insert mode auto-completion for quotes, parens, brackets, etc.
-Plug 'Raimondi/delimitMate'
-
 " Display the indention levels with thin vertical lines
-" Plug 'Yggdroot/indentLine'
+Plug 'Yggdroot/indentLine'
 
 " Easy tag completion for xml-like languages
 " Must sym-link xml.vim in ftplugin directory for completions
@@ -330,16 +304,10 @@ Plug 'tpope/vim-endwise', { 'for': ['eruby', 'ruby'] }
 Plug 'scrooloose/nerdtree'
 
 " NERDTree icons
-Plug 'ryanoasis/vim-webdevicons'
+" Plug 'ryanoasis/vim-webdevicons'
 
-" Popup completion framework
-Plug 'Shougo/neocomplete.vim'
-
-" neo-snippet plugin contains neocomplcache snippets source
-Plug 'Shougo/neosnippet.vim'
-
-" vim snippets for neosnippet
-Plug 'honza/vim-snippets'
+" YouCompleteMe
+" Plug 'Valloric/YouCompleteMe'
 
 " Javascript code completion stuff
 Plug 'marijnh/tern_for_vim', { 'for': ['javascript', 'html', 'eruby'] }
@@ -360,8 +328,8 @@ Plug 'rking/ag.vim'
 " Faster matcher for CtrlP
 Plug 'FelikZ/ctrlp-py-matcher'
 
-" Better rainbow parentheses
-Plug 'kien/rainbow_parentheses.vim'
+" Vim + tmux navigation
+Plug 'christoomey/vim-tmux-navigator'
 
 " easytags
 Plug 'xolox/vim-misc'
@@ -373,9 +341,10 @@ Plug 'w0ng/vim-hybrid'
 Plug 'altercation/vim-colors-solarized'
 Plug 'freeo/vim-kalisi'
 Plug 'reedes/vim-colors-pencil'
-
-" Convenient theme managment
-Plug 'reedes/vim-thematic'
+Plug 'sickill/vim-monokai'
+Plug 'chriskempson/vim-tomorrow-theme'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'yosiat/oceanic-next-vim'
 
 " syntax and language related bundles
 Plug 'vim-ruby/vim-ruby'
@@ -384,6 +353,7 @@ Plug 'othree/html5.vim'
 Plug 'othree/yajs.vim'
 Plug 'elzr/vim-json'
 Plug 'tpope/vim-markdown'
+Plug 'dag/vim-fish'
 
 " Plugins for prose writing
 Plug 'junegunn/goyo.vim'
@@ -394,72 +364,9 @@ call plug#end()
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
 
-" NeoComplete
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length
-let g:neocomplete#sources#syntax#min_keyword_length = 2
-
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-    return neocomplete#close_popup() . "\<CR>"
-    " For no inserting <CR> key.
-    "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-
-" NeoSnippet
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-" SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: "\<TAB>"
-
-" For snippet_complete marker.
-if has('conceal')
-  set conceallevel=2 concealcursor=i
-endif
-
-" Tell Neosnippet about the other snippets
-let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
-
 " NERDTree
 nnoremap <leader>t :NERDTreeToggle<CR>
 let NERDTreeShowHidden=1
-" NERDTress File highlighting
-function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
-exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
-exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
-endfunction
-
-call NERDTreeHighlightFile('jade', 'green', 'none', 'green', '#151515')
-call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('md', 'blue', 'none', '#3366FF', '#151515')
-call NERDTreeHighlightFile('yml', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('config', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('conf', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('html', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('styl', 'cyan', 'none', 'cyan', '#151515')
-call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
-call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
-call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
-call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
-
-" DelimitMate
-let g:delimitMate_expand_cr = 1
-let g:delimitMate_expand_space = 0
-" don't match <>, save that for separate tag closing plugin
-let g:delimitMate_matchpairs = "(:),[:],{:}"
 
 " ctrlp
 let g:ctrlp_show_hidden = 1
@@ -506,7 +413,7 @@ endif
 " Uncomment below if not using a font with powerline symbols
 " let g:airline_left_sep = ''
 " let g:airline_right_sep = ''
-" let g:airline_theme = "luna"
+" let g:airline_theme = "base16"
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#bufferline#overwrite_variables = 0
@@ -528,82 +435,12 @@ let g:syntastic_warning_symbol = "⚠"
 let g:syntastic_enable_signs = 0
 let g:syntastic_echo_current_error = 0
 
-" Thematic theme setup
-let g:thematic#themes = {
-            \ 'default' :{'colorscheme': 'kalisi',
-            \                 'background': 'dark',
-            \                 'ruler': 1,
-            \                 'font-size': 12,
-            \                 'typeface': 'Envy Code R for Powerline',
-            \                 'linespace': 1,
-            \                 'airline-theme': 'kalisi'
-            \                },
-            \ 'hybrid' :{'colorscheme': 'hybrid',
-            \                 'background': 'dark',
-            \                 'ruler': 1,
-            \                 'font-size': 12,
-            \                 'typeface': 'PragmataPro for Powerline Plus Nerd File Types Mono',
-            \                 'linespace': 1,
-            \                 'airline-theme': 'hybrid'
-            \                },
-            \ 'github' :{'colorscheme': 'github',
-            \                 'background': 'light',
-            \                 'font-size': 12,
-            \                 'typeface': 'Consolas',
-            \                },
-            \ 'mirodark' :{'colorscheme': 'mirodark',
-            \                 'background': 'dark',
-            \                 'ruler': 1,
-            \                 'font-size': 12,
-            \                 'typeface': 'PragmataPro for Powerline Plus Nerd File Types Mono',
-            \                 'linespace': 1
-            \                },
-            \ 'solarized' :{'colorscheme': 'solarized',
-            \                 'background': 'dark',
-            \                 'ruler': 1,
-            \                 'font-size': 12,
-            \                 'typeface': 'PragmataPro for Powerline Plus Nerd File Types Mono',
-            \                 'linespace': 1,
-            \                 'airline-theme': 'solarized'
-            \                },
-            \ 'prose' :{'colorscheme': 'pencil',
-            \                 'background': 'light',
-            \                 'typeface': 'Cousine',
-            \                 'font-size': 14,
-            \                 'linespace': 6,
-            \                 'airline-theme': 'pencil'
-            \                },
-            \ }
-
 " Easytags sensible defaults
 let g:easytags_events = ['BufReadPost', 'BufWritePost']
 let g:easytags_async = 1
 let g:easytags_dynamic_files = 1
 let g:easytags_resolve_links = 1
 let g:easytags_suppress_ctags_warning = 1
-
-" Rainbow Parenthesis
-let g:rbpt_colorpairs = [
-    \ ['brown',       'RoyalBlue3'],
-    \ ['Darkblue',    'SeaGreen3'],
-    \ ['darkgray',    'DarkOrchid3'],
-    \ ['darkgreen',   'firebrick3'],
-    \ ['darkcyan',    'RoyalBlue3'],
-    \ ['darkred',     'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['brown',       'firebrick3'],
-    \ ['gray',        'RoyalBlue3'],
-    \ ['black',       'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['Darkblue',    'firebrick3'],
-    \ ['darkgreen',   'RoyalBlue3'],
-    \ ['darkcyan',    'SeaGreen3'],
-    \ ['darkred',     'DarkOrchid3'],
-    \ ['red',         'firebrick3'],
-    \ ]
-
-let g:rbpt_max = 16
-let g:rbpt_loadcmd_toggle = 0
 
 " * * * * * * * * * * * * * * * * * * *
 " * LOOK AND FEEL                     *
@@ -618,16 +455,12 @@ set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶,nbsp:×
 set list
 
 " highlight past 80 characters
-" execute "set colorcolumn=" . join(range(82,335), ',')
+" execute "set colorcolumn=" . join(range(81,335), ',')
 
-let g:thematic#theme_name = 'solarized'
-
-set cursorline
+" set cursorline
 
 " Cursor shows matching ) and }
 set showmatch
-
-" set noantialias
 
 set laststatus=2
 set encoding=utf-8
@@ -638,6 +471,10 @@ highlight MatchParen ctermbg=4
 
 " disable sound on errors
 set noeb vb t_vb=
-au GUIEnter * set vb t_vb=
 
-syntax on
+if has("gui_running")
+    set guifont=PragmataPro\ for\ Powerline:h12
+    colorscheme OceanicNext
+endif
+
+" set background=light
