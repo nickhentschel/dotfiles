@@ -354,6 +354,7 @@ Plug 'othree/yajs.vim'
 Plug 'elzr/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'dag/vim-fish'
+Plug 'rodjek/vim-puppet'
 
 " Plugins for prose writing
 Plug 'junegunn/goyo.vim'
@@ -411,8 +412,8 @@ endif
 
 " Vim Airline
 " Uncomment below if not using a font with powerline symbols
-" let g:airline_left_sep = ''
-" let g:airline_right_sep = ''
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''
 " let g:airline_theme = "base16"
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 1
@@ -477,4 +478,6 @@ if has("gui_running")
     colorscheme OceanicNext
 endif
 
-" set background=light
+set t_Co=16
+colorscheme solarized
+set background=dark

@@ -1,6 +1,6 @@
 [user]
-    name = Nick Hentschel
-    email = hentschel.nicholas@gmail.com
+	name = Nick Hentschel
+	email = nhentschel@wayfair.com
 [github]
     user = nickhentschel
 [color]
@@ -8,7 +8,7 @@
     status = auto
     branch = auto
     interactive = auto
-    ui = auto
+	ui = true
 [color "branch"]
     current = yellow reverse
     local = yellow
@@ -28,14 +28,26 @@
 [credential]
     helper = cache
 [push]
-    default = simple
+	default = current
 [core]
     editor = vim
+	autocrlf = false
 [alias]
     st = status
     co = checkout
     di = diff
     aa = add --all
     br = branch
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+	logall = log --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
 [url "https://github.com"]
     insteadOf = git://github.com
+[pull]
+	rebase = true
+[fetch]
+	prune = true
+[log]
+	decorate = short
+[http]
+	sslverify = false
+	sslCAPath = /etc/pki/tls/certs
