@@ -354,6 +354,7 @@ Plug 'othree/yajs.vim'
 Plug 'elzr/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'dag/vim-fish'
+Plug 'rodjek/vim-puppet'
 
 " Plugins for prose writing
 Plug 'junegunn/goyo.vim'
@@ -477,4 +478,5 @@ if has("gui_running")
     colorscheme OceanicNext
 endif
 
-" set background=light
+set background=dark
+colorscheme solarized

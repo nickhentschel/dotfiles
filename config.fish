@@ -11,6 +11,9 @@ set --erase fish_greeting
 set EDITOR nvim
 set VISUAL nvim
 
+set fish_key_bindings fish_user_key_bindings
+set fish_bind_mode insert
+
 # Theme
 set fish_theme toaster
 

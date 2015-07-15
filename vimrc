@@ -303,6 +303,9 @@ Plug 'tpope/vim-endwise', { 'for': ['eruby', 'ruby'] }
 " Tree-like sidebar file manager for vim
 Plug 'scrooloose/nerdtree'
 
+" vim git wrapper
+Plug 'tpope/vim-fugitive'
+
 " NERDTree icons
 " Plug 'ryanoasis/vim-webdevicons'
 
@@ -412,15 +415,19 @@ endif
 
 " Vim Airline
 " Uncomment below if not using a font with powerline symbols
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
+" let g:airline_left_sep = ''
+" let g:airline_right_sep = ''
 " let g:airline_theme = "base16"
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 1
+" let g:airline_symbols.branch = ''
+" let g:airline_symbols.readonly = ''
+" let g:airline_symbols.linenr = ''
 let g:airline#extensions#bufferline#overwrite_variables = 0
 let g:airline#extensions#bufferline#enabled = 0
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#branch#empty_message = ''
 let g:airline#extensions#ctrlp#enabled = 1
 let g:airline#extensions#ctrlp#show_adjacent_modes = 1
 let g:airline#extensions#tabline#enabled = 1
