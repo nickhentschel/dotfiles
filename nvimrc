@@ -345,6 +345,7 @@ Plug 'sickill/vim-monokai'
 Plug 'chriskempson/vim-tomorrow-theme'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'yosiat/oceanic-next-vim'
+Plug 'chriskempson/base16-vim'
 
 " syntax and language related bundles
 Plug 'vim-ruby/vim-ruby'
@@ -478,5 +479,6 @@ if has("gui_running")
     colorscheme OceanicNext
 endif
 
+let base16colorspace=256
 set background=dark
-colorscheme solarized
+colorscheme Tomorrow-Night
