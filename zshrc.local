@@ -342,8 +342,16 @@ MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 test -e ~/.dircolors && \
   eval `dircolors -b ~/.dircolors`
 
-alias ls="ls --color=always" 
-alias grep="grep --color=always"
-alias egrep="egrep --color=always" 
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 
-prompt adam2
+source ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
+
+BASE16_SHELL="$HOME/.config/base16-shell/base16-tomorrow.dark.sh"
+[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+
+alias ls="ls --color=always"
+alias grep="grep --color=always"
+alias egrep="egrep --color=always"
+
+prompt grml
