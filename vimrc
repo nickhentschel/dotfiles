@@ -481,10 +481,10 @@ highlight MatchParen ctermbg=4
 set noeb vb t_vb=
 
 if has("gui_running")
-    set guifont=PragmataPro\ for\ Powerline:h12
-    colorscheme OceanicNext
+    set guifont=Terminus\ (TTF):h12
+    colorscheme Tomorrow-Night
+    set noantialias
 endif
 
-set t_Co=16
-colorscheme solarized
+" colorscheme solarized
 set background=dark

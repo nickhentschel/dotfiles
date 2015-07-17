@@ -338,6 +338,9 @@ export MANWIDTH=${MANWIDTH:-80}
 ### ADDED BY NHENTSCHEL
 PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+KEYTIMEOUT=1
+
+bindkey -v
 
 test -e ~/.dircolors && \
   eval `dircolors -b ~/.dircolors`
