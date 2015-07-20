@@ -482,9 +482,10 @@ highlight MatchParen ctermbg=4
 set noeb vb t_vb=
 
 if has("gui_running")
-    set guifont=Terminus\ (TTF):h12
+    " set guifont=Terminus\ (TTF):h12
+    set guifont=Menlo\ for\ Powerline:h10
     colorscheme Tomorrow-Night
-    set noantialias
+    " set noantialias
 endif
 
 " colorscheme solarized

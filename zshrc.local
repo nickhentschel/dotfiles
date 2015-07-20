@@ -15,6 +15,124 @@
 # Adjustments would still go to the .zshrc.local file.
 ################################################################################
 
+### ADDED BY NHENTSCHEL
+ZGEN_DIR=~/.zsh/plugins
+source ~/.zsh/zgen/zgen.zsh
+
+# Check if there's no init script.
+if ! zgen saved; then
+    echo "Creating a zgen save"
+
+    zgen oh-my-zsh
+
+    # plugins
+    # zgen load zsh-users/zsh-completions src
+    zgen load jimmijj/zsh-syntax-highlighting
+    zgen load zsh-users/zsh-history-substring-search
+    zgen load tarruda/zsh-autosuggestions
+
+    # theme
+    zgen oh-my-zsh themes/agnoster
+
+    # save all to init script
+    zgen save
+fi
+
+PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+
+# Accept suggestions without leaving insert mode
+bindkey '^f' vi-forward-word
+
+autoload -U compinit
+compinit
+setopt hash_list_all            # hash everything before completion
+setopt completealiases          # complete alisases
+setopt always_to_end            # when completing from the middle of a word, move the cursor to the end of the word    
+setopt complete_in_word         # allow completion from within a word/phrase
+setopt correct                  # spelling correction for commands
+setopt list_ambiguous           #
+
+zstyle ':completion:*' use-cache on               # completion caching, use rehash to clear
+zstyle ':completion:*' cache-path ~/.zsh/cache              # cache path
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'   # ignore case
+zstyle ':completion:*' menu select=2                        # menu if nb items > 2
+zstyle ':completion:*' rehash true
+# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}       # colorz !
+zstyle ':completion:*::::' completer _expand _complete _ignored _approximate # list of completers to use
+zstyle ':completion:*:approximate:*' max-errors 2
+
+# sections completion !
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*:descriptions' format $'\e[00;34m%d'
+zstyle ':completion:*:messages' format $'\e[00;31m%d'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:manuals' separate-sections true
+
+zstyle ':completion:*:processes' command 'ps -au$USER'
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:kill:*' force-list always
+# zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=29=34"
+zstyle ':completion:*:*:killall:*' menu yes select
+zstyle ':completion:*:killall:*' force-list always
+users=(nhentschel root)           # because I don't care about others
+zstyle ':completion:*' users $users
+
+# zstyle ':completion:*:descriptions' format '%U%B%d%b%u' 
+zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
+
+setopt correctall
+setopt hist_ignore_space
+
+unsetopt beep                   # no bell on error
+unsetopt hist_beep              # no bell on error in history
+
+# vim mode
+bindkey -v
+bindkey -M viins 'jj' vi-cmd-mode
+
+# timeout for vim mode
+KEYTIMEOUT=4
+AUTOSUGGESTION_ACCEPT_RIGHT_ARROW=1
+DEFAULT_USER='nhentschel'
+
+# test -e ~/.dircolors && \
+#   eval `dircolors -b ~/.dircolors`
+
+# source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+
+zmodload zsh/terminfo
+
+# Make sure the terminal is in application mode, when zle is active. Only then
+# are the values from $terminfo valid. And also activate autosuggestions.
+if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
+    # Bind UP and DOWN arrow keys to history-substring-search.
+    bindkey "$terminfo[kcuu1]" history-substring-search-up
+    bindkey "$terminfo[kcud1]" history-substring-search-down
+
+    function zle-line-init () {
+        printf '%s' "${terminfo[smkx]}"
+
+        # Enable autosuggestions automatically
+        zle autosuggest-start
+    }
+
+    function zle-line-finish () {
+        printf '%s' "${terminfo[rmkx]}"
+    }
+
+    zle -N zle-line-init
+    zle -N zle-line-finish
+fi
+
+BASE16_SHELL="$HOME/.config/base16-shell/base16-tomorrow.dark.sh"
+[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+
+alias ls="ls --color=always"
+alias grep="grep --color=always"
+alias egrep="egrep --color=always"
+
 ## Inform users about upgrade path for grml's old zshrc layout, assuming that:
 ## /etc/skel/.zshrc was installed as ~/.zshrc,
 ## /etc/zsh/zshrc was installed as ~/.zshrc.global and
@@ -29,6 +147,26 @@ if [ -r ~/.zshrc -a -r ~/.zshrc.global -a ! -r ~/.zshrc.local ] ; then
     printf '-!-        touch ~/.zshrc.local\n'
     printf '-!-\n'
 fi
+
+export EDITOR=${EDITOR:-vim}
+
+#v#
+export PAGER=${PAGER:-less}
+
+
+test -e ~/.dircolors && \
+  eval `dircolors -b ~/.dircolors`
+
+export CLICOLOR=1
+
+# support colors in less
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;33m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
 
 ## Settings for umask
 #if (( EUID == 0 )); then
@@ -53,13 +191,12 @@ fi
 ## ZLE tweaks ##
 
 ## use the vi navigation keys (hjkl) besides cursor keys in menu completion
-bindkey -M menuselect 'h' vi-backward-char        # left
-bindkey -M menuselect 'k' vi-up-line-or-history   # up
-bindkey -M menuselect 'l' vi-forward-char         # right
-bindkey -M menuselect 'j' vi-down-line-or-history # bottom
+# bindkey -M menuselect 'h' vi-backward-char        # left
+# bindkey -M menuselect 'k' vi-up-line-or-history   # up
+# bindkey -M menuselect 'l' vi-forward-char         # right
+# bindkey -M menuselect 'j' vi-down-line-or-history # bottom
 
 ## set command prediction from history, see 'man 1 zshcontrib'
-is4 && zrcautoload predict-on && \
 zle -N predict-on         && \
 zle -N predict-off        && \
 bindkey "^X^Z" predict-on && \
@@ -334,34 +471,9 @@ export MANWIDTH=${MANWIDTH:-80}
 #vimhelp ()    { vim -c "help $1" -c on -c "au! VimEnter *" }
 
 ## END OF FILE #################################################################
+# Enable autosuggestions automatically.
+# zle-line-init() {
+#     zle autosuggest-start
+# }
+# zle -N zle-line-init
 
-### ADDED BY NHENTSCHEL
-PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-
-# vim mode
-bindkey -v
-bindkey -M viins 'jj' vi-cmd-mode
-
-# timeout for vim mode
-KEYTIMEOUT=4
-
-# test -e ~/.dircolors && \
-#   eval `dircolors -b ~/.dircolors`
-
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
-
-source ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
-zmodload zsh/terminfo
-bindkey "$terminfo[kcuu1]" history-substring-search-up
-bindkey "$terminfo[kcud1]" history-substring-search-down
-
-BASE16_SHELL="$HOME/.config/base16-shell/base16-tomorrow.dark.sh"
-[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
-
-alias ls="ls --color=always"
-alias grep="grep --color=always"
-alias egrep="egrep --color=always"
-
-prompt grml
