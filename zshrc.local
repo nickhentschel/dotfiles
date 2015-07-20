@@ -338,17 +338,24 @@ export MANWIDTH=${MANWIDTH:-80}
 ### ADDED BY NHENTSCHEL
 PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-KEYTIMEOUT=1
 
+# vim mode
 bindkey -v
+bindkey -M viins 'jj' vi-cmd-mode
 
-test -e ~/.dircolors && \
-  eval `dircolors -b ~/.dircolors`
+# timeout for vim mode
+KEYTIMEOUT=4
+
+# test -e ~/.dircolors && \
+#   eval `dircolors -b ~/.dircolors`
 
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 
 source ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
+zmodload zsh/terminfo
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down
 
 BASE16_SHELL="$HOME/.config/base16-shell/base16-tomorrow.dark.sh"
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL

@@ -357,6 +357,7 @@ Plug 'othree/yajs.vim'
 Plug 'elzr/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'dag/vim-fish'
+Plug 'clones/vim-zsh'
 Plug 'rodjek/vim-puppet'
 
 " Plugins for prose writing
