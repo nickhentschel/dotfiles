@@ -306,15 +306,6 @@ Plug 'scrooloose/nerdtree'
 " vim git wrapper
 Plug 'tpope/vim-fugitive'
 
-" NERDTree icons
-" Plug 'ryanoasis/vim-webdevicons'
-
-" YouCompleteMe
-" Plug 'Valloric/YouCompleteMe'
-
-" Javascript code completion stuff
-Plug 'marijnh/tern_for_vim', { 'for': ['javascript', 'html', 'eruby'] }
-
 " Syntax checking hacks for vim
 Plug 'scrooloose/syntastic'
 
@@ -334,20 +325,13 @@ Plug 'FelikZ/ctrlp-py-matcher'
 " Vim + tmux navigation
 Plug 'christoomey/vim-tmux-navigator'
 
-" easytags
-Plug 'xolox/vim-misc'
-Plug 'xolox/vim-easytags'
-
 " colorscheme bundles
 Plug 'djjcast/mirodark'
 Plug 'w0ng/vim-hybrid'
 Plug 'altercation/vim-colors-solarized'
 Plug 'freeo/vim-kalisi'
-Plug 'reedes/vim-colors-pencil'
 Plug 'sickill/vim-monokai'
 Plug 'chriskempson/vim-tomorrow-theme'
-Plug 'NLKNguyen/papercolor-theme'
-Plug 'yosiat/oceanic-next-vim'
 
 " syntax and language related bundles
 Plug 'vim-ruby/vim-ruby'
@@ -356,7 +340,6 @@ Plug 'othree/html5.vim'
 Plug 'othree/yajs.vim'
 Plug 'elzr/vim-json'
 Plug 'tpope/vim-markdown'
-Plug 'dag/vim-fish'
 Plug 'clones/vim-zsh'
 Plug 'rodjek/vim-puppet'
 
@@ -421,9 +404,6 @@ endif
 " let g:airline_theme = "base16"
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 1
-" let g:airline_symbols.branch = ''
-" let g:airline_symbols.readonly = ''
-" let g:airline_symbols.linenr = ''
 let g:airline#extensions#bufferline#overwrite_variables = 0
 let g:airline#extensions#bufferline#enabled = 0
 let g:airline#extensions#syntastic#enabled = 1
@@ -444,20 +424,9 @@ let g:syntastic_warning_symbol = "⚠"
 let g:syntastic_enable_signs = 0
 let g:syntastic_echo_current_error = 0
 
-" Easytags sensible defaults
-let g:easytags_events = ['BufReadPost', 'BufWritePost']
-let g:easytags_async = 1
-let g:easytags_dynamic_files = 1
-let g:easytags_resolve_links = 1
-let g:easytags_suppress_ctags_warning = 1
-
 " * * * * * * * * * * * * * * * * * * *
 " * LOOK AND FEEL                     *
 " * * * * * * * * * * * * * * * * * * *
-
-" Remove scrollbars
-set guioptions-=r
-set guioptions-=L
 
 " Make tabs, trailing whitespace, and non-breaking spaces visible
 set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶,nbsp:×
@@ -482,11 +451,12 @@ highlight MatchParen ctermbg=4
 set noeb vb t_vb=
 
 if has("gui_running")
-    " set guifont=Terminus\ (TTF):h12
-    set guifont=Menlo\ for\ Powerline:h10
+    " Remove scrollbars
+    set guioptions-=r
+    set guioptions-=L
+    set guifont=PragmataPro\ for\ Powerline:h12
     colorscheme Tomorrow-Night
-    " set noantialias
 endif
 
-" colorscheme solarized
 set background=dark
+colorscheme Tomorrow-Night
