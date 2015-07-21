@@ -37,11 +37,13 @@ if ! zgen saved; then
     fi
 
     zgen oh-my-zsh plugins/git
+    zgen oh-my-zsh plugins/colored-man
 
     # plugins
     zgen load zsh-users/zsh-completions src
     zgen load jimmijj/zsh-syntax-highlighting
-    zgen load zsh-users/zsh-history-substring-search
+    # zgen load zsh-users/zsh-history-substring-search
+    zgen oh-my-zsh plugins/history-substring-search
     zgen load tarruda/zsh-autosuggestions
 
     # theme
@@ -55,8 +57,8 @@ fi
 
 ######## PLUGIN SETTINGS ########
 zmodload zsh/terminfo
-# Make sure the terminal is in application mode, when zle is active. Only then
-# are the values from $terminfo valid. And also activate autosuggestions.
+# # Make sure the terminal is in application mode, when zle is active. Only then
+# # are the values from $terminfo valid. And also activate autosuggestions.
 if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
     # Bind UP and DOWN arrow keys to history-substring-search.
     bindkey "$terminfo[kcuu1]" history-substring-search-up
@@ -64,7 +66,6 @@ if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
 
     function zle-line-init () {
         printf '%s' "${terminfo[smkx]}"
-
         # Enable autosuggestions automatically
         zle autosuggest-start
     }
@@ -79,6 +80,9 @@ fi
 
 # Use right arrow to accept suggestions
 AUTOSUGGESTION_ACCEPT_RIGHT_ARROW=1
+
+# Setup syntax highlighting
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern root)
 
 # set default user for agnoster prompt
 DEFAULT_USER='nhentschel'
@@ -181,3 +185,5 @@ alias egrep="egrep --color=always"
 
 # warning if file exists ('cat /dev/null > ~/.zshrc')
 setopt NO_clobber
+
+source /Users/nhentschel/.iterm2_shell_integration.zsh
