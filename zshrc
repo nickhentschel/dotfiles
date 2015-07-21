@@ -170,7 +170,7 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
 # Use a default width of 80 for manpages for more convenient reading
-export MANWIDTH=${MANWIDTH:-80}
+# export MANWIDTH=${MANWIDTH:-80}
 
 # vim, obviously
 export EDITOR=${EDITOR:-vim}
