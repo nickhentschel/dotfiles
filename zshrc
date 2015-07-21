@@ -186,4 +186,10 @@ alias egrep="egrep --color=always"
 # warning if file exists ('cat /dev/null > ~/.zshrc')
 setopt NO_clobber
 
-source /Users/nhentschel/.iterm2_shell_integration.zsh
+# Base16 Shell
+if is_osx; then
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
+    [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+fi
+
+# source /Users/nhentschel/.iterm2_shell_integration.zsh
