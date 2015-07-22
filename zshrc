@@ -118,7 +118,7 @@ setopt complete_in_word         # allow completion from within a word/phrase
 HISTSIZE=100000
 SAVEHIST=100000
 HISTFILE=~/.zsh_history
-export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
+HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 
 # Speed up autocomplete, force prefix mapping
 zstyle ':completion:*' accept-exact '*(N)'
@@ -144,6 +144,8 @@ zstyle ':completion:*' users $users
 zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
 
 ######## OTHER SETTINGS #######
+
+export TERM='xterm-256color'
 
 # Use dircolors if available
 test -e ~/.dircolors && \
@@ -183,11 +185,5 @@ alias egrep="egrep --color=always"
 
 # warning if file exists ('cat /dev/null > ~/.zshrc')
 setopt NO_clobber
-
-# Base16 Shell
-if is_osx; then
-    # BASE16_SHELL="$HOME/.config/base16-shell/base16-tomorrow.dark.sh"
-    # [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
-fi
 
 # source /Users/nhentschel/.iterm2_shell_integration.zsh
