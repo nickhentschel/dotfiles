@@ -40,6 +40,7 @@ if ! zgen saved; then
     zgen oh-my-zsh plugins/colored-man
 
     # plugins
+    zgen load s7anley/zsh-geeknote
     zgen load zsh-users/zsh-completions src
     zgen load jimmijj/zsh-syntax-highlighting
     # zgen load zsh-users/zsh-history-substring-search
@@ -47,15 +48,16 @@ if ! zgen saved; then
     zgen load tarruda/zsh-autosuggestions
 
     # theme
-    zgen oh-my-zsh themes/agnoster
+    # zgen oh-my-zsh themes/agnoster
+    # zgen load S1cK94/minimal minimal
+    zgen load fdv/platypus platypus
 
     # save all to init script
     zgen save
 fi
 
-######## END ZGEN ########
-
 ######## PLUGIN SETTINGS ########
+
 zmodload zsh/terminfo
 # # Make sure the terminal is in application mode, when zle is active. Only then
 # # are the values from $terminfo valid. And also activate autosuggestions.
@@ -82,13 +84,10 @@ fi
 AUTOSUGGESTION_ACCEPT_RIGHT_ARROW=1
 
 # Setup syntax highlighting
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern root)
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 
 # set default user for agnoster prompt
 DEFAULT_USER='nhentschel'
-
-######## END PLUGIN SETTINGS ########
-
 
 ######## HISTORY AND COMPLETION SETTINGS ########
 
@@ -110,7 +109,7 @@ setopt share_history
 setopt pushd_ignore_dups
 setopt hash_list_all            # hash everything before completion
 setopt completealiases          # complete alisases
-setopt always_to_end            # when completing from the middle of a word, move the cursor to the end of the word    
+setopt always_to_end            # when completing from the middle of a word, move the cursor to the end of the word
 setopt complete_in_word         # allow completion from within a word/phrase
 
 # Keep a ton of history.
@@ -141,9 +140,6 @@ zstyle ':completion:*:killall:*' force-list always
 zstyle ':completion:*' users $users
 
 zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
-
-
-######## END HISTORY AND COMPLETION SETTINGS ########
 
 ######## OTHER SETTINGS #######
 
@@ -188,8 +184,8 @@ setopt NO_clobber
 
 # Base16 Shell
 if is_osx; then
-    BASE16_SHELL="$HOME/.config/base16-shell/base16-tomorrow.dark.sh"
-    [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+    # BASE16_SHELL="$HOME/.config/base16-shell/base16-tomorrow.dark.sh"
+    # [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 fi
 
 # source /Users/nhentschel/.iterm2_shell_integration.zsh
