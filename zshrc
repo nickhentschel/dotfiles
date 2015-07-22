@@ -83,6 +83,7 @@ fi
 
 # Use right arrow to accept suggestions
 AUTOSUGGESTION_ACCEPT_RIGHT_ARROW=1
+AUTOSUGGESTION_HIGHLIGHT_COLOR='fg=12'
 
 # Setup syntax highlighting
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
