@@ -42,6 +42,7 @@ if ! zgen saved; then
     # plugins
     zgen load s7anley/zsh-geeknote
     zgen load zsh-users/zsh-completions src
+    zgen load chrissicool/zsh-256color
     zgen load jimmijj/zsh-syntax-highlighting
     # zgen load zsh-users/zsh-history-substring-search
     zgen oh-my-zsh plugins/history-substring-search
