@@ -333,6 +333,7 @@ Plug 'elzr/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'clones/vim-zsh'
 Plug 'rodjek/vim-puppet'
+Plug 'evanmiller/nginx-vim-syntax'
 
 " Plugins for prose writing
 Plug 'junegunn/goyo.vim'
@@ -454,4 +455,4 @@ endif
 
 let base16colorspace=256
 set background=dark
-colorscheme Tomorrow-Night
+colorscheme solarized
