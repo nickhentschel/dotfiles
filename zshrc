@@ -36,6 +36,7 @@ if ! zgen saved; then
     if is_linux; then
         zgen oh-my-zsh plugins/yum
         zgen oh-my-zsh plugins/fabric
+        zgen load S1cK94/minimal minimal
     fi
 
     # plugins
