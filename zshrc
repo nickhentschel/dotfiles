@@ -29,6 +29,8 @@ if ! zgen saved; then
     if is_osx; then
         zgen oh-my-zsh plugins/brew
         zgen oh-my-zsh plugins/osx
+        zgen load fdv/platypus platypus
+        zgen load s7anley/zsh-geeknote
     fi
 
     if is_linux; then
@@ -36,13 +38,8 @@ if ! zgen saved; then
         zgen oh-my-zsh plugins/fabric
     fi
 
-    zgen oh-my-zsh plugins/git
-    zgen oh-my-zsh plugins/colored-man
-
     # plugins
-    zgen load s7anley/zsh-geeknote
     zgen load zsh-users/zsh-completions src
-    zgen load chrissicool/zsh-256color
     zgen load jimmijj/zsh-syntax-highlighting
     # zgen load zsh-users/zsh-history-substring-search
     zgen oh-my-zsh plugins/history-substring-search
@@ -51,7 +48,6 @@ if ! zgen saved; then
     # theme
     # zgen oh-my-zsh themes/agnoster
     # zgen load S1cK94/minimal minimal
-    zgen load fdv/platypus platypus
 
     # save all to init script
     zgen save
