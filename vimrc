@@ -189,12 +189,6 @@ nnoremap <silent> zk O<Esc>
 nnoremap ; :
 noremap : ;
 
-" Split navigation mappings
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-
 " Tab navigation mappings
 nnoremap gt :bnext<CR>
 nnoremap gT :bprevious<CR>
@@ -322,9 +316,6 @@ Plug 'rking/ag.vim'
 " Faster matcher for CtrlP
 Plug 'FelikZ/ctrlp-py-matcher'
 
-" Vim + tmux navigation
-Plug 'christoomey/vim-tmux-navigator'
-
 " colorscheme bundles
 Plug 'djjcast/mirodark'
 Plug 'w0ng/vim-hybrid'
@@ -342,9 +333,13 @@ Plug 'elzr/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'clones/vim-zsh'
 Plug 'rodjek/vim-puppet'
+Plug 'evanmiller/nginx-vim-syntax'
 
 " Plugins for prose writing
 Plug 'junegunn/goyo.vim'
+
+" Vim + tmux navigation
+Plug 'christoomey/vim-tmux-navigator'
 
 call plug#end()
 
@@ -459,4 +454,4 @@ if has("gui_running")
 endif
 
 set background=dark
-colorscheme Tomorrow-Night
+colorscheme solarized
