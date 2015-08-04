@@ -332,7 +332,7 @@ Plug 'othree/yajs.vim'
 Plug 'elzr/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'clones/vim-zsh'
-Plug 'rodjek/vim-puppet'
+Plug 'puppetlabs/puppet-syntax-vim'
 Plug 'evanmiller/nginx-vim-syntax'
 
 " Plugins for prose writing
@@ -431,6 +431,7 @@ set list
 " execute "set colorcolumn=" . join(range(81,335), ',')
 
 " set cursorline
+set synmaxcol=100
 
 " Cursor shows matching ) and }
 set showmatch
