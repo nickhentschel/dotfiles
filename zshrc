@@ -30,13 +30,11 @@ if ! zgen saved; then
         zgen oh-my-zsh plugins/brew
         zgen oh-my-zsh plugins/osx
         zgen load s7anley/zsh-geeknote
-        zgen load mtully/gitsome gitsome
     fi
 
     if is_linux; then
         zgen oh-my-zsh plugins/yum
         zgen oh-my-zsh plugins/fabric
-        zgen load S1cK94/minimal minimal
     fi
 
     # plugins
@@ -46,10 +44,8 @@ if ! zgen saved; then
     zgen oh-my-zsh plugins/history-substring-search
     zgen load tarruda/zsh-autosuggestions
 
-    # zgen load S1cK94/minimal minimal
-
     # theme
-    # zgen load S1cK94/minimal minimal
+    zgen load nickhentschel/simplicity-prompt simplicity
 
     # save all to init script
     zgen save
