@@ -29,14 +29,14 @@ if ! zgen saved; then
     if is_osx; then
         zgen oh-my-zsh plugins/brew
         zgen oh-my-zsh plugins/osx
-        zgen load fdv/platypus platypus
+        # zgen load fdv/platypus platypus
         zgen load s7anley/zsh-geeknote
     fi
 
     if is_linux; then
         zgen oh-my-zsh plugins/yum
         zgen oh-my-zsh plugins/fabric
-        zgen load S1cK94/minimal minimal
+        # zgen load S1cK94/minimal minimal
     fi
 
     # plugins
@@ -46,8 +46,10 @@ if ! zgen saved; then
     zgen oh-my-zsh plugins/history-substring-search
     zgen load tarruda/zsh-autosuggestions
 
+    # zgen load S1cK94/minimal minimal
+
     # theme
-    # zgen oh-my-zsh themes/agnoster
+    zgen oh-my-zsh themes/kolo
     # zgen load S1cK94/minimal minimal
 
     # save all to init script
