@@ -29,8 +29,8 @@ if ! zgen saved; then
     if is_osx; then
         zgen oh-my-zsh plugins/brew
         zgen oh-my-zsh plugins/osx
-        # zgen load fdv/platypus platypus
         zgen load s7anley/zsh-geeknote
+        # zgen oh-my-zsh themes/kolo
     fi
 
     if is_linux; then
@@ -49,7 +49,7 @@ if ! zgen saved; then
     # zgen load S1cK94/minimal minimal
 
     # theme
-    zgen oh-my-zsh themes/kolo
+    zgen load mtully/gitsome gitsome
     # zgen load S1cK94/minimal minimal
 
     # save all to init script
