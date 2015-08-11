@@ -218,7 +218,7 @@ augroup END
 
 augroup web_syntax
     autocmd!
-    au Filetype html,css,scss,sass,ruby,javascript,yml,yaml,eruby setlocal ts=2 sts=2 sw=2
+    au Filetype html,css,scss,sass,ruby,javascript,yml,yaml,eruby,puppet setlocal ts=2 sts=2 sw=2
     " autocmd FileType html,eruby set omnifunc=htmlcomplete#CompleteTags
 augroup END
 
@@ -332,7 +332,7 @@ Plug 'othree/yajs.vim'
 Plug 'elzr/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'clones/vim-zsh'
-Plug 'rodjek/vim-puppet'
+Plug 'puppetlabs/puppet-syntax-vim'
 Plug 'evanmiller/nginx-vim-syntax'
 
 " Plugins for prose writing

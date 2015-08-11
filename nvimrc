@@ -431,14 +431,13 @@ set list
 " execute "set colorcolumn=" . join(range(81,335), ',')
 
 " set cursorline
-set synmaxcol=100
 
 " Cursor shows matching ) and }
 set showmatch
 
 set laststatus=2
 set encoding=utf-8
-set synmaxcol=500
+set synmaxcol=300
 
 " Set off the other paren
 highlight MatchParen ctermbg=4
@@ -454,6 +453,5 @@ if has("gui_running")
     colorscheme Tomorrow-Night
 endif
 
-let base16colorspace=256
 set background=dark
 colorscheme solarized
