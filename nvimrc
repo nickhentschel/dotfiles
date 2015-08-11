@@ -218,7 +218,7 @@ augroup END
 
 augroup web_syntax
     autocmd!
-    au Filetype html,css,scss,sass,ruby,javascript,yml,yaml,eruby setlocal ts=2 sts=2 sw=2
+    au Filetype html,css,scss,sass,ruby,javascript,yml,yaml,eruby,puppet setlocal ts=2 sts=2 sw=2
     " autocmd FileType html,eruby set omnifunc=htmlcomplete#CompleteTags
 augroup END
 
@@ -438,7 +438,7 @@ set showmatch
 
 set laststatus=2
 set encoding=utf-8
-set synmaxcol=300
+set synmaxcol=500
 
 " Set off the other paren
 highlight MatchParen ctermbg=4
