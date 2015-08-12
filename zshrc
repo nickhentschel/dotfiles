@@ -75,11 +75,13 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 
 ######## HISTORY AND COMPLETION SETTINGS ########
 
-autoload compinit;compinit
+autoload -Uz compinit
+compinit
 
-autoload colors;colors
+# Disable core dumps
+limit coredumpsize 0 
 
-set some history options
+# set some history options
 setopt append_history
 setopt extended_history
 setopt hist_expire_dups_first
@@ -108,21 +110,32 @@ HISTFILE=~/.zsh_history
 HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 
 # Speed up autocomplete, force prefix mapping
-zstyle ':completion:*' menu select
-zstyle ':completion:*' accept-exact '*(N)'
+# zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
-zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
-#
-# # Sections completion
+
+# Sections completion
+zstyle ':completion:*:match:*' original only
+zstyle ':completion::prefix-1:*' completer _complete
+zstyle ':completion:predict:*' completer _complete
+zstyle ':completion:incremental:*' completer _complete _correct
+zstyle ':completion:*' completer _complete _prefix _correct _prefix _match _approximate
+
+# Path Expansion
+zstyle ':completion:*' expand 'yes'
+zstyle ':completion:*' squeeze-shlashes 'yes'
+zstyle ':completion::complete:*' '\\'
+
+zstyle ':completion:*:*:*:default' menu yes select
+zstyle ':completion:*:*:default' force-list always
+zstyle ':completion:*' users $users
 zstyle ':completion:*' verbose yes
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' special-dirs true
+zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
+zstyle ':completion:*:manuals' separate-sections true
 zstyle ':completion:*:descriptions' format $'\e[00;34m%d'
 zstyle ':completion:*:messages' format $'\e[00;31m%d'
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*:manuals' separate-sections true
-
-# Enable ..<TAB> -> ..
-zstyle ':completion:*' special-dirs true
 
 # zstyle ':completion:*:processes:*' command 'ps xf -u $USER -o pid,%cpu,cmd'
 # zstyle ':completion:*:processes' command 'ps -au$USER'
@@ -131,10 +144,9 @@ zstyle ':completion:*:*:kill:*' menu yes select
 zstyle ':completion:*:kill:*' force-list always
 zstyle ':completion:*:*:killall:*' menu yes select
 zstyle ':completion:*:killall:*' force-list always
-zstyle ':completion:*' users $users
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
 
-zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
+# zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
 
 
 ######## OTHER SETTINGS #######
