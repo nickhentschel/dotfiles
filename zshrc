@@ -39,10 +39,11 @@ if ! zgen saved; then
 
     # plugins
     zgen load zsh-users/zsh-completions src
+    zgen oh-my-zsh plugins/colored-man
     zgen load jimmijj/zsh-syntax-highlighting
     # zgen load zsh-users/zsh-history-substring-search
     zgen oh-my-zsh plugins/history-substring-search
-    zgen load tarruda/zsh-autosuggestions
+    # zgen load tarruda/zsh-autosuggestions
 
     # theme
     zgen load nickhentschel/simplicity-prompt simplicity
@@ -52,42 +53,33 @@ if ! zgen saved; then
 fi
 
 ######## PLUGIN SETTINGS ########
-
 zmodload zsh/terminfo
-# # Make sure the terminal is in application mode, when zle is active. Only then
-# # are the values from $terminfo valid. And also activate autosuggestions.
-if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
-    # Bind UP and DOWN arrow keys to history-substring-search.
-    bindkey "$terminfo[kcuu1]" history-substring-search-up
-    bindkey "$terminfo[kcud1]" history-substring-search-down
 
-    function zle-line-init () {
-        printf '%s' "${terminfo[smkx]}"
-        # Enable autosuggestions automatically
-        zle autosuggest-start
-    }
+# Vi mode
+bindkey -v
 
-    function zle-line-finish () {
-        printf '%s' "${terminfo[rmkx]}"
-    }
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
 
-    zle -N zle-line-init
-    zle -N zle-line-finish
-fi
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down
 
-# Use right arrow to accept suggestions
-AUTOSUGGESTION_ACCEPT_RIGHT_ARROW=1
-AUTOSUGGESTION_HIGHLIGHT_COLOR='fg=12'
+# vi style incremental search
+bindkey '^R' history-incremental-search-backward
+bindkey '^S' history-incremental-search-forward
+bindkey '^P' history-search-backward
+bindkey '^N' history-search-forward
 
 # Setup syntax highlighting
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 
-# set default user for agnoster prompt
-DEFAULT_USER='nhentschel'
-
 ######## HISTORY AND COMPLETION SETTINGS ########
 
-# set some history options
+autoload compinit;compinit
+
+autoload colors;colors
+
+set some history options
 setopt append_history
 setopt extended_history
 setopt hist_expire_dups_first
@@ -97,6 +89,7 @@ setopt hist_ignore_space
 setopt hist_reduce_blanks
 setopt hist_save_no_dups
 setopt hist_verify
+setopt NOMATCH
 
 # Share your history across all your terminal windows
 setopt share_history
@@ -115,27 +108,34 @@ HISTFILE=~/.zsh_history
 HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 
 # Speed up autocomplete, force prefix mapping
+zstyle ':completion:*' menu select
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
 zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
-
-# Sections completion
+#
+# # Sections completion
 zstyle ':completion:*' verbose yes
 zstyle ':completion:*:descriptions' format $'\e[00;34m%d'
 zstyle ':completion:*:messages' format $'\e[00;31m%d'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*:manuals' separate-sections true
 
-zstyle ':completion:*:processes' command 'ps -au$USER'
+# Enable ..<TAB> -> ..
+zstyle ':completion:*' special-dirs true
+
+# zstyle ':completion:*:processes:*' command 'ps xf -u $USER -o pid,%cpu,cmd'
+# zstyle ':completion:*:processes' command 'ps -au$USER'
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:*:kill:*' menu yes select
 zstyle ':completion:*:kill:*' force-list always
-zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=29=34"
 zstyle ':completion:*:*:killall:*' menu yes select
 zstyle ':completion:*:killall:*' force-list always
 zstyle ':completion:*' users $users
+zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
 
 zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
+
 
 ######## OTHER SETTINGS #######
 
@@ -154,23 +154,19 @@ TIMEFMT="%U user %S system %P cpu %*Es total"
 unsetopt beep
 unsetopt hist_beep
 
-# support colors in less
-export LESS_TERMCAP_mb=$'\E[01;31m'
-export LESS_TERMCAP_md=$'\E[01;31m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[01;44;33m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[01;32m'
+export LESS="ij.5KMRXC"
 
 # Use a default width of 80 for manpages for more convenient reading
-# export MANWIDTH=${MANWIDTH:-80}
+export MANWIDTH=80
 
-# vim, obviously
-export EDITOR=${EDITOR:-vim}
+if hash nvim 2>/dev/null; then
+    export EDITOR=nvim
+else
+    export EDITOR=vim
+fi
 
 # less for paging
-export PAGER=${PAGER:-less}
+export PAGER=less man
 
 # aliases
 alias ls="ls --color=always"
