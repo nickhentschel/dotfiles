@@ -98,6 +98,7 @@ setopt share_history
 
 # set some more options
 setopt pushd_ignore_dups
+setopt menu_complete
 setopt hash_list_all            # hash everything before completion
 setopt completealiases          # complete alisases
 setopt always_to_end            # when completing from the middle of a word, move the cursor to the end of the word
@@ -111,6 +112,7 @@ HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 
 # Speed up autocomplete, force prefix mapping
 # zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' accept-exact false
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
 
@@ -166,7 +168,7 @@ TIMEFMT="%U user %S system %P cpu %*Es total"
 unsetopt beep
 unsetopt hist_beep
 
-export LESS="ij.5KMRXC"
+export LESS="ij.5KMRX"
 
 # Use a default width of 80 for manpages for more convenient reading
 export MANWIDTH=80
