@@ -78,6 +78,9 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 autoload -Uz compinit
 compinit
 
+autoload predict-on
+predict-on
+
 # Disable core dumps
 limit coredumpsize 0 
 
@@ -135,6 +138,7 @@ zstyle ':completion:*' verbose yes
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' special-dirs true
 zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
 zstyle ':completion:*:manuals' separate-sections true
 zstyle ':completion:*:descriptions' format $'\e[00;34m%d'
 zstyle ':completion:*:messages' format $'\e[00;31m%d'
