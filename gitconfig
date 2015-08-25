@@ -1,6 +1,6 @@
 [user]
-	name = Nick Hentschel
-	email = nhentschel@wayfair.com
+    name = Nick Hentschel
+    email = nhentschel@wayfair.com
 [github]
     user = nickhentschel
 [color]
@@ -8,7 +8,7 @@
     status = auto
     branch = auto
     interactive = auto
-	ui = true
+    ui = true
 [color "branch"]
     current = yellow reverse
     local = yellow
@@ -28,26 +28,24 @@
 [credential]
     helper = cache
 [push]
-	default = current
+    default = current
 [core]
     editor = vim
-	autocrlf = false
+    autocrlf = false
 [alias]
     st = status
     co = checkout
     di = diff
     aa = add --all
     br = branch
-	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
-	logall = log --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
-[url "https://github.com"]
-    insteadOf = git://github.com
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+    logall = log --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
 [pull]
-	rebase = true
+    rebase = true
 [fetch]
-	prune = true
+    prune = true
 [log]
-	decorate = short
+    decorate = short
 [http]
-	sslverify = false
-	sslCAPath = /etc/pki/tls/certs
+    sslverify = false
+    sslCAPath = /etc/pki/tls/certs

@@ -1,3 +1,5 @@
+zmodload zsh/terminfo
+
 command_exists () {
   type "$1" &> /dev/null;
 }
@@ -15,71 +17,16 @@ if is_osx; then
     MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 fi
 
-######## ZGEN ########
-
-ZGEN_DIR=~/.zsh/plugins
-source ~/.zsh/zgen/zgen.zsh
-
-# Check if there's no init script.
-if ! zgen saved; then
-    echo "Creating a zgen save"
-
-    zgen oh-my-zsh
-
-    if is_osx; then
-        zgen oh-my-zsh plugins/brew
-        zgen oh-my-zsh plugins/osx
-        zgen load s7anley/zsh-geeknote
-    fi
-
-    if is_linux; then
-        zgen oh-my-zsh plugins/yum
-        zgen oh-my-zsh plugins/fabric
-    fi
-
-    # plugins
-    zgen load zsh-users/zsh-completions src
-    zgen oh-my-zsh plugins/colored-man
-    zgen load jimmijj/zsh-syntax-highlighting
-    # zgen load zsh-users/zsh-history-substring-search
-    zgen oh-my-zsh plugins/history-substring-search
-    # zgen load tarruda/zsh-autosuggestions
-
-    # theme
-    zgen load nickhentschel/simplicity-prompt simplicity
-
-    # save all to init script
-    zgen save
-fi
-
-######## PLUGIN SETTINGS ########
-zmodload zsh/terminfo
-
-# Vi mode
-bindkey -v
-
-bindkey -M vicmd 'k' history-substring-search-up
-bindkey -M vicmd 'j' history-substring-search-down
-
-bindkey "$terminfo[kcuu1]" history-substring-search-up
-bindkey "$terminfo[kcud1]" history-substring-search-down
-
 # vi style incremental search
 bindkey '^R' history-incremental-search-backward
 bindkey '^S' history-incremental-search-forward
 bindkey '^P' history-search-backward
 bindkey '^N' history-search-forward
 
-# Setup syntax highlighting
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
-
 ######## HISTORY AND COMPLETION SETTINGS ########
 
 autoload -Uz compinit
 compinit
-
-autoload predict-on
-predict-on
 
 # Disable core dumps
 limit coredumpsize 0 
@@ -183,6 +130,9 @@ else
     export EDITOR=vim
 fi
 
+# Vi mode
+bindkey -v
+
 # less for paging
 export PAGER=less man
 
@@ -194,4 +144,53 @@ alias egrep="egrep --color=always"
 # warning if file exists ('cat /dev/null > ~/.zshrc')
 setopt NO_clobber
 
-# source /Users/nhentschel/.iterm2_shell_integration.zsh
+######## ZGEN ########
+
+ZGEN_DIR=~/.zsh/plugins
+source ~/.zsh/zgen/zgen.zsh
+
+# Check if there's no init script.
+if ! zgen saved; then
+    echo "Creating a zgen save"
+
+    zgen oh-my-zsh
+
+    if is_osx; then
+        zgen oh-my-zsh plugins/brew
+        zgen oh-my-zsh plugins/osx
+        zgen load s7anley/zsh-geeknote
+    fi
+
+    if is_linux; then
+        zgen oh-my-zsh plugins/yum
+        zgen oh-my-zsh plugins/fabric
+    fi
+
+    # plugins
+    zgen load zsh-users/zsh-completions src
+    zgen oh-my-zsh plugins/colored-man
+    # zgen load zsh-users/zsh-history-substring-search
+    zgen oh-my-zsh plugins/history-substring-search
+    # zgen load tarruda/zsh-autosuggestions
+    # zgen load jimmijj/zsh-syntax-highlighting
+    zgen load zsh-users/zsh-syntax-highlighting
+
+    # theme
+    zgen load nickhentschel/simplicity-prompt simplicity
+
+    # save all to init script
+    zgen save
+fi
+
+######## PLUGIN SETTINGS ########
+# Setup syntax highlighting
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor line)
+ZSH_HIGHLIGHT_STYLES[precommand]=none
+ZSH_HIGHLIGHT_STYLES[default]=none
+
+
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down
