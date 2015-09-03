@@ -320,7 +320,7 @@ Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'djjcast/mirodark'
 Plug 'w0ng/vim-hybrid'
 Plug 'altercation/vim-colors-solarized'
-Plug 'freeo/vim-kalisi'
+Plug 'stulzer/heroku-colorscheme'
 Plug 'sickill/vim-monokai'
 Plug 'chriskempson/vim-tomorrow-theme'
 
