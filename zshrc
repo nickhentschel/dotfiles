@@ -130,6 +130,10 @@ else
     export EDITOR=vim
 fi
 
+if is_osx; then
+    . `brew --prefix`/etc/profile.d/z.sh
+fi
+
 # Vi mode
 bindkey -v
 
@@ -140,6 +144,7 @@ export PAGER=less man
 alias ls="ls --color=always"
 alias grep="grep --color=always"
 alias egrep="egrep --color=always"
+alias c="clear"
 
 # warning if file exists ('cat /dev/null > ~/.zshrc')
 setopt NO_clobber
