@@ -4,8 +4,8 @@
 # DOTFILES_INSTALL_PATH = '/Users/nhentschel/Downloads/tmp'
 DOTFILES_INSTALL_PATH = ENV['HOME']
 BACKUP_DIR_PATH = File.join(DOTFILES_INSTALL_PATH, "dotfiles_backup_#{Time.now.to_i}")
-DEPENDENCIES = %w(fish wget)
-IGNORED_FILES = %w(README.md Rakefile config.fish osx)
+DEPENDENCIES = %w(zsh wget tmux vim)
+IGNORED_FILES = %w(README.md Rakefile osx)
 FILE_LIST = Dir[File.basename(File.join(Dir.pwd, '*'))] - IGNORED_FILES
 
 def info(text)
@@ -58,19 +58,19 @@ task :check_dependencies do
   abort(error("Missing dependencies: #{failed_deps.join(',')} - aborting")) unless failed_deps.empty?
 end
 
-desc 'change shell to fish shell'
-task :change_shell_to_fish do
-  info('Changing shell to fish, enter password when prompted')
-  if File.basename(ENV['SHELL']) != 'fish'
-    sh %(chsh -s /usr/local/bin/fish) do |ok, res|
+desc 'change shell to zsh'
+task :change_shell_to_zsh do
+  info('Changing shell to zsh, enter password when prompted')
+  if File.basename(ENV['SHELL']) != 'zsh'
+    sh %(chsh -s /usr/local/bin/zsh) do |ok, res|
       if !ok
         abort(error("changing shell failed: #{res.exitstatus}"))
       else
-        success('shell changed to fish')
+        success('shell changed to zsh')
       end
     end
   else
-    warning('Shell already set to fish, taking no action')
+    warning('Shell already set to zsh, taking no action')
   end
 end
 
