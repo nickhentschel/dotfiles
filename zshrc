@@ -129,6 +129,19 @@ fi
 # less for paging
 export PAGER=less man
 
+# Colorize man pages
+man() {
+  env \
+    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+    LESS_TERMCAP_md=$(printf "\e[1;31m") \
+    LESS_TERMCAP_me=$(printf "\e[0m") \
+    LESS_TERMCAP_se=$(printf "\e[0m") \
+    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+    LESS_TERMCAP_ue=$(printf "\e[0m") \
+    LESS_TERMCAP_us=$(printf "\e[1;32m") \
+    man "$@"
+}
+
 # aliases
 alias ls="ls --color=always"
 alias grep="grep --color=always"
@@ -162,12 +175,8 @@ if ! zgen saved; then
 
     # plugins
     zgen load zsh-users/zsh-completions src
-    zgen oh-my-zsh plugins/colored-man
     # zgen oh-my-zsh plugins/vi-mode
-    # zgen load zsh-users/zsh-history-substring-search
     zgen oh-my-zsh plugins/history-substring-search
-    # zgen load tarruda/zsh-autosuggestions
-    # zgen load jimmijj/zsh-syntax-highlighting
     zgen load zsh-users/zsh-syntax-highlighting
 
     # theme
