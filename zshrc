@@ -17,19 +17,13 @@ if is_osx; then
     MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 fi
 
-# vi style incremental search
-bindkey '^R' history-incremental-search-backward
-bindkey '^S' history-incremental-search-forward
-bindkey '^P' history-search-backward
-bindkey '^N' history-search-forward
-
 ######## HISTORY AND COMPLETION SETTINGS ########
 
 autoload -Uz compinit
 compinit
 
 # Disable core dumps
-limit coredumpsize 0 
+limit coredumpsize 0
 
 # set some history options
 setopt append_history
@@ -61,7 +55,7 @@ HISTFILE=~/.zsh_history
 HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 
 # Speed up autocomplete, force prefix mapping
-# zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' accept-exact false
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
@@ -76,13 +70,13 @@ zstyle ':completion:*' completer _complete _prefix _correct _prefix _match _appr
 # Path Expansion
 zstyle ':completion:*' expand 'yes'
 zstyle ':completion:*' squeeze-shlashes 'yes'
-zstyle ':completion::complete:*' '\\'
 
-zstyle ':completion:*:*:*:default' menu yes select
-zstyle ':completion:*:*:default' force-list always
+zstyle ':completion:*' menu select
 zstyle ':completion:*' users $users
 zstyle ':completion:*' verbose yes
+zstyle ':completion:*' auto-description 'specify: %d'
 zstyle ':completion:*' group-name ''
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' special-dirs true
 zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
 zstyle ':completion:*:default' list-prompt '%S%M matches%s'
@@ -90,8 +84,6 @@ zstyle ':completion:*:manuals' separate-sections true
 zstyle ':completion:*:descriptions' format $'\e[00;34m%d'
 zstyle ':completion:*:messages' format $'\e[00;31m%d'
 
-# zstyle ':completion:*:processes:*' command 'ps xf -u $USER -o pid,%cpu,cmd'
-# zstyle ':completion:*:processes' command 'ps -au$USER'
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:*:kill:*' menu yes select
 zstyle ':completion:*:kill:*' force-list always
@@ -99,8 +91,7 @@ zstyle ':completion:*:*:killall:*' menu yes select
 zstyle ':completion:*:killall:*' force-list always
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
 
-# zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
-
+zstyle ':completion:*' warnings '%F{red}No matches for: %d%f'
 
 ######## OTHER SETTINGS #######
 
@@ -114,6 +105,7 @@ test -e ~/.dircolors && \
 # in seconds.
 REPORTTIME=2
 TIMEFMT="%U user %S system %P cpu %*Es total"
+KEYTIMEOUT=1
 
 # Beeping is super annoying
 unsetopt beep
@@ -133,9 +125,6 @@ fi
 if is_osx; then
     . `brew --prefix`/etc/profile.d/z.sh
 fi
-
-# Vi mode
-bindkey -v
 
 # less for paging
 export PAGER=less man
@@ -174,6 +163,7 @@ if ! zgen saved; then
     # plugins
     zgen load zsh-users/zsh-completions src
     zgen oh-my-zsh plugins/colored-man
+    # zgen oh-my-zsh plugins/vi-mode
     # zgen load zsh-users/zsh-history-substring-search
     zgen oh-my-zsh plugins/history-substring-search
     # zgen load tarruda/zsh-autosuggestions
@@ -193,9 +183,23 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor line)
 ZSH_HIGHLIGHT_STYLES[precommand]=none
 ZSH_HIGHLIGHT_STYLES[default]=none
 
+bindkey -v
+autoload -Uz edit-command-line
+zle -N edit-command-line
 
-bindkey -M vicmd 'k' history-substring-search-up
-bindkey -M vicmd 'j' history-substring-search-down
+# KEY BINDINGS
 
 bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
+
+# vi style incremental search
+bindkey -M vicmd "/" history-incremental-pattern-search-forward
+bindkey -M vicmd 'u' undo
+bindkey -M vicmd '~' vi-swap-case
+bindkey '^u' vi-change-whole-line
+
+bindkey '^R' history-incremental-search-backward
+bindkey '^S' history-incremental-search-forward
+bindkey '^P' history-search-backward
+bindkey '^N' history-search-forward
+
