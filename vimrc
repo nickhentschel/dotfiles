@@ -195,10 +195,10 @@ nnoremap gT :bprevious<CR>
 nnoremap <C-c> :Bdelete<CR>
 
 " Make use of the arrow keys
-nnoremap <left>  :5winc ><CR>
-nnoremap <right> :5winc <<CR>
-nnoremap <down>  :5winc -<CR>
-nnoremap <up>    :5winc +<CR>
+nnoremap <left>  h
+nnoremap <right> l
+nnoremap <down>  j
+nnoremap <up>    k
 
 " search for word under cursor with Q
 nnoremap Q :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
@@ -320,7 +320,7 @@ Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'djjcast/mirodark'
 Plug 'w0ng/vim-hybrid'
 Plug 'altercation/vim-colors-solarized'
-Plug 'stulzer/heroku-colorscheme'
+Plug 'andrwb/vim-lapis256'
 Plug 'sickill/vim-monokai'
 Plug 'chriskempson/vim-tomorrow-theme'
 
@@ -396,7 +396,7 @@ endif
 " Uncomment below if not using a font with powerline symbols
 " let g:airline_left_sep = ''
 " let g:airline_right_sep = ''
-" let g:airline_theme = "base16"
+" let g:airline_theme = "understated"
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#bufferline#overwrite_variables = 0
