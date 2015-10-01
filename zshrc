@@ -13,8 +13,8 @@ is_osx () {
 }
 
 if is_osx; then
-    PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-    MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+    PATH="/usr/local/sbin:/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+    MANPATH="/usr/local/sbin:/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 fi
 
 ######## HISTORY AND COMPLETION SETTINGS ########

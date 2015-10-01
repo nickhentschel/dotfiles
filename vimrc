@@ -207,6 +207,9 @@ nnoremap Q :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
+" w!! for writing read-only file
+cmap w!! w !sudo tee % >/dev/null
+
 " * * * * * * * * * * * * * * * * * * *
 " * AUTO COMMANDS                     *
 " * * * * * * * * * * * * * * * * * * *
@@ -219,7 +222,6 @@ augroup END
 augroup web_syntax
     autocmd!
     au Filetype html,css,scss,sass,ruby,javascript,yml,yaml,eruby,puppet setlocal ts=2 sts=2 sw=2
-    " autocmd FileType html,eruby set omnifunc=htmlcomplete#CompleteTags
 augroup END
 
 " Close help sections with q
@@ -236,12 +238,6 @@ augroup END
 " autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 " autocmd FileType c set omnifunc=ccomplete#Complete
 " autocmd FileType java set omnifunc=javacomplete#Complete
-
-" autocmd FileType ruby compiler ruby
-" autocmd FileType eruby compiler eruby
-" autocmd FileType ruby set omnifunc=rubycomplete#Complete
-" autocmd FileType ruby let g:rubycomplete_buffer_loading=1
-" autocmd FileType ruby let g:rubycomplete_classes_in_global=1
 
 " use syntax complete if nothing else available
 if has("autocmd") && exists("+omnifunc")
@@ -300,8 +296,12 @@ Plug 'scrooloose/nerdtree'
 " vim git wrapper
 Plug 'tpope/vim-fugitive'
 
+" vim snippets
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
 " Syntax checking hacks for vim
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
 
 " speeddating.vim: use CTRL-A/CTRL-X to increment dates, times, and more
 Plug 'tpope/vim-speeddating'
@@ -309,30 +309,29 @@ Plug 'tpope/vim-speeddating'
 " pairs of handy bracket mappings
 Plug 'tpope/vim-unimpaired'
 
+" matching braces and such
+Plug 'jiangmiao/auto-pairs'
+
 " Vim plugin for the_silver_searcher, 'ag', a replacement for the Perl module /
 " CLI script 'ack'
 Plug 'rking/ag.vim'
 
-" Faster matcher for CtrlP
-Plug 'FelikZ/ctrlp-py-matcher'
-
 " colorscheme bundles
 Plug 'djjcast/mirodark'
+Plug 'andrwb/vim-lapis256'
 Plug 'w0ng/vim-hybrid'
 Plug 'altercation/vim-colors-solarized'
-Plug 'andrwb/vim-lapis256'
-Plug 'sickill/vim-monokai'
 Plug 'chriskempson/vim-tomorrow-theme'
 
 " syntax and language related bundles
 Plug 'vim-ruby/vim-ruby'
-Plug 'tpope/vim-rails'
 Plug 'othree/html5.vim'
 Plug 'othree/yajs.vim'
 Plug 'elzr/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'clones/vim-zsh'
-Plug 'puppetlabs/puppet-syntax-vim'
+" Plug 'puppetlabs/puppet-syntax-vim'
+Plug 'rodjek/vim-puppet'
 Plug 'evanmiller/nginx-vim-syntax'
 
 " Plugins for prose writing
@@ -350,6 +349,11 @@ call plug#end()
 " NERDTree
 nnoremap <leader>t :NERDTreeToggle<CR>
 let NERDTreeShowHidden=1
+
+" ultisnips
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " ctrlp
 let g:ctrlp_show_hidden = 1
@@ -386,12 +390,6 @@ else
                 \ }
 endif
 
-if !has('python')
-    echo 'In order to use pymatcher plugin, you need +python compiled vim'
-else
-    let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
-endif
-
 " Vim Airline
 " Uncomment below if not using a font with powerline symbols
 " let g:airline_left_sep = ''
@@ -401,7 +399,7 @@ let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#bufferline#overwrite_variables = 0
 let g:airline#extensions#bufferline#enabled = 0
-let g:airline#extensions#syntastic#enabled = 1
+" let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#branch#empty_message = ''
 let g:airline#extensions#ctrlp#enabled = 1
@@ -410,14 +408,16 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 
 " Syntastic
-let g:syntastic_ruby_checkers = ['ruby-lint', 'rubocop']
-let g:syntastic_javascript_checkers = ['jshint']
-let g:syntastic_aggregate_errors = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_error_symbol = "✗"
-let g:syntastic_warning_symbol = "⚠"
-let g:syntastic_enable_signs = 0
-let g:syntastic_echo_current_error = 0
+" let g:syntastic_ruby_checkers = ['ruby-lint', 'rubocop']
+" let g:syntastic_javascript_checkers = ['jshint']
+" let g:syntastic_aggregate_errors = 1
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+" let g:syntastic_enable_signs=1
+" let g:syntastic_quiet_messages = {'level': 'warnings'}
+" let g:syntastic_auto_loc_list=1
 
 " * * * * * * * * * * * * * * * * * * *
 " * LOOK AND FEEL                     *
