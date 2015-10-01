@@ -46,7 +46,6 @@ end
 
 task :default do
   info('To install, run rake install. To see a list of options, run rake -T')
-  info("#{FILE_LIST}")
 end
 
 desc 'check dependencies'
@@ -83,14 +82,23 @@ task :backup_existing_dotfiles do
   success("Existing dotfiles backed up to #{BACKUP_DIR_PATH}")
 end
 
+desc 'install vim-plug'
+task :install_vim_plug do
+  unless File.directory?(File.join(DOTFILES_INSTALL_PATH, '.vim')) ? Dir.mkdir(Dir.pwd, '.vim')
+  sh %(curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim) do |ok, res|
+    if !ok
+      abort(error("downloading vim-plug failed: #{res.exitstatus}"))
+    else
+      success('vim-plug installed!')
+    end
+  end
+end
+
 desc 'link new dotfiles'
 task :link_new_dotfiles do
   FILE_LIST.each do |file|
     link_file(file)
   end
-
-  # Link nvim stuff
-  Dir.mkdir(File.join(DOTFILES_INSTALL_PATH, '.vim'))
   FileUtils.ln_s(
     File.join(Dir.pwd, '.nvimrc'),
     File.join(DOTFILES_INSTALL_PATH, 'vimrc')
