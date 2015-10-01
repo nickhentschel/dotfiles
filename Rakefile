@@ -84,7 +84,7 @@ end
 
 desc 'install vim-plug'
 task :install_vim_plug do
-  unless File.directory?(File.join(DOTFILES_INSTALL_PATH, '.vim')) ? Dir.mkdir(Dir.pwd, '.vim')
+  Dir.mkdir(Dir.pwd, '.vim') unless File.exist?(File.join(DOTFILES_INSTALL_PATH, '.vim/autoload/plug.vim'))
   sh %(curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim) do |ok, res|
     if !ok
       abort(error("downloading vim-plug failed: #{res.exitstatus}"))
