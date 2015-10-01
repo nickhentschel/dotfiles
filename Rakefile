@@ -88,5 +88,16 @@ task :link_new_dotfiles do
   FILE_LIST.each do |file|
     link_file(file)
   end
+
+  # Link nvim stuff
+  Dir.mkdir(File.join(DOTFILES_INSTALL_PATH, '.vim'))
+  FileUtils.ln_s(
+    File.join(Dir.pwd, '.nvimrc'),
+    File.join(DOTFILES_INSTALL_PATH, 'vimrc')
+  )
+  FileUtils.ln_s(
+    File.join(Dir.pwd, '.vim/'),
+    File.join(Dir.pwd, '.nvim/'),
+  )
   success("New dotfiles successfully linked to #{DOTFILES_INSTALL_PATH}")
 end
