@@ -18,14 +18,8 @@
 set shell=/bin/bash
 syntax on
 
-" Needed for enabling omnicomplete
 filetype plugin on
 filetype indent on
-
-if executable('ag')
-    " Use Ag over Grep
-    set grepprg=ag\ --nogroup\ --nocolor\ --ignore=log/\*\ --ignore=tags
-endif
 
 " * * * * * * * * * * * * * * * * * * *
 " * FUNCTIONS                         *
@@ -230,27 +224,6 @@ augroup autocommand_mappings
     au FileType help nnoremap <silent><buffer> q :q<CR>
 augroup END
 
-" Enable omni completion. (Ctrl-X Ctrl-O)
-" autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-" autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-" autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-" autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-" autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-" autocmd FileType c set omnifunc=ccomplete#Complete
-" autocmd FileType java set omnifunc=javacomplete#Complete
-
-" use syntax complete if nothing else available
-if has("autocmd") && exists("+omnifunc")
-    autocmd Filetype *
-                \ if &omnifunc == "" |
-                \     setlocal omnifunc=syntaxcomplete#Complete |
-                \ endif
-endif
-
-" Disable seach highlighting in insert mode, re-enable in normal mode
-autocmd InsertEnter * :setlocal nohlsearch
-autocmd InsertLeave * :setlocal hlsearch
-
 " * * * * * * * * * * * * * * * * * * *
 " * BUNDLES AND SUCH                  *
 " * * * * * * * * * * * * * * * * * * *
@@ -284,9 +257,6 @@ Plug 'sgur/ctrlp-extensions.vim'
 " Much lighter than powerline
 Plug 'bling/vim-airline'
 
-" Allows ctrl h,j,k,l to navigate tmux panes and vim splits
-Plug 'christoomey/vim-tmux-navigator'
-
 " wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
 Plug 'tpope/vim-endwise', { 'for': ['eruby', 'ruby'] }
 
@@ -316,6 +286,12 @@ Plug 'jiangmiao/auto-pairs'
 " CLI script 'ack'
 Plug 'rking/ag.vim'
 
+" Plugins for prose writing
+Plug 'junegunn/goyo.vim'
+
+" Vim + tmux navigation
+Plug 'christoomey/vim-tmux-navigator'
+
 " colorscheme bundles
 Plug 'djjcast/mirodark'
 Plug 'andrwb/vim-lapis256'
@@ -324,21 +300,14 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'chriskempson/vim-tomorrow-theme'
 
 " syntax and language related bundles
-Plug 'vim-ruby/vim-ruby'
-Plug 'othree/html5.vim'
-Plug 'othree/yajs.vim'
+Plug 'vim-ruby/vim-ruby', { 'for': ['ruby', 'eruby'] }
+Plug 'othree/html5.vim', { 'for': ['html', 'javascript', 'php', 'eruby'] }
+Plug 'othree/yajs.vim', { 'for': ['html', 'javascript', 'php', 'eruby'] }
 Plug 'elzr/vim-json'
-Plug 'tpope/vim-markdown'
-Plug 'clones/vim-zsh'
-" Plug 'puppetlabs/puppet-syntax-vim'
-Plug 'rodjek/vim-puppet'
-Plug 'evanmiller/nginx-vim-syntax'
-
-" Plugins for prose writing
-Plug 'junegunn/goyo.vim'
-
-" Vim + tmux navigation
-Plug 'christoomey/vim-tmux-navigator'
+Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
+Plug 'clones/vim-zsh', { 'for': ['zsh'] }
+Plug 'nickhentschel/vim-puppet', { 'for': ['puppet'] }
+Plug 'evanmiller/nginx-vim-syntax', { 'for': ['nginx'] }
 
 call plug#end()
 
@@ -407,18 +376,6 @@ let g:airline#extensions#ctrlp#show_adjacent_modes = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 
-" Syntastic
-" let g:syntastic_ruby_checkers = ['ruby-lint', 'rubocop']
-" let g:syntastic_javascript_checkers = ['jshint']
-" let g:syntastic_aggregate_errors = 1
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 0
-" let g:syntastic_enable_signs=1
-" let g:syntastic_quiet_messages = {'level': 'warnings'}
-" let g:syntastic_auto_loc_list=1
-
 " * * * * * * * * * * * * * * * * * * *
 " * LOOK AND FEEL                     *
 " * * * * * * * * * * * * * * * * * * *
@@ -427,30 +384,20 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶,nbsp:×
 set list
 
-" highlight past 80 characters
-" execute "set colorcolumn=" . join(range(81,335), ',')
-
-" set cursorline
-
 " Cursor shows matching ) and }
-set showmatch
+highlight MatchParen ctermbg=4
+" set showmatch
 
 set laststatus=2
-set encoding=utf-8
 set synmaxcol=300
-
-" Set off the other paren
-highlight MatchParen ctermbg=4
 
 " disable sound on errors
 set noeb vb t_vb=
 
 if has("gui_running")
-    " Remove scrollbars
     set guioptions-=r
     set guioptions-=L
     set guifont=PragmataPro\ for\ Powerline:h12
-    colorscheme Tomorrow-Night
 endif
 
 set background=dark
