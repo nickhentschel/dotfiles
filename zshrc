@@ -118,6 +118,7 @@ export MANWIDTH=80
 
 if hash nvim 2>/dev/null; then
     export EDITOR=nvim
+    export NVIM_TUI_ENABLE_TRUECOLOR=1
 else
     export EDITOR=vim
 fi
