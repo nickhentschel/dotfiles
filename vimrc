@@ -271,7 +271,7 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 " Syntax checking hacks for vim
-" Plug 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic'
 
 " speeddating.vim: use CTRL-A/CTRL-X to increment dates, times, and more
 Plug 'tpope/vim-speeddating'
