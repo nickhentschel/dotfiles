@@ -294,7 +294,7 @@ Plug 'christoomey/vim-tmux-navigator'
 
 " colorscheme bundles
 Plug 'djjcast/mirodark'
-Plug 'andrwb/vim-lapis256'
+Plug 'mhartington/oceanic-next'
 Plug 'w0ng/vim-hybrid'
 Plug 'altercation/vim-colors-solarized'
 Plug 'chriskempson/vim-tomorrow-theme'
@@ -315,6 +315,11 @@ call plug#end()
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
 
+" Syntastic
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+nnoremap <leader>c :SyntasticCheck<CR>
+
 " NERDTree
 nnoremap <leader>t :NERDTreeToggle<CR>
 let NERDTreeShowHidden=1
@@ -331,8 +336,6 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_working_path_mode = 2
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:10'
 let g:ctrlp_switch_buffer = 'Et'
-" let g:ctrlp_lazy_update = 350
-" Open new files in current window
 let g:ctrlp_open_new_file = 'r'
 let g:ctrlp_extensions = ['tag', 'buffertag', 'dir', 'undo', 'line']
 let g:ctrlp_use_caching = 1
@@ -363,12 +366,12 @@ endif
 " Uncomment below if not using a font with powerline symbols
 " let g:airline_left_sep = ''
 " let g:airline_right_sep = ''
-" let g:airline_theme = "understated"
+let g:airline_theme = "oceanicnext"
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#bufferline#overwrite_variables = 0
 let g:airline#extensions#bufferline#enabled = 0
-" let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#branch#empty_message = ''
 let g:airline#extensions#ctrlp#enabled = 1
@@ -386,7 +389,6 @@ set list
 
 " Cursor shows matching ) and }
 highlight MatchParen ctermbg=4
-" set showmatch
 
 set laststatus=2
 set synmaxcol=300
@@ -397,8 +399,9 @@ set noeb vb t_vb=
 if has("gui_running")
     set guioptions-=r
     set guioptions-=L
-    set guifont=PragmataPro\ for\ Powerline:h12
 endif
 
+" colorscheme solarized
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+colorscheme OceanicNext
 set background=dark
-colorscheme solarized
