@@ -18,8 +18,7 @@
 set shell=/bin/bash
 syntax on
 
-filetype plugin on
-filetype indent on
+filetype plugin indent on
 
 " * * * * * * * * * * * * * * * * * * *
 " * FUNCTIONS                         *
@@ -48,6 +47,8 @@ command! ProseOff call ProseOff()
 
 " Where to look for tag files
 set tags=./tags;,~/.vimtags
+
+set omnifunc=syntaxcomplete#Complete
 
 " More natural splitting
 set splitbelow
@@ -354,7 +355,7 @@ endif
 " Uncomment below if not using a font with powerline symbols
 " let g:airline_left_sep = ''
 " let g:airline_right_sep = ''
-let g:airline_theme = "oceanicnext"
+" let g:airline_theme = "oceanicnext"
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#bufferline#overwrite_variables = 0
@@ -378,7 +379,7 @@ set list
 " Cursor shows matching ) and }
 highlight MatchParen ctermbg=4
 
-set laststatus=2
+" set laststatus=2
 set synmaxcol=300
 
 " disable sound on errors
@@ -390,6 +391,6 @@ if has("gui_running")
 endif
 
 " colorscheme solarized
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-colorscheme OceanicNext
+" let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+colorscheme solarized
 set background=dark
