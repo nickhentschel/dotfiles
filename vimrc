@@ -46,9 +46,6 @@ command! ProseOff call ProseOff()
 " * VIM SETTINGS                      *
 " * * * * * * * * * * * * * * * * * * *
 
-" Performance increase in syntax highlighting
-set regexpengine=1
-
 " Where to look for tag files
 set tags=./tags;,~/.vimtags
 
@@ -266,10 +263,6 @@ Plug 'scrooloose/nerdtree'
 " vim git wrapper
 Plug 'tpope/vim-fugitive'
 
-" vim snippets
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-
 " Syntax checking hacks for vim
 Plug 'scrooloose/syntastic'
 
@@ -323,11 +316,6 @@ nnoremap <leader>c :SyntasticCheck<CR>
 " NERDTree
 nnoremap <leader>t :NERDTreeToggle<CR>
 let NERDTreeShowHidden=1
-
-" ultisnips
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " ctrlp
 let g:ctrlp_show_hidden = 1
