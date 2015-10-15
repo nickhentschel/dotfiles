@@ -192,12 +192,8 @@ nnoremap <right> l
 nnoremap <down>  j
 nnoremap <up>    k
 
-" search for word under cursor with Q
-nnoremap Q :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-
-" Move visual block
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
+" search for word under cursor with K
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " w!! for writing read-only file
 cmap w!! w !sudo tee % >/dev/null
@@ -206,9 +202,11 @@ cmap w!! w !sudo tee % >/dev/null
 " * AUTO COMMANDS                     *
 " * * * * * * * * * * * * * * * * * * *
 
-augroup silverstripe_syntax
+" quickfix not listed in buffer lists
+augroup qf
     autocmd!
-    au BufNewFile,BufRead *.ss set filetype=html
+    autocmd FileType qf set nobuflisted
+    autocmd FileType qf nnoremap <silent><buffer> q :q<CR>
 augroup END
 
 augroup web_syntax
@@ -330,7 +328,7 @@ let g:ctrlp_extensions = ['tag', 'buffertag', 'dir', 'undo', 'line']
 let g:ctrlp_use_caching = 1
 
 if executable('ag')
-    " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+    set grepprg=ag\ --nogroup\ --nocolor
     let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
                 \ --ignore .git
                 \ --ignore .svn
@@ -338,6 +336,7 @@ if executable('ag')
                 \ --ignore .DS_Store
                 \ --ignore "**/*.pyc"
                 \ -g ""'
+    let g:ctrlp_use_caching = 0
 else
     let g:ctrlp_custom_ignore = {
                 \ 'dir': '\v[\/](\.git|\.hg|\.svn|CVS|tmp|Library|Applications|Music|[^\/]*-store)$',
@@ -390,7 +389,5 @@ if has("gui_running")
     set guioptions-=L
 endif
 
-" colorscheme solarized
-" let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 colorscheme solarized
 set background=dark
