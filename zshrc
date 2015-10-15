@@ -1,5 +1,3 @@
-zmodload zsh/terminfo
-
 command_exists () {
   type "$1" &> /dev/null;
 }
@@ -118,13 +116,8 @@ export MANWIDTH=80
 
 if hash nvim 2>/dev/null; then
     export EDITOR=nvim
-    export NVIM_TUI_ENABLE_TRUECOLOR=1
 else
     export EDITOR=vim
-fi
-
-if is_osx; then
-    . `brew --prefix`/etc/profile.d/z.sh
 fi
 
 # less for paging
@@ -161,27 +154,14 @@ source ~/.zsh/zgen/zgen.zsh
 if ! zgen saved; then
     echo "Creating a zgen save"
 
-    zgen oh-my-zsh
-
-    if is_osx; then
-        zgen oh-my-zsh plugins/brew
-        zgen oh-my-zsh plugins/osx
-        zgen load s7anley/zsh-geeknote
-    fi
-
-    if is_linux; then
-        zgen oh-my-zsh plugins/yum
-        zgen oh-my-zsh plugins/fabric
-    fi
+    # theme
+    zgen load nickhentschel/simplicity-prompt simplicity
+    # zgen prezto
 
     # plugins
     zgen load zsh-users/zsh-completions src
-    # zgen oh-my-zsh plugins/vi-mode
-    zgen oh-my-zsh plugins/history-substring-search
     zgen load zsh-users/zsh-syntax-highlighting
-
-    # theme
-    zgen load nickhentschel/simplicity-prompt simplicity
+    zgen load zsh-users/zsh-history-substring-search
 
     # save all to init script
     zgen save
@@ -199,8 +179,11 @@ zle -N edit-command-line
 
 # KEY BINDINGS
 
+zmodload zsh/terminfo
 bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 
 # vi style incremental search
 bindkey -M vicmd "/" history-incremental-pattern-search-forward
