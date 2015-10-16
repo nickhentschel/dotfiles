@@ -1,6 +1,4 @@
-command_exists () {
-  type "$1" &> /dev/null;
-}
+######## FUNCTIONS ########
 
 is_linux () {
     [[ $('uname') == 'Linux' ]];
@@ -9,11 +7,6 @@ is_linux () {
 is_osx () {
     [[ $('uname') == 'Darwin' ]]
 }
-
-if is_osx; then
-    PATH="/usr/local/sbin:/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-    MANPATH="/usr/local/sbin:/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-fi
 
 ######## HISTORY AND COMPLETION SETTINGS ########
 
@@ -45,12 +38,6 @@ setopt hash_list_all            # hash everything before completion
 setopt completealiases          # complete alisases
 setopt always_to_end            # when completing from the middle of a word, move the cursor to the end of the word
 setopt complete_in_word         # allow completion from within a word/phrase
-
-# Keep a ton of history.
-HISTSIZE=100000
-SAVEHIST=100000
-HISTFILE=~/.zsh_history
-HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 
 # Speed up autocomplete, force prefix mapping
 zstyle ':completion:*' accept-exact '*(N)'
@@ -92,36 +79,29 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/s
 zstyle ':completion:*' warnings '%F{red}No matches for: %d%f'
 
 ######## OTHER SETTINGS #######
+if is_osx; then
+    export PATH="/usr/local/sbin:/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+    export MANPATH="/usr/local/sbin:/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+fi
 
-export TERM='xterm-256color'
-
-# Use dircolors if available
-test -e ~/.dircolors && \
-  eval `dircolors -b ~/.dircolors`
-
-# Long running processes should return time after they complete. Specified
-# in seconds.
-REPORTTIME=2
-TIMEFMT="%U user %S system %P cpu %*Es total"
-KEYTIMEOUT=1
-
-# Beeping is super annoying
-unsetopt beep
-unsetopt hist_beep
-
+export REPORTTIME=2
+export TIMEFMT="%U user %S system %P cpu %*Es total"
+export KEYTIMEOUT=1
 export LESS="ij.5KMRX"
-
-# Use a default width of 80 for manpages for more convenient reading
+export TERM='xterm-256color'
 export MANWIDTH=80
+export PAGER=less man
+
+export HISTSIZE=100000
+export SAVEHIST=100000
+export HISTFILE=~/.zsh_history
+export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 
 if hash nvim 2>/dev/null; then
     export EDITOR=nvim
 else
     export EDITOR=vim
 fi
-
-# less for paging
-export PAGER=less man
 
 # Colorize man pages
 man() {
@@ -142,8 +122,16 @@ alias grep="grep --color=always"
 alias egrep="egrep --color=always"
 alias c="clear"
 
+# Use dircolors if available
+test -e ~/.dircolors && \
+  eval `dircolors -b ~/.dircolors`
+
 # warning if file exists ('cat /dev/null > ~/.zshrc')
 setopt NO_clobber
+
+# Beeping is super annoying
+unsetopt beep
+unsetopt hist_beep
 
 ######## ZGEN ########
 
@@ -168,6 +156,7 @@ if ! zgen saved; then
 fi
 
 ######## PLUGIN SETTINGS ########
+
 # Setup syntax highlighting
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor line)
 ZSH_HIGHLIGHT_STYLES[precommand]=none
