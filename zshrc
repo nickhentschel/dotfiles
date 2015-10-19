@@ -1,5 +1,4 @@
 ######## FUNCTIONS ########
-
 is_linux () {
     [[ $('uname') == 'Linux' ]];
 }
@@ -7,6 +6,62 @@ is_linux () {
 is_osx () {
     [[ $('uname') == 'Darwin' ]]
 }
+
+######## EXPORTS AND OTHER SETTINGS #######
+if is_osx; then
+    path=('/usr/local/sbin' $path)
+    path=('/usr/local/opt/coreutils/libexec/gnubin' $path)
+fi
+
+export REPORTTIME=2
+export TIMEFMT="%U user %S system %P cpu %*Es total"
+export KEYTIMEOUT=1
+export LESS="ij.5KMRX"
+export TERM='xterm-256color'
+export MANWIDTH=80
+export PAGER=less man
+
+export HISTSIZE=100000
+export SAVEHIST=100000
+export HISTFILE=~/.zsh_history
+export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
+
+if hash nvim 2>/dev/null; then
+    export EDITOR=nvim
+else
+    export EDITOR=vim
+fi
+
+# Colorize man pages
+man() {
+  env \
+    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+    LESS_TERMCAP_md=$(printf "\e[1;31m") \
+    LESS_TERMCAP_me=$(printf "\e[0m") \
+    LESS_TERMCAP_se=$(printf "\e[0m") \
+    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+    LESS_TERMCAP_ue=$(printf "\e[0m") \
+    LESS_TERMCAP_us=$(printf "\e[1;32m") \
+    man "$@"
+}
+
+# aliases
+alias ls="ls -h --color=always"
+alias ll="ls -lah"
+alias grep="grep --color=always"
+alias egrep="egrep --color=always"
+alias c="clear"
+
+# Use dircolors if available
+test -e ~/.dircolors && \
+  eval `dircolors -b ~/.dircolors`
+
+# warning if file exists ('cat /dev/null > ~/.zshrc')
+setopt NO_clobber
+
+# Beeping is super annoying
+unsetopt beep
+unsetopt hist_beep
 
 ######## HISTORY AND COMPLETION SETTINGS ########
 
@@ -32,12 +87,15 @@ setopt NOMATCH
 setopt share_history
 
 # set some more options
+# setopt menu_complete
 setopt pushd_ignore_dups
-setopt menu_complete
 setopt hash_list_all            # hash everything before completion
 setopt completealiases          # complete alisases
 setopt always_to_end            # when completing from the middle of a word, move the cursor to the end of the word
 setopt complete_in_word         # allow completion from within a word/phrase
+setopt extended_glob
+setopt autocd
+setopt automenu
 
 # Speed up autocomplete, force prefix mapping
 zstyle ':completion:*' accept-exact '*(N)'
@@ -78,60 +136,6 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/s
 
 zstyle ':completion:*' warnings '%F{red}No matches for: %d%f'
 
-######## OTHER SETTINGS #######
-if is_osx; then
-    export PATH="/usr/local/sbin:/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-    export MANPATH="/usr/local/sbin:/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-fi
-
-export REPORTTIME=2
-export TIMEFMT="%U user %S system %P cpu %*Es total"
-export KEYTIMEOUT=1
-export LESS="ij.5KMRX"
-export TERM='xterm-256color'
-export MANWIDTH=80
-export PAGER=less man
-
-export HISTSIZE=100000
-export SAVEHIST=100000
-export HISTFILE=~/.zsh_history
-export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
-
-if hash nvim 2>/dev/null; then
-    export EDITOR=nvim
-else
-    export EDITOR=vim
-fi
-
-# Colorize man pages
-man() {
-  env \
-    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-    LESS_TERMCAP_md=$(printf "\e[1;31m") \
-    LESS_TERMCAP_me=$(printf "\e[0m") \
-    LESS_TERMCAP_se=$(printf "\e[0m") \
-    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-    LESS_TERMCAP_ue=$(printf "\e[0m") \
-    LESS_TERMCAP_us=$(printf "\e[1;32m") \
-    man "$@"
-}
-
-# aliases
-alias ls="ls --color=always"
-alias grep="grep --color=always"
-alias egrep="egrep --color=always"
-alias c="clear"
-
-# Use dircolors if available
-test -e ~/.dircolors && \
-  eval `dircolors -b ~/.dircolors`
-
-# warning if file exists ('cat /dev/null > ~/.zshrc')
-setopt NO_clobber
-
-# Beeping is super annoying
-unsetopt beep
-unsetopt hist_beep
 
 ######## ZGEN ########
 
@@ -166,7 +170,20 @@ bindkey -v
 autoload -Uz edit-command-line
 zle -N edit-command-line
 
-# KEY BINDINGS
+######## KEY BINDINGS ########
+
+# Make sure that the terminal is in application mode when zle is active, since
+# only then values from $terminfo are valid
+if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
+  function zle-line-init() {
+    echoti smkx
+  }
+  function zle-line-finish() {
+    echoti rmkx
+  }
+  zle -N zle-line-init
+  zle -N zle-line-finish
+fi
 
 zmodload zsh/terminfo
 bindkey "$terminfo[kcuu1]" history-substring-search-up
@@ -184,3 +201,12 @@ bindkey '^R' history-incremental-search-backward
 bindkey '^S' history-incremental-search-forward
 bindkey '^P' history-search-backward
 bindkey '^N' history-search-forward
+
+bindkey "${terminfo[kpp]}" up-line-or-history       # [PageUp] - Up a line of history
+bindkey "${terminfo[knp]}" down-line-or-history     # [PageDown] - Down a line of history
+
+bindkey "${terminfo[khome]}" beginning-of-line      # [Home] - Go to beginning of line
+bindkey "${terminfo[kend]}"  end-of-line            # [End] - Go to end of line
+
+bindkey "${terminfo[kcbt]}" reverse-menu-complete   # [Shift-Tab] - move through the completion menu backwards
+bindkey "${terminfo[kdch1]}" delete-char            # [Delete] - delete forward
