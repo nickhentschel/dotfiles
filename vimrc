@@ -284,6 +284,9 @@ Plug 'junegunn/goyo.vim'
 " Vim + tmux navigation
 Plug 'christoomey/vim-tmux-navigator'
 
+Plug 'tpope/vim-repeat'
+Plug 'svermeulen/vim-easyclip'
+
 " colorscheme bundles
 Plug 'djjcast/mirodark'
 Plug 'mhartington/oceanic-next'

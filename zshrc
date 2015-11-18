@@ -66,7 +66,7 @@ unsetopt hist_beep
 ######## HISTORY AND COMPLETION SETTINGS ########
 
 autoload -Uz compinit
-compinit
+compinit -D
 
 # Disable core dumps
 limit coredumpsize 0
