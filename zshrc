@@ -9,6 +9,7 @@ is_osx () {
 
 ######## EXPORTS AND OTHER SETTINGS #######
 if is_osx; then
+    path=('/Users/nhentschel/bin' $path)
     path=('/usr/local/sbin' $path)
     path=('/usr/local/opt/coreutils/libexec/gnubin' $path)
 fi
