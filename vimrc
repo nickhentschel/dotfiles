@@ -292,7 +292,7 @@ Plug 'djjcast/mirodark'
 Plug 'mhartington/oceanic-next'
 Plug 'w0ng/vim-hybrid'
 Plug 'altercation/vim-colors-solarized'
-Plug 'chriskempson/vim-tomorrow-theme'
+Plug 'chriskempson/base16-vim'
 
 " syntax and language related bundles
 Plug 'vim-ruby/vim-ruby', { 'for': ['ruby', 'eruby'] }
