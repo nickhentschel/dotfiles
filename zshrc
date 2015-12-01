@@ -16,7 +16,6 @@ if is_osx; then
     source /usr/local/bin/virtualenvwrapper.sh
 fi
 
-export PIP_REQUIRE_VIRTUALENV=true
 export REPORTTIME=2
 export TIMEFMT="%U user %S system %P cpu %*Es total"
 export KEYTIMEOUT=1
