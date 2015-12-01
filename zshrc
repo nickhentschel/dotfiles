@@ -156,6 +156,8 @@ if ! zgen saved; then
 
     # plugins
     zgen load zsh-users/zsh-completions src
+    zgen load vhbit/fabric-zsh-autocomplete
+    zgen load srijanshetty/zsh-pip-completion
     zgen load zsh-users/zsh-syntax-highlighting
     zgen load zsh-users/zsh-history-substring-search
 
