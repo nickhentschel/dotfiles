@@ -211,7 +211,7 @@ augroup END
 
 augroup web_syntax
     autocmd!
-    au Filetype html,css,scss,sass,ruby,javascript,yml,yaml,eruby,puppet setlocal ts=2 sts=2 sw=2
+    au Filetype html,css,scss,sass,ruby,javascript,yml,yaml,eruby,puppet,zsh,bash setlocal ts=2 sts=2 sw=2
 augroup END
 
 " Close help sections with q
