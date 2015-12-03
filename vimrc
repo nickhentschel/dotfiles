@@ -392,5 +392,5 @@ if has("gui_running")
     set guioptions-=L
 endif
 
-colorscheme solarized
+colorscheme hybrid
 set background=dark
