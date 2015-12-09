@@ -255,6 +255,8 @@ EXEC 01;31  # Unix
 .pod 32
 .tex 32
 .go 32
+.diff 32
+.patch 32
 
 ### Multimedia formats
 
