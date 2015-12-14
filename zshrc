@@ -149,9 +149,7 @@ if ! zgen saved; then
     echo "Creating a zgen save"
 
     # theme
-    # zgen load nickhentschel/simplicity-prompt simplicity
-    zgen oh-my-zsh
-    zgen oh-my-zsh themes/agnoster
+    zgen load nickhentschel/simplicity-prompt simplicity
 
     # plugins
     zgen load zsh-users/zsh-completions src
