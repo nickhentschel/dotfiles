@@ -8,6 +8,8 @@ is_osx () {
 }
 
 ######## EXPORTS AND OTHER SETTINGS #######
+source ~/.profile
+
 if is_osx; then
     path=('/Users/nhentschel/bin' $path)
     path=('/usr/local/sbin' $path)
