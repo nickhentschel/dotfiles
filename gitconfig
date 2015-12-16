@@ -28,11 +28,11 @@
 [credential]
     helper = cache
 [push]
-	default = current
+    default = current
 [core]
     editor = vim
-	autocrlf = false
-	preloadindex = true
+    autocrlf = false
+    preloadindex = true
 [alias]
     st = status
     co = checkout
@@ -41,15 +41,15 @@
     br = branch -vv
     lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
     logall = log --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
-	l = log --graph --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset'
+    l = log --graph --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset'
 [pull]
-	rebase = true
+    rebase = true
 [fetch]
-	prune = true
+    prune = true
 [log]
     decorate = short
 [http]
     sslverify = false
     sslCAPath = /etc/pki/tls/certs
 [rerere]
-	enabled = true
+    enabled = true
