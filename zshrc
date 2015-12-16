@@ -8,7 +8,10 @@ is_osx () {
 }
 
 ######## EXPORTS AND OTHER SETTINGS #######
-source ~/.profile
+export WORKON_HOME=~/envs
+if [ -d ~/.local/bin ]; then
+  source ~/.local/bin/virtualenvwrapper.sh
+fi
 
 if is_osx; then
     path=('/Users/nhentschel/bin' $path)
