@@ -17,8 +17,6 @@ if is_osx; then
     path=('/Users/nhentschel/bin' $path)
     path=('/usr/local/sbin' $path)
     path=('/usr/local/opt/coreutils/libexec/gnubin' $path)
-    export WORKON_HOME=~/.virtualenvs
-    source /usr/local/bin/virtualenvwrapper.sh
 fi
 
 export REPORTTIME=2
