@@ -358,8 +358,8 @@ endif
 
 " Vim Airline
 " Uncomment below if not using a font with powerline symbols
-" let g:airline_left_sep = ''
-" let g:airline_right_sep = ''
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''
 " let g:airline_theme = "powerlineish"
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 1
