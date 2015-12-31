@@ -306,6 +306,7 @@ Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
 Plug 'clones/vim-zsh', { 'for': ['zsh'] }
 Plug 'nickhentschel/vim-puppet', { 'for': ['puppet'] }
 Plug 'evanmiller/nginx-vim-syntax', { 'for': ['nginx'] }
+Plug 'sclo/haproxy.vim'
 
 call plug#end()
 
@@ -396,5 +397,5 @@ if has("gui_running")
 endif
 
 set t_Co=256
-colorscheme solarized
+colorscheme hybrid
 set background=dark
