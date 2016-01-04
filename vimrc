@@ -296,6 +296,8 @@ Plug 'trusktr/seti.vim'
 Plug 'tomasr/molokai'
 Plug 'effkay/argonaut.vim'
 Plug 'julienXX/getafe'
+Plug 'chriskempson/base16-vim'
+Plug 'kristijanhusak/vim-hybrid-material'
 
 " syntax and language related bundles
 Plug 'vim-ruby/vim-ruby', { 'for': ['ruby', 'eruby'] }
@@ -361,9 +363,9 @@ endif
 " Uncomment below if not using a font with powerline symbols
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
-" let g:airline_theme = "powerlineish"
+" let g:airline_theme = "hybrid"
 let g:airline_detect_paste=1
-let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 0
 let g:airline#extensions#bufferline#overwrite_variables = 0
 let g:airline#extensions#bufferline#enabled = 0
 let g:airline#extensions#syntastic#enabled = 1
@@ -397,5 +399,5 @@ if has("gui_running")
 endif
 
 set t_Co=256
-colorscheme hybrid
 set background=dark
+colorscheme solarized

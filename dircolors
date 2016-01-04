@@ -1,11 +1,12 @@
-# Exact Solarized color theme for the color GNU ls utility.
+# Exact Solarized Dark color theme for the color GNU ls utility.
 # Designed for dircolors (GNU coreutils) 5.97
 #
 # This simple theme was simultaneously designed for these terminal color schemes:
 # - Solarized dark  (best)
-# - Solarized light (best)
+# - Solarized light
 # - default dark
 # - default light
+# with a slight optimization for Solarized Dark.
 #
 # How the colors were selected:
 # - Terminal emulators often have an option typically enabled by default that makes
@@ -19,7 +20,7 @@
 #   editable text including source, unimportant text, binary docs & multimedia source
 #   files, viewable multimedia, archived/compressed, and unimportant non-text
 # - For uniqueness, we stay away from the Solarized foreground colors are -- either
-#   base00 (brightyellow) or base0 (brighblue).  However, they can be used if
+#   base00 (brightyellow) or base0 (brightblue).  However, they can be used if
 #   you know what the bg/fg colors of your terminal are, in order to optimize the display.
 # - 3 different options are provided: universal, solarized dark, and solarized light.
 #   The only difference between the universal scheme and one that's optimized for
@@ -32,7 +33,7 @@
 # - See table below to see the assignments.
 
 
-# Insatllation instructions:
+# Installation instructions:
 # This file goes in the /etc directory, and must be world readable.
 # You can copy this file to .dir_colors in your $HOME directory to override
 # the system defaults.
@@ -98,11 +99,14 @@ TERM screen-256color-italic
 TERM screen-bce
 TERM screen-w
 TERM screen.linux
+TERM screen.xterm-256color
 TERM screen.xterm-new
 TERM st
 TERM st-meta
 TERM st-256color
 TERM st-meta-256color
+TERM tmux
+TERM tmux-256color
 TERM vt100
 TERM xterm
 TERM xterm-new
@@ -160,7 +164,9 @@ NORMAL 00
 # normal file
 FILE 00
 # directory
-DIR 36
+DIR 34
+# 777 directory
+OTHER_WRITABLE 34;40
 # symbolic link
 LINK 35
 
@@ -213,7 +219,9 @@ EXEC 01;31  # Unix
 .cpp 32
 .cxx 32
 .objc 32
+.cl 32
 .sh 32
+.bash 32
 .csh 32
 .zsh 32
 .el 32
@@ -255,8 +263,7 @@ EXEC 01;31  # Unix
 .pod 32
 .tex 32
 .go 32
-.diff 32
-.patch 32
+.sql 32
 
 ### Multimedia formats
 
@@ -346,12 +353,18 @@ EXEC 01;31  # Unix
 .doc 31
 .docx 31
 .rtf 31
+.odt 31
 .dot 31
 .dotx 31
+.ott 31
 .xls 31
 .xlsx 31
+.ods 31
+.ots 31
 .ppt 31
 .pptx 31
+.odp 31
+.otp 31
 .fla 31
 .psd 31
 
@@ -418,34 +431,34 @@ EXEC 01;31  # Unix
 # Unimportant non-text files
 # For universal scheme, use brightcyan 01;36
 # For optimal on dark bg (but too prominent on light bg), change to 01;33
-.bak 01;36
-.BAK 01;36
-.old 01;36
-.OLD 01;36
-.org_archive 01;36
-.off 01;36
-.OFF 01;36
-.dist 01;36
-.DIST 01;36
-.orig 01;36
-.ORIG 01;36
-.swp 01;36
-.swo 01;36
-*,v 01;36
-#.bak 01;33
-#.BAK 01;33
-#.old 01;33
-#.OLD 01;33
-#.org_archive 01;33
-#.off 01;33
-#.OFF 01;33
-#.dist 01;33
-#.DIST 01;33
-#.orig 01;33
-#.ORIG 01;33
-#.swp 01;33
-#.swo 01;33
-#*,v 01;33
+#.bak 01;36
+#.BAK 01;36
+#.old 01;36
+#.OLD 01;36
+#.org_archive 01;36
+#.off 01;36
+#.OFF 01;36
+#.dist 01;36
+#.DIST 01;36
+#.orig 01;36
+#.ORIG 01;36
+#.swp 01;36
+#.swo 01;36
+#*,v 01;36
+.bak 01;33
+.BAK 01;33
+.old 01;33
+.OLD 01;33
+.org_archive 01;33
+.off 01;33
+.OFF 01;33
+.dist 01;33
+.DIST 01;33
+.orig 01;33
+.ORIG 01;33
+.swp 01;33
+.swo 01;33
+*,v 01;33
 
 # The brightmagenta (Solarized: purple) color is free for you to use for your
 # custom file type
