@@ -297,7 +297,6 @@ Plug 'tomasr/molokai'
 Plug 'effkay/argonaut.vim'
 Plug 'julienXX/getafe'
 Plug 'chriskempson/base16-vim'
-Plug 'kristijanhusak/vim-hybrid-material'
 
 " syntax and language related bundles
 Plug 'vim-ruby/vim-ruby', { 'for': ['ruby', 'eruby'] }
@@ -315,6 +314,8 @@ call plug#end()
 " * * * * * * * * * * * * * * * * * * *
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
+
+let g:mirodark_disable_color_approximation=1
 
 " Syntastic
 let g:syntastic_check_on_open = 0
@@ -363,7 +364,7 @@ endif
 " Uncomment below if not using a font with powerline symbols
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
-" let g:airline_theme = "hybrid"
+let g:airline_theme = "luna"
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#bufferline#overwrite_variables = 0
@@ -400,4 +401,4 @@ endif
 
 set t_Co=256
 set background=dark
-colorscheme solarized
+colorscheme mirodark
