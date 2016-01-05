@@ -307,6 +307,7 @@ Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
 Plug 'clones/vim-zsh', { 'for': ['zsh'] }
 Plug 'nickhentschel/vim-puppet', { 'for': ['puppet'] }
 Plug 'evanmiller/nginx-vim-syntax', { 'for': ['nginx'] }
+Plug 'hdima/python-syntax', { 'for': ['python'] }
 Plug 'sclo/haproxy.vim'
 
 call plug#end()
@@ -315,7 +316,11 @@ call plug#end()
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
 
+" Theme setting
 let g:mirodark_disable_color_approximation=1
+
+" Python syntax
+let python_highlight_all = 1
 
 " Syntastic
 let g:syntastic_check_on_open = 0
