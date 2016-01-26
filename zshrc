@@ -8,10 +8,6 @@ is_osx () {
 }
 
 ######## EXPORTS AND OTHER SETTINGS #######
-export WORKON_HOME=~/envs
-if [ -d ~/.local/bin ]; then
-  source ~/.local/bin/virtualenvwrapper.sh
-fi
 
 if is_osx; then
     path=('/Users/nhentschel/bin' $path)
@@ -19,6 +15,11 @@ if is_osx; then
     path=('/usr/local/opt/coreutils/libexec/gnubin' $path)
 fi
 
+if is_linux; then
+    PATH=$PATH:$HOME/local/bin
+fi
+
+export WORKON_HOME=~/envs
 export REPORTTIME=2
 export TIMEFMT="%U user %S system %P cpu %*Es total"
 export KEYTIMEOUT=1
@@ -57,6 +58,7 @@ alias ll="ls -lah"
 alias grep="grep --color=always"
 alias egrep="egrep --color=always"
 alias c="clear"
+alias venvwrapper="source ~/.local/bin/virtualenvwrapper.sh"
 
 # Use dircolors if available
 test -e ~/.dircolors && \
