@@ -59,6 +59,7 @@ alias grep="grep --color=always"
 alias egrep="egrep --color=always"
 alias c="clear"
 alias venvwrapper="source ~/.local/bin/virtualenvwrapper.sh"
+alias jenkinscli="java -jar /wayfair/pkg/jenkins/latest/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
 
 # Use dircolors if available
 test -e ~/.dircolors && \
