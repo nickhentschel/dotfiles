@@ -30,7 +30,7 @@
 [push]
     default = current
 [core]
-    editor = vim
+    editor = nvim
     autocrlf = false
     preloadindex = true
 [alias]

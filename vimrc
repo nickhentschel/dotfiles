@@ -252,6 +252,7 @@ Plug 'sgur/ctrlp-extensions.vim'
 " Custom and configurable status line for vim
 " Much lighter than powerline
 Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 " wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
 Plug 'tpope/vim-endwise', { 'for': ['eruby', 'ruby'] }
@@ -309,6 +310,7 @@ Plug 'nickhentschel/vim-puppet', { 'for': ['puppet'] }
 Plug 'evanmiller/nginx-vim-syntax', { 'for': ['nginx'] }
 Plug 'hdima/python-syntax', { 'for': ['python'] }
 Plug 'sclo/haproxy.vim'
+Plug 'ekalinin/Dockerfile.vim'
 
 call plug#end()
 
