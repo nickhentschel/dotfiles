@@ -246,7 +246,7 @@ Plug 'sukima/xmledit',
 
 " Fuzzy file, buffer, mru, tag, etc finder
 " Similar to cmd + p for SublimeText
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'sgur/ctrlp-extensions.vim'
 
 " Custom and configurable status line for vim

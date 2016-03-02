@@ -27,6 +27,7 @@ export LESS="ij.5KMRX"
 export TERM='xterm-256color'
 export MANWIDTH=80
 export PAGER=less man
+export TERMINFO="$HOME/.terminfo"
 
 export HISTSIZE=100000
 export SAVEHIST=100000
