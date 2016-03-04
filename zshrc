@@ -7,17 +7,27 @@ is_osx () {
     [[ $('uname') == 'Darwin' ]]
 }
 
+path() {
+  echo $PATH | tr ":" "\n" | \
+    awk "{ sub(\"/usr\",   \"$fg_no_bold[green]/usr$reset_color\"); \
+           sub(\"/bin\",   \"$fg_no_bold[blue]/bin$reset_color\"); \
+           sub(\"/opt\",   \"$fg_no_bold[cyan]/opt$reset_color\"); \
+           sub(\"/sbin\",  \"$fg_no_bold[magenta]/sbin$reset_color\"); \
+           sub(\"/local\", \"$fg_no_bold[yellow]/local$reset_color\"); \
+           print }"
+}
+
 ######## EXPORTS AND OTHER SETTINGS #######
 
 if is_osx; then
-    path=('/Users/nhentschel/bin' $path)
-    path=('/usr/local/sbin' $path)
-    path=('/usr/local/opt/coreutils/libexec/gnubin' $path)
+    unset PATH
+    if [ -x /usr/libexec/path_helper ]; then
+        eval `/usr/libexec/path_helper -s`
+    fi
+    export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 fi
 
-if is_linux; then
-    PATH=$PATH:$HOME/local/bin
-fi
+export PATH=$PATH:$HOME/local/bin
 
 export WORKON_HOME=~/envs
 export REPORTTIME=2
@@ -54,8 +64,8 @@ man() {
 }
 
 # aliases
-alias ls="ls -h --color=always"
-alias ll="ls -lah"
+alias ls="ls -ph --color=always"
+alias ll="ls -lchp"
 alias grep="grep --color=always"
 alias egrep="egrep --color=always"
 alias c="clear"
@@ -112,6 +122,7 @@ zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' accept-exact false
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
+zstyle ':completion:*' rehash true
 
 # Sections completion
 zstyle ':completion:*:match:*' original only
