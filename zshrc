@@ -44,24 +44,19 @@ export SAVEHIST=100000
 export HISTFILE=~/.zsh_history
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 
+export LESS_TERMCAP_mb=$'\E[01;31m'      # Begins blinking.
+export LESS_TERMCAP_md=$'\E[01;31m'      # Begins bold.
+export LESS_TERMCAP_me=$'\E[0m'          # Ends mode.
+export LESS_TERMCAP_se=$'\E[0m'          # Ends standout-mode.
+export LESS_TERMCAP_so=$'\E[00;47;30m'   # Begins standout-mode.
+export LESS_TERMCAP_ue=$'\E[0m'          # Ends underline.
+export LESS_TERMCAP_us=$'\E[01;32m'      # Begins underline.
+
 if hash nvim 2>/dev/null; then
     export EDITOR=nvim
 else
     export EDITOR=vim
 fi
-
-# Colorize man pages
-man() {
-  env \
-    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-    LESS_TERMCAP_md=$(printf "\e[1;31m") \
-    LESS_TERMCAP_me=$(printf "\e[0m") \
-    LESS_TERMCAP_se=$(printf "\e[0m") \
-    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-    LESS_TERMCAP_ue=$(printf "\e[0m") \
-    LESS_TERMCAP_us=$(printf "\e[1;32m") \
-    man "$@"
-}
 
 # aliases
 alias ls="ls -ph --color=always"
@@ -108,20 +103,37 @@ setopt share_history
 
 # set some more options
 # setopt menu_complete
-setopt pushd_ignore_dups
+setopt auto_pushd               # Push the old directory onto the stack on cd.
+setopt pushd_ignore_dups        # Do not store duplicates in the stack
 setopt hash_list_all            # hash everything before completion
 setopt completealiases          # complete alisases
 setopt always_to_end            # when completing from the middle of a word, move the cursor to the end of the word
 setopt complete_in_word         # allow completion from within a word/phrase
-setopt extended_glob
-setopt autocd
+setopt extended_glob            # Use extended globbing syntax.
+setopt autocd                   # Auto changes to a directory without typing cd
 setopt automenu
+
+# General stuff
+setopt brace_ccl                # Allow brace character class list expansion.
+setopt combining_chars          # Combine zero-length punctuation characters (accents)
+                                # with the base character.
+setopt rc_quotes                # Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'.
+unsetopt bg_nice                # Don't run all background jobs at a lower priority.
+
+# Completion options
+setopt complete_in_word    # Complete from both ends of a word.
+setopt always_to_end       # Move cursor to the end of a completed word.
+setopt path_dirs           # Perform path search even on command names with slashes.
+setopt auto_menu           # Show completion menu on a succesive tab press.
+setopt auto_list           # Automatically list choices on ambiguous completion.
+setopt auto_param_slash    # If completed parameter is a directory, add a trailing slash.
+unsetopt menu_complete     # Do not autoselect the first completion entry.
 
 # Speed up autocomplete, force prefix mapping
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' accept-exact false
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.zsh/cache
+zstyle ':completion:*' cache-path "${ZDOTDIR:-$HOME}.zsh/cache"
 zstyle ':completion:*' rehash true
 
 # Sections completion
@@ -147,6 +159,7 @@ zstyle ':completion:*:default' list-prompt '%S%M matches%s'
 zstyle ':completion:*:manuals' separate-sections true
 zstyle ':completion:*:descriptions' format $'\e[00;34m%d'
 zstyle ':completion:*:messages' format $'\e[00;31m%d'
+zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
 
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:*:kill:*' menu yes select
@@ -154,6 +167,7 @@ zstyle ':completion:*:kill:*' force-list always
 zstyle ':completion:*:*:killall:*' menu yes select
 zstyle ':completion:*:killall:*' force-list always
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
+zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
 
 zstyle ':completion:*' warnings '%F{red}No matches for: %d%f'
 
