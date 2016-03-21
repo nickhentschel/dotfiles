@@ -285,6 +285,12 @@ Plug 'junegunn/goyo.vim'
 " Vim + tmux navigation
 Plug 'christoomey/vim-tmux-navigator'
 
+" incremental serach improvements
+Plug 'haya14busa/incsearch.vim'
+
+" Multiple cursors
+Plug 'terryma/vim-multiple-cursors'
+
 Plug 'tpope/vim-repeat'
 Plug 'svermeulen/vim-easyclip'
 
