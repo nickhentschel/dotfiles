@@ -286,10 +286,10 @@ Plug 'junegunn/goyo.vim'
 Plug 'christoomey/vim-tmux-navigator'
 
 " incremental serach improvements
-Plug 'haya14busa/incsearch.vim'
+" Plug 'haya14busa/incsearch.vim'
 
 " Multiple cursors
-Plug 'terryma/vim-multiple-cursors'
+" Plug 'terryma/vim-multiple-cursors'
 
 Plug 'tpope/vim-repeat'
 Plug 'svermeulen/vim-easyclip'
@@ -315,8 +315,8 @@ Plug 'clones/vim-zsh', { 'for': ['zsh'] }
 Plug 'nickhentschel/vim-puppet', { 'for': ['puppet'] }
 Plug 'evanmiller/nginx-vim-syntax', { 'for': ['nginx'] }
 Plug 'hdima/python-syntax', { 'for': ['python'] }
-Plug 'sclo/haproxy.vim'
-Plug 'ekalinin/Dockerfile.vim'
+Plug 'sclo/haproxy.vim', { 'for': ['haproxy'] }
+Plug 'ekalinin/Dockerfile.vim', { 'for': ['docker'] }
 
 call plug#end()
 
@@ -401,7 +401,8 @@ set list
 " Cursor shows matching ) and }
 highlight MatchParen ctermbg=4
 
-" set laststatus=2
+" fixes airline on vim
+set laststatus=2
 set synmaxcol=300
 
 " disable sound on errors
