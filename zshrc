@@ -72,6 +72,8 @@ alias venvwrapper="source ~/.local/bin/virtualenvwrapper.sh"
 alias jenkinscli="java -jar /wayfair/pkg/jenkins/latest/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
 alias jenkinscli6="/wayfair/pkg/java/latest/bin/java -jar /wayfair/pkg/jenkins/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
 alias tail_puppet="sudo journalctl -f _PID=$(pgrep -f puppet)"
+alias weather="curl -4 http://wttr.in"
+alias wss="ssh -t bojumpc1n1.csnzoo.com \"/wayfair/bin/wss $1\""
 
 # Use dircolors if available
 test -e ~/.dircolors && \
