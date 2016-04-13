@@ -146,10 +146,10 @@ kwmc bind cmd+alt+ctrl-j mark -w south wrap
 kwmc bind cmd+alt+ctrl-k mark -w north wrap
 
 # Give Focus To Window
-kwmc bind cmd+alt-h window -f west
-kwmc bind cmd+alt-l window -f east
-kwmc bind cmd+alt-j window -f south
-kwmc bind cmd+alt-k window -f north
+kwmc bind cmd+ctrl-h window -f west
+kwmc bind cmd+ctrl-l window -f east
+kwmc bind cmd+ctrl-j window -f south
+kwmc bind cmd+ctrl-k window -f north
 
 # Give Focus To Screen
 kwmc bind cmd+alt-1 screen -f 0
