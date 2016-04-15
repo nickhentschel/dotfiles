@@ -18,6 +18,7 @@ path() {
 }
 
 ######## EXPORTS AND OTHER SETTINGS #######
+stty -ixon
 
 if is_osx; then
     unset PATH
@@ -27,12 +28,18 @@ if is_osx; then
     export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 fi
 
-export PATH=$PATH:$HOME/local/bin
-
-if is_osx; then
+if is_osx && hash rbenv 2>/dev/null; then
   eval "$(rbenv init -)"
 fi
 
+if hash nvim 2>/dev/null; then
+    export EDITOR=nvim
+    alias vim='/usr/local/bin/nvim'
+else
+    export EDITOR=vim
+fi
+
+export PATH=$PATH:$HOME/local/bin
 export WORKON_HOME=~/envs
 export REPORTTIME=2
 export TIMEFMT="%U user %S system %P cpu %*Es total"
@@ -56,12 +63,6 @@ export LESS_TERMCAP_so=$'\E[00;47;30m'   # Begins standout-mode.
 export LESS_TERMCAP_ue=$'\E[0m'          # Ends underline.
 export LESS_TERMCAP_us=$'\E[01;32m'      # Begins underline.
 
-if hash nvim 2>/dev/null; then
-    export EDITOR=nvim
-else
-    export EDITOR=vim
-fi
-
 # aliases
 alias ls="ls -ph --color=always"
 alias ll="ls -lchp"
@@ -72,7 +73,7 @@ alias venvwrapper="source ~/.local/bin/virtualenvwrapper.sh"
 alias jenkinscli="java -jar /wayfair/pkg/jenkins/latest/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
 alias jenkinscli6="/wayfair/pkg/java/latest/bin/java -jar /wayfair/pkg/jenkins/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
 alias tail_puppet="sudo journalctl -f _PID=$(pgrep -f puppet)"
-alias weather="curl -4 http://wttr.in"
+alias weather="curl -4 http://wttr.in/Boston"
 alias wss="ssh -t bojumpc1n1.csnzoo.com \"/wayfair/bin/wss $1\""
 
 # Use dircolors if available
@@ -240,17 +241,3 @@ bindkey -M vicmd "/" history-incremental-pattern-search-forward
 bindkey -M vicmd 'u' undo
 bindkey -M vicmd '~' vi-swap-case
 bindkey '^u' vi-change-whole-line
-
-bindkey '^R' history-incremental-search-backward
-bindkey '^S' history-incremental-search-forward
-bindkey '^P' history-search-backward
-bindkey '^N' history-search-forward
-
-bindkey "${terminfo[kpp]}" up-line-or-history       # [PageUp] - Up a line of history
-bindkey "${terminfo[knp]}" down-line-or-history     # [PageDown] - Down a line of history
-
-bindkey "${terminfo[khome]}" beginning-of-line      # [Home] - Go to beginning of line
-bindkey "${terminfo[kend]}"  end-of-line            # [End] - Go to end of line
-
-bindkey "${terminfo[kcbt]}" reverse-menu-complete   # [Shift-Tab] - move through the completion menu backwards
-bindkey "${terminfo[kdch1]}" delete-char            # [Delete] - delete forward
