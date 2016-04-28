@@ -235,9 +235,10 @@ bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
+bindkey '\e[3~' delete-char
+bindkey '^R' history-incremental-search-backward
 
 # vi style incremental search
-bindkey -M vicmd "/" history-incremental-pattern-search-forward
 bindkey -M vicmd 'u' undo
 bindkey -M vicmd '~' vi-swap-case
 bindkey '^u' vi-change-whole-line
