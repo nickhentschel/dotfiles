@@ -375,11 +375,11 @@ endif
 
 " Vim Airline
 " Uncomment below if not using a font with powerline symbols
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
+" let g:airline_left_sep = ''
+" let g:airline_right_sep = ''
 let g:airline_theme = "luna"
 let g:airline_detect_paste=1
-let g:airline_powerline_fonts = 0
+let g:airline_powerline_fonts = 1
 let g:airline#extensions#bufferline#overwrite_variables = 0
 let g:airline#extensions#bufferline#enabled = 0
 let g:airline#extensions#syntastic#enabled = 1
@@ -413,6 +413,10 @@ if has("gui_running")
     set guioptions-=L
 endif
 
-set t_Co=256
+set nocompatible
+set ttyfast
+set lazyredraw
+
+" set t_Co=256
 set background=dark
 colorscheme mirodark
