@@ -7,7 +7,7 @@ is_osx () {
     [[ $('uname') == 'Darwin' ]]
 }
 
-path() {
+path () {
   echo $PATH | tr ":" "\n" | \
     awk "{ sub(\"/usr\",   \"$fg_no_bold[green]/usr$reset_color\"); \
            sub(\"/bin\",   \"$fg_no_bold[blue]/bin$reset_color\"); \
@@ -72,9 +72,11 @@ alias c="clear"
 alias venvwrapper="source ~/.local/bin/virtualenvwrapper.sh"
 alias jenkinscli="java -jar /wayfair/pkg/jenkins/latest/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
 alias jenkinscli6="/wayfair/pkg/java/latest/bin/java -jar /wayfair/pkg/jenkins/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
-alias tail_puppet="sudo journalctl -f _PID=$(pgrep -f puppet)"
+alias tail-puppet="sudo journalctl -f _PID=$(pgrep -f puppet)"
 alias weather="curl -4 http://wttr.in/Boston"
 alias wss="ssh -t bojumpc1n1.csnzoo.com \"/wayfair/bin/wss $1\""
+alias json-print="python -m json.tool"
+alias http-server="python -m SimpleHTTPServer 8080 &> /dev/null &"
 
 # Use dircolors if available
 test -e ~/.dircolors && \
