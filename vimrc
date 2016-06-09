@@ -180,6 +180,8 @@ nnoremap <silent> zk O<Esc>
 " Swap ; and :  Convenient.
 nnoremap ; :
 noremap : ;
+vnoremap ; :
+vnoremap : ;
 
 " Tab navigation mappings
 nnoremap gt :bnext<CR>
@@ -315,8 +317,8 @@ Plug 'clones/vim-zsh', { 'for': ['zsh'] }
 Plug 'nickhentschel/vim-puppet', { 'for': ['puppet'] }
 Plug 'evanmiller/nginx-vim-syntax', { 'for': ['nginx'] }
 Plug 'hdima/python-syntax', { 'for': ['python'] }
-Plug 'sclo/haproxy.vim', { 'for': ['haproxy'] }
 Plug 'ekalinin/Dockerfile.vim', { 'for': ['docker'] }
+Plug 'sclo/haproxy.vim'
 
 call plug#end()
 

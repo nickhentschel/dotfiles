@@ -77,6 +77,8 @@ alias weather="curl -4 http://wttr.in/Boston"
 alias wss="ssh -t bojumpc1n1.csnzoo.com \"/wayfair/bin/wss $1\""
 alias json-print="python -m json.tool"
 alias http-server="python -m SimpleHTTPServer 8080 &> /dev/null &"
+alias fab="/wayfair/pkg/python2.7/latest/bin/fab"
+alias zk_status="echo srvr | nc localhost 2181"
 
 # Use dircolors if available
 test -e ~/.dircolors && \
