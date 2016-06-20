@@ -211,7 +211,7 @@ augroup qf
     autocmd FileType qf nnoremap <silent><buffer> q :q<CR>
 augroup END
 
-augroup web_syntax
+augroup two_spaces
     autocmd!
     au Filetype html,css,scss,sass,ruby,javascript,yml,yaml,eruby,puppet,zsh,bash setlocal ts=2 sts=2 sw=2
 augroup END
@@ -313,7 +313,7 @@ Plug 'othree/html5.vim', { 'for': ['html', 'javascript', 'php', 'eruby'] }
 Plug 'othree/yajs.vim', { 'for': ['html', 'javascript', 'php', 'eruby'] }
 Plug 'elzr/vim-json'
 Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
-Plug 'clones/vim-zsh', { 'for': ['zsh'] }
+Plug 'clones/vim-zsh'
 Plug 'nickhentschel/vim-puppet', { 'for': ['puppet'] }
 Plug 'evanmiller/nginx-vim-syntax', { 'for': ['nginx'] }
 Plug 'hdima/python-syntax', { 'for': ['python'] }

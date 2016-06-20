@@ -1,31 +1,31 @@
 ######## FUNCTIONS ########
-is_linux () {
-    [[ $('uname') == 'Linux' ]];
+is_linux() {
+  [[ "$(uname)" == 'Linux' ]];
 }
 
-is_osx () {
-    [[ $('uname') == 'Darwin' ]]
+is_osx() {
+  [[ "$(uname)" == 'Darwin' ]]
 }
 
-path () {
+path() {
   echo $PATH | tr ":" "\n" | \
     awk "{ sub(\"/usr\",   \"$fg_no_bold[green]/usr$reset_color\"); \
-           sub(\"/bin\",   \"$fg_no_bold[blue]/bin$reset_color\"); \
-           sub(\"/opt\",   \"$fg_no_bold[cyan]/opt$reset_color\"); \
-           sub(\"/sbin\",  \"$fg_no_bold[magenta]/sbin$reset_color\"); \
-           sub(\"/local\", \"$fg_no_bold[yellow]/local$reset_color\"); \
-           print }"
+    sub(\"/bin\",   \"$fg_no_bold[blue]/bin$reset_color\"); \
+    sub(\"/opt\",   \"$fg_no_bold[cyan]/opt$reset_color\"); \
+    sub(\"/sbin\",  \"$fg_no_bold[magenta]/sbin$reset_color\"); \
+    sub(\"/local\", \"$fg_no_bold[yellow]/local$reset_color\"); \
+    print }"
 }
 
 ######## EXPORTS AND OTHER SETTINGS #######
 stty -ixon
 
 if is_osx; then
-    unset PATH
-    if [ -x /usr/libexec/path_helper ]; then
-        eval `/usr/libexec/path_helper -s`
-    fi
-    export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
+  unset PATH
+  if [ -x /usr/libexec/path_helper ]; then
+    eval `/usr/libexec/path_helper -s`
+  fi
+  export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 fi
 
 if is_osx && hash rbenv 2>/dev/null; then
@@ -33,10 +33,10 @@ if is_osx && hash rbenv 2>/dev/null; then
 fi
 
 if hash nvim 2>/dev/null; then
-    export EDITOR=nvim
-    alias vim='/usr/local/bin/nvim'
+  export EDITOR=nvim
+  alias vim='/usr/local/bin/nvim'
 else
-    export EDITOR=vim
+  export EDITOR=vim
 fi
 
 export PATH=$PATH:$HOME/local/bin
@@ -85,7 +85,7 @@ fi
 
 # Use dircolors if available
 test -e ~/.dircolors && \
-  eval `dircolors -b ~/.dircolors`
+  eval "$(dircolors -b ~/.dircolors)"
 
 # warning if file exists ('cat /dev/null > ~/.zshrc')
 setopt NO_clobber
@@ -102,16 +102,9 @@ autoload -Uz compinit && compinit -D -u
 limit coredumpsize 0
 
 # set some history options
-# setopt append_history
-# setopt extended_history
-# setopt hist_expire_dups_first
 setopt hist_ignore_all_dups
 setopt hist_ignore_dups
-# setopt hist_ignore_space
-# setopt hist_reduce_blanks
-# setopt hist_save_no_dups
-# setopt hist_verify
-# setopt NOMATCH
+setopt hist_ignore_space
 
 # Share your history across all your terminal windows
 setopt share_history
@@ -131,7 +124,7 @@ setopt automenu
 # General stuff
 setopt brace_ccl                # Allow brace character class list expansion.
 setopt combining_chars          # Combine zero-length punctuation characters (accents)
-                                # with the base character.
+# with the base character.
 setopt rc_quotes                # Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'.
 unsetopt bg_nice                # Don't run all background jobs at a lower priority.
 
@@ -194,20 +187,20 @@ source ~/.zsh/zgen/zgen.zsh
 
 # Check if there's no init script.
 if ! zgen saved; then
-    echo "Creating a zgen save"
+  echo "Creating a zgen save"
 
-    # theme
-    zgen load nickhentschel/simplicity-prompt simplicity
+  # theme
+  zgen load nickhentschel/simplicity-prompt simplicity
 
-    # plugins
-    zgen load zsh-users/zsh-completions
-    zgen load vhbit/fabric-zsh-autocomplete
-    zgen load srijanshetty/zsh-pip-completion
-    zgen load zsh-users/zsh-syntax-highlighting
-    zgen load zsh-users/zsh-history-substring-search
+  # plugins
+  zgen load zsh-users/zsh-completions
+  zgen load vhbit/fabric-zsh-autocomplete
+  zgen load srijanshetty/zsh-pip-completion
+  zgen load zsh-users/zsh-syntax-highlighting
+  zgen load zsh-users/zsh-history-substring-search
 
-    # save all to init script
-    zgen save
+  # save all to init script
+  zgen save
 fi
 
 ######## PLUGIN SETTINGS ########
