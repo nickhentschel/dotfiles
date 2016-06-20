@@ -69,16 +69,19 @@ alias ll="ls -lchp"
 alias grep="grep --color=always"
 alias egrep="egrep --color=always"
 alias c="clear"
+alias d="dirs -v"
 alias venvwrapper="source ~/.local/bin/virtualenvwrapper.sh"
 alias jenkinscli="java -jar /wayfair/pkg/jenkins/latest/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
 alias jenkinscli6="/wayfair/pkg/java/latest/bin/java -jar /wayfair/pkg/jenkins/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
-alias tail-puppet="sudo journalctl -f _PID=$(pgrep -f puppet)"
 alias weather="curl -4 http://wttr.in/Boston"
-alias wss="ssh -t bojumpc1n1.csnzoo.com \"/wayfair/bin/wss $1\""
 alias json-print="python -m json.tool"
 alias http-server="python -m SimpleHTTPServer 8080 &> /dev/null &"
 alias fab="/wayfair/pkg/python2.7/latest/bin/fab"
 alias zk_status="echo srvr | nc localhost 2181"
+
+if ! [[ "$(hostname -f)" =~ ^.*jump ]]; then
+  alias wss="ssh -t bojumpc1n1.csnzoo.com \"/wayfair/bin/wss $1\""
+fi
 
 # Use dircolors if available
 test -e ~/.dircolors && \
@@ -99,16 +102,16 @@ autoload -Uz compinit && compinit -D -u
 limit coredumpsize 0
 
 # set some history options
-setopt append_history
-setopt extended_history
-setopt hist_expire_dups_first
+# setopt append_history
+# setopt extended_history
+# setopt hist_expire_dups_first
 setopt hist_ignore_all_dups
 setopt hist_ignore_dups
-setopt hist_ignore_space
-setopt hist_reduce_blanks
-setopt hist_save_no_dups
-setopt hist_verify
-setopt NOMATCH
+# setopt hist_ignore_space
+# setopt hist_reduce_blanks
+# setopt hist_save_no_dups
+# setopt hist_verify
+# setopt NOMATCH
 
 # Share your history across all your terminal windows
 setopt share_history
@@ -197,7 +200,7 @@ if ! zgen saved; then
     zgen load nickhentschel/simplicity-prompt simplicity
 
     # plugins
-    zgen load zsh-users/zsh-completions src
+    zgen load zsh-users/zsh-completions
     zgen load vhbit/fabric-zsh-autocomplete
     zgen load srijanshetty/zsh-pip-completion
     zgen load zsh-users/zsh-syntax-highlighting
