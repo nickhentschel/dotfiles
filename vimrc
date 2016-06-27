@@ -277,9 +277,8 @@ Plug 'tpope/vim-unimpaired'
 " matching braces and such
 Plug 'jiangmiao/auto-pairs'
 
-" Vim plugin for the_silver_searcher, 'ag', a replacement for the Perl module /
-" CLI script 'ack'
-Plug 'rking/ag.vim'
+" Asynchronous grep plugin for Vim
+Plug 'mileszs/ack.vim'
 
 " Plugins for prose writing
 Plug 'junegunn/goyo.vim'
@@ -353,6 +352,7 @@ let g:ctrlp_extensions = ['tag', 'buffertag', 'dir', 'undo', 'line']
 let g:ctrlp_use_caching = 1
 
 if executable('ag')
+    let g:ackprg = 'ag --vimgrep --nocolor'
     set grepprg=ag\ --nogroup\ --nocolor
     let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
                 \ --ignore .git

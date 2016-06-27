@@ -39,7 +39,6 @@ else
   export EDITOR=vim
 fi
 
-export PATH=$PATH:$HOME/local/bin
 export WORKON_HOME=~/envs
 export REPORTTIME=2
 export TIMEFMT="%U user %S system %P cpu %*Es total"
