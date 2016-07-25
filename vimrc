@@ -146,9 +146,6 @@ set nostartofline
 let mapleader=" "
 let g:mapleader=" "
 
-" Ctrl + v already does this
-nnoremap <C-q> <nop>
-
 " Space does nothing in normal mode (prevent cursor from moving)
 nnoremap <Space> <nop>
 
@@ -200,6 +197,10 @@ nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 " w!! for writing read-only file
 cmap w!! w !sudo tee % >/dev/null
 
+" Map ctrl+a to ctrl+q to get around tmux bindings
+nnoremap <C-q> <C-a>
+vnoremap <C-q> <C-a>
+
 " * * * * * * * * * * * * * * * * * * *
 " * AUTO COMMANDS                     *
 " * * * * * * * * * * * * * * * * * * *
@@ -213,7 +214,7 @@ augroup END
 
 augroup two_spaces
     autocmd!
-    au Filetype html,css,scss,sass,ruby,javascript,yml,yaml,eruby,puppet,zsh,bash setlocal ts=2 sts=2 sw=2
+    au Filetype html,css,scss,sass,ruby,javascript,yml,yaml,eruby,puppet,zsh,bash,conf,nginx setlocal ts=2 sts=2 sw=2
 augroup END
 
 " Close help sections with q
@@ -292,6 +293,9 @@ Plug 'christoomey/vim-tmux-navigator'
 " Multiple cursors
 " Plug 'terryma/vim-multiple-cursors'
 
+" Vim script for text filtering and alignment
+Plug 'godlygeek/tabular'
+
 Plug 'tpope/vim-repeat'
 Plug 'svermeulen/vim-easyclip'
 
@@ -312,12 +316,12 @@ Plug 'othree/html5.vim', { 'for': ['html', 'javascript', 'php', 'eruby'] }
 Plug 'othree/yajs.vim', { 'for': ['html', 'javascript', 'php', 'eruby'] }
 Plug 'elzr/vim-json'
 Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
-Plug 'clones/vim-zsh'
-Plug 'nickhentschel/vim-puppet', { 'for': ['puppet'] }
+Plug 'clones/vim-zsh', { 'for': ['zsh'] }
+Plug 'natemccurdy/vim-puppet', { 'for': ['puppet'] }
 Plug 'evanmiller/nginx-vim-syntax', { 'for': ['nginx'] }
 Plug 'hdima/python-syntax', { 'for': ['python'] }
 Plug 'ekalinin/Dockerfile.vim', { 'for': ['docker'] }
-Plug 'sclo/haproxy.vim'
+Plug 'sclo/haproxy.vim', { 'for': ['haproxy'] }
 
 call plug#end()
 
@@ -420,5 +424,6 @@ set ttyfast
 set lazyredraw
 
 " set t_Co=256
-set background=dark
+" set termguicolors
 colorscheme mirodark
+set background=dark
