@@ -308,8 +308,8 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'trusktr/seti.vim'
 Plug 'sickill/vim-monokai'
 Plug 'effkay/argonaut.vim'
-Plug 'julienXX/getafe'
-Plug 'chriskempson/base16-vim'
+Plug 'ciaranm/inkpot'
+Plug 'morhetz/gruvbox'
 
 " syntax and language related bundles
 Plug 'vim-ruby/vim-ruby', { 'for': ['ruby', 'eruby'] }

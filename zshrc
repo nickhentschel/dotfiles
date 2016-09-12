@@ -17,6 +17,17 @@ path() {
     print }"
 }
 
+gendiff() {
+  if [ -d .git ] || git rev-parse --git-dir > /dev/null 2>&1; then
+    branch=$(git rev-parse --abbrev-ref HEAD)
+    diff_name=${branch#nhentschel_}
+    git diff -M --full-index origin/master >| ~/Development/diffs/${diff_name}.diff
+    scp ~/Development/diffs/${diff_name}.diff nhentschel@ALT00058.csnzoo.com:/Users/nhentschel/Development/diffs
+  else
+    echo 'Not in git directory'
+  fi;
+}
+
 ######## EXPORTS AND OTHER SETTINGS #######
 stty -ixon
 
@@ -28,11 +39,7 @@ if is_osx; then
   export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 fi
 
-if is_osx && hash rbenv 2>/dev/null; then
-  eval "$(rbenv init -)"
-fi
-
-if hash nvim 2>/dev/null; then
+if hash nvim 2> /dev/null; then
   export EDITOR=nvim
   alias vim='/usr/local/bin/nvim'
 else
@@ -40,14 +47,14 @@ else
 fi
 
 export WORKON_HOME=~/envs
-export REPORTTIME=2
+export REPORTTIME=5
 export TIMEFMT="%U user %S system %P cpu %*Es total"
 export KEYTIMEOUT=1
 export LESS="ij.5KMRX"
 export TERM='xterm-256color'
 export MANWIDTH=80
 export PAGER=less man
-export TERMINFO="$HOME/.terminfo"
+export TERMINFO="${HOME}/.terminfo"
 
 export HISTSIZE=100000
 export SAVEHIST=100000
@@ -77,9 +84,10 @@ alias json-print="python -m json.tool"
 alias http-server="python -m SimpleHTTPServer 8080 &> /dev/null &"
 alias fab="/wayfair/pkg/python2.7/latest/bin/fab"
 alias zk_status="echo srvr | nc localhost 2181"
+alias host_search="hammer --output=csv --csv-separator=\" \" host list --search ${1}"
 
 if ! [[ "$(hostname -f)" =~ ^.*jump ]]; then
-  alias wss="ssh -t bojumpc1n1.csnzoo.com \"/wayfair/bin/wss $1\""
+  alias wss="ssh -t bojumpc1n1.csnzoo.com \"/wayfair/bin/wss ${1}\""
 fi
 
 # Use dircolors if available
@@ -97,19 +105,25 @@ unsetopt hist_beep
 
 autoload -Uz compinit && compinit -D -u
 
-# Disable core dumps
-limit coredumpsize 0
+# append history list to the history file; this is the default but we make sure
+# because it's required for share_history.
+setopt append_history
 
-# set some history options
-setopt hist_ignore_all_dups
-setopt hist_ignore_dups
-setopt hist_ignore_space
-
-# Share your history across all your terminal windows
+# import new commands from the history file also in other zsh-session
 setopt share_history
 
+# save each command's beginning timestamp and the duration to the history file
+setopt extended_history
+
+# If a new command line being added to the history list duplicates an older
+# one, the older command is removed from the list
+setopt histignorealldups
+
+# remove command lines from the history list when the first character on the
+# line is a space
+setopt histignorespace
+
 # set some more options
-# setopt menu_complete
 setopt auto_pushd               # Push the old directory onto the stack on cd.
 setopt pushd_ignore_dups        # Do not store duplicates in the stack
 setopt hash_list_all            # hash everything before completion
@@ -123,9 +137,10 @@ setopt automenu
 # General stuff
 setopt brace_ccl                # Allow brace character class list expansion.
 setopt combining_chars          # Combine zero-length punctuation characters (accents)
-# with the base character.
+                                # with the base character.
 setopt rc_quotes                # Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'.
 unsetopt bg_nice                # Don't run all background jobs at a lower priority.
+limit coredumpsize 0
 
 # Completion options
 setopt complete_in_word    # Complete from both ends of a word.
@@ -136,24 +151,14 @@ setopt auto_list           # Automatically list choices on ambiguous completion.
 setopt auto_param_slash    # If completed parameter is a directory, add a trailing slash.
 unsetopt menu_complete     # Do not autoselect the first completion entry.
 
-# Speed up autocomplete, force prefix mapping
+# Completion configuration
 zstyle ':completion:*' accept-exact '*(N)'
-zstyle ':completion:*' accept-exact false
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "${ZDOTDIR:-$HOME}.zsh/cache"
 zstyle ':completion:*' rehash true
-
-# Sections completion
-zstyle ':completion:*:match:*' original only
-zstyle ':completion::prefix-1:*' completer _complete
-zstyle ':completion:predict:*' completer _complete
-zstyle ':completion:incremental:*' completer _complete _correct
 zstyle ':completion:*' completer _complete _prefix _correct _prefix _match _approximate
-
-# Path Expansion
 zstyle ':completion:*' expand 'yes'
 zstyle ':completion:*' squeeze-shlashes 'yes'
-
 zstyle ':completion:*' menu select
 zstyle ':completion:*' users $users
 zstyle ':completion:*' verbose yes
@@ -161,23 +166,23 @@ zstyle ':completion:*' auto-description 'specify: %d'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' special-dirs true
-zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
-zstyle ':completion:*:default' list-prompt '%S%M matches%s'
-zstyle ':completion:*:manuals' separate-sections true
-zstyle ':completion:*:descriptions' format $'\e[00;34m%d'
-zstyle ':completion:*:messages' format $'\e[00;31m%d'
-zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
-
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
-zstyle ':completion:*:*:kill:*' menu yes select
-zstyle ':completion:*:kill:*' force-list always
-zstyle ':completion:*:*:killall:*' menu yes select
-zstyle ':completion:*:killall:*' force-list always
-zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
-zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
-
 zstyle ':completion:*' warnings '%F{red}No matches for: %d%f'
-
+zstyle ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*:descriptions' format $'\e[00;34m%d'
+zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
+zstyle ':completion:*:kill:*' menu yes select
+zstyle ':completion:*:kill:*' force-list always
+zstyle ':completion:*:killall:*' menu yes select
+zstyle ':completion:*:killall:*' force-list always
+zstyle ':completion:*:match:*' original only
+zstyle ':completion:*:manuals' separate-sections true
+zstyle ':completion:*:messages' format $'\e[00;31m%d'
+zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
+zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
+# zstyle ':completion::prefix-1:*' completer _complete
+# zstyle ':completion:predict:*' completer _complete
+# zstyle ':completion:incremental:*' completer _complete _correct
 
 ######## ZGEN ########
 
@@ -186,7 +191,7 @@ source ~/.zsh/zgen/zgen.zsh
 
 # Check if there's no init script.
 if ! zgen saved; then
-  echo "Creating a zgen save"
+  printf 'Creating a zgen save'
 
   # theme
   zgen load nickhentschel/simplicity-prompt simplicity
@@ -194,7 +199,6 @@ if ! zgen saved; then
   # plugins
   zgen load zsh-users/zsh-completions
   zgen load vhbit/fabric-zsh-autocomplete
-  zgen load srijanshetty/zsh-pip-completion
   zgen load zsh-users/zsh-syntax-highlighting
   zgen load zsh-users/zsh-history-substring-search
 
@@ -214,7 +218,6 @@ autoload -Uz edit-command-line
 zle -N edit-command-line
 
 ######## KEY BINDINGS ########
-
 
 # Make sure that the terminal is in application mode when zle is active, since
 # only then values from $terminfo are valid
