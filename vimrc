@@ -17,7 +17,6 @@
 " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 set shell=/bin/bash
-syntax on
 
 filetype plugin indent on
 
@@ -384,7 +383,8 @@ endif
 " Uncomment below if not using a font with powerline symbols
 " let g:airline_left_sep = ''
 " let g:airline_right_sep = ''
-let g:airline_theme = "luna"
+" let g:airline_theme = "luna"
+let g:airline_theme='oceanicnext'
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#bufferline#overwrite_variables = 0
@@ -424,7 +424,15 @@ set nocompatible
 set ttyfast
 set lazyredraw
 
-" set t_Co=256
-" set termguicolors
-colorscheme mirodark
+" For Neovim 0.1.3 and 0.1.4
+" let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+
+" Or if you have Neovim >= 0.1.5
+if (has("termguicolors"))
+  set termguicolors
+endif
+
+" Theme
+syntax enable
+colorscheme OceanicNext
 set background=dark

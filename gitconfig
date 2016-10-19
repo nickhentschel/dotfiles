@@ -33,6 +33,7 @@
     editor = vim
     autocrlf = false
     preloadindex = true
+	excludesfile = /Users/nhentschel/.gitignore
 [alias]
     st = status
     co = checkout

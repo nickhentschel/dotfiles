@@ -22,7 +22,7 @@ gendiff() {
     branch=$(git rev-parse --abbrev-ref HEAD)
     diff_name=${branch#nhentschel_}
     git diff -M --full-index origin/master >| ~/Development/diffs/${diff_name}.diff
-    scp ~/Development/diffs/${diff_name}.diff nhentschel@ALT00058.csnzoo.com:/Users/nhentschel/Development/diffs
+    # scp ~/Development/diffs/${diff_name}.diff nhentschel@ALT00058.csnzoo.com:/Users/nhentschel/Development/diffs
   else
     echo 'Not in git directory'
   fi;
