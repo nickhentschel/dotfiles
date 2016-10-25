@@ -201,6 +201,7 @@ if ! zgen saved; then
   zgen load vhbit/fabric-zsh-autocomplete
   zgen load zsh-users/zsh-syntax-highlighting
   zgen load zsh-users/zsh-history-substring-search
+  zgen load zsh-users/zsh-autosuggestions
 
   # save all to init script
   zgen save
@@ -212,6 +213,11 @@ fi
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor line)
 ZSH_HIGHLIGHT_STYLES[precommand]=none
 ZSH_HIGHLIGHT_STYLES[default]=none
+
+# Autosuggestions settings
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
+# ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="20"
+ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=("backward-char")
 
 bindkey -v
 autoload -Uz edit-command-line
