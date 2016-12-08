@@ -142,6 +142,9 @@ set completeopt=longest,menuone,preview
 " Don't reset cursor to start of line when moving around
 set nostartofline
 
+" unnamed clipboard
+set clipboard=unnamed
+
 " map leader to space
 let mapleader=" "
 let g:mapleader=" "
@@ -200,10 +203,6 @@ cmap w!! w !sudo tee % >/dev/null
 " Map ctrl+a to ctrl+q to get around tmux bindings
 nnoremap <C-q> <C-a>
 vnoremap <C-q> <C-a>
-
-" * * * * * * * * * * * * * * * * * * *
-" * AUTO COMMANDS                     *
-" * * * * * * * * * * * * * * * * * * *
 
 " quickfix not listed in buffer lists
 augroup qf
@@ -296,6 +295,9 @@ Plug 'christoomey/vim-tmux-navigator'
 " Vim script for text filtering and alignment
 Plug 'godlygeek/tabular'
 
+" Show git changes in the gutter
+Plug 'airblade/vim-gitgutter'
+
 Plug 'tpope/vim-repeat'
 Plug 'svermeulen/vim-easyclip'
 
@@ -317,7 +319,8 @@ Plug 'othree/yajs.vim', { 'for': ['html', 'javascript', 'php', 'eruby'] }
 Plug 'elzr/vim-json'
 Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
 Plug 'clones/vim-zsh', { 'for': ['zsh'] }
-Plug 'natemccurdy/vim-puppet', { 'for': ['puppet'] }
+Plug 'hunner/vim-puppet', { 'for': ['puppet'] }
+" Plug 'nickhentschel/vim-puppet', { 'for': ['puppet'] }
 Plug 'evanmiller/nginx-vim-syntax', { 'for': ['nginx'] }
 Plug 'hdima/python-syntax', { 'for': ['python'] }
 Plug 'ekalinin/Dockerfile.vim', { 'for': ['docker'] }
@@ -381,12 +384,12 @@ endif
 
 " Vim Airline
 " Uncomment below if not using a font with powerline symbols
-" let g:airline_left_sep = ''
-" let g:airline_right_sep = ''
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''
 let g:airline_theme = "luna"
 " let g:airline_theme='oceanicnext'
 let g:airline_detect_paste=1
-let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 0
 let g:airline#extensions#bufferline#overwrite_variables = 0
 let g:airline#extensions#bufferline#enabled = 0
 let g:airline#extensions#syntastic#enabled = 1
@@ -396,6 +399,12 @@ let g:airline#extensions#ctrlp#enabled = 1
 let g:airline#extensions#ctrlp#show_adjacent_modes = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
+
+" Tabular mappings
+nnoremap <Leader>= :Tabularize /=<CR>
+vnoremap <Leader>= :Tabularize /=<CR>
+nnoremap <Leader>> :Tabularize /=><CR>
+vnoremap <Leader>> :Tabularize /=><CR>
 
 " * * * * * * * * * * * * * * * * * * *
 " * LOOK AND FEEL                     *
@@ -423,6 +432,9 @@ endif
 set nocompatible
 set ttyfast
 set lazyredraw
+
+" Line at 80 characters
+set colorcolumn=80
 
 " For Neovim 0.1.3 and 0.1.4
 " let $NVIM_TUI_ENABLE_TRUE_COLOR=1
