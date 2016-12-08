@@ -82,7 +82,7 @@ alias jenkinscli6="/wayfair/pkg/java/latest/bin/java -jar /wayfair/pkg/jenkins/b
 alias weather="curl -4 http://wttr.in/Boston"
 alias json-print="python -m json.tool"
 alias http-server="python -m SimpleHTTPServer 8080 &> /dev/null &"
-alias fab="/wayfair/pkg/python2.7/latest/bin/fab"
+alias fab="/wayfair/app/fabric/bin/fab"
 alias zk_status="echo srvr | nc localhost 2181"
 alias host_search="hammer --output=csv --csv-separator=\" \" host list --search ${1}"
 
