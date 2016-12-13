@@ -298,6 +298,8 @@ Plug 'godlygeek/tabular'
 " Show git changes in the gutter
 Plug 'airblade/vim-gitgutter'
 
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
 Plug 'tpope/vim-repeat'
 Plug 'svermeulen/vim-easyclip'
 
@@ -331,6 +333,10 @@ call plug#end()
 " * * * * * * * * * * * * * * * * * * *
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
+
+" Deoplete
+let g:deoplete#enable_at_startup = 1
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
 " Theme setting
 let g:mirodark_disable_color_approximation=1
@@ -446,5 +452,5 @@ set colorcolumn=80
 
 " Theme
 syntax enable
-colorscheme mirodark
+colorscheme solarized
 set background=dark
