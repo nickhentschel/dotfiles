@@ -143,7 +143,7 @@ set completeopt=longest,menuone,preview
 set nostartofline
 
 " unnamed clipboard
-set clipboard=unnamed
+" set clipboard=unnamed
 
 " map leader to space
 let mapleader=" "
@@ -204,6 +204,14 @@ cmap w!! w !sudo tee % >/dev/null
 nnoremap <C-q> <C-a>
 vnoremap <C-q> <C-a>
 
+if has('nvim')
+  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+  " Hack to get C-h working in neovim
+  nmap <BS> <C-W>h
+  tnoremap <Esc> <C-\><C-n>
+  set inccommand=split
+endif
+
 " quickfix not listed in buffer lists
 augroup qf
     autocmd!
@@ -232,7 +240,6 @@ call plug#begin('~/.vim/plugged')
 " up your layout
 Plug 'moll/vim-bbye'
 
-" Allows easy code commenting of lines and blocks
 Plug 'tomtom/tcomment_vim'
 
 " Allows easy addition/changing of surrounding text
@@ -287,7 +294,7 @@ Plug 'junegunn/goyo.vim'
 Plug 'christoomey/vim-tmux-navigator'
 
 " incremental serach improvements
-" Plug 'haya14busa/incsearch.vim'
+Plug 'haya14busa/incsearch.vim'
 
 " Multiple cursors
 " Plug 'terryma/vim-multiple-cursors'
@@ -298,21 +305,15 @@ Plug 'godlygeek/tabular'
 " Show git changes in the gutter
 Plug 'airblade/vim-gitgutter'
 
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 Plug 'tpope/vim-repeat'
-Plug 'svermeulen/vim-easyclip'
+" Plug 'svermeulen/vim-easyclip'
 
 " colorscheme bundles
 Plug 'djjcast/mirodark'
-Plug 'mhartington/oceanic-next'
 Plug 'w0ng/vim-hybrid'
 Plug 'altercation/vim-colors-solarized'
-Plug 'trusktr/seti.vim'
-Plug 'sickill/vim-monokai'
-Plug 'effkay/argonaut.vim'
-Plug 'ciaranm/inkpot'
-Plug 'morhetz/gruvbox'
 
 " syntax and language related bundles
 Plug 'vim-ruby/vim-ruby', { 'for': ['ruby', 'eruby'] }
@@ -321,7 +322,7 @@ Plug 'othree/yajs.vim', { 'for': ['html', 'javascript', 'php', 'eruby'] }
 Plug 'elzr/vim-json'
 Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
 Plug 'clones/vim-zsh', { 'for': ['zsh'] }
-Plug 'hunner/vim-puppet', { 'for': ['puppet'] }
+Plug 'rodjek/vim-puppet', { 'for': ['puppet'] }
 " Plug 'nickhentschel/vim-puppet', { 'for': ['puppet'] }
 Plug 'evanmiller/nginx-vim-syntax', { 'for': ['nginx'] }
 Plug 'hdima/python-syntax', { 'for': ['python'] }
@@ -371,6 +372,7 @@ if executable('ag')
                 \ --ignore .git
                 \ --ignore .svn
                 \ --ignore .hg
+                \ --ignore "**/*.eyaml"
                 \ --ignore .DS_Store
                 \ --ignore "**/*.pyc"
                 \ -g ""'
