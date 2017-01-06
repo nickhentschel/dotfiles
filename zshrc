@@ -210,7 +210,7 @@ fi
 ######## PLUGIN SETTINGS ########
 
 # Setup syntax highlighting
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor line)
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets line)
 ZSH_HIGHLIGHT_STYLES[precommand]=none
 ZSH_HIGHLIGHT_STYLES[default]=none
 
