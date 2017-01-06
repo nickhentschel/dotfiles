@@ -87,7 +87,7 @@ alias zk_status="echo srvr | nc localhost 2181"
 alias host_search="hammer --output=csv --csv-separator=\" \" host list --search ${1}"
 
 if ! [[ "$(hostname -f)" =~ ^.*jump ]]; then
-  alias wss="ssh -t bojumpc1n1.csnzoo.com \"/wayfair/bin/wss ${1}\""
+  alias wss="ssh -t jumpc1n2.host.bo1.csnzoo.com \"/wayfair/bin/wss ${1}\""
 fi
 
 # Use dircolors if available
