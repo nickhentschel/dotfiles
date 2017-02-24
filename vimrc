@@ -273,7 +273,8 @@ Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
 
 " Syntax checking hacks for vim
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
+Plug 'w0rp/ale'
 
 " speeddating.vim: use CTRL-A/CTRL-X to increment dates, times, and more
 Plug 'tpope/vim-speeddating'
@@ -346,9 +347,9 @@ let g:mirodark_disable_color_approximation=1
 let python_highlight_all = 1
 
 " Syntastic
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-nnoremap <leader>c :SyntasticCheck<CR>
+" let g:syntastic_check_on_open = 0
+" let g:syntastic_check_on_wq = 0
+" nnoremap <leader>c :SyntasticCheck<CR>
 
 " NERDTree
 nnoremap <leader>t :NERDTreeToggle<CR>
@@ -454,5 +455,5 @@ set colorcolumn=80
 
 " Theme
 syntax enable
-colorscheme solarized
+colorscheme mirodark
 set background=dark

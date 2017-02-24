@@ -80,8 +80,8 @@ alias venvwrapper="source ~/.local/bin/virtualenvwrapper.sh"
 alias jenkinscli="java -jar /wayfair/pkg/jenkins/latest/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
 alias jenkinscli6="/wayfair/pkg/java/latest/bin/java -jar /wayfair/pkg/jenkins/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
 alias weather="curl -4 http://wttr.in/Boston"
-alias json-print="python -m json.tool"
-alias http-server="python -m SimpleHTTPServer 8080 &> /dev/null &"
+alias json_print="python -m json.tool"
+alias http_server="python -m SimpleHTTPServer 8080 &> /dev/null &"
 alias fab="/wayfair/app/fabric/bin/fab"
 alias zk_status="echo srvr | nc localhost 2181"
 alias host_search="hammer --output=csv --csv-separator=\" \" host list --search ${1}"
@@ -198,10 +198,9 @@ if ! zgen saved; then
 
   # plugins
   zgen load zsh-users/zsh-completions
-  zgen load vhbit/fabric-zsh-autocomplete
+  zgen load zsh-users/zsh-autosuggestions
   zgen load zsh-users/zsh-syntax-highlighting
   zgen load zsh-users/zsh-history-substring-search
-  zgen load zsh-users/zsh-autosuggestions
 
   # save all to init script
   zgen save
@@ -211,12 +210,10 @@ fi
 
 # Setup syntax highlighting
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets line)
-ZSH_HIGHLIGHT_STYLES[precommand]=none
-ZSH_HIGHLIGHT_STYLES[default]=none
 
 # Autosuggestions settings
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
-# ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="20"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=237"
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="40"
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=("backward-char")
 
 bindkey -v
@@ -245,6 +242,7 @@ bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 bindkey '\e[3~' delete-char
 bindkey '^R' history-incremental-search-backward
+bindkey '^F' history-incremental-search-forward
 
 # vi style incremental search
 bindkey -M vicmd 'u' undo
