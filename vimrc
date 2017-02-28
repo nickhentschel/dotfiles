@@ -304,7 +304,7 @@ Plug 'haya14busa/incsearch.vim'
 Plug 'godlygeek/tabular'
 
 " Show git changes in the gutter
-Plug 'airblade/vim-gitgutter'
+" Plug 'airblade/vim-gitgutter'
 
 " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
