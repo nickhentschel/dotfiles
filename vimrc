@@ -221,7 +221,7 @@ augroup END
 
 augroup two_spaces
     autocmd!
-    au Filetype html,css,scss,sass,ruby,javascript,yml,yaml,eruby,puppet,zsh,bash,conf,nginx setlocal ts=2 sts=2 sw=2
+    au Filetype html,css,scss,sass,ruby,javascript,yml,yaml,eruby,puppet,zsh,bash,sh,conf,nginx setlocal ts=2 sts=2 sw=2
 augroup END
 
 " Close help sections with q
@@ -336,6 +336,12 @@ call plug#end()
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
 
+" set indentline style
+let g:indentLine_char = '│'
+
+" fix performance issue with long lines
+let g:indentLine_faster = 1
+
 " Deoplete
 let g:deoplete#enable_at_startup = 1
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
@@ -345,11 +351,6 @@ let g:mirodark_disable_color_approximation=1
 
 " Python syntax
 let python_highlight_all = 1
-
-" Syntastic
-" let g:syntastic_check_on_open = 0
-" let g:syntastic_check_on_wq = 0
-" nnoremap <leader>c :SyntasticCheck<CR>
 
 " NERDTree
 nnoremap <leader>t :NERDTreeToggle<CR>
