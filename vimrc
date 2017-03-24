@@ -303,8 +303,10 @@ Plug 'haya14busa/incsearch.vim'
 " Vim script for text filtering and alignment
 Plug 'godlygeek/tabular'
 
-" Show git changes in the gutter
-" Plug 'airblade/vim-gitgutter'
+if has('git')
+    " Show git changes in the gutter
+    Plug 'airblade/vim-gitgutter'
+endif
 
 " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
@@ -347,7 +349,7 @@ let g:deoplete#enable_at_startup = 1
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
 " Theme setting
-let g:mirodark_disable_color_approximation=1
+" let g:mirodark_disable_color_approximation=1
 
 " Python syntax
 let python_highlight_all = 1
@@ -396,13 +398,11 @@ endif
 " Uncomment below if not using a font with powerline symbols
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
-let g:airline_theme = "luna"
-" let g:airline_theme='oceanicnext'
+let g:airline_theme = 'luna'
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#bufferline#overwrite_variables = 0
 let g:airline#extensions#bufferline#enabled = 0
-let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#branch#empty_message = ''
 let g:airline#extensions#ctrlp#enabled = 1
