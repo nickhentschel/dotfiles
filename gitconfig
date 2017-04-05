@@ -33,7 +33,7 @@
     editor = vim
     autocrlf = false
     preloadindex = true
-	excludesfile = /Users/nhentschel/.gitignore
+    excludesfile = /Users/nhentschel/.gitignore
 [alias]
     st = status
     co = checkout
@@ -54,3 +54,7 @@
     sslCAPath = /etc/pki/tls/certs
 [rerere]
     enabled = true
+[url "https://github.com"]
+    insteadOf = git://github.com
+[url "https://github.com/"]
+    insteadOf = git@github.com:
