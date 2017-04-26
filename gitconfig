@@ -45,6 +45,8 @@
     l = log --graph --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset'
 [pull]
     rebase = true
+[status]
+    showUntrackedFiles = all
 [fetch]
     prune = true
 [log]

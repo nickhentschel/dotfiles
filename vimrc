@@ -317,6 +317,9 @@ Plug 'tpope/vim-repeat'
 Plug 'djjcast/mirodark'
 Plug 'w0ng/vim-hybrid'
 Plug 'altercation/vim-colors-solarized'
+Plug 'morhetz/gruvbox'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'jacoborus/tender.vim'
 
 " syntax and language related bundles
 Plug 'vim-ruby/vim-ruby', { 'for': ['ruby', 'eruby'] }
@@ -398,7 +401,7 @@ endif
 " Uncomment below if not using a font with powerline symbols
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
-let g:airline_theme = 'luna'
+" let g:airline_theme = 'luna'
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#bufferline#overwrite_variables = 0
@@ -455,5 +458,5 @@ set t_Co=256
 
 " Theme
 syntax enable
-colorscheme mirodark
+colorscheme solarized
 set background=dark
