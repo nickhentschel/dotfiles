@@ -210,6 +210,7 @@ fi
 
 # Setup syntax highlighting
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets line)
+ZSH_HIGHLIGHT_STYLES[path]=none
 
 # Autosuggestions settings
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=237"
