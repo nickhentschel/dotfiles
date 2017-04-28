@@ -61,9 +61,6 @@ set number
 " Remove insert->normal delay
 set ttimeoutlen=50
 
-" Get rid of the delay when hitting esc!
-set noesckeys
-
 " Relaod files after change outside of VIM
 set autoread
 
@@ -205,7 +202,6 @@ nnoremap <C-q> <C-a>
 vnoremap <C-q> <C-a>
 
 if has('nvim')
-  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
   " Hack to get C-h working in neovim
   nmap <BS> <C-W>h
   tnoremap <Esc> <C-\><C-n>
@@ -401,7 +397,7 @@ endif
 " Uncomment below if not using a font with powerline symbols
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
-" let g:airline_theme = 'luna'
+let g:airline_theme = 'luna'
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#bufferline#overwrite_variables = 0
@@ -451,12 +447,12 @@ set colorcolumn=80
 
 " Or if you have Neovim >= 0.1.5
 " if (has("termguicolors"))
-"   set termguicolors
+"     set termguicolors
 " endif
 
-set t_Co=256
+" set t_Co=256
 
 " Theme
 syntax enable
-colorscheme solarized
+colorscheme mirodark
 set background=dark
