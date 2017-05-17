@@ -293,6 +293,9 @@ Plug 'christoomey/vim-tmux-navigator'
 " incremental serach improvements
 Plug 'haya14busa/incsearch.vim'
 
+" Better search -- start searches, manipulate your queries, convert search to grep, and optimize your grep
+Plug 'idbrii/vim-searchsavvy'
+
 " Multiple cursors
 " Plug 'terryma/vim-multiple-cursors'
 

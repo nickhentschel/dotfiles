@@ -70,21 +70,22 @@ export LESS_TERMCAP_ue=$'\E[0m'          # Ends underline.
 export LESS_TERMCAP_us=$'\E[01;32m'      # Begins underline.
 
 # aliases
-alias ls="ls -ph --color=always"
-alias ll="ls -lchp"
-alias grep="grep --color=always"
-alias egrep="egrep --color=always"
 alias c="clear"
 alias d="dirs -v"
-alias venvwrapper="source ~/.local/bin/virtualenvwrapper.sh"
-alias jenkinscli="java -jar /wayfair/pkg/jenkins/latest/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
-alias jenkinscli6="/wayfair/pkg/java/latest/bin/java -jar /wayfair/pkg/jenkins/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
-alias weather="curl -4 http://wttr.in/Boston"
-alias json_print="python -m json.tool"
-alias http_server="python -m SimpleHTTPServer 8080 &> /dev/null &"
+alias egrep="egrep --color=always"
 alias fab="/wayfair/app/fabric/bin/fab"
-alias zk_status="echo srvr | nc localhost 2181"
+alias grep="grep --color=always"
 alias host_search="hammer --output=csv --csv-separator=\" \" host list --search ${1}"
+alias http_server="python -m SimpleHTTPServer 8080 &> /dev/null &"
+alias jenkinscli6="/wayfair/pkg/java/latest/bin/java -jar /wayfair/pkg/jenkins/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
+alias jenkinscli="java -jar /wayfair/pkg/jenkins/latest/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
+alias json_print="python -m json.tool"
+alias ll="ls -lchp"
+alias ls="ls -ph --color=always"
+alias mounts="cat /proc/mounts | column -t"
+alias venvwrapper="source ~/.local/bin/virtualenvwrapper.sh"
+alias weather="curl -4 http://wttr.in/Boston"
+alias zk_status="echo srvr | nc localhost 2181"
 
 if ! [[ "$(hostname -f)" =~ ^.*jump ]]; then
   alias wss="ssh -t jumpc1n2.host.bo1.csnzoo.com \"/wayfair/bin/wss ${1}\""
