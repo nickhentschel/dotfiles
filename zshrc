@@ -39,7 +39,7 @@ if is_osx; then
   export PATH=/usr/local/opt/coreutils/libexec/gnubin:/usr/local/sbin:$PATH
 fi
 
-if hash nvim 2> /dev/null; then
+if hash nlvim 2> /dev/null; then
   export EDITOR=nvim
   alias vim='/usr/local/bin/nvim'
 else
