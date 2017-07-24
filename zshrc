@@ -36,7 +36,7 @@ if is_osx; then
   if [ -x /usr/libexec/path_helper ]; then
     eval `/usr/libexec/path_helper -s`
   fi
-  export PATH=/usr/local/opt/coreutils/libexec/gnubin:/usr/local/sbin:$PATH
+  export PATH=$HOME/.rbenv/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/sbin:$PATH
 fi
 
 if hash nlvim 2> /dev/null; then
