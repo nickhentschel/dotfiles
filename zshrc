@@ -36,15 +36,17 @@ if is_osx; then
   if [ -x /usr/libexec/path_helper ]; then
     eval `/usr/libexec/path_helper -s`
   fi
-  export PATH=$HOME/.rbenv/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/sbin:$PATH
+  export PATH=$HOME/.rbenv/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/sbin:$HOME/go/bin:$PATH
 fi
 
-if hash nlvim 2> /dev/null; then
-  export EDITOR=nvim
-  alias vim='/usr/local/bin/nvim'
-else
-  export EDITOR=vim
-fi
+# if hash nlvim 2> /dev/null; then
+#   export EDITOR=nvim
+#   alias vim='/usr/local/bin/nvim'
+# else
+#   export EDITOR=vim
+# fi
+
+export EDITOR=vim
 
 export WORKON_HOME=~/envs
 export REPORTTIME=5

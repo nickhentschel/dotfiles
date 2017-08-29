@@ -105,6 +105,9 @@ set wildignore+=log/**
 set wildignore+=tmp/**
 set wildignore+=*.png,*.jpg,*.gif,*.pdf,*.psd
 set wildignore+=*.log
+set wildignore+=*.git,*.svn,*.hg,*.eyaml
+set wildignore+=*/.git/*,*/tmp/*,*.swp
+set wildignore+=*/.pyc*
 
 " Enable mouse support in console
 set mouse=a
@@ -251,8 +254,11 @@ Plug 'sukima/xmledit',
 
 " Fuzzy file, buffer, mru, tag, etc finder
 " Similar to cmd + p for SublimeText
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'sgur/ctrlp-extensions.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'sgur/ctrlp-extensions.vim'
+
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin'  }
+Plug 'junegunn/fzf.vim'
 
 " Custom and configurable status line for vim
 " Much lighter than powerline
@@ -282,7 +288,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'jiangmiao/auto-pairs'
 
 " Asynchronous grep plugin for Vim
-Plug 'mileszs/ack.vim'
+" Plug 'mileszs/ack.vim'
 
 " Plugins for prose writing
 Plug 'junegunn/goyo.vim'
@@ -307,8 +313,6 @@ if has('git')
     Plug 'airblade/vim-gitgutter'
 endif
 
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
 Plug 'tpope/vim-repeat'
 " Plug 'svermeulen/vim-easyclip'
 
@@ -319,18 +323,13 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'morhetz/gruvbox'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'jacoborus/tender.vim'
+Plug 'joshdick/onedark.vim'
+Plug 'arcticicestudio/nord-vim'
 
 " syntax and language related bundles
-Plug 'vim-ruby/vim-ruby', { 'for': ['ruby', 'eruby'] }
-Plug 'othree/html5.vim', { 'for': ['html', 'javascript', 'php', 'eruby'] }
-Plug 'othree/yajs.vim', { 'for': ['html', 'javascript', 'php', 'eruby'] }
-Plug 'elzr/vim-json'
-Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
+Plug 'sheerun/vim-polyglot'
 Plug 'clones/vim-zsh', { 'for': ['zsh'] }
-Plug 'rodjek/vim-puppet', { 'for': ['puppet'] }
 " Plug 'nickhentschel/vim-puppet', { 'for': ['puppet'] }
-Plug 'evanmiller/nginx-vim-syntax', { 'for': ['nginx'] }
-Plug 'hdima/python-syntax', { 'for': ['python'] }
 Plug 'ekalinin/Dockerfile.vim', { 'for': ['docker'] }
 Plug 'sclo/haproxy.vim', { 'for': ['haproxy'] }
 
@@ -360,40 +359,30 @@ let python_highlight_all = 1
 nnoremap <leader>t :NERDTreeToggle<CR>
 let NERDTreeShowHidden=1
 
-" ctrlp
-let g:ctrlp_show_hidden = 1
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_working_path_mode = 2
-let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:10'
-let g:ctrlp_switch_buffer = 'Et'
-let g:ctrlp_open_new_file = 'r'
-let g:ctrlp_extensions = ['tag', 'buffertag', 'dir', 'undo', 'line']
-let g:ctrlp_use_caching = 1
+" FZF
+let g:fzf_buffers_jump = 1
+let g:fzf_action = {
+      \ 'ctrl-s': 'split',
+      \ 'ctrl-v': 'vsplit'
+      \ }
 
-if executable('ag')
-    let g:ackprg = 'ag --vimgrep --nocolor'
-    set grepprg=ag\ --nogroup\ --nocolor
-    let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
-                \ --ignore .git
-                \ --ignore .svn
-                \ --ignore .hg
-                \ --ignore "**/*.eyaml"
-                \ --ignore .DS_Store
-                \ --ignore "**/*.pyc"
-                \ -g ""'
-    let g:ctrlp_use_caching = 0
-else
-    let g:ctrlp_custom_ignore = {
-                \ 'dir': '\v[\/](\.git|\.hg|\.svn|CVS|tmp|Library|Applications|Music|[^\/]*-store)$',
-                \ 'file': '\v\.(exe|so|dll)$',
-                \ }
-    let g:ctrlp_user_command = {
-                \ 'types' : {
-                \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-                \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-                \ }
-                \ }
+nnoremap <c-p> :FZF<cr>
+
+" This command now supports CTRL-T, CTRL-V, and CTRL-X key bindings
+" " and opens fzf according to g:fzf_layout setting.
+command! Buffers call fzf#run(fzf#wrap(
+    \ {'source': map(range(1, bufnr('$')), 'bufname(v:val)')}))"
+
+" To use ripgrep instead of ag:
+command! -bang -nargs=* Ack
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
+
+if executable('rg')
+    set grepprg=rg\ --vimgrep\ --color=never
 endif
 
 " Vim Airline
@@ -448,7 +437,6 @@ set lazyredraw
 " Line at 80 characters
 set colorcolumn=80
 
-" Or if you have Neovim >= 0.1.5
 " if (has("termguicolors"))
 "     set termguicolors
 " endif
