@@ -211,18 +211,26 @@ fi
 
 ######## PLUGIN SETTINGS ########
 
+my-autosuggest-accept() {
+  zle autosuggest-accept
+  zle redisplay
+  zle redisplay
+}
+
 # Setup syntax highlighting
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets line)
 ZSH_HIGHLIGHT_STYLES[path]=none
 
 # Autosuggestions settings
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=237"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=239"
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="40"
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=("backward-char")
+ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=my-autosuggest-accept
 
 bindkey -v
 autoload -Uz edit-command-line
 zle -N edit-command-line
+zle -N my-autosuggest-accept
 
 ######## KEY BINDINGS ########
 
@@ -247,6 +255,7 @@ bindkey '^[[B' history-substring-search-down
 bindkey '\e[3~' delete-char
 bindkey '^R' history-incremental-search-backward
 bindkey '^F' history-incremental-search-forward
+bindkey '\x00' my-autosuggest-accept
 
 # vi style incremental search
 bindkey -M vicmd 'u' undo

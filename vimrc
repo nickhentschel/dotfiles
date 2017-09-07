@@ -252,11 +252,6 @@ Plug 'Yggdroot/indentLine'
 Plug 'sukima/xmledit',
             \ { 'do': 'rm ftplugin/html.vim && ln -s ftplugin/xml.vim ftplugin/html.vim' }
 
-" Fuzzy file, buffer, mru, tag, etc finder
-" Similar to cmd + p for SublimeText
-" Plug 'ctrlpvim/ctrlp.vim'
-" Plug 'sgur/ctrlp-extensions.vim'
-
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin'  }
 Plug 'junegunn/fzf.vim'
 
@@ -288,7 +283,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'jiangmiao/auto-pairs'
 
 " Asynchronous grep plugin for Vim
-" Plug 'mileszs/ack.vim'
+Plug 'jremmen/vim-ripgrep'
 
 " Plugins for prose writing
 Plug 'junegunn/goyo.vim'
@@ -301,9 +296,6 @@ Plug 'haya14busa/incsearch.vim'
 
 " Better search -- start searches, manipulate your queries, convert search to grep, and optimize your grep
 Plug 'idbrii/vim-searchsavvy'
-
-" Multiple cursors
-" Plug 'terryma/vim-multiple-cursors'
 
 " Vim script for text filtering and alignment
 Plug 'godlygeek/tabular'
@@ -323,14 +315,13 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'morhetz/gruvbox'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'jacoborus/tender.vim'
-Plug 'joshdick/onedark.vim'
+Plug 'rakr/vim-one'
 Plug 'arcticicestudio/nord-vim'
 
 " syntax and language related bundles
 Plug 'sheerun/vim-polyglot'
 Plug 'clones/vim-zsh', { 'for': ['zsh'] }
-" Plug 'nickhentschel/vim-puppet', { 'for': ['puppet'] }
-Plug 'ekalinin/Dockerfile.vim', { 'for': ['docker'] }
+Plug 'rodjek/vim-puppet', { 'for': ['puppet'] }
 Plug 'sclo/haproxy.vim', { 'for': ['haproxy'] }
 
 call plug#end()
@@ -339,25 +330,23 @@ call plug#end()
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
 
-" set indentline style
-let g:indentLine_char = '│'
+" Polyglot
+let g:polyglot_disabled = ['puppet']
 
-" fix performance issue with long lines
+" Indentline
+let g:indentLine_char = '│'
 let g:indentLine_faster = 1
 
-" Deoplete
-let g:deoplete#enable_at_startup = 1
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-
 " Theme setting
-let g:mirodark_disable_color_approximation=1
+let g:mirodark_disable_color_approximation = 1
 
 " Python syntax
 let python_highlight_all = 1
 
 " NERDTree
 nnoremap <leader>t :NERDTreeToggle<CR>
-let NERDTreeShowHidden=1
+let NERDTreeShowHidden = 1
+let g:NERDTreeMinimalUI = 1
 
 " FZF
 let g:fzf_buffers_jump = 1
@@ -365,28 +354,25 @@ let g:fzf_action = {
       \ 'ctrl-s': 'split',
       \ 'ctrl-v': 'vsplit'
       \ }
-
-nnoremap <c-p> :FZF<cr>
-
-" This command now supports CTRL-T, CTRL-V, and CTRL-X key bindings
-" " and opens fzf according to g:fzf_layout setting.
-command! Buffers call fzf#run(fzf#wrap(
-    \ {'source': map(range(1, bufnr('$')), 'bufname(v:val)')}))"
+let g:fzf_layout = { 'down': '~20%'  }
 
 " To use ripgrep instead of ag:
-command! -bang -nargs=* Ack
+command! -bang -nargs=* FZFRg
   \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   'rg --column --line-number --no-heading --color=always --glob "!.git/*" '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:30%')
+  \           : fzf#vim#with_preview('right:20%:hidden', '?'),
   \   <bang>0)
+
+nnoremap <c-p> :FZF<cr>
+nnoremap <c-o> :Buffers<cr>
+nnoremap <c-i> :FZFRg<cr>
 
 if executable('rg')
     set grepprg=rg\ --vimgrep\ --color=never
 endif
 
 " Vim Airline
-" Uncomment below if not using a font with powerline symbols
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 let g:airline_theme = 'luna'
