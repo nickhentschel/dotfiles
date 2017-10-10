@@ -17,6 +17,7 @@
 " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 set shell=/bin/bash
+set ttymouse=sgr
 
 filetype plugin indent on
 
@@ -314,9 +315,7 @@ Plug 'w0ng/vim-hybrid'
 Plug 'altercation/vim-colors-solarized'
 Plug 'morhetz/gruvbox'
 Plug 'NLKNguyen/papercolor-theme'
-Plug 'jacoborus/tender.vim'
-Plug 'rakr/vim-one'
-Plug 'arcticicestudio/nord-vim'
+Plug 'chriskempson/base16-vim'
 
 " syntax and language related bundles
 Plug 'sheerun/vim-polyglot'
