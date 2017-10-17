@@ -39,30 +39,19 @@ if is_osx; then
   export PATH=$HOME/.rbenv/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/sbin:$HOME/go/bin:$PATH
 fi
 
-# if hash nlvim 2> /dev/null; then
-#   export EDITOR=nvim
-#   alias vim='/usr/local/bin/nvim'
-# else
-#   export EDITOR=vim
-# fi
-
 export EDITOR=vim
-
 export WORKON_HOME=~/envs
 export REPORTTIME=5
 export TIMEFMT="%U user %S system %P cpu %*Es total"
 export KEYTIMEOUT=1
 export LESS="ij.5KMRX"
-# export TERM='xterm-256color'
 export MANWIDTH=80
 export PAGER=less man
 export TERMINFO="${HOME}/.terminfo"
-
 export HISTSIZE=100000
 export SAVEHIST=100000
 export HISTFILE=~/.zsh_history
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
-
 export LESS_TERMCAP_mb=$'\E[01;31m'      # Begins blinking.
 export LESS_TERMCAP_md=$'\E[01;31m'      # Begins bold.
 export LESS_TERMCAP_me=$'\E[0m'          # Ends mode.
@@ -226,6 +215,10 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=239"
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="40"
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=("backward-char")
 ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=my-autosuggest-accept
+
+if hash kubectl 2> /dev/null; then
+  source <(kubectl completion zsh)
+fi
 
 bindkey -v
 autoload -Uz edit-command-line
