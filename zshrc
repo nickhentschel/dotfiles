@@ -39,6 +39,8 @@ if is_osx; then
   export PATH=$HOME/.rbenv/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/sbin:$HOME/go/bin:$PATH
 fi
 
+export PATH=$HOME/.local/bin:$PATH
+
 export EDITOR=vim
 export WORKON_HOME=~/envs
 export REPORTTIME=5

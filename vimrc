@@ -315,7 +315,7 @@ Plug 'w0ng/vim-hybrid'
 Plug 'altercation/vim-colors-solarized'
 Plug 'morhetz/gruvbox'
 Plug 'NLKNguyen/papercolor-theme'
-Plug 'chriskempson/base16-vim'
+Plug 'jdkanani/vim-material-theme'
 
 " syntax and language related bundles
 Plug 'sheerun/vim-polyglot'
@@ -426,9 +426,9 @@ set colorcolumn=80
 "     set termguicolors
 " endif
 
-" set t_Co=256
+set t_Co=256
 
 " Theme
 syntax enable
-colorscheme mirodark
 set background=dark
+colorscheme mirodark
