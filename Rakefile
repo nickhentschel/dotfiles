@@ -1,27 +1,21 @@
 # The early workings of a rakefile to install these dotfiles.
 # TODO: Add a clean task for uninstall
 
+require 'fileutils'
+
 # DOTFILES_INSTALL_PATH = '/Users/nhentschel/Downloads/tmp'
 DOTFILES_INSTALL_PATH = ENV['HOME']
 BACKUP_DIR_PATH = File.join(DOTFILES_INSTALL_PATH, "dotfiles_backup_#{Time.now.to_i}")
-DEPENDENCIES = %w(zsh wget tmux vim)
+DEPENDENCIES = %w(git curl)
 IGNORED_FILES = %w(README.md Rakefile osx)
 FILE_LIST = Dir[File.basename(File.join(Dir.pwd, '*'))] - IGNORED_FILES
 
-def info(text)
-  puts(text)
-end
-
-def warning(text)
-  puts("WARNING: \033[33m#{text}\033[0m")
-end
-
 def error(text)
-  puts("ERROR: \033[31m#{text}\033[0m")
+  puts("[ERROR]: \033[31m#{text}\033[0m")
 end
 
-def success(text)
-  puts("SUCCESS: \033[32m#{text}\033[0m")
+def info(text)
+  puts("[INFO]: \033[32m#{text}\033[0m")
 end
 
 def command_exists?(command)
@@ -59,37 +53,53 @@ end
 
 desc 'change shell to zsh'
 task :change_shell_to_zsh do
-  info('Changing shell to zsh, enter password when prompted')
   if File.basename(ENV['SHELL']) != 'zsh'
+    info('Changing shell to zsh, enter password when prompted')
     sh %(chsh -s /usr/local/bin/zsh) do |ok, res|
       if !ok
         abort(error("changing shell failed: #{res.exitstatus}"))
       else
-        success('shell changed to zsh')
+        info('shell changed to zsh')
       end
     end
   else
-    warning('Shell already set to zsh, taking no action')
+    error('Shell already set to zsh, taking no action')
   end
 end
 
 desc 'backup existing dotfiles'
 task :backup_existing_dotfiles do
-  Dir.mkdir(BACKUP_DIR_PATH) # always unique due to timestamp
+  FileUtils.mkdir_p(BACKUP_DIR_PATH) # always unique due to timestamp
   FILE_LIST.each do |file|
     backup_file(file)
   end
-  success("Existing dotfiles backed up to #{BACKUP_DIR_PATH}")
+  info("Existing dotfiles backed up to #{BACKUP_DIR_PATH}")
 end
 
 desc 'install vim-plug'
 task :install_vim_plug do
-  Dir.mkdir(Dir.pwd, '.vim') unless File.exist?(File.join(DOTFILES_INSTALL_PATH, '.vim/autoload/plug.vim'))
-  sh %(curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim) do |ok, res|
-    if !ok
-      abort(error("downloading vim-plug failed: #{res.exitstatus}"))
-    else
-      success('vim-plug installed!')
+  plug_path = File.join(DOTFILES_INSTALL_PATH, '.vim/autoload/plug.vim')
+  unless File.file?(plug_path)
+    sh %(curl -fLo #{plug_path} --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim) do |ok, res|
+      if !ok
+        abort(error("downloading vim-plug failed: #{res.exitstatus}"))
+      else
+        info('vim-plug installed!')
+      end
+    end
+  end
+end
+
+desc 'install zgen'
+task :install_zgen do
+  zgen_path = File.join(DOTFILES_INSTALL_PATH, '.zsh/zgen')
+  unless File.directory?(zgen_path)
+    sh %(git clone https://github.com/tarjoilija/zgen.git "#{zgen_path}") do |ok, res|
+      if !ok
+        abort(error("cloning zgen failed: #{res.exitstatus}"))
+      else
+        info('zgen installed!')
+      end
     end
   end
 end
@@ -99,5 +109,10 @@ task :link_new_dotfiles do
   FILE_LIST.each do |file|
     link_file(file)
   end
-  success("New dotfiles successfully linked to #{DOTFILES_INSTALL_PATH}")
+  info("New dotfiles successfully linked to #{DOTFILES_INSTALL_PATH}")
+end
+
+desc 'install'
+task :install => [:check_dependencies, :backup_existing_dotfiles, :link_new_dotfiles, :install_zgen, :install_vim_plug] do
+  info("All dotfiles installed successfully")
 end
