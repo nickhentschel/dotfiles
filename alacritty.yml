@@ -111,6 +111,64 @@ colors:
     cyan:    '0x54a3ac'
     white:   '0xc4c4c4'
 
+# # Colors: mono
+# colors:
+#   # Default colors
+#   primary:
+#     background: '0x000000'
+#     foreground: '0xaeaeae'
+#
+#   # Normal colors
+#   normal:
+#     black:   '0x000000'
+#     red:     '0x870000'
+#     green:   '0xc4c4c4'
+#     yellow:  '0xb3b3b3'
+#     blue:    '0x999999'
+#     magenta: '0x717171'
+#     cyan:    '0x8a8a8a'
+#     white:   '0xb5cabb'
+#
+#   # Bright colors
+#   bright:
+#     black:   '0x202020'
+#     red:     '0xaf0000'
+#     green:   '0xf8f8f8'
+#     yellow:  '0xeeeeee'
+#     blue:    '0x7c7c7c'
+#     magenta: '0xadadad'
+#     cyan:    '0xc0c0c0'
+#     white:   '0x99ac9e'
+
+# # Colors (Solarized Dark)
+# colors:
+#   # Default colors
+#   primary:
+#     background: '0x002b36'
+#     foreground: '0x839496'
+#
+#   # Normal colors
+#   normal:
+#     black:   '0x073642'
+#     red:     '0xdc322f'
+#     green:   '0x859900'
+#     yellow:  '0xb58900'
+#     blue:    '0x268bd2'
+#     magenta: '0xd33682'
+#     cyan:    '0x2aa198'
+#     white:   '0xeee8d5'
+#
+#   # Bright colors
+#   bright:
+#     black:   '0x002b36'
+#     red:     '0xcb4b16'
+#     green:   '0x586e75'
+#     yellow:  '0x657b83'
+#     blue:    '0x839496'
+#     magenta: '0x6c71c4'
+#     cyan:    '0x93a1a1'
+#     white:   '0xfdf6e3'
+
 # Visual Bell
 #
 # Any time the BEL code is received, Alacritty "rings" the visual bell. Once

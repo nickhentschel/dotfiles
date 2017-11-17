@@ -312,10 +312,11 @@ Plug 'tpope/vim-repeat'
 " colorscheme bundles
 Plug 'djjcast/mirodark'
 Plug 'w0ng/vim-hybrid'
-Plug 'altercation/vim-colors-solarized'
-Plug 'morhetz/gruvbox'
-Plug 'NLKNguyen/papercolor-theme'
-Plug 'jdkanani/vim-material-theme'
+Plug 'romainl/flattened'
+Plug 'andreasvc/vim-256noir'
+Plug 'endel/vim-github-colorscheme'
+Plug 'nanotech/jellybeans.vim'
+Plug 'noahfrederick/vim-noctu'
 
 " syntax and language related bundles
 Plug 'sheerun/vim-polyglot'
@@ -426,7 +427,8 @@ set colorcolumn=80
 "     set termguicolors
 " endif
 
-set t_Co=256
+" Let make vim use terminal colors
+set t_Co=16
 
 " Theme
 syntax enable
