@@ -169,7 +169,36 @@ custom_cursor_colors: false
 #     cyan:    '0x56b6c2'
 #     white:   '0x5c6370'
 
-# Colors (mirodark)
+# # Colors (mirodark official)
+# colors:
+#   # Default colors
+#   primary:
+#     background: '0x121212'
+#     foreground: '0x999999'
+#
+#   # Normal colors
+#   normal:
+#     black:   '0x3d3d3d'
+#     red:     '0x8a2f58'
+#     green:   '0x287373'
+#     yellow:  '0x914e89'
+#     blue:    '0x395573'
+#     magenta: '0x5e468c'
+#     cyan:    '0x2b7694'
+#     white:   '0x899ca1'
+#
+#   # Bright colors
+#   bright:
+#     black:   '0x5e5e5e'
+#     red:     '0xcf4f88'
+#     green:   '0x53a6a6'
+#     yellow:  '0xbf85cc'
+#     blue:    '0x4779b3'
+#     magenta: '0x7f62b3'
+#     cyan:    '0x47959e'
+#     white:   '0xc0c0c0'
+
+# Colors (mirodark modified)
 colors:
   # Default colors
   primary:
@@ -178,25 +207,25 @@ colors:
 
   # Normal colors
   normal:
-    black:   '0x3d3d3d'
-    red:     '0x8a2f58'
-    green:   '0x287373'
-    yellow:  '0x914e89'
-    blue:    '0x395573'
-    magenta: '0x5e468c'
-    cyan:    '0x2b7694'
-    white:   '0x899ca1'
+    black:   '0x2e2e2e'
+    red:     '0xa6416c'
+    green:   '0x3f8684'
+    yellow:  '0xa6599e'
+    blue:    '0x4f678a'
+    magenta: '0x7454a8'
+    cyan:    '0x4385a8'
+    white:   '0x92a6ab'
 
   # Bright colors
   bright:
-    black:   '0x5e5e5e'
-    red:     '0xcf4f88'
-    green:   '0x53a6a6'
-    yellow:  '0xbf85cc'
-    blue:    '0x4779b3'
-    magenta: '0x7f62b3'
-    cyan:    '0x47959e'
-    white:   '0xc0c0c0'
+    black:   '0x6f6f6f'
+    red:     '0xeb5495'
+    green:   '0x5bb2b1'
+    yellow:  '0xcd86de'
+    blue:    '0x5885cb'
+    magenta: '0x906bce'
+    cyan:    '0x54a3ac'
+    white:   '0xc4c4c4'
 
 # Visual Bell
 #
