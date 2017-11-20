@@ -245,7 +245,7 @@ Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-surround'
 
 " Display the indention levels with thin vertical lines
-" Plug 'Yggdroot/indentLine'
+Plug 'Yggdroot/indentLine'
 
 " Easy tag completion for xml-like languages
 " Must sym-link xml.vim in ftplugin directory for completions
@@ -316,7 +316,7 @@ Plug 'andreasvc/vim-256noir'
 Plug 'endel/vim-github-colorscheme'
 Plug 'morhetz/gruvbox'
 Plug 'rakr/vim-one'
-Plug 'jacoborus/tender.vim'
+Plug 'arcticicestudio/nord-vim'
 
 " syntax and language related bundles
 Plug 'sheerun/vim-polyglot'
@@ -330,14 +330,13 @@ call plug#end()
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
 
+" Indentline
+" let g:indentLine_setColors = 0
+" let g:indentLine_color_term = 239
+let g:indentLine_char = '│'
+
 " Polyglot
 let g:polyglot_disabled = ['puppet']
-
-" Theme setting
-let g:mirodark_disable_color_approximation = 1
-
-" Python syntax
-let python_highlight_all = 1
 
 " NERDTree
 nnoremap <leader>t :NERDTreeToggle<CR>
@@ -371,7 +370,7 @@ endif
 " Vim Airline
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
-" let g:airline_theme = 'onedark'
+let g:airline_theme = 'luna'
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#bufferline#overwrite_variables = 0
@@ -419,17 +418,24 @@ set lazyredraw
 " Line at 80 characters
 set colorcolumn=80
 
-if (has("termguicolors"))
-    execute "set t_8f=\e[38;2;%lu;%lu;%lum"
-    execute "set t_8b=\e[48;2;%lu;%lu;%lum"
-    set termguicolors
-else
+" Enable truecolor
+" if (has("termguicolors"))
+"     execute "set t_8f=\e[38;2;%lu;%lu;%lum"
+"     execute "set t_8b=\e[48;2;%lu;%lu;%lum"
+"     highlight Normal ctermbg=NONE
+"     highlight nonText ctermbg=NONE
+"     set termguicolors
+" else
 " Let make vim use terminal colors
-    set t_Co=16
-    let g:onedark_termcolors=16
-endif
+"   set t_Co=16
+"   let g:onedark_termcolors=16
+" endif
+
+set t_Co=16
+let g:onedark_termcolors=16
 
 " Theme
 syntax enable
-colorscheme gruvbox
+let g:mirodark_disable_color_approximation=1
+colorscheme mirodark
 set background=dark
