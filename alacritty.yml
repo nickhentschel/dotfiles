@@ -82,34 +82,92 @@ render_timer: false
 # and cursor.background colors, otherwise invert the colors of the cursor.
 custom_cursor_colors: false
 
-# Colors (mirodark)
+# Colors: (gruvbox)
 colors:
   # Default colors
   primary:
-    background: '0x121212'
-    foreground: '0x999999'
+    background: '0x282828'
+    foreground: '0xebdbb2'
 
   # Normal colors
   normal:
-    black:   '0x2e2e2e'
-    red:     '0xa6416c'
-    green:   '0x3f8684'
-    yellow:  '0xa6599e'
-    blue:    '0x4f678a'
-    magenta: '0x7454a8'
-    cyan:    '0x4385a8'
-    white:   '0x92a6ab'
+    black:   '0x282828'
+    red:     '0xcc241d'
+    green:   '0x98971a'
+    yellow:  '0xd79921'
+    blue:    '0x458588'
+    magenta: '0xb16286'
+    cyan:    '0x689d6a'
+    white:   '0xa89984'
 
   # Bright colors
   bright:
-    black:   '0x6f6f6f'
-    red:     '0xeb5495'
-    green:   '0x5bb2b1'
-    yellow:  '0xcd86de'
-    blue:    '0x5885cb'
-    magenta: '0x906bce'
-    cyan:    '0x54a3ac'
-    white:   '0xc4c4c4'
+    black:   '0x928374'
+    red:     '0xfb4934'
+    green:   '0xb8bb26'
+    yellow:  '0xfabd2f'
+    blue:    '0x83a598'
+    magenta: '0xd3869b'
+    cyan:    '0x8ec07c'
+    white:   '0xebdbb2'
+
+# # Colors: (onedark)
+# colors:
+#   # Default colors
+#   primary:
+#     background: '0x282c34'
+#     foreground: '0xabb2bf'
+# 
+#   # Normal colors
+#   normal:
+#     black:   '0x282c34'
+#     red:     '0xe06c75'
+#     green:   '0x98c379'
+#     yellow:  '0xe5c07b'
+#     blue:    '0x61afef'
+#     magenta: '0xc678dd'
+#     cyan:    '0x56b6c2'
+#     white:   '0xabb2bf'
+# 
+#   # Bright colors
+#   bright:
+#     black:   '0x3e4452'
+#     red:     '0xbe5046'
+#     green:   '0x98c379'
+#     yellow:  '0xd19a66'
+#     blue:    '0x61afef'
+#     magenta: '0xc678dd'
+#     cyan:    '0x56b6c2'
+#     white:   '0x5c6370'
+
+# # Colors (mirodark)
+# colors:
+#   # Default colors
+#   primary:
+#     background: '0x121212'
+#     foreground: '0x999999'
+# 
+#   # Normal colors
+#   normal:
+#     black:   '0x2e2e2e'
+#     red:     '0xa6416c'
+#     green:   '0x3f8684'
+#     yellow:  '0xa6599e'
+#     blue:    '0x4f678a'
+#     magenta: '0x7454a8'
+#     cyan:    '0x4385a8'
+#     white:   '0x92a6ab'
+# 
+#   # Bright colors
+#   bright:
+#     black:   '0x6f6f6f'
+#     red:     '0xeb5495'
+#     green:   '0x5bb2b1'
+#     yellow:  '0xcd86de'
+#     blue:    '0x5885cb'
+#     magenta: '0x906bce'
+#     cyan:    '0x54a3ac'
+#     white:   '0xc4c4c4'
 
 # # Colors: mono
 # colors:

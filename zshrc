@@ -85,6 +85,10 @@ else
   alias grep="grep --color=always"
 fi
 
+if type nvim > /dev/null; then
+  alias vim="nvim"
+fi
+
 if ! [[ "$(hostname -f)" =~ ^.*jump ]]; then
   alias wss="ssh -t jumpc1n2.host.bo1.csnzoo.com \"/wayfair/bin/wss ${1}\""
 fi

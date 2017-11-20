@@ -210,6 +210,10 @@ EXEC 01;31  # Unix
 .org 32
 .md 32
 .mkd 32
+.yml 32
+.yaml 32
+.conf 32
+.json 32
 
 # Source text
 .h 32
@@ -229,6 +233,7 @@ EXEC 01;31  # Unix
 .java 32
 .pl 32
 .pm 32
+.pp 32
 .py 32
 .rb 32
 .hs 32

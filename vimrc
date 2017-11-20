@@ -17,7 +17,6 @@
 " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 set shell=/bin/bash
-set ttymouse=sgr
 
 filetype plugin indent on
 
@@ -246,7 +245,7 @@ Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-surround'
 
 " Display the indention levels with thin vertical lines
-Plug 'Yggdroot/indentLine'
+" Plug 'Yggdroot/indentLine'
 
 " Easy tag completion for xml-like languages
 " Must sym-link xml.vim in ftplugin directory for completions
@@ -315,8 +314,9 @@ Plug 'w0ng/vim-hybrid'
 Plug 'romainl/flattened'
 Plug 'andreasvc/vim-256noir'
 Plug 'endel/vim-github-colorscheme'
-Plug 'nanotech/jellybeans.vim'
-Plug 'noahfrederick/vim-noctu'
+Plug 'morhetz/gruvbox'
+Plug 'rakr/vim-one'
+Plug 'jacoborus/tender.vim'
 
 " syntax and language related bundles
 Plug 'sheerun/vim-polyglot'
@@ -332,10 +332,6 @@ call plug#end()
 
 " Polyglot
 let g:polyglot_disabled = ['puppet']
-
-" Indentline
-let g:indentLine_char = '│'
-let g:indentLine_faster = 1
 
 " Theme setting
 let g:mirodark_disable_color_approximation = 1
@@ -375,7 +371,7 @@ endif
 " Vim Airline
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
-let g:airline_theme = 'luna'
+" let g:airline_theme = 'onedark'
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#bufferline#overwrite_variables = 0
@@ -423,14 +419,17 @@ set lazyredraw
 " Line at 80 characters
 set colorcolumn=80
 
-" if (has("termguicolors"))
-"     set termguicolors
-" endif
-
+if (has("termguicolors"))
+    execute "set t_8f=\e[38;2;%lu;%lu;%lum"
+    execute "set t_8b=\e[48;2;%lu;%lu;%lum"
+    set termguicolors
+else
 " Let make vim use terminal colors
-set t_Co=16
+    set t_Co=16
+    let g:onedark_termcolors=16
+endif
 
 " Theme
 syntax enable
+colorscheme gruvbox
 set background=dark
-colorscheme mirodark
