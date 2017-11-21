@@ -40,7 +40,6 @@ if is_osx; then
 fi
 
 export PATH=$HOME/.local/bin:$PATH
-
 export EDITOR=vim
 export WORKON_HOME=~/envs
 export REPORTTIME=5
@@ -53,7 +52,7 @@ export TERMINFO="${HOME}/.terminfo"
 export HISTSIZE=100000
 export SAVEHIST=100000
 export HISTFILE=~/.zsh_history
-export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
+export HISTIGNORE="ls:cd:cd -:pwd:exit:* --help"
 export LESS_TERMCAP_mb=$'\E[01;31m'      # Begins blinking.
 export LESS_TERMCAP_md=$'\E[01;31m'      # Begins bold.
 export LESS_TERMCAP_me=$'\E[0m'          # Ends mode.
@@ -71,13 +70,11 @@ alias host_search="hammer --output=csv --csv-separator=\" \" host list --search 
 alias http_server="python -m SimpleHTTPServer 8080 &> /dev/null &"
 alias jenkinscli6="/wayfair/pkg/java/latest/bin/java -jar /wayfair/pkg/jenkins/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
 alias jenkinscli="java -jar /wayfair/pkg/jenkins/latest/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
-alias json_print="python -m json.tool"
-alias ll="ls -lchp"
+alias ll="ls -lachp"
 alias ls="ls -ph --color=always"
 alias mounts="cat /proc/mounts | column -t"
 alias venvwrapper="source ~/.local/bin/virtualenvwrapper.sh"
 alias weather="curl -4 http://wttr.in/Boston"
-alias zk_status="echo srvr | nc localhost 2181"
 
 if type rg > /dev/null; then
   alias grep="rg"
@@ -87,10 +84,6 @@ fi
 
 if type nvim > /dev/null; then
   alias vim="nvim"
-fi
-
-if ! [[ "$(hostname -f)" =~ ^.*jump ]]; then
-  alias wss="ssh -t jumpc1n2.host.bo1.csnzoo.com \"/wayfair/bin/wss ${1}\""
 fi
 
 # Use dircolors if available
@@ -140,7 +133,7 @@ setopt automenu
 # General stuff
 setopt brace_ccl                # Allow brace character class list expansion.
 setopt combining_chars          # Combine zero-length punctuation characters (accents)
-                                # with the base character.
+# with the base character.
 setopt rc_quotes                # Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'.
 unsetopt bg_nice                # Don't run all background jobs at a lower priority.
 limit coredumpsize 0

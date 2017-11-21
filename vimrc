@@ -55,7 +55,6 @@ set splitbelow
 set splitright
 
 set incsearch
-
 set number
 
 " Remove insert->normal delay
@@ -370,7 +369,7 @@ endif
 " Vim Airline
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
-let g:airline_theme = 'luna'
+" let g:airline_theme = 'gruvbox'
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#bufferline#overwrite_variables = 0
@@ -431,11 +430,9 @@ set colorcolumn=80
 "   let g:onedark_termcolors=16
 " endif
 
-set t_Co=16
-let g:onedark_termcolors=16
+set t_Co=256
 
 " Theme
 syntax enable
-let g:mirodark_disable_color_approximation=1
-colorscheme mirodark
+colorscheme gruvbox
 set background=dark
