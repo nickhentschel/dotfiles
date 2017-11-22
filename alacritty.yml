@@ -87,7 +87,7 @@ colors:
   # Default colors
   primary:
     background: '0x282828'
-    foreground: '0xa89984'
+    foreground: '0xebdbb2'
 
   # Normal colors
   normal:
