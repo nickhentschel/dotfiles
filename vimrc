@@ -369,7 +369,7 @@ endif
 " Vim Airline
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
-" let g:airline_theme = 'gruvbox'
+let g:airline_theme = 'luna'
 let g:airline_detect_paste=1
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#bufferline#overwrite_variables = 0
@@ -434,5 +434,6 @@ set t_Co=256
 
 " Theme
 syntax enable
-colorscheme gruvbox
+let g:mirodark_disable_color_approximation=1
+colorscheme mirodark
 set background=dark
