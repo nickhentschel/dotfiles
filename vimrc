@@ -17,7 +17,6 @@
 " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 set shell=/bin/bash
-
 filetype plugin indent on
 
 " * * * * * * * * * * * * * * * * * * *
@@ -133,16 +132,11 @@ set sidescroll=1
 set scrolljump=10
 
 " Completion prefs
-" set complete=.,],b,u
-" set completeopt=menuone,preview
 set complete=t,i,.
 set completeopt=longest,menuone,preview
 
 " Don't reset cursor to start of line when moving around
 set nostartofline
-
-" unnamed clipboard
-" set clipboard=unnamed
 
 " map leader to space
 let mapleader=" "
@@ -185,7 +179,7 @@ vnoremap : ;
 " Tab navigation mappings
 nnoremap gt :bnext<CR>
 nnoremap gT :bprevious<CR>
-nnoremap <C-c> :Bdelete<CR>
+nnoremap <C-c> :bdelete<CR>
 
 " Make use of the arrow keys
 nnoremap <left>  h
@@ -193,22 +187,12 @@ nnoremap <right> l
 nnoremap <down>  j
 nnoremap <up>    k
 
-" search for word under cursor with K
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-
 " w!! for writing read-only file
 cmap w!! w !sudo tee % >/dev/null
 
 " Map ctrl+a to ctrl+q to get around tmux bindings
 nnoremap <C-q> <C-a>
 vnoremap <C-q> <C-a>
-
-if has('nvim')
-  " Hack to get C-h working in neovim
-  nmap <BS> <C-W>h
-  tnoremap <Esc> <C-\><C-n>
-  set inccommand=split
-endif
 
 " quickfix not listed in buffer lists
 augroup qf
@@ -233,10 +217,6 @@ augroup END
 " * * * * * * * * * * * * * * * * * * *
 
 call plug#begin('~/.vim/plugged')
-
-" Delete buffers and close files in Vim without closing your windows or messing
-" up your layout
-Plug 'moll/vim-bbye'
 
 Plug 'tomtom/tcomment_vim'
 
@@ -269,11 +249,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
 
 " Syntax checking hacks for vim
-" Plug 'scrooloose/syntastic'
 Plug 'w0rp/ale'
-
-" speeddating.vim: use CTRL-A/CTRL-X to increment dates, times, and more
-Plug 'tpope/vim-speeddating'
 
 " pairs of handy bracket mappings
 Plug 'tpope/vim-unimpaired'
@@ -293,29 +269,13 @@ Plug 'christoomey/vim-tmux-navigator'
 " incremental serach improvements
 Plug 'haya14busa/incsearch.vim'
 
-" Better search -- start searches, manipulate your queries, convert search to grep, and optimize your grep
-Plug 'idbrii/vim-searchsavvy'
-
 " Vim script for text filtering and alignment
 Plug 'godlygeek/tabular'
-
-if has('git')
-    " Show git changes in the gutter
-    Plug 'airblade/vim-gitgutter'
-endif
-
-Plug 'tpope/vim-repeat'
-" Plug 'svermeulen/vim-easyclip'
 
 " colorscheme bundles
 Plug 'djjcast/mirodark'
 Plug 'w0ng/vim-hybrid'
-Plug 'romainl/flattened'
 Plug 'andreasvc/vim-256noir'
-Plug 'endel/vim-github-colorscheme'
-Plug 'morhetz/gruvbox'
-Plug 'rakr/vim-one'
-Plug 'arcticicestudio/nord-vim'
 
 " syntax and language related bundles
 Plug 'sheerun/vim-polyglot'
@@ -330,8 +290,6 @@ call plug#end()
 " * * * * * * * * * * * * * * * * * * *
 
 " Indentline
-" let g:indentLine_setColors = 0
-" let g:indentLine_color_term = 239
 let g:indentLine_char = '│'
 
 " Polyglot
@@ -395,9 +353,6 @@ vnoremap <Leader>> :Tabularize /=><CR>
 set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶,nbsp:×
 set list
 
-" Cursor shows matching ) and }
-highlight MatchParen ctermbg=4
-
 " fixes airline on vim
 set laststatus=2
 set synmaxcol=300
@@ -405,34 +360,11 @@ set synmaxcol=300
 " disable sound on errors
 set noeb vb t_vb=
 
-if has("gui_running")
-    set guioptions-=r
-    set guioptions-=L
-endif
-
-set nocompatible
-set ttyfast
-set lazyredraw
-
 " Line at 80 characters
 set colorcolumn=80
 
-" Enable truecolor
-" if (has("termguicolors"))
-"     execute "set t_8f=\e[38;2;%lu;%lu;%lum"
-"     execute "set t_8b=\e[48;2;%lu;%lu;%lum"
-"     highlight Normal ctermbg=NONE
-"     highlight nonText ctermbg=NONE
-"     set termguicolors
-" else
-" Let make vim use terminal colors
-"   set t_Co=16
-"   let g:onedark_termcolors=16
-" endif
-
-set t_Co=256
-
 " Theme
+set t_Co=256
 syntax enable
 let g:mirodark_disable_color_approximation=1
 colorscheme mirodark
