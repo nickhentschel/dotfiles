@@ -39,6 +39,9 @@ if is_osx; then
   export PATH=$HOME/.rbenv/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/sbin:$HOME/go/bin:$PATH
 fi
 
+export WORDCHARS=''
+export CASE_SENSITIVE="true"
+export ZSH_CACHE_DIR=$HOME/.zsh
 export PATH=$HOME/.local/bin:$PATH
 export EDITOR=vim
 export WORKON_HOME=~/envs
@@ -65,6 +68,7 @@ export LESS_TERMCAP_us=$'\E[01;32m'      # Begins underline.
 alias c="clear"
 alias d="dirs -v"
 alias egrep="egrep --color=always"
+alias grep="grep --color=always"
 alias fab="/wayfair/app/fabric/bin/fab"
 alias host_search="hammer --output=csv --csv-separator=\" \" host list --search ${1}"
 alias http_server="python -m SimpleHTTPServer 8080 &> /dev/null &"
@@ -76,19 +80,22 @@ alias mounts="cat /proc/mounts | column -t"
 alias venvwrapper="source ~/.local/bin/virtualenvwrapper.sh"
 alias weather="curl -4 http://wttr.in/Boston"
 
-if type rg > /dev/null; then
+if type rg > /dev/null 2>&1; then
   alias grep="rg"
-else
-  alias grep="grep --color=always"
 fi
 
-if type nvim > /dev/null; then
+if type nvim > /dev/null 2>&1; then
   alias vim="nvim"
 fi
 
 # Use dircolors if available
 test -e ~/.dircolors && \
   eval "$(dircolors -b ~/.dircolors)"
+
+# Add kubectl completions
+if type kubectl > /dev/null 2>&1; then
+  source <(kubectl completion zsh)
+fi
 
 # warning if file exists ('cat /dev/null > ~/.zshrc')
 setopt NO_clobber
@@ -100,23 +107,9 @@ unsetopt hist_beep
 ######## HISTORY AND COMPLETION SETTINGS ########
 
 autoload -Uz compinit && compinit -D -u
+autoload -Uz colors && colors
 
-# append history list to the history file; this is the default but we make sure
-# because it's required for share_history.
-setopt append_history
-
-# import new commands from the history file also in other zsh-session
-setopt share_history
-
-# save each command's beginning timestamp and the duration to the history file
-setopt extended_history
-
-# If a new command line being added to the history list duplicates an older
-# one, the older command is removed from the list
-setopt histignorealldups
-
-# remove command lines from the history list when the first character on the
-# line is a space
+setopt append_history share_history histignorealldups
 setopt histignorespace
 
 # set some more options
@@ -133,52 +126,60 @@ setopt automenu
 # General stuff
 setopt brace_ccl                # Allow brace character class list expansion.
 setopt combining_chars          # Combine zero-length punctuation characters (accents)
-# with the base character.
 setopt rc_quotes                # Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'.
 unsetopt bg_nice                # Don't run all background jobs at a lower priority.
 limit coredumpsize 0
 
-# Completion options
-setopt complete_in_word    # Complete from both ends of a word.
-setopt always_to_end       # Move cursor to the end of a completed word.
-setopt path_dirs           # Perform path search even on command names with slashes.
-setopt auto_menu           # Show completion menu on a succesive tab press.
-setopt auto_list           # Automatically list choices on ambiguous completion.
-setopt auto_param_slash    # If completed parameter is a directory, add a trailing slash.
-unsetopt menu_complete     # Do not autoselect the first completion entry.
+unsetopt menu_complete   # do not autoselect the first completion entry
+unsetopt flowcontrol
+setopt auto_menu         # show completion menu on successive tab press
+setopt complete_in_word
+setopt always_to_end
 
-# Completion configuration
-zstyle ':completion:*' accept-exact '*(N)'
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path "${ZDOTDIR:-$HOME}.zsh/cache"
-zstyle ':completion:*' rehash true
-zstyle ':completion:*' completer _complete _prefix _correct _prefix _match _approximate
-zstyle ':completion:*' expand 'yes'
-zstyle ':completion:*' squeeze-shlashes 'yes'
+# should this be in keybindings?
+bindkey -M menuselect '^o' accept-and-infer-next-history
 zstyle ':completion:*' menu select
-zstyle ':completion:*' users $users
 zstyle ':completion:*' verbose yes
-zstyle ':completion:*' auto-description 'specify: %d'
+zstyle ':completion:*:messages' format '%d'
+zstyle ':completion:*:warnings' format "$fg[red]No matches for:$reset_color %d"
+zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-zstyle ':completion:*' special-dirs true
-zstyle ':completion:*' warnings '%F{red}No matches for: %d%f'
-zstyle ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
-zstyle ':completion:*:default' list-prompt '%S%M matches%s'
-zstyle ':completion:*:descriptions' format $'\e[00;34m%d'
-zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
-zstyle ':completion:*:kill:*' menu yes select
-zstyle ':completion:*:kill:*' force-list always
-zstyle ':completion:*:killall:*' menu yes select
-zstyle ':completion:*:killall:*' force-list always
-zstyle ':completion:*:match:*' original only
-zstyle ':completion:*:manuals' separate-sections true
-zstyle ':completion:*:messages' format $'\e[00;31m%d'
-zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
-zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
-# zstyle ':completion::prefix-1:*' completer _complete
-# zstyle ':completion:predict:*' completer _complete
-# zstyle ':completion:incremental:*' completer _complete _correct
+
+# case insensitive (all), partial-word and substring completion
+if [[ "$CASE_SENSITIVE" = true ]]; then
+  zstyle ':completion:*' matcher-list 'r:|=*' 'l:|=* r:|=*'
+else
+  if [[ "$HYPHEN_INSENSITIVE" = true ]]; then
+    zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
+  else
+    zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+  fi
+fi
+
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
+
+# disable named-directories autocompletion
+zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
+
+# Use caching so that commands like apt and dpkg complete are useable
+zstyle ':completion::complete:*' use-cache 1
+zstyle ':completion::complete:*' cache-path $ZSH_CACHE_DIR
+
+# Don't complete uninteresting users
+zstyle ':completion:*:*:*:users' ignored-patterns \
+        adm amanda apache at avahi avahi-autoipd beaglidx bin cacti canna \
+        clamav daemon dbus distcache dnsmasq dovecot fax ftp games gdm \
+        gkrellmd gopher hacluster haldaemon halt hsqldb ident junkbust kdm \
+        ldap lp mail mailman mailnull man messagebus  mldonkey mysql nagios \
+        named netdump news nfsnobody nobody nscd ntp nut nx obsrun openvpn \
+        operator pcap polkitd postfix postgres privoxy pulse pvm quagga radvd \
+        rpc rpcuser rpm rtkit scard shutdown squid sshd statd svn sync tftp \
+        usbmux uucp vcsa wwwrun xfs '_*'
+
+# ... unless we really want to.
+zstyle '*' single-ignored show
 
 ######## ZGEN ########
 
@@ -219,10 +220,6 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=239"
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="40"
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=("backward-char")
 ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=my-autosuggest-accept
-
-if hash kubectl 2> /dev/null; then
-  source <(kubectl completion zsh)
-fi
 
 bindkey -v
 autoload -Uz edit-command-line

@@ -135,6 +135,12 @@ set scrolljump=10
 set complete=t,i,.
 set completeopt=longest,menuone,preview
 
+" netrw
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+
 " Don't reset cursor to start of line when moving around
 set nostartofline
 
@@ -194,6 +200,9 @@ cmap w!! w !sudo tee % >/dev/null
 nnoremap <C-q> <C-a>
 vnoremap <C-q> <C-a>
 
+" netrw
+nnoremap <leader>t :Vexplore<CR>
+
 " quickfix not listed in buffer lists
 augroup qf
     autocmd!
@@ -242,9 +251,6 @@ Plug 'vim-airline/vim-airline-themes'
 " wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
 Plug 'tpope/vim-endwise', { 'for': ['eruby', 'ruby'] }
 
-" Tree-like sidebar file manager for vim
-Plug 'scrooloose/nerdtree'
-
 " vim git wrapper
 Plug 'tpope/vim-fugitive'
 
@@ -266,15 +272,11 @@ Plug 'junegunn/goyo.vim'
 " Vim + tmux navigation
 Plug 'christoomey/vim-tmux-navigator'
 
-" incremental serach improvements
-Plug 'haya14busa/incsearch.vim'
-
 " Vim script for text filtering and alignment
 Plug 'godlygeek/tabular'
 
 " colorscheme bundles
 Plug 'djjcast/mirodark'
-Plug 'w0ng/vim-hybrid'
 Plug 'andreasvc/vim-256noir'
 
 " syntax and language related bundles
@@ -294,11 +296,6 @@ let g:indentLine_char = '│'
 
 " Polyglot
 let g:polyglot_disabled = ['puppet']
-
-" NERDTree
-nnoremap <leader>t :NERDTreeToggle<CR>
-let NERDTreeShowHidden = 1
-let g:NERDTreeMinimalUI = 1
 
 " FZF
 let g:fzf_buffers_jump = 1
@@ -327,15 +324,13 @@ endif
 " Vim Airline
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
-let g:airline_theme = 'luna'
-let g:airline_detect_paste=1
+let g:airline_theme = 'minimalist'
+let g:airline_detect_paste = 1
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#bufferline#overwrite_variables = 0
 let g:airline#extensions#bufferline#enabled = 0
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#branch#empty_message = ''
-let g:airline#extensions#ctrlp#enabled = 1
-let g:airline#extensions#ctrlp#show_adjacent_modes = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 
