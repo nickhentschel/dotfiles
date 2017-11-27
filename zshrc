@@ -42,7 +42,7 @@ fi
 export WORDCHARS=''
 export CASE_SENSITIVE="true"
 export ZSH_CACHE_DIR=$HOME/.zsh
-export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.fzf/bin:$HOME/.local/bin:$PATH
 export EDITOR=vim
 export WORKON_HOME=~/envs
 export REPORTTIME=5
@@ -107,43 +107,36 @@ unsetopt hist_beep
 ######## HISTORY AND COMPLETION SETTINGS ########
 
 autoload -Uz compinit && compinit -D -u
+zmodload -i zsh/complist
 autoload -Uz colors && colors
 
+limit coredumpsize 0
+setopt always_to_end
 setopt append_history share_history histignorealldups
-setopt histignorespace
-
-# set some more options
 setopt auto_pushd               # Push the old directory onto the stack on cd.
-setopt pushd_ignore_dups        # Do not store duplicates in the stack
-setopt hash_list_all            # hash everything before completion
-setopt completealiases          # complete alisases
-setopt always_to_end            # when completing from the middle of a word, move the cursor to the end of the word
-setopt complete_in_word         # allow completion from within a word/phrase
-setopt extended_glob            # Use extended globbing syntax.
+setopt auto_resume        # Attempt to resume existing job before creating a new process.
 setopt autocd                   # Auto changes to a directory without typing cd
+setopt autolist
 setopt automenu
-
-# General stuff
 setopt brace_ccl                # Allow brace character class list expansion.
 setopt combining_chars          # Combine zero-length punctuation characters (accents)
-setopt rc_quotes                # Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'.
-unsetopt bg_nice                # Don't run all background jobs at a lower priority.
-limit coredumpsize 0
-
-unsetopt menu_complete   # do not autoselect the first completion entry
-unsetopt flowcontrol
-setopt auto_menu         # show completion menu on successive tab press
 setopt complete_in_word
-setopt always_to_end
+setopt completealiases          # complete alisases
+setopt extended_glob            # Use extended globbing syntax.
+setopt hash_list_all            # hash everything before completion
+setopt histignorespace
+setopt listpacked
+setopt long_list_jobs     # List jobs in the long format by default.
+setopt markdirs
+setopt menucomplete
+setopt notify             # Report status of background jobs immediately.
+setopt pushd_ignore_dups        # Do not store duplicates in the stack
+setopt rc_quotes                # Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'.
+unsetopt bg_nice          # Don't run all background jobs at a lower priority.
 
-# should this be in keybindings?
-bindkey -M menuselect '^o' accept-and-infer-next-history
-zstyle ':completion:*' menu select
-zstyle ':completion:*' verbose yes
-zstyle ':completion:*:messages' format '%d'
-zstyle ':completion:*:warnings' format "$fg[red]No matches for:$reset_color %d"
-zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
-zstyle ':completion:*' group-name ''
+# Use caching so that commands like apt and dpkg complete are useable
+zstyle ':completion::complete:*' use-cache 1
+zstyle ':completion::complete:*' cache-path $ZSH_CACHE_DIR
 
 # case insensitive (all), partial-word and substring completion
 if [[ "$CASE_SENSITIVE" = true ]]; then
@@ -156,16 +149,25 @@ else
   fi
 fi
 
-zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' use-compctl false
+zstyle ':completion:*' rehash true
+zstyle ':completion:*:descriptions' format "- %d -"
+zstyle ':completion:*:corrections' format "- %d - (errors %e})"
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:manuals' separate-sections true
+zstyle ':completion:*:manuals.(^1*)' insert-sections true
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
 zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
+zstyle ':completion:*' list-colors $(dircolors)            # Use colors in the menu selection
+zstyle ':completion:*' glob 'yes'                # Expand globs when tab-completing
+zstyle ':completion:*:functions' ignored-patterns '_*'        # Ignore completion functions for unavailable commands
+zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~' # Don't complete backup files as executables
+zstyle ':completion:*' ignore-parents parent pwd        # Don't let ../<tab> match $PWD
+zstyle ':completion::*:(rm|vi|kill|diff):*' ignore-line true        # Don't match the same filenames multiple times
 
 # disable named-directories autocompletion
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
-
-# Use caching so that commands like apt and dpkg complete are useable
-zstyle ':completion::complete:*' use-cache 1
-zstyle ':completion::complete:*' cache-path $ZSH_CACHE_DIR
 
 # Don't complete uninteresting users
 zstyle ':completion:*:*:*:users' ignored-patterns \
@@ -180,6 +182,9 @@ zstyle ':completion:*:*:*:users' ignored-patterns \
 
 # ... unless we really want to.
 zstyle '*' single-ignored show
+zstyle ':completion:*' menu select
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' list-colors $(dircolors)
 
 ######## ZGEN ########
 
@@ -242,6 +247,7 @@ if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
 fi
 
 zmodload zsh/terminfo
+bindkey -M menuselect '^[[Z' reverse-menu-complete
 bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
 bindkey '^[[A' history-substring-search-up
@@ -255,3 +261,6 @@ bindkey '\x00' my-autosuggest-accept
 bindkey -M vicmd 'u' undo
 bindkey -M vicmd '~' vi-swap-case
 bindkey '^u' vi-change-whole-line
+
+source ~/.fzf/shell/completion.zsh
+source ~/.fzf/shell/key-bindings.zsh
