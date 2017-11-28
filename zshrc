@@ -27,6 +27,45 @@ gendiff() {
     echo 'Not in git directory'
   fi;
 }
+#
+######## ZPLUGIN ########
+
+source "${HOME}/.zplugin/bin/zplugin.zsh"
+
+# theme
+zplugin light 'nickhentschel/simplicity-prompt'
+
+# plugins
+zplugin snippet OMZ::plugins/kubectl/kubectl.plugin.zsh
+zplugin light 'greymd/docker-zsh-completion'
+zplugin light 'zsh-users/zsh-completions'
+zplugin light 'zsh-users/zsh-autosuggestions'
+zplugin light 'zsh-users/zsh-syntax-highlighting'
+zplugin light 'zsh-users/zsh-history-substring-search'
+
+######## PLUGIN SETTINGS ########
+
+my-autosuggest-accept() {
+  zle autosuggest-accept
+  zle redisplay
+  zle redisplay
+}
+
+# Setup syntax highlighting
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets line)
+ZSH_HIGHLIGHT_STYLES[path]=none
+
+# Autosuggestions settings
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=239"
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="40"
+ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=("backward-char")
+ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=my-autosuggest-accept
+
+bindkey -v
+autoload -Uz edit-command-line
+zle -N edit-command-line
+zle -N my-autosuggest-accept
+
 
 ######## EXPORTS AND OTHER SETTINGS #######
 stty -ixon
@@ -92,11 +131,6 @@ fi
 test -e ~/.dircolors && \
   eval "$(dircolors -b ~/.dircolors)"
 
-# Add kubectl completions
-if type kubectl > /dev/null 2>&1; then
-  source <(kubectl completion zsh)
-fi
-
 # warning if file exists ('cat /dev/null > ~/.zshrc')
 setopt NO_clobber
 
@@ -109,6 +143,8 @@ unsetopt hist_beep
 autoload -Uz compinit && compinit -D -u
 zmodload -i zsh/complist
 autoload -Uz colors && colors
+
+zplugin cdreplay -q # -q is for quiet
 
 limit coredumpsize 0
 setopt always_to_end
@@ -149,6 +185,8 @@ else
   fi
 fi
 
+zstyle ':completion:*' menu select
+zstyle ':completion:*' verbose yes
 zstyle ':completion:*' use-compctl false
 zstyle ':completion:*' rehash true
 zstyle ':completion:*:descriptions' format "- %d -"
@@ -182,54 +220,6 @@ zstyle ':completion:*:*:*:users' ignored-patterns \
 
 # ... unless we really want to.
 zstyle '*' single-ignored show
-zstyle ':completion:*' menu select
-zstyle ':completion:*' verbose yes
-zstyle ':completion:*' list-colors $(dircolors)
-
-######## ZGEN ########
-
-ZGEN_DIR=~/.zsh/plugins
-source ~/.zsh/zgen/zgen.zsh
-
-# Check if there's no init script.
-if ! zgen saved; then
-  printf 'Creating a zgen save'
-
-  # theme
-  zgen load nickhentschel/simplicity-prompt simplicity
-
-  # plugins
-  zgen load zsh-users/zsh-completions
-  zgen load zsh-users/zsh-autosuggestions
-  zgen load zsh-users/zsh-syntax-highlighting
-  zgen load zsh-users/zsh-history-substring-search
-
-  # save all to init script
-  zgen save
-fi
-
-######## PLUGIN SETTINGS ########
-
-my-autosuggest-accept() {
-  zle autosuggest-accept
-  zle redisplay
-  zle redisplay
-}
-
-# Setup syntax highlighting
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets line)
-ZSH_HIGHLIGHT_STYLES[path]=none
-
-# Autosuggestions settings
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=239"
-ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="40"
-ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=("backward-char")
-ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=my-autosuggest-accept
-
-bindkey -v
-autoload -Uz edit-command-line
-zle -N edit-command-line
-zle -N my-autosuggest-accept
 
 ######## KEY BINDINGS ########
 
@@ -261,6 +251,3 @@ bindkey '\x00' my-autosuggest-accept
 bindkey -M vicmd 'u' undo
 bindkey -M vicmd '~' vi-swap-case
 bindkey '^u' vi-change-whole-line
-
-source ~/.fzf/shell/completion.zsh
-source ~/.fzf/shell/key-bindings.zsh

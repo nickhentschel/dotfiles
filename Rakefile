@@ -90,15 +90,15 @@ task :install_vim_plug do
   end
 end
 
-desc 'install zgen'
-task :install_zgen do
-  zgen_path = File.join(DOTFILES_INSTALL_PATH, '.zsh/zgen')
-  unless File.directory?(zgen_path)
-    sh %(git clone https://github.com/tarjoilija/zgen.git "#{zgen_path}") do |ok, res|
+desc 'install zplugin'
+task :install_zplugin do
+  zplugin_path = File.join(DOTFILES_INSTALL_PATH, '.zplugin', 'bin')
+  unless File.directory?(zplugin_path)
+    sh %(git clone https://github.com/zdharma/zplugin.git "#{zplugin_path}") do |ok, res|
       if !ok
-        abort(error("cloning zgen failed: #{res.exitstatus}"))
+        abort(error("cloning zplugin failed: #{res.exitstatus}"))
       else
-        info('zgen installed!')
+        info('zplugin installed!')
       end
     end
   end
@@ -113,6 +113,6 @@ task :link_new_dotfiles do
 end
 
 desc 'install'
-task :install => [:check_dependencies, :backup_existing_dotfiles, :link_new_dotfiles, :install_zgen, :install_vim_plug] do
+task :install => [:check_dependencies, :backup_existing_dotfiles, :link_new_dotfiles, :install_zplugin, :install_vim_plug] do
   info("All dotfiles installed successfully")
 end
