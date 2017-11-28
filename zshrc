@@ -40,7 +40,7 @@ zplugin snippet OMZ::plugins/kubectl/kubectl.plugin.zsh
 zplugin light 'greymd/docker-zsh-completion'
 zplugin light 'zsh-users/zsh-completions'
 zplugin light 'zsh-users/zsh-autosuggestions'
-zplugin light 'zsh-users/zsh-syntax-highlighting'
+zplugin light 'zdharma/fast-syntax-highlighting'
 zplugin light 'zsh-users/zsh-history-substring-search'
 
 ######## PLUGIN SETTINGS ########
@@ -53,7 +53,7 @@ my-autosuggest-accept() {
 
 # Setup syntax highlighting
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets line)
-ZSH_HIGHLIGHT_STYLES[path]=none
+FAST_HIGHLIGHT_STYLES[variable]='fg=222'
 
 # Autosuggestions settings
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=239"
@@ -142,7 +142,6 @@ unsetopt hist_beep
 
 autoload -Uz compinit && compinit -D -u
 zmodload -i zsh/complist
-autoload -Uz colors && colors
 
 zplugin cdreplay -q # -q is for quiet
 
@@ -242,7 +241,6 @@ bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
-bindkey '\e[3~' delete-char
 bindkey '^R' history-incremental-search-backward
 bindkey '^F' history-incremental-search-forward
 bindkey '\x00' my-autosuggest-accept
