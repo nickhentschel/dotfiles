@@ -38,6 +38,7 @@ zplugin light 'nickhentschel/simplicity-prompt'
 # plugins
 zplugin snippet OMZ::plugins/kubectl/kubectl.plugin.zsh
 zplugin light 'greymd/docker-zsh-completion'
+zplugin light 'psprint/history-search-multi-word'
 zplugin light 'zsh-users/zsh-completions'
 zplugin light 'zsh-users/zsh-autosuggestions'
 zplugin light 'zdharma/fast-syntax-highlighting'
@@ -57,15 +58,18 @@ FAST_HIGHLIGHT_STYLES[variable]='fg=222'
 
 # Autosuggestions settings
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=239"
-ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="40"
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=("backward-char")
 ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=my-autosuggest-accept
+
+# History search settings
+zstyle ":history-search-multi-word" page-size "10"
+zstyle ":history-search-multi-word" highlight-color "fg=yellow,bold"
+zstyle ":plugin:history-search-multi-word" active "standout"
 
 bindkey -v
 autoload -Uz edit-command-line
 zle -N edit-command-line
 zle -N my-autosuggest-accept
-
 
 ######## EXPORTS AND OTHER SETTINGS #######
 stty -ixon
@@ -241,8 +245,6 @@ bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
-bindkey '^R' history-incremental-search-backward
-bindkey '^F' history-incremental-search-forward
 bindkey '\x00' my-autosuggest-accept
 
 # vi style incremental search
