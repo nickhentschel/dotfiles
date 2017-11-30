@@ -246,6 +246,7 @@ bindkey "$terminfo[kcud1]" history-substring-search-down
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 bindkey '\x00' my-autosuggest-accept
+bindkey "^R" history-search-multi-word
 
 # vi style incremental search
 bindkey -M vicmd 'u' undo
