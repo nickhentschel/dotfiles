@@ -150,13 +150,15 @@ zmodload -i zsh/complist
 zplugin cdreplay -q # -q is for quiet
 
 limit coredumpsize 0
+unsetopt menu_complete
+unsetopt flowcontrol
+setopt auto_menu
+setopt auto_list
 setopt always_to_end
 setopt append_history share_history histignorealldups
 setopt auto_pushd               # Push the old directory onto the stack on cd.
 setopt auto_resume        # Attempt to resume existing job before creating a new process.
 setopt autocd                   # Auto changes to a directory without typing cd
-setopt autolist
-setopt automenu
 setopt brace_ccl                # Allow brace character class list expansion.
 setopt combining_chars          # Combine zero-length punctuation characters (accents)
 setopt complete_in_word
@@ -167,7 +169,6 @@ setopt histignorespace
 setopt listpacked
 setopt long_list_jobs     # List jobs in the long format by default.
 setopt markdirs
-setopt menucomplete
 setopt notify             # Report status of background jobs immediately.
 setopt pushd_ignore_dups        # Do not store duplicates in the stack
 setopt rc_quotes                # Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'.
