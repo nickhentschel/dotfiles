@@ -17,6 +17,7 @@
 " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 set shell=/bin/bash
+filetype off
 filetype plugin indent on
 
 " * * * * * * * * * * * * * * * * * * *
@@ -44,10 +45,11 @@ command! ProseOff call ProseOff()
 " * VIM SETTINGS                      *
 " * * * * * * * * * * * * * * * * * * *
 
+" autowrite on build
+set autowrite
+
 " Where to look for tag files
 set tags=./tags;,~/.vimtags
-
-set omnifunc=syntaxcomplete#Complete
 
 " More natural splitting
 set splitbelow
@@ -132,8 +134,8 @@ set sidescroll=1
 set scrolljump=10
 
 " Completion prefs
-set complete=t,i,.
-set completeopt=longest,menuone,preview
+set completeopt+=noinsert
+set completeopt+=noselect
 
 " netrw
 let g:netrw_banner = 0
@@ -221,6 +223,31 @@ augroup autocommand_mappings
     au FileType help nnoremap <silent><buffer> q :q<CR>
 augroup END
 
+augroup go
+  autocmd!
+
+  " Show by default 4 spaces for a tab
+  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+
+  " :GoBuild and :GoTestCompile
+  autocmd FileType go nmap <leader>b <Plug>(go-build)
+
+  " :GoRun
+  autocmd FileType go nmap <leader>r  <Plug>(go-run)
+
+  " :GoInfo
+  autocmd FileType go nmap <Leader>i <Plug>(go-info)
+
+  " :GoMetaLinter
+  autocmd FileType go nmap <Leader>l <Plug>(go-metalinter)
+
+  " :GoAlternate  commands :A, :AV, :AS and :AT
+  autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+  autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+  autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+  autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+augroup END
+
 " * * * * * * * * * * * * * * * * * * *
 " * BUNDLES AND SUCH                  *
 " * * * * * * * * * * * * * * * * * * *
@@ -285,11 +312,53 @@ Plug 'clones/vim-zsh', { 'for': ['zsh'] }
 Plug 'rodjek/vim-puppet', { 'for': ['puppet'] }
 Plug 'sclo/haproxy.vim', { 'for': ['haproxy'] }
 
+if has('nvim')
+    let g:python3_host_prog = '/usr/local/bin/python3'
+    let g:python3_host_skip_check = 1
+
+    Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'zchee/deoplete-go', { 'do': 'make'}
+    " Plug 'SirVer/ultisnips'
+endif
+
 call plug#end()
 
 " * * * * * * * * * * * * * * * * * * *
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
+
+" Go
+let g:go_fmt_command = "goimports"
+let g:go_autodetect_gopath = 1
+let g:go_list_type = "quickfix"
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_generate_tags = 1
+
+" deoplete
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#disable_auto_complete = 1
+let g:deoplete#sources#go#gocode_binary = '/Users/nhentschel/go/bin/gocode'
+let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+
+inoremap <silent><expr> <TAB>
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ deoplete#mappings#manual_complete()
+
+inoremap <silent><expr> <S-TAB>
+    \ pumvisible() ? "\<C-p>" :
+    \ <SID>check_back_space() ? "\<S-TAB>" :
+    \ deoplete#mappings#manual_complete()
+
+function! s:check_back_space() abort "{{{
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction"}}}
 
 " Indentline
 let g:indentLine_char = '│'

@@ -85,7 +85,8 @@ fi
 export WORDCHARS=''
 export CASE_SENSITIVE="true"
 export ZSH_CACHE_DIR=$HOME/.zsh
-export PATH=$HOME/.fzf/bin:$HOME/.local/bin:$PATH
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:$HOME/.fzf/bin:$HOME/.local/bin:$PATH
 export EDITOR=vim
 export WORKON_HOME=~/envs
 export REPORTTIME=5
