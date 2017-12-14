@@ -90,6 +90,7 @@ set spl=en spell
 set nospell
 
 " Cool tab completion stuff
+set completeopt-=preview
 set wildmode=list:longest,full
 set wildmenu
 
@@ -132,10 +133,6 @@ set scrolloff=8
 set sidescrolloff=15
 set sidescroll=1
 set scrolljump=10
-
-" Completion prefs
-set completeopt+=noinsert
-set completeopt+=noselect
 
 " netrw
 let g:netrw_banner = 0
@@ -203,7 +200,7 @@ nnoremap <C-q> <C-a>
 vnoremap <C-q> <C-a>
 
 " netrw
-nnoremap <leader>t :Vexplore<CR>
+" nnoremap <leader>t :Vexplore<CR>
 
 " quickfix not listed in buffer lists
 augroup qf
@@ -341,7 +338,7 @@ let g:go_highlight_generate_tags = 1
 
 " deoplete
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#disable_auto_complete = 1
+let g:deoplete#disable_auto_complete = 0
 let g:deoplete#sources#go#gocode_binary = '/Users/nhentschel/go/bin/gocode'
 let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 
