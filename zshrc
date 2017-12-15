@@ -55,32 +55,32 @@ my-autosuggest-accept() {
 # Setup syntax highlighting
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets line)
 FAST_HIGHLIGHT_STYLES[variable]='fg=39'
-FAST_HIGHLIGHT_STYLES[default]='fg=39'
-FAST_HIGHLIGHT_STYLES[unknown-token]='fg=160'
-FAST_HIGHLIGHT_STYLES[reserved-word]='fg=27'
-FAST_HIGHLIGHT_STYLES[alias]='fg=27'
-FAST_HIGHLIGHT_STYLES[suffix-alias]='fg=27'
-FAST_HIGHLIGHT_STYLES[builtin]='fg=27'
-FAST_HIGHLIGHT_STYLES[function]='fg=27'
-FAST_HIGHLIGHT_STYLES[command]='fg=27'
-FAST_HIGHLIGHT_STYLES[precommand]='fg=27'
-FAST_HIGHLIGHT_STYLES[commandseparator]='fg=28'
-FAST_HIGHLIGHT_STYLES[hashed-command]='fg=27'
-FAST_HIGHLIGHT_STYLES[path]='fg=39,underline'
-# FAST_HIGHLIGHT_STYLES[path_pathseparator]=
-FAST_HIGHLIGHT_STYLES[globbing]='fg=39'
-# FAST_HIGHLIGHT_STYLES[history-expansion]=fg=blue,bold
-FAST_HIGHLIGHT_STYLES[single-hyphen-option]='fg=39'
-FAST_HIGHLIGHT_STYLES[double-hyphen-option]='fg=39'
-# FAST_HIGHLIGHT_STYLES[back-quoted-argument]=none
-FAST_HIGHLIGHT_STYLES[single-quoted-argument]='fg=178'
-FAST_HIGHLIGHT_STYLES[double-quoted-argument]='fg=178'
-FAST_HIGHLIGHT_STYLES[dollar-quoted-argument]='fg=178'
-FAST_HIGHLIGHT_STYLES[back-or-dollar-double-quoted-argument]='fg=39'
-FAST_HIGHLIGHT_STYLES[back-dollar-quoted-argument]='fg=39'
-FAST_HIGHLIGHT_STYLES[assign]=none
-FAST_HIGHLIGHT_STYLES[redirection]='fg=28'
-FAST_HIGHLIGHT_STYLES[comment]=fg=black,bold
+# FAST_HIGHLIGHT_STYLES[default]='fg=39'
+# FAST_HIGHLIGHT_STYLES[unknown-token]='fg=160'
+# FAST_HIGHLIGHT_STYLES[reserved-word]='fg=27'
+# FAST_HIGHLIGHT_STYLES[alias]='fg=27'
+# FAST_HIGHLIGHT_STYLES[suffix-alias]='fg=27'
+# FAST_HIGHLIGHT_STYLES[builtin]='fg=27'
+# FAST_HIGHLIGHT_STYLES[function]='fg=27'
+# FAST_HIGHLIGHT_STYLES[command]='fg=27'
+# FAST_HIGHLIGHT_STYLES[precommand]='fg=27'
+# FAST_HIGHLIGHT_STYLES[commandseparator]='fg=28'
+# FAST_HIGHLIGHT_STYLES[hashed-command]='fg=27'
+# FAST_HIGHLIGHT_STYLES[path]='fg=39,underline'
+# # FAST_HIGHLIGHT_STYLES[path_pathseparator]=
+# FAST_HIGHLIGHT_STYLES[globbing]='fg=39'
+# # FAST_HIGHLIGHT_STYLES[history-expansion]=fg=blue,bold
+# FAST_HIGHLIGHT_STYLES[single-hyphen-option]='fg=39'
+# FAST_HIGHLIGHT_STYLES[double-hyphen-option]='fg=39'
+# # FAST_HIGHLIGHT_STYLES[back-quoted-argument]=none
+# FAST_HIGHLIGHT_STYLES[single-quoted-argument]='fg=178'
+# FAST_HIGHLIGHT_STYLES[double-quoted-argument]='fg=178'
+# FAST_HIGHLIGHT_STYLES[dollar-quoted-argument]='fg=178'
+# FAST_HIGHLIGHT_STYLES[back-or-dollar-double-quoted-argument]='fg=39'
+# FAST_HIGHLIGHT_STYLES[back-dollar-quoted-argument]='fg=39'
+# FAST_HIGHLIGHT_STYLES[assign]=none
+# FAST_HIGHLIGHT_STYLES[redirection]='fg=28'
+# FAST_HIGHLIGHT_STYLES[comment]=fg=black,bold
 
 # Autosuggestions settings
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=239"
