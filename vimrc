@@ -302,6 +302,7 @@ Plug 'godlygeek/tabular'
 " colorscheme bundles
 Plug 'djjcast/mirodark'
 Plug 'andreasvc/vim-256noir'
+Plug 'altercation/vim-colors-solarized'
 
 " syntax and language related bundles
 Plug 'sheerun/vim-polyglot'
@@ -390,7 +391,7 @@ endif
 " Vim Airline
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
-let g:airline_theme = 'minimalist'
+" let g:airline_theme = 'minimalist'
 let g:airline_detect_paste = 1
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#bufferline#overwrite_variables = 0
@@ -428,5 +429,6 @@ set colorcolumn=80
 set t_Co=256
 syntax enable
 let g:mirodark_disable_color_approximation=1
-colorscheme mirodark
+colorscheme solarized
 set background=dark
+hi Normal guibg=NONE ctermbg=NONE
