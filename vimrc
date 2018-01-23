@@ -303,6 +303,7 @@ Plug 'godlygeek/tabular'
 Plug 'djjcast/mirodark'
 Plug 'andreasvc/vim-256noir'
 Plug 'altercation/vim-colors-solarized'
+Plug 'morhetz/gruvbox'
 
 " syntax and language related bundles
 Plug 'sheerun/vim-polyglot'
@@ -325,6 +326,9 @@ call plug#end()
 " * * * * * * * * * * * * * * * * * * *
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
+
+" Syntax
+let g:vim_markdown_conceal = 0
 
 " Go
 let g:go_fmt_command = "goimports"
@@ -426,9 +430,10 @@ set noeb vb t_vb=
 set colorcolumn=80
 
 " Theme
-set t_Co=256
+" set t_Co=256
 syntax enable
-let g:mirodark_disable_color_approximation=1
-colorscheme solarized
+" let g:mirodark_disable_color_approximation=1
+colorscheme gruvbox
+let g:gruvbox_termcolors=16
 set background=dark
 hi Normal guibg=NONE ctermbg=NONE
