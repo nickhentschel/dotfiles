@@ -220,6 +220,8 @@ augroup autocommand_mappings
     au FileType help nnoremap <silent><buffer> q :q<CR>
 augroup END
 
+au BufRead,BufNewFile *.md setlocal textwidth=80
+
 augroup go
   autocmd!
 
@@ -304,6 +306,7 @@ Plug 'djjcast/mirodark'
 Plug 'andreasvc/vim-256noir'
 Plug 'altercation/vim-colors-solarized'
 Plug 'morhetz/gruvbox'
+Plug 'NLKNguyen/papercolor-theme'
 
 " syntax and language related bundles
 Plug 'sheerun/vim-polyglot'
@@ -433,7 +436,7 @@ set colorcolumn=80
 " set t_Co=256
 syntax enable
 " let g:mirodark_disable_color_approximation=1
-colorscheme gruvbox
-let g:gruvbox_termcolors=16
-set background=dark
+colorscheme papercolor
+" let g:gruvbox_termcolors=16
+set background=light
 hi Normal guibg=NONE ctermbg=NONE
