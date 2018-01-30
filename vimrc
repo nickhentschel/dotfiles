@@ -313,6 +313,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'clones/vim-zsh', { 'for': ['zsh'] }
 Plug 'rodjek/vim-puppet', { 'for': ['puppet'] }
 Plug 'sclo/haproxy.vim', { 'for': ['haproxy'] }
+Plug 'saltstack/salt-vim'
 
 if has('nvim')
     let g:python3_host_prog = '/usr/local/bin/python3'
@@ -436,7 +437,7 @@ set colorcolumn=80
 " set t_Co=256
 syntax enable
 " let g:mirodark_disable_color_approximation=1
-colorscheme papercolor
-" let g:gruvbox_termcolors=16
-set background=light
+colorscheme gruvbox
+let g:gruvbox_termcolors=16
+set background=dark
 hi Normal guibg=NONE ctermbg=NONE
