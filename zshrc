@@ -83,7 +83,7 @@ FAST_HIGHLIGHT_STYLES[variable]='fg=39'
 # FAST_HIGHLIGHT_STYLES[comment]=fg=black,bold
 
 # Autosuggestions settings
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=245"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=("backward-char")
 ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=my-autosuggest-accept
 

@@ -307,6 +307,7 @@ Plug 'andreasvc/vim-256noir'
 Plug 'altercation/vim-colors-solarized'
 Plug 'morhetz/gruvbox'
 Plug 'NLKNguyen/papercolor-theme'
+Plug 'w0ng/vim-hybrid'
 
 " syntax and language related bundles
 Plug 'sheerun/vim-polyglot'
@@ -367,7 +368,8 @@ function! s:check_back_space() abort "{{{
 endfunction"}}}
 
 " Indentline
-let g:indentLine_char = '│'
+let g:indentLine_char = '⎸'
+let g:indentLine_color_term = 239
 
 " Polyglot
 let g:polyglot_disabled = ['puppet']
@@ -399,7 +401,7 @@ endif
 " Vim Airline
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
-" let g:airline_theme = 'minimalist'
+let g:airline_theme = 'minimalist'
 let g:airline_detect_paste = 1
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#bufferline#overwrite_variables = 0
@@ -437,7 +439,7 @@ set colorcolumn=80
 " set t_Co=256
 syntax enable
 " let g:mirodark_disable_color_approximation=1
-colorscheme gruvbox
-let g:gruvbox_termcolors=16
+colorscheme solarized
+" let g:gruvbox_termcolors=16
 set background=dark
 hi Normal guibg=NONE ctermbg=NONE
