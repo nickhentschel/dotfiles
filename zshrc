@@ -138,8 +138,8 @@ export LESS_TERMCAP_us=$'\E[01;32m'      # Begins underline.
 alias c="clear"
 alias d="dirs -v"
 alias egrep="egrep --color=always"
-alias grep="grep --color=always"
 alias fab="/wayfair/app/fabric/bin/fab"
+alias grep="grep --color=always"
 alias host_search="hammer --output=csv --csv-separator=\" \" host list --search ${1}"
 alias http_server="python -m SimpleHTTPServer 8080 &> /dev/null &"
 alias jenkinscli6="/wayfair/pkg/java/latest/bin/java -jar /wayfair/pkg/jenkins/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
@@ -147,6 +147,7 @@ alias jenkinscli="java -jar /wayfair/pkg/jenkins/latest/bin/jenkins-cli.jar -noK
 alias ll="ls -lachp"
 alias ls="ls -ph --color=always"
 alias mounts="cat /proc/mounts | column -t"
+alias timestamp="date +%s"
 alias venvwrapper="source ~/.local/bin/virtualenvwrapper.sh"
 alias weather="curl -4 http://wttr.in/Boston"
 

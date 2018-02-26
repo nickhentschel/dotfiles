@@ -199,6 +199,13 @@ cmap w!! w !sudo tee % >/dev/null
 nnoremap <C-q> <C-a>
 vnoremap <C-q> <C-a>
 
+" Formatting commands that will remember cursor position
+nnoremap g= mmgg=G`m
+nnoremap gQ mmgggqG`m
+
+" Better replace
+xnoremap gs y:%s/<C-r>//g<Left><Left>
+
 " netrw
 " nnoremap <leader>t :Vexplore<CR>
 
@@ -223,28 +230,28 @@ augroup END
 au BufRead,BufNewFile *.md setlocal textwidth=80
 
 augroup go
-  autocmd!
+    autocmd!
 
-  " Show by default 4 spaces for a tab
-  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+    " Show by default 4 spaces for a tab
+    autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 
-  " :GoBuild and :GoTestCompile
-  autocmd FileType go nmap <leader>b <Plug>(go-build)
+    " :GoBuild and :GoTestCompile
+    autocmd FileType go nmap <leader>b <Plug>(go-build)
 
-  " :GoRun
-  autocmd FileType go nmap <leader>r  <Plug>(go-run)
+    " :GoRun
+    autocmd FileType go nmap <leader>r  <Plug>(go-run)
 
-  " :GoInfo
-  autocmd FileType go nmap <Leader>i <Plug>(go-info)
+    " :GoInfo
+    autocmd FileType go nmap <Leader>i <Plug>(go-info)
 
-  " :GoMetaLinter
-  autocmd FileType go nmap <Leader>l <Plug>(go-metalinter)
+    " :GoMetaLinter
+    autocmd FileType go nmap <Leader>l <Plug>(go-metalinter)
 
-  " :GoAlternate  commands :A, :AV, :AS and :AT
-  autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
-  autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
-  autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
-  autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+    " :GoAlternate  commands :A, :AV, :AS and :AT
+    autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+    autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+    autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+    autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 augroup END
 
 " * * * * * * * * * * * * * * * * * * *
@@ -353,14 +360,14 @@ let g:deoplete#sources#go#gocode_binary = '/Users/nhentschel/go/bin/gocode'
 let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 
 inoremap <silent><expr> <TAB>
-    \ pumvisible() ? "\<C-n>" :
-    \ <SID>check_back_space() ? "\<TAB>" :
-    \ deoplete#mappings#manual_complete()
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<TAB>" :
+            \ deoplete#mappings#manual_complete()
 
 inoremap <silent><expr> <S-TAB>
-    \ pumvisible() ? "\<C-p>" :
-    \ <SID>check_back_space() ? "\<S-TAB>" :
-    \ deoplete#mappings#manual_complete()
+            \ pumvisible() ? "\<C-p>" :
+            \ <SID>check_back_space() ? "\<S-TAB>" :
+            \ deoplete#mappings#manual_complete()
 
 function! s:check_back_space() abort "{{{
     let col = col('.') - 1
@@ -377,18 +384,18 @@ let g:polyglot_disabled = ['puppet']
 " FZF
 let g:fzf_buffers_jump = 1
 let g:fzf_action = {
-      \ 'ctrl-s': 'split',
-      \ 'ctrl-v': 'vsplit'
-      \ }
+            \ 'ctrl-s': 'split',
+            \ 'ctrl-v': 'vsplit'
+            \ }
 let g:fzf_layout = { 'down': '~20%'  }
 
 " To use ripgrep instead of ag:
 command! -bang -nargs=* FZFRg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --glob "!.git/*" '.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview('up:30%')
-  \           : fzf#vim#with_preview('right:20%:hidden', '?'),
-  \   <bang>0)
+            \ call fzf#vim#grep(
+            \   'rg --column --line-number --no-heading --color=always --glob "!.git/*" '.shellescape(<q-args>), 1,
+            \   <bang>0 ? fzf#vim#with_preview('up:30%')
+            \           : fzf#vim#with_preview('right:20%:hidden', '?'),
+            \   <bang>0)
 
 nnoremap <c-p> :FZF<cr>
 nnoremap <c-o> :Buffers<cr>
