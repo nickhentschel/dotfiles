@@ -446,7 +446,7 @@ set colorcolumn=80
 " set t_Co=256
 syntax enable
 " let g:mirodark_disable_color_approximation=1
-colorscheme solarized
+colorscheme gruvbox
 " let g:gruvbox_termcolors=16
 set background=dark
 hi Normal guibg=NONE ctermbg=NONE
