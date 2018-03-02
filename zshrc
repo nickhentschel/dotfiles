@@ -11,7 +11,7 @@ path() {
   echo $PATH | tr ":" "\n" | \
     awk "{ sub(\"/usr\",   \"$fg_no_bold[green]/usr$reset_color\"); \
     sub(\"/bin\",   \"$fg_no_bold[blue]/bin$reset_color\"); \
-    sub(\"/opt\",   \"$fg_no_bold[cyan]/opt$reset_color\"); \
+    sub(\"/opt\",   \"$fg_no_bold[magenta,bold]/opt$reset_color\"); \
     sub(\"/sbin\",  \"$fg_no_bold[magenta]/sbin$reset_color\"); \
     sub(\"/local\", \"$fg_no_bold[yellow]/local$reset_color\"); \
     print }"
@@ -52,35 +52,33 @@ my-autosuggest-accept() {
   zle redisplay
 }
 
-# Setup syntax highlighting
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets line)
-FAST_HIGHLIGHT_STYLES[variable]='fg=39'
-# FAST_HIGHLIGHT_STYLES[default]='fg=39'
-# FAST_HIGHLIGHT_STYLES[unknown-token]='fg=160'
-# FAST_HIGHLIGHT_STYLES[reserved-word]='fg=27'
-# FAST_HIGHLIGHT_STYLES[alias]='fg=27'
-# FAST_HIGHLIGHT_STYLES[suffix-alias]='fg=27'
-# FAST_HIGHLIGHT_STYLES[builtin]='fg=27'
-# FAST_HIGHLIGHT_STYLES[function]='fg=27'
-# FAST_HIGHLIGHT_STYLES[command]='fg=27'
-# FAST_HIGHLIGHT_STYLES[precommand]='fg=27'
-# FAST_HIGHLIGHT_STYLES[commandseparator]='fg=28'
-# FAST_HIGHLIGHT_STYLES[hashed-command]='fg=27'
-# FAST_HIGHLIGHT_STYLES[path]='fg=39,underline'
-# # FAST_HIGHLIGHT_STYLES[path_pathseparator]=
-# FAST_HIGHLIGHT_STYLES[globbing]='fg=39'
-# # FAST_HIGHLIGHT_STYLES[history-expansion]=fg=blue,bold
-# FAST_HIGHLIGHT_STYLES[single-hyphen-option]='fg=39'
-# FAST_HIGHLIGHT_STYLES[double-hyphen-option]='fg=39'
-# # FAST_HIGHLIGHT_STYLES[back-quoted-argument]=none
-# FAST_HIGHLIGHT_STYLES[single-quoted-argument]='fg=178'
-# FAST_HIGHLIGHT_STYLES[double-quoted-argument]='fg=178'
-# FAST_HIGHLIGHT_STYLES[dollar-quoted-argument]='fg=178'
-# FAST_HIGHLIGHT_STYLES[back-or-dollar-double-quoted-argument]='fg=39'
-# FAST_HIGHLIGHT_STYLES[back-dollar-quoted-argument]='fg=39'
-# FAST_HIGHLIGHT_STYLES[assign]=none
-# FAST_HIGHLIGHT_STYLES[redirection]='fg=28'
-# FAST_HIGHLIGHT_STYLES[comment]=fg=black,bold
+FAST_HIGHLIGHT_STYLES[variable]='fg=yellow'
+FAST_HIGHLIGHT_STYLES[default]='none'
+FAST_HIGHLIGHT_STYLES[unknown-token]='fg=red,bold'
+FAST_HIGHLIGHT_STYLES[reserved-word]='fg=magenta,bold'
+FAST_HIGHLIGHT_STYLES[alias]='fg=green,bold'
+FAST_HIGHLIGHT_STYLES[suffix-alias]='fg=green,bold'
+FAST_HIGHLIGHT_STYLES[builtin]='fg=green,bold'
+FAST_HIGHLIGHT_STYLES[function]='fg=green,bold'
+FAST_HIGHLIGHT_STYLES[command]='fg=green,bold'
+FAST_HIGHLIGHT_STYLES[precommand]='fg=green,bold'
+FAST_HIGHLIGHT_STYLES[commandseparator]='fg=none'
+FAST_HIGHLIGHT_STYLES[hashed-command]='fg=green,bold'
+FAST_HIGHLIGHT_STYLES[path]='fg=blue,underline,bold'
+# FAST_HIGHLIGHT_STYLES[path_pathseparator]=
+FAST_HIGHLIGHT_STYLES[globbing]='fg=yellow'
+# FAST_HIGHLIGHT_STYLES[history-expansion]=fg=blue,bold
+FAST_HIGHLIGHT_STYLES[single-hyphen-option]='fg=magenta,bold'
+FAST_HIGHLIGHT_STYLES[double-hyphen-option]='fg=magenta,bold'
+# FAST_HIGHLIGHT_STYLES[back-quoted-argument]=none
+FAST_HIGHLIGHT_STYLES[single-quoted-argument]='fg=magenta,bold'
+FAST_HIGHLIGHT_STYLES[double-quoted-argument]='fg=magenta,bold'
+FAST_HIGHLIGHT_STYLES[dollar-quoted-argument]='fg=magenta,bold'
+FAST_HIGHLIGHT_STYLES[back-or-dollar-double-quoted-argument]='fg=magenta,bold'
+FAST_HIGHLIGHT_STYLES[back-dollar-quoted-argument]='fg=magenta,bold'
+FAST_HIGHLIGHT_STYLES[assign]=none
+FAST_HIGHLIGHT_STYLES[redirection]='fg=green,bold'
+FAST_HIGHLIGHT_STYLES[comment]=fg=black,bold
 
 # Autosuggestions settings
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
