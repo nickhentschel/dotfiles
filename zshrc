@@ -52,33 +52,35 @@ my-autosuggest-accept() {
   zle redisplay
 }
 
-FAST_HIGHLIGHT_STYLES[variable]='fg=yellow'
-FAST_HIGHLIGHT_STYLES[default]='none'
+# Setup syntax highlighting
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets line)
+FAST_HIGHLIGHT_STYLES[variable]='fg=blue,bold'
+FAST_HIGHLIGHT_STYLES[default]=none
 FAST_HIGHLIGHT_STYLES[unknown-token]='fg=red,bold'
-FAST_HIGHLIGHT_STYLES[reserved-word]='fg=magenta,bold'
-FAST_HIGHLIGHT_STYLES[alias]='fg=green,bold'
-FAST_HIGHLIGHT_STYLES[suffix-alias]='fg=green,bold'
-FAST_HIGHLIGHT_STYLES[builtin]='fg=green,bold'
-FAST_HIGHLIGHT_STYLES[function]='fg=green,bold'
-FAST_HIGHLIGHT_STYLES[command]='fg=green,bold'
-FAST_HIGHLIGHT_STYLES[precommand]='fg=green,bold'
-FAST_HIGHLIGHT_STYLES[commandseparator]='fg=none'
-FAST_HIGHLIGHT_STYLES[hashed-command]='fg=green,bold'
-FAST_HIGHLIGHT_STYLES[path]='fg=blue,underline,bold'
+FAST_HIGHLIGHT_STYLES[reserved-word]='fg=27'
+FAST_HIGHLIGHT_STYLES[alias]='none'
+FAST_HIGHLIGHT_STYLES[suffix-alias]='none'
+FAST_HIGHLIGHT_STYLES[builtin]='none'
+FAST_HIGHLIGHT_STYLES[function]='none'
+FAST_HIGHLIGHT_STYLES[command]='none'
+FAST_HIGHLIGHT_STYLES[precommand]='none'
+FAST_HIGHLIGHT_STYLES[commandseparator]='fg=green,bold'
+FAST_HIGHLIGHT_STYLES[hashed-command]='none'
+FAST_HIGHLIGHT_STYLES[path]='fg=blue,bold,underline'
 # FAST_HIGHLIGHT_STYLES[path_pathseparator]=
-FAST_HIGHLIGHT_STYLES[globbing]='fg=yellow'
+FAST_HIGHLIGHT_STYLES[globbing]='fg=blue,bold'
 # FAST_HIGHLIGHT_STYLES[history-expansion]=fg=blue,bold
-FAST_HIGHLIGHT_STYLES[single-hyphen-option]='fg=magenta,bold'
-FAST_HIGHLIGHT_STYLES[double-hyphen-option]='fg=magenta,bold'
+FAST_HIGHLIGHT_STYLES[single-hyphen-option]='fg=blue,bold'
+FAST_HIGHLIGHT_STYLES[double-hyphen-option]='fg=blue,bold'
 # FAST_HIGHLIGHT_STYLES[back-quoted-argument]=none
-FAST_HIGHLIGHT_STYLES[single-quoted-argument]='fg=magenta,bold'
-FAST_HIGHLIGHT_STYLES[double-quoted-argument]='fg=magenta,bold'
-FAST_HIGHLIGHT_STYLES[dollar-quoted-argument]='fg=magenta,bold'
-FAST_HIGHLIGHT_STYLES[back-or-dollar-double-quoted-argument]='fg=magenta,bold'
-FAST_HIGHLIGHT_STYLES[back-dollar-quoted-argument]='fg=magenta,bold'
+FAST_HIGHLIGHT_STYLES[single-quoted-argument]='fg=yellow'
+FAST_HIGHLIGHT_STYLES[double-quoted-argument]='fg=yellow'
+FAST_HIGHLIGHT_STYLES[dollar-quoted-argument]='fg=yellow'
+FAST_HIGHLIGHT_STYLES[back-or-dollar-double-quoted-argument]='fg=blue,bold'
+FAST_HIGHLIGHT_STYLES[back-dollar-quoted-argument]='fg=blue,bold'
 FAST_HIGHLIGHT_STYLES[assign]=none
-FAST_HIGHLIGHT_STYLES[redirection]='fg=green,bold'
-FAST_HIGHLIGHT_STYLES[comment]=fg=black,bold
+FAST_HIGHLIGHT_STYLES[redirection]='fg=cyan'
+FAST_HIGHLIGHT_STYLES[comment]='fg=black,bold'
 
 # Autosuggestions settings
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
@@ -87,7 +89,7 @@ ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=my-autosuggest-accept
 
 # History search settings
 zstyle ":history-search-multi-word" page-size "10"
-zstyle ":history-search-multi-word" highlight-color "fg=yellow,bold"
+zstyle ":history-search-multi-word" highlight-color "fg=cyan,bold"
 zstyle ":plugin:history-search-multi-word" active "standout"
 
 bindkey -v

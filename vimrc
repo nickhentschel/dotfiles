@@ -315,6 +315,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'morhetz/gruvbox'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'w0ng/vim-hybrid'
+Plug 'ErichDonGubler/vim-sublime-monokai'
 
 " syntax and language related bundles
 Plug 'sheerun/vim-polyglot'
@@ -446,7 +447,7 @@ set colorcolumn=80
 " set t_Co=256
 syntax enable
 " let g:mirodark_disable_color_approximation=1
-colorscheme gruvbox
+colorscheme monokai
 " let g:gruvbox_termcolors=16
 set background=dark
 hi Normal guibg=NONE ctermbg=NONE
