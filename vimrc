@@ -440,14 +440,11 @@ set synmaxcol=300
 " disable sound on errors
 set noeb vb t_vb=
 
-" Line at 80 characters
-set colorcolumn=80
-
 " Theme
-" set t_Co=256
 syntax enable
-" let g:mirodark_disable_color_approximation=1
 colorscheme monokai
-" let g:gruvbox_termcolors=16
 set background=dark
-hi Normal guibg=NONE ctermbg=NONE
+
+" Line at 80 characters
+highlight ColorColumn ctermbg=235
+let &colorcolumn="80,".join(range(120,999),",")
