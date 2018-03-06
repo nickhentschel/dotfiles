@@ -447,4 +447,4 @@ set background=dark
 
 " Line at 80 characters
 highlight ColorColumn ctermbg=235
-let &colorcolumn="80,".join(range(120,999),",")
+set colorcolumn=80
