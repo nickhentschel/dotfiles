@@ -112,7 +112,8 @@ export WORDCHARS=''
 export CASE_SENSITIVE="true"
 export ZSH_CACHE_DIR=$HOME/.zsh
 export GOPATH=$HOME/go
-export PATH=$GOPATH/bin:$HOME/.fzf/bin:$HOME/.local/bin:$PATH
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH=$PYENV_ROOT/bin:$GOPATH/bin:$HOME/.fzf/bin:$HOME/.local/bin:$PATH
 export EDITOR=vim
 export WORKON_HOME=~/envs
 export REPORTTIME=5
@@ -158,6 +159,11 @@ fi
 
 if type nvim > /dev/null 2>&1; then
   alias vim="nvim"
+fi
+
+if type pyenv > /dev/null 2>&1; then
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
 fi
 
 # Use dircolors if available

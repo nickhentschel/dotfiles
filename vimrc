@@ -326,7 +326,6 @@ Plug 'saltstack/salt-vim'
 
 if has('nvim')
     let g:python3_host_prog = '/usr/local/bin/python3'
-    let g:python3_host_skip_check = 1
 
     Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -357,7 +356,6 @@ let g:go_highlight_generate_tags = 1
 " deoplete
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#disable_auto_complete = 0
-let g:deoplete#sources#go#gocode_binary = '/Users/nhentschel/go/bin/gocode'
 let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 
 inoremap <silent><expr> <TAB>
@@ -442,8 +440,8 @@ set noeb vb t_vb=
 
 " Theme
 syntax enable
-colorscheme monokai
 set background=dark
+colorscheme monokai
 
 " Line at 80 characters
 highlight ColorColumn ctermbg=235
