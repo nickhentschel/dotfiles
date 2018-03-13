@@ -48,6 +48,9 @@ command! ProseOff call ProseOff()
 " autowrite on build
 set autowrite
 
+" Relaod files after change outside of VIM
+set autoread
+
 " Where to look for tag files
 set tags=./tags;,~/.vimtags
 
@@ -60,9 +63,6 @@ set number
 
 " Remove insert->normal delay
 set ttimeoutlen=50
-
-" Relaod files after change outside of VIM
-set autoread
 
 " Disable line wrap by default
 set nowrap
@@ -444,5 +444,6 @@ set background=dark
 colorscheme monokai
 
 " Line at 80 characters
+hi MatchParen cterm=bold ctermbg=none ctermfg=red
 highlight ColorColumn ctermbg=235
 set colorcolumn=80
