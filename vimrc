@@ -17,7 +17,6 @@
 " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 set shell=/bin/bash
-filetype off
 filetype plugin indent on
 
 " * * * * * * * * * * * * * * * * * * *
@@ -45,21 +44,17 @@ command! ProseOff call ProseOff()
 " * VIM SETTINGS                      *
 " * * * * * * * * * * * * * * * * * * *
 
-" autowrite on build
-set autowrite
 
-" Relaod files after change outside of VIM
-set autoread
+set autowrite               " autowrite on build
+set autoread                " Relaod files after change outside of VIM
+set tags=./tags;,~/.vimtags " Where to look for tag files
 
-" Where to look for tag files
-set tags=./tags;,~/.vimtags
 
-" More natural splitting
-set splitbelow
+set splitbelow              " More natural splitting
 set splitright
 
+set number                  " Line numbers
 set incsearch
-set number
 
 " Remove insert->normal delay
 set ttimeoutlen=50
@@ -90,9 +85,9 @@ set spl=en spell
 set nospell
 
 " Cool tab completion stuff
+set wildmenu
 set completeopt-=preview
 set wildmode=list:longest,full
-set wildmenu
 
 " Ignore while searching
 set wildignore=*.o,*.obj,*~
@@ -157,7 +152,7 @@ nnoremap <C-y> 3<C-y>
 " Easier excape from insert
 inoremap jk <Esc>
 
-" map save to ctrl+s, requires some shell/terminal tweaking if not in gvim/macvim
+" map save to ctrl+s
 inoremap <c-s> <Esc>:w<CR>
 nnoremap <c-s> <Esc>:w<CR>
 vnoremap <c-s> <Esc>:w<CR>
@@ -206,9 +201,6 @@ nnoremap gQ mmgggqG`m
 " Better replace
 xnoremap gs y:%s/<C-r>//g<Left><Left>
 
-" netrw
-" nnoremap <leader>t :Vexplore<CR>
-
 " quickfix not listed in buffer lists
 augroup qf
     autocmd!
@@ -218,7 +210,7 @@ augroup END
 
 augroup two_spaces
     autocmd!
-    au Filetype html,css,scss,sass,ruby,javascript,yml,yaml,eruby,puppet,zsh,bash,sh,conf,nginx setlocal ts=2 sts=2 sw=2
+    au Filetype css,ruby,javascript,yml,yaml,eruby,puppet,zsh,bash,sh,conf,nginx,markdown setlocal ts=2 sts=2 sw=2
 augroup END
 
 " Close help sections with q
@@ -231,20 +223,10 @@ au BufRead,BufNewFile *.md setlocal textwidth=80
 
 augroup go
     autocmd!
-
-    " Show by default 4 spaces for a tab
     autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
-
-    " :GoBuild and :GoTestCompile
     autocmd FileType go nmap <leader>b <Plug>(go-build)
-
-    " :GoRun
     autocmd FileType go nmap <leader>r  <Plug>(go-run)
-
-    " :GoInfo
     autocmd FileType go nmap <Leader>i <Plug>(go-info)
-
-    " :GoMetaLinter
     autocmd FileType go nmap <Leader>l <Plug>(go-metalinter)
 
     " :GoAlternate  commands :A, :AV, :AS and :AT
@@ -260,69 +242,39 @@ augroup END
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'tomtom/tcomment_vim'
-
-" Allows easy addition/changing of surrounding text
-Plug 'tpope/vim-surround'
-
-" Display the indention levels with thin vertical lines
-Plug 'Yggdroot/indentLine'
-
-" Easy tag completion for xml-like languages
-" Must sym-link xml.vim in ftplugin directory for completions
-Plug 'sukima/xmledit',
-            \ { 'do': 'rm ftplugin/html.vim && ln -s ftplugin/xml.vim ftplugin/html.vim' }
-
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'godlygeek/tabular'
+Plug 'jiangmiao/auto-pairs'
+Plug 'jremmen/vim-ripgrep'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin'  }
 Plug 'junegunn/fzf.vim'
-
-" Custom and configurable status line for vim
-" Much lighter than powerline
-Plug 'bling/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
-" wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
-Plug 'tpope/vim-endwise', { 'for': ['eruby', 'ruby'] }
-
-" vim git wrapper
-Plug 'tpope/vim-fugitive'
-
-" Syntax checking hacks for vim
-Plug 'w0rp/ale'
-
-" pairs of handy bracket mappings
-Plug 'tpope/vim-unimpaired'
-
-" matching braces and such
-Plug 'jiangmiao/auto-pairs'
-
-" Asynchronous grep plugin for Vim
-Plug 'jremmen/vim-ripgrep'
-
-" Plugins for prose writing
 Plug 'junegunn/goyo.vim'
+Plug 'tomtom/tcomment_vim'
+Plug 'tpope/vim-endwise', { 'for': ['eruby', 'ruby', 'bash'] }
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'w0rp/ale'
+Plug 'yggdroot/indentline'
 
-" Vim + tmux navigation
-Plug 'christoomey/vim-tmux-navigator'
-
-" Vim script for text filtering and alignment
-Plug 'godlygeek/tabular'
-
-" colorscheme bundles
-Plug 'djjcast/mirodark'
-Plug 'andreasvc/vim-256noir'
-Plug 'altercation/vim-colors-solarized'
-Plug 'morhetz/gruvbox'
-Plug 'NLKNguyen/papercolor-theme'
-Plug 'w0ng/vim-hybrid'
-Plug 'ErichDonGubler/vim-sublime-monokai'
+Plug 'sukima/xmledit',
+    \ { 'do': 'rm ftplugin/html.vim && ln -s ftplugin/xml.vim ftplugin/html.vim' }
 
 " syntax and language related bundles
-Plug 'sheerun/vim-polyglot'
 Plug 'clones/vim-zsh', { 'for': ['zsh'] }
-Plug 'rodjek/vim-puppet', { 'for': ['puppet'] }
-Plug 'sclo/haproxy.vim', { 'for': ['haproxy'] }
 Plug 'saltstack/salt-vim'
+Plug 'sclo/haproxy.vim', { 'for': ['haproxy'] }
+Plug 'sheerun/vim-polyglot'
+
+" colorscheme bundles
+Plug 'andreasvc/vim-256noir'
+Plug 'djjcast/mirodark'
+Plug 'erichdongubler/vim-sublime-monokai'
+Plug 'morhetz/gruvbox'
+Plug 'nlknguyen/papercolor-theme'
+Plug 'w0ng/vim-hybrid'
 
 if has('nvim')
     let g:python3_host_prog = '/usr/local/bin/python3'
@@ -343,15 +295,15 @@ call plug#end()
 let g:vim_markdown_conceal = 0
 
 " Go
-let g:go_fmt_command = "goimports"
 let g:go_autodetect_gopath = 1
-let g:go_list_type = "quickfix"
-let g:go_highlight_types = 1
+let g:go_fmt_command = "goimports"
+let g:go_highlight_extra_types = 1
 let g:go_highlight_fields = 1
 let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_extra_types = 1
 let g:go_highlight_generate_tags = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_types = 1
+let g:go_list_type = "quickfix"
 
 " deoplete
 let g:deoplete#enable_at_startup = 1
@@ -359,14 +311,14 @@ let g:deoplete#disable_auto_complete = 0
 let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 
 inoremap <silent><expr> <TAB>
-            \ pumvisible() ? "\<C-n>" :
-            \ <SID>check_back_space() ? "\<TAB>" :
-            \ deoplete#mappings#manual_complete()
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ deoplete#mappings#manual_complete()
 
 inoremap <silent><expr> <S-TAB>
-            \ pumvisible() ? "\<C-p>" :
-            \ <SID>check_back_space() ? "\<S-TAB>" :
-            \ deoplete#mappings#manual_complete()
+    \ pumvisible() ? "\<C-p>" :
+    \ <SID>check_back_space() ? "\<S-TAB>" :
+    \ deoplete#mappings#manual_complete()
 
 function! s:check_back_space() abort "{{{
     let col = col('.') - 1
@@ -377,24 +329,21 @@ endfunction"}}}
 let g:indentLine_char = '⎸'
 let g:indentLine_color_term = 239
 
-" Polyglot
-let g:polyglot_disabled = ['puppet']
-
 " FZF
+let g:fzf_layout = { 'down': '~20%'  }
 let g:fzf_buffers_jump = 1
 let g:fzf_action = {
-            \ 'ctrl-s': 'split',
-            \ 'ctrl-v': 'vsplit'
-            \ }
-let g:fzf_layout = { 'down': '~20%'  }
+    \ 'ctrl-s': 'split',
+    \ 'ctrl-v': 'vsplit'
+    \ }
 
 " To use ripgrep instead of ag:
 command! -bang -nargs=* FZFRg
-            \ call fzf#vim#grep(
-            \   'rg --column --line-number --no-heading --color=always --glob "!.git/*" '.shellescape(<q-args>), 1,
-            \   <bang>0 ? fzf#vim#with_preview('up:30%')
-            \           : fzf#vim#with_preview('right:20%:hidden', '?'),
-            \   <bang>0)
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --color=always --glob "!.git/*" '.shellescape(<q-args>), 1,
+    \   <bang>0 ? fzf#vim#with_preview('up:30%')
+    \           : fzf#vim#with_preview('right:20%:hidden', '?'),
+    \   <bang>0)
 
 nnoremap <c-p> :FZF<cr>
 nnoremap <c-o> :Buffers<cr>
@@ -405,15 +354,15 @@ if executable('rg')
 endif
 
 " Vim Airline
+let g:airline_detect_paste = 1
 let g:airline_left_sep = ''
+let g:airline_powerline_fonts = 0
 let g:airline_right_sep = ''
 let g:airline_theme = 'minimalist'
-let g:airline_detect_paste = 1
-let g:airline_powerline_fonts = 0
-let g:airline#extensions#bufferline#overwrite_variables = 0
-let g:airline#extensions#bufferline#enabled = 0
-let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#branch#empty_message = ''
+let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#bufferline#enabled = 0
+let g:airline#extensions#bufferline#overwrite_variables = 0
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 
