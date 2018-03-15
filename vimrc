@@ -44,108 +44,56 @@ command! ProseOff call ProseOff()
 " * VIM SETTINGS                      *
 " * * * * * * * * * * * * * * * * * * *
 
-
-set autowrite               " autowrite on build
-set autoread                " Relaod files after change outside of VIM
-set tags=./tags;,~/.vimtags " Where to look for tag files
-
-
-set splitbelow              " More natural splitting
+set autowrite                  " autowrite on build
+set autoread                   " Relaod files after change outside of VIM
+set tags=./tags;,~/.vimtags    " Where to look for tag files
+set splitbelow                 " More natural splitting
 set splitright
-
-set number                  " Line numbers
-set incsearch
-
-" Remove insert->normal delay
-set ttimeoutlen=50
-
-" Disable line wrap by default
-set nowrap
+set number                     " Line numbers
+set incsearch                  " Incremental searching
+set ttimeoutlen=50             " Remove insert->normal delay
+set nowrap                     " Disable line wrap by default
 set linebreak
-
-" Title
-set title
-
-" This shows what you are typing as a command
-set showcmd
-
-" Who doesn't like autoindent?
-set autoindent
+set title                      " Title
+set showcmd                    " This shows what you are typing as a command
+set autoindent                 " Auto indent
 set expandtab
 set smarttab
-
-" Who wants an 8 character tab?  Not me!
-set shiftwidth=4
+set shiftwidth=4               " Set tab width
 set softtabstop=4
 set ts=4
 set sts=4
-
-" Use english for spellchecking, but don't spellcheck by default
-set spl=en spell
-set nospell
-
-" Cool tab completion stuff
+set spl=en spell               " Set English spell check
+set nospell                    " Don't spell check by default
 set wildmenu
 set completeopt-=preview
 set wildmode=list:longest,full
-
-" Ignore while searching
-set wildignore=*.o,*.obj,*~
-set wildignore+=*vim/backups*
-set wildignore+=*sass-cache*
-set wildignore+=*DS_Store*
-set wildignore+=vendor/rails/**
-set wildignore+=vendor/cache/**
-set wildignore+=*.gem
-set wildignore+=log/**
-set wildignore+=tmp/**
-set wildignore+=*.png,*.jpg,*.gif,*.pdf,*.psd
-set wildignore+=*.log
-set wildignore+=*.git,*.svn,*.hg,*.eyaml
-set wildignore+=*/.git/*,*/tmp/*,*.swp
-set wildignore+=*/.pyc*
-
-" Enable mouse support in console
-set mouse=a
-
-" Ignoring case is a fun trick
-set ignorecase
+set mouse=a                    " Enable mouse support in console
+set ignorecase                 " Ignore case
 set smartcase
-
-" Highlight things that we find with the search
-set hlsearch
-
-" buffers can exist in the background without being in a window.
-set hidden
-
-" Disable swap files
-set noswapfile
+set hlsearch                   " Highlight search
+set hidden                     " Allow hidden buffers
+set noswapfile                 " Disable swap files
 set nobackup
 set nowb
-
-" Start scrolling when we're 8 lines away from margins
-set scrolloff=8
+set nostartofline              " Don't reset cursor to start of line when moving around
+set scrolloff=8                " Start scrolling when we're 8 lines away from margins
 set sidescrolloff=15
 set sidescroll=1
 set scrolljump=10
 
-" netrw
-let g:netrw_banner = 0
+let g:netrw_banner = 0         " netrw
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
 let g:netrw_altv = 1
 
-" Don't reset cursor to start of line when moving around
-set nostartofline
+" Ignore while searching
+set wildignore=*.o,*.obj,*~,*vim/backups*,*sass-cache*,*DS_Store*,vendor/rails/**,vendor/cache/**,*.gem,log/**,tmp/**,*.png,*.jpg,*.gif,*.pdf,*.psd,*.log,*.git,*.svn,*.hg,*.eyaml,*/.git/*,*/tmp/*,*.swp,*/.pyc*
 
-" map leader to space
-let mapleader=" "
+
+let mapleader=" "              " map leader to space
 let g:mapleader=" "
-
-" Space does nothing in normal mode (prevent cursor from moving)
 nnoremap <Space> <nop>
-
-" Scroll viewport 3 lines instead of 1
 nnoremap <C-e> 3<C-e>
 nnoremap <C-y> 3<C-y>
 
@@ -219,8 +167,6 @@ augroup autocommand_mappings
     au FileType help nnoremap <silent><buffer> q :q<CR>
 augroup END
 
-au BufRead,BufNewFile *.md setlocal textwidth=80
-
 augroup go
     autocmd!
     autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
@@ -235,6 +181,10 @@ augroup go
     autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
     autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 augroup END
+
+au BufRead,BufNewFile *.md setlocal textwidth=80
+au BufReadPost Jenkinsfile set syntax=groovy
+au BufReadPost Jenkinsfile set filetype=groovy
 
 " * * * * * * * * * * * * * * * * * * *
 " * BUNDLES AND SUCH                  *
@@ -269,7 +219,6 @@ Plug 'sclo/haproxy.vim', { 'for': ['haproxy'] }
 Plug 'sheerun/vim-polyglot'
 
 " colorscheme bundles
-Plug 'andreasvc/vim-256noir'
 Plug 'djjcast/mirodark'
 Plug 'erichdongubler/vim-sublime-monokai'
 Plug 'morhetz/gruvbox'
