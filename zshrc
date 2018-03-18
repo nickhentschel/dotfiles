@@ -166,17 +166,6 @@ if type pyenv > /dev/null 2>&1; then
   eval "$(pyenv virtualenv-init -)"
 fi
 
-# Use dircolors if available
-test -e ~/.dircolors && \
-  eval "$(dircolors -b ~/.dircolors)"
-
-# warning if file exists ('cat /dev/null > ~/.zshrc')
-setopt NO_clobber
-
-# Beeping is super annoying
-unsetopt beep
-unsetopt hist_beep
-
 ######## HISTORY AND COMPLETION SETTINGS ########
 
 autoload -Uz compinit && compinit -D -u
@@ -185,14 +174,13 @@ zmodload -i zsh/complist
 zplugin cdreplay -q # -q is for quiet
 
 limit coredumpsize 0
-unsetopt menu_complete
-unsetopt flowcontrol
-setopt auto_menu
-setopt auto_list
+
 setopt always_to_end
 setopt append_history share_history histignorealldups
+setopt auto_list
+setopt auto_menu
 setopt auto_pushd               # Push the old directory onto the stack on cd.
-setopt auto_resume        # Attempt to resume existing job before creating a new process.
+setopt auto_resume              # Attempt to resume existing job before creating a new process.
 setopt autocd                   # Auto changes to a directory without typing cd
 setopt brace_ccl                # Allow brace character class list expansion.
 setopt combining_chars          # Combine zero-length punctuation characters (accents)
@@ -202,12 +190,15 @@ setopt extended_glob            # Use extended globbing syntax.
 setopt hash_list_all            # hash everything before completion
 setopt histignorespace
 setopt listpacked
-setopt long_list_jobs     # List jobs in the long format by default.
+setopt long_list_jobs           # List jobs in the long format by default.
 setopt markdirs
-setopt notify             # Report status of background jobs immediately.
+setopt no_beep
+setopt no_bg_nice               # Don't run all background jobs at a lower priority.
+setopt no_clobber
+setopt no_flow_control
+setopt notify                   # Report status of background jobs immediately.
 setopt pushd_ignore_dups        # Do not store duplicates in the stack
 setopt rc_quotes                # Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'.
-unsetopt bg_nice          # Don't run all background jobs at a lower priority.
 
 # Use caching so that commands like apt and dpkg complete are useable
 zstyle ':completion::complete:*' use-cache 1
@@ -236,7 +227,8 @@ zstyle ':completion:*:manuals' separate-sections true
 zstyle ':completion:*:manuals.(^1*)' insert-sections true
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
 zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
-zstyle ':completion:*' list-colors $(dircolors)            # Use colors in the menu selection
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' glob 'yes'                # Expand globs when tab-completing
 zstyle ':completion:*:functions' ignored-patterns '_*'        # Ignore completion functions for unavailable commands
 zstyle ':completion:*:complete:-command-::commands' ignored-patterns '*\~' # Don't complete backup files as executables
