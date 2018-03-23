@@ -275,7 +275,7 @@ function! s:check_back_space() abort "{{{
 endfunction"}}}
 
 " Indentline
-let g:indentLine_char = '⎸'
+let g:indentLine_char = '│'
 let g:indentLine_color_term = 239
 
 " FZF

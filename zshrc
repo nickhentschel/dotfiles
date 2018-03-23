@@ -36,7 +36,6 @@ source "${HOME}/.zplugin/bin/zplugin.zsh"
 zplugin light 'nickhentschel/simplicity-prompt'
 
 # plugins
-zplugin snippet OMZ::plugins/kubectl/kubectl.plugin.zsh
 zplugin light 'greymd/docker-zsh-completion'
 zplugin light 'psprint/history-search-multi-word'
 zplugin light 'zsh-users/zsh-completions'
