@@ -25,16 +25,16 @@ filetype plugin indent on
 
 " Functions for editing prose/markdown
 function! ProseOn()
-    Goyo 100
-    wincmd w
-    setlocal wrap
-    setlocal spell
+  Goyo 100
+  wincmd w
+  setlocal wrap
+  setlocal spell
 endfunction
 
 function! ProseOff()
-    Goyo!
-    setlocal nowrap
-    setlocal nospell
+  Goyo!
+  setlocal nowrap
+  setlocal nospell
 endfunction
 
 command! ProseOn call ProseOn()
@@ -59,10 +59,10 @@ set showcmd                    " This shows what you are typing as a command
 set autoindent                 " Auto indent
 set expandtab
 set smarttab
-set shiftwidth=4               " Set tab width
-set softtabstop=4
-set ts=4
-set sts=4
+set shiftwidth=2               " Set tab width
+set softtabstop=2
+set ts=2
+set sts=2
 set spl=en spell               " Set English spell check
 set nospell                    " Don't spell check by default
 set wildmenu
@@ -149,42 +149,41 @@ nnoremap gQ mmgggqG`m
 " Better replace
 xnoremap gs y:%s/<C-r>//g<Left><Left>
 
+" Autoformat on save
+" au BufWrite * :Autoformat
+
 " quickfix not listed in buffer lists
-augroup qf
-    autocmd!
-    autocmd FileType qf set nobuflisted
-    autocmd FileType qf nnoremap <silent><buffer> q :q<CR>
+augroup quit_qf_help
+  autocmd!
+  autocmd FileType qf set nobuflisted
+  autocmd FileType qf nnoremap <silent><buffer> q :q<CR>
+  autocmd FileType help nnoremap <silent><buffer> q :q<CR>
 augroup END
 
-augroup two_spaces
-    autocmd!
-    au Filetype css,ruby,javascript,yml,yaml,eruby,puppet,zsh,bash,sh,conf,nginx,markdown setlocal ts=2 sts=2 sw=2
-augroup END
-
-" Close help sections with q
-augroup autocommand_mappings
-    autocmd!
-    au FileType help nnoremap <silent><buffer> q :q<CR>
+augroup formatting
+  autocmd!
+  " autocmd BufRead,BufNewFile */templates/*.yaml setlocal ft=helm
+  autocmd FileType markdown setlocal textwidth=80
+  autocmd Filetype Dockerfile setlocal ts=4 sts=4 sw=4 expandtab
+  autocmd BufNewFile,BufRead *.dockerfile setlocal filetype=Dockerfile
+  autocmd BufNewFile,BufRead *.jenkinsfile setlocal filetype=groovy
+  autocmd BufReadPost Jenkinsfile setlocal filetype=groovy
 augroup END
 
 augroup go
-    autocmd!
-    autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
-    autocmd FileType go nmap <leader>b <Plug>(go-build)
-    autocmd FileType go nmap <leader>r  <Plug>(go-run)
-    autocmd FileType go nmap <Leader>i <Plug>(go-info)
-    autocmd FileType go nmap <Leader>l <Plug>(go-metalinter)
+  autocmd!
+  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+  autocmd FileType go nmap <leader>b <Plug>(go-build)
+  autocmd FileType go nmap <leader>r  <Plug>(go-run)
+  autocmd FileType go nmap <Leader>i <Plug>(go-info)
+  autocmd FileType go nmap <Leader>l <Plug>(go-metalinter)
 
-    " :GoAlternate  commands :A, :AV, :AS and :AT
-    autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
-    autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
-    autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
-    autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+  " :GoAlternate  commands :A, :AV, :AS and :AT
+  autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+  autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+  autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+  autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 augroup END
-
-au BufRead,BufNewFile *.md setlocal textwidth=80
-au BufReadPost Jenkinsfile set syntax=groovy
-au BufReadPost Jenkinsfile set filetype=groovy
 
 " * * * * * * * * * * * * * * * * * * *
 " * BUNDLES AND SUCH                  *
@@ -192,6 +191,7 @@ au BufReadPost Jenkinsfile set filetype=groovy
 
 call plug#begin('~/.vim/plugged')
 
+Plug 'chiel92/vim-autoformat'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'godlygeek/tabular'
 Plug 'jiangmiao/auto-pairs'
@@ -210,13 +210,16 @@ Plug 'w0rp/ale'
 Plug 'yggdroot/indentline'
 
 Plug 'sukima/xmledit',
-    \ { 'do': 'rm ftplugin/html.vim && ln -s ftplugin/xml.vim ftplugin/html.vim' }
+      \ { 'do': 'rm ftplugin/html.vim && ln -s ftplugin/xml.vim ftplugin/html.vim' }
 
 " syntax and language related bundles
-Plug 'clones/vim-zsh', { 'for': ['zsh'] }
+Plug 'clones/vim-zsh', { 'for': 'zsh' }
 Plug 'saltstack/salt-vim'
-Plug 'sclo/haproxy.vim', { 'for': ['haproxy'] }
+Plug 'sclo/haproxy.vim', { 'for': 'haproxy' }
 Plug 'sheerun/vim-polyglot'
+Plug 'tarekbecker/vim-yaml-formatter', { 'do': 'pip3 install pyyaml', 'for': 'yaml' }
+Plug 'avakhov/vim-yaml', { 'for': 'yaml' }
+Plug 'towolf/vim-helm'
 
 " colorscheme bundles
 Plug 'djjcast/mirodark'
@@ -226,12 +229,12 @@ Plug 'nlknguyen/papercolor-theme'
 Plug 'w0ng/vim-hybrid'
 
 if has('nvim')
-    let g:python3_host_prog = '/usr/local/bin/python3'
+  let g:python3_host_prog = '/usr/local/bin/python3'
 
-    Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'zchee/deoplete-go', { 'do': 'make'}
-    " Plug 'SirVer/ultisnips'
+  Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'zchee/deoplete-go', { 'do': 'make'}
+  " Plug 'SirVer/ultisnips'
 endif
 
 call plug#end()
@@ -260,18 +263,18 @@ let g:deoplete#disable_auto_complete = 0
 let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 
 inoremap <silent><expr> <TAB>
-    \ pumvisible() ? "\<C-n>" :
-    \ <SID>check_back_space() ? "\<TAB>" :
-    \ deoplete#mappings#manual_complete()
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ deoplete#mappings#manual_complete()
 
 inoremap <silent><expr> <S-TAB>
-    \ pumvisible() ? "\<C-p>" :
-    \ <SID>check_back_space() ? "\<S-TAB>" :
-    \ deoplete#mappings#manual_complete()
+      \ pumvisible() ? "\<C-p>" :
+      \ <SID>check_back_space() ? "\<S-TAB>" :
+      \ deoplete#mappings#manual_complete()
 
 function! s:check_back_space() abort "{{{
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
 endfunction"}}}
 
 " Indentline
@@ -282,24 +285,24 @@ let g:indentLine_color_term = 239
 let g:fzf_layout = { 'down': '~20%'  }
 let g:fzf_buffers_jump = 1
 let g:fzf_action = {
-    \ 'ctrl-s': 'split',
-    \ 'ctrl-v': 'vsplit'
-    \ }
+      \ 'ctrl-s': 'split',
+      \ 'ctrl-v': 'vsplit'
+      \ }
 
 " To use ripgrep instead of ag:
 command! -bang -nargs=* FZFRg
-    \ call fzf#vim#grep(
-    \   'rg --column --line-number --no-heading --color=always --glob "!.git/*" '.shellescape(<q-args>), 1,
-    \   <bang>0 ? fzf#vim#with_preview('up:30%')
-    \           : fzf#vim#with_preview('right:20%:hidden', '?'),
-    \   <bang>0)
+      \ call fzf#vim#grep(
+      \   'rg --column --line-number --no-heading --color=always --glob "!.git/*" '.shellescape(<q-args>), 1,
+      \   <bang>0 ? fzf#vim#with_preview('up:30%')
+      \           : fzf#vim#with_preview('right:20%:hidden', '?'),
+      \   <bang>0)
 
 nnoremap <c-p> :FZF<cr>
 nnoremap <c-o> :Buffers<cr>
 nnoremap <c-i> :FZFRg<cr>
 
 if executable('rg')
-    set grepprg=rg\ --vimgrep\ --color=never
+  set grepprg=rg\ --vimgrep\ --color=never
 endif
 
 " Vim Airline
@@ -331,7 +334,6 @@ set list
 
 " fixes airline on vim
 set laststatus=2
-set synmaxcol=300
 
 " disable sound on errors
 set noeb vb t_vb=
