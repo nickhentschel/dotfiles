@@ -59,10 +59,9 @@ set showcmd                    " This shows what you are typing as a command
 set autoindent                 " Auto indent
 set expandtab
 set smarttab
-set shiftwidth=2               " Set tab width
-set softtabstop=2
 set ts=2
 set sts=2
+set sw=2
 set spl=en spell               " Set English spell check
 set nospell                    " Don't spell check by default
 set wildmenu
@@ -165,16 +164,16 @@ augroup formatting
   " autocmd BufRead,BufNewFile */templates/*.yaml setlocal ft=helm
   autocmd FileType markdown setlocal textwidth=80
   autocmd Filetype Dockerfile setlocal ts=4 sts=4 sw=4 expandtab
+  autocmd Filetype Jenkinsfile setlocal filetype=groovy
   autocmd BufNewFile,BufRead *.dockerfile setlocal filetype=Dockerfile
   autocmd BufNewFile,BufRead *.jenkinsfile setlocal filetype=groovy
-  autocmd BufReadPost Jenkinsfile setlocal filetype=groovy
 augroup END
 
 augroup go
   autocmd!
   autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
   autocmd FileType go nmap <leader>b <Plug>(go-build)
-  autocmd FileType go nmap <leader>r  <Plug>(go-run)
+  autocmd FileType go nmap <leader>r <Plug>(go-run)
   autocmd FileType go nmap <Leader>i <Plug>(go-info)
   autocmd FileType go nmap <Leader>l <Plug>(go-metalinter)
 
@@ -217,7 +216,6 @@ Plug 'clones/vim-zsh', { 'for': 'zsh' }
 Plug 'saltstack/salt-vim'
 Plug 'sclo/haproxy.vim', { 'for': 'haproxy' }
 Plug 'sheerun/vim-polyglot'
-Plug 'tarekbecker/vim-yaml-formatter', { 'do': 'pip3 install pyyaml', 'for': 'yaml' }
 Plug 'avakhov/vim-yaml', { 'for': 'yaml' }
 Plug 'towolf/vim-helm'
 
@@ -232,9 +230,9 @@ if has('nvim')
   let g:python3_host_prog = '/usr/local/bin/python3'
 
   Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'sirver/ultisnips'
   Plug 'zchee/deoplete-go', { 'do': 'make'}
-  " Plug 'SirVer/ultisnips'
 endif
 
 call plug#end()
@@ -248,14 +246,14 @@ let g:vim_markdown_conceal = 0
 
 " Go
 let g:go_autodetect_gopath = 1
-let g:go_fmt_command = "goimports"
+let g:go_fmt_command = 'goimports'
 let g:go_highlight_extra_types = 1
 let g:go_highlight_fields = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_generate_tags = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_types = 1
-let g:go_list_type = "quickfix"
+let g:go_list_type = 'quickfix'
 
 " deoplete
 let g:deoplete#enable_at_startup = 1

@@ -74,7 +74,7 @@ local laptopDisplay = 69731906
 -- -----------------
 
 -- Movement hotkeys
-hs.hotkey.bind(nudgekey, 'down', function() nudge(0,100) end) 	--down
+hs.hotkey.bind(nudgekey, "down", function() nudge(0,100) end) 	--down
 hs.hotkey.bind(nudgekey, "up", function() nudge(0,-100) end)	--up
 hs.hotkey.bind(nudgekey, "right", function() nudge(100,0) end)	--right
 hs.hotkey.bind(nudgekey, "left", function() nudge(-100,0) end)	--left
