@@ -126,7 +126,7 @@ vnoremap : ;
 " Tab navigation mappings
 nnoremap gt :bnext<CR>
 nnoremap gT :bprevious<CR>
-nnoremap <C-c> :bdelete<CR>
+nnoremap <C-c> :bp\|bd #<CR>
 
 " Make use of the arrow keys
 nnoremap <left>  h
@@ -208,16 +208,16 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale'
 Plug 'yggdroot/indentline'
 
-Plug 'sukima/xmledit',
-      \ { 'do': 'rm ftplugin/html.vim && ln -s ftplugin/xml.vim ftplugin/html.vim' }
-
 " syntax and language related bundles
 Plug 'clones/vim-zsh', { 'for': 'zsh' }
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'saltstack/salt-vim'
 Plug 'sclo/haproxy.vim', { 'for': 'haproxy' }
 Plug 'sheerun/vim-polyglot'
 Plug 'avakhov/vim-yaml', { 'for': 'yaml' }
 Plug 'towolf/vim-helm'
+Plug 'sukima/xmledit',
+      \ { 'do': 'rm ftplugin/html.vim && ln -s ftplugin/xml.vim ftplugin/html.vim' }
 
 " colorscheme bundles
 Plug 'djjcast/mirodark'
@@ -229,9 +229,9 @@ Plug 'w0ng/vim-hybrid'
 if has('nvim')
   let g:python3_host_prog = '/usr/local/bin/python3'
 
-  Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
   Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'sirver/ultisnips'
+  Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'zchee/deoplete-go', { 'do': 'make'}
 endif
 
