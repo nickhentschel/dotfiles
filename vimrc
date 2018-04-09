@@ -149,7 +149,7 @@ nnoremap gQ mmgggqG`m
 xnoremap gs y:%s/<C-r>//g<Left><Left>
 
 " Autoformat on save
-" au BufWrite * :Autoformat
+au BufWrite * :Autoformat
 
 " quickfix not listed in buffer lists
 augroup quit_qf_help
@@ -209,15 +209,16 @@ Plug 'w0rp/ale'
 Plug 'yggdroot/indentline'
 
 " syntax and language related bundles
+Plug 'avakhov/vim-yaml', { 'for': 'yaml' }
 Plug 'clones/vim-zsh', { 'for': 'zsh' }
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+Plug 'rdolgushin/groovy.vim', { 'for': 'groovy' }
 Plug 'saltstack/salt-vim'
 Plug 'sclo/haproxy.vim', { 'for': 'haproxy' }
 Plug 'sheerun/vim-polyglot'
-Plug 'avakhov/vim-yaml', { 'for': 'yaml' }
-Plug 'towolf/vim-helm'
 Plug 'sukima/xmledit',
-      \ { 'do': 'rm ftplugin/html.vim && ln -s ftplugin/xml.vim ftplugin/html.vim' }
+Plug 'towolf/vim-helm', { 'do': 'rm ftplugin/html.vim && ln -s ftplugin/xml.vim ftplugin/html.vim' }
+Plug 'vim-scripts/groovyindent-unix', { 'for': 'groovy' }
 
 " colorscheme bundles
 Plug 'djjcast/mirodark'
@@ -231,7 +232,6 @@ if has('nvim')
 
   Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'sirver/ultisnips'
-  Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'zchee/deoplete-go', { 'do': 'make'}
 endif
 
@@ -240,6 +240,18 @@ call plug#end()
 " * * * * * * * * * * * * * * * * * * *
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
+
+" Autoformat
+let g:autoformat_autoindent = 0
+
+" Ale
+let g:ale_linters = {
+\   'sh': ['shfmt'],
+\}
+
+let g:ale_fixers = {
+\   'sh': ['shfmt'],
+\}
 
 " Syntax
 let g:vim_markdown_conceal = 0
@@ -315,6 +327,7 @@ let g:airline#extensions#bufferline#enabled = 0
 let g:airline#extensions#bufferline#overwrite_variables = 0
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#ale#enabled = 1
 
 " Tabular mappings
 nnoremap <Leader>= :Tabularize /=<CR>
