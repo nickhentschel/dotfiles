@@ -148,9 +148,6 @@ nnoremap gQ mmgggqG`m
 " Better replace
 xnoremap gs y:%s/<C-r>//g<Left><Left>
 
-" Autoformat on save
-au BufWrite * :Autoformat
-
 " quickfix not listed in buffer lists
 augroup quit_qf_help
   autocmd!
@@ -163,7 +160,7 @@ augroup formatting
   autocmd!
   " autocmd BufRead,BufNewFile */templates/*.yaml setlocal ft=helm
   autocmd FileType markdown setlocal textwidth=80
-  autocmd Filetype Dockerfile setlocal ts=4 sts=4 sw=4 expandtab
+  autocmd Filetype Dockerfile,markdown setlocal ts=4 sts=4 sw=4 expandtab
   autocmd Filetype Jenkinsfile setlocal filetype=groovy
   autocmd BufNewFile,BufRead *.dockerfile setlocal filetype=Dockerfile
   autocmd BufNewFile,BufRead *.jenkinsfile setlocal filetype=groovy
@@ -190,7 +187,6 @@ augroup END
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'chiel92/vim-autoformat'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'godlygeek/tabular'
 Plug 'jiangmiao/auto-pairs'
@@ -231,6 +227,7 @@ if has('nvim')
   let g:python3_host_prog = '/usr/local/bin/python3'
 
   Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'shougo/neco-syntax'
   Plug 'sirver/ultisnips'
   Plug 'zchee/deoplete-go', { 'do': 'make'}
 endif
@@ -241,17 +238,17 @@ call plug#end()
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
 
-" Autoformat
-let g:autoformat_autoindent = 0
-
-" Ale
-let g:ale_linters = {
-\   'sh': ['shfmt'],
-\}
-
+" ALE
 let g:ale_fixers = {
-\   'sh': ['shfmt'],
+\   'markdown': ['remark', 'remove_trailing_lines', 'trim_whitespace'],
+\   'sh': ['shfmt', 'remove_trailing_lines', 'trim_whitespace'],
 \}
+
+let g:ale_linters = {
+\   'puppet': ['puppet-lint'],
+\}
+
+let g:ale_fix_on_save = 1
 
 " Syntax
 let g:vim_markdown_conceal = 0
@@ -272,15 +269,8 @@ let g:deoplete#enable_at_startup = 1
 let g:deoplete#disable_auto_complete = 0
 let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ deoplete#mappings#manual_complete()
-
-inoremap <silent><expr> <S-TAB>
-      \ pumvisible() ? "\<C-p>" :
-      \ <SID>check_back_space() ? "\<S-TAB>" :
-      \ deoplete#mappings#manual_complete()
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 function! s:check_back_space() abort "{{{
   let col = col('.') - 1
