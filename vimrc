@@ -18,6 +18,7 @@
 
 set shell=/bin/bash
 filetype plugin indent on
+syntax enable
 
 " * * * * * * * * * * * * * * * * * * *
 " * FUNCTIONS                         *
@@ -217,11 +218,15 @@ Plug 'towolf/vim-helm', { 'do': 'rm ftplugin/html.vim && ln -s ftplugin/xml.vim 
 Plug 'vim-scripts/groovyindent-unix', { 'for': 'groovy' }
 
 " colorscheme bundles
+Plug 'robertmeta/nofrils'
+Plug 'andreasvc/vim-256noir'
 Plug 'djjcast/mirodark'
 Plug 'erichdongubler/vim-sublime-monokai'
 Plug 'morhetz/gruvbox'
 Plug 'nlknguyen/papercolor-theme'
 Plug 'w0ng/vim-hybrid'
+Plug 'endel/vim-github-colorscheme'
+Plug 'JarrodCTaylor/spartan'
 
 if has('nvim')
   let g:python3_host_prog = '/usr/local/bin/python3'
@@ -242,6 +247,7 @@ call plug#end()
 let g:ale_fixers = {
 \   'markdown': ['remark', 'remove_trailing_lines', 'trim_whitespace'],
 \   'sh': ['shfmt', 'remove_trailing_lines', 'trim_whitespace'],
+\   'vim': ['remove_trailing_lines', 'trim_whitespace'],
 \}
 
 let g:ale_linters = {
@@ -269,8 +275,8 @@ let g:deoplete#enable_at_startup = 1
 let g:deoplete#disable_auto_complete = 0
 let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 function! s:check_back_space() abort "{{{
   let col = col('.') - 1
@@ -279,7 +285,7 @@ endfunction"}}}
 
 " Indentline
 let g:indentLine_char = '│'
-let g:indentLine_color_term = 239
+let g:indentLine_color_term = 240
 
 " FZF
 let g:fzf_layout = { 'down': '~20%'  }
@@ -340,9 +346,9 @@ set laststatus=2
 set noeb vb t_vb=
 
 " Theme
-syntax enable
 set background=dark
-colorscheme monokai
+let g:nofrils_strbackgrounds=1
+colorscheme nofrils-dark
 
 " Line at 80 characters
 hi MatchParen cterm=bold ctermbg=none ctermfg=red
