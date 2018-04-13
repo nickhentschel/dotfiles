@@ -208,7 +208,6 @@ Plug 'yggdroot/indentline'
 " syntax and language related bundles
 Plug 'avakhov/vim-yaml', { 'for': 'yaml' }
 Plug 'clones/vim-zsh', { 'for': 'zsh' }
-Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'rdolgushin/groovy.vim', { 'for': 'groovy' }
 Plug 'saltstack/salt-vim'
 Plug 'sclo/haproxy.vim', { 'for': 'haproxy' }
@@ -231,6 +230,7 @@ Plug 'JarrodCTaylor/spartan'
 if has('nvim')
   let g:python3_host_prog = '/usr/local/bin/python3'
 
+  Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
   Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'shougo/neco-syntax'
   Plug 'sirver/ultisnips'
