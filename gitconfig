@@ -1,63 +1,47 @@
 [user]
-    name = Nick Hentschel
-    email = nhentschel@wayfair.com
+  name = Nick Hentschel
+  email = nhentschel@wayfair.com
 [github]
-    user = nickhentschel
+  user = nickhentschel
 [color]
-    diff = auto
-    status = auto
-    branch = auto
-    interactive = auto
-    ui = true
-[color "branch"]
-    current = yellow reverse
-    local = yellow
-    remote = green
-[color "diff"]
-    meta = yellow bold
-    frag = magenta
-    plain = white bold
-    old = red bold
-    new = green bold
-    commit = yellow bold
-    func = green dim
-[color "status"]
-    added = yellow
-    changed = green
-    untracked = cyan
+  diff = auto
+  status = auto
+  branch = auto
+  interactive = auto
+  ui = true
 [credential]
-    helper = cache
+  helper = cache
 [push]
-    default = current
+  default = current
 [core]
-    editor = vim
-    autocrlf = false
-    preloadindex = true
-    excludesfile = /Users/nhentschel/.gitignore
+  editor = vim
+  autocrlf = false
+  preloadindex = true
+  excludesfile = /Users/nhentschel/.gitignore
 [alias]
-    st = status
-    co = checkout
-    di = diff
-    aa = add --all
-    br = branch -vv
-    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
-    logall = log --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
-    l = log --graph --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset'
-    leaderboard = shortlog -sn
+  st = status
+  co = checkout
+  di = diff
+  aa = add --all
+  br = branch -vv
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+  logall = log --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+  l = log --graph --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset'
+  leaderboard = shortlog -sn
 [pull]
-    rebase = true
+  rebase = true
 [status]
-    showUntrackedFiles = all
+  showUntrackedFiles = all
 [fetch]
-    prune = true
+  prune = true
 [log]
-    decorate = short
+  decorate = short
 [http]
-    sslverify = false
-    sslCAPath = /etc/pki/tls/certs
+  sslverify = false
+  sslCAPath = /etc/pki/tls/certs
 [rerere]
-    enabled = true
+  enabled = true
 [url "https://github.com"]
-    insteadOf = git://github.com
+  insteadOf = git://github.com
 [url "https://github.com/"]
-    insteadOf = git@github.com:
+  insteadOf = git@github.com:
