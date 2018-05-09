@@ -1,10 +1,13 @@
-"remarkConfig": {
-  "plugins": [
-    "preset-lint-recommended",
-    "preset-lint-consistent",
-    "preset-lint-markdown-style-guide"
-  ],
-  "settings": {
-    "commonmark": true
-  }
-}
+plugins:
+- preset-lint-markdown-style-guide
+settings:
+  bullet: '-'
+  emphasis: '*'
+  incrementListMarker: false
+  listItemIndent: 1
+  preferUnquoted: true
+  quote: "'"
+  quoteSmart: true
+  rule: '-'
+  strong: '*'
+  verbose: true
