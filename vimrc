@@ -302,7 +302,7 @@ endfunction"}}}
 
 " Indentline
 let g:indentLine_char = '│'
-" let g:indentLine_color_term = 251
+let g:indentLine_color_term = 240
 
 " FZF
 let g:fzf_layout = { 'down': '~40%'  }
@@ -312,17 +312,16 @@ let g:fzf_action = {
       \ 'ctrl-v': 'vsplit'
       \ }
 
-" To use ripgrep instead of ag:
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0)
+command! -bang -nargs=* Find
+      \ call fzf#vim#grep(
+      \   'rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1,
+      \   <bang>0 ? fzf#vim#with_preview('up:60%')
+      \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+      \   <bang>0)
 
 nnoremap <c-p> :FZF<cr>
 nnoremap <c-o> :Buffers<cr>
-nnoremap <c-i> :FZFRg<cr>
+nnoremap <c-i> :Find<cr>
 
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --color=never
@@ -333,7 +332,7 @@ let g:airline_detect_paste = 1
 let g:airline_left_sep = ''
 let g:airline_powerline_fonts = 0
 let g:airline_right_sep = ''
-let g:airline_theme = 'sol'
+let g:airline_theme = 'minimalist'
 let g:airline#extensions#branch#empty_message = ''
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#bufferline#enabled = 0
@@ -360,13 +359,15 @@ set laststatus=2
 " disable sound on errors
 set noeb vb t_vb=
 
+" let g:nofrils_strbackgrounds=1
+" let g:nofrils_heavycomments=0
+" let g:nofrils_heavylinenumbers=0
+
+" Theme
+set background=dark
+colorscheme sublimemonokai
+
 " Line at 80 characters
 hi MatchParen cterm=bold ctermbg=none ctermfg=red
 highlight ColorColumn ctermbg=235
 set colorcolumn=80
-
-" Theme
-let g:nofrils_strbackgrounds=1
-let g:nofrils_heavycomments=1
-let g:nofrils_heavylinenumbers=1
-colorscheme nofrils-light

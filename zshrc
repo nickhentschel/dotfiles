@@ -40,7 +40,7 @@ zplugin light 'greymd/docker-zsh-completion'
 zplugin light 'psprint/history-search-multi-word'
 zplugin light 'zsh-users/zsh-completions'
 zplugin light 'zsh-users/zsh-autosuggestions'
-zplugin light 'zdharma/fast-syntax-highlighting'
+# zplugin light 'zdharma/fast-syntax-highlighting'
 zplugin light 'zsh-users/zsh-history-substring-search'
 
 ######## PLUGIN SETTINGS ########
@@ -52,42 +52,42 @@ my-autosuggest-accept() {
 }
 
 # Autosuggestions settings
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=251"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=245"
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=("backward-char")
 ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=my-autosuggest-accept
 
-string_style='fg=black,bg=253'
-# string_style='bg=0'
+# string_style='fg=black,bg=253'
+string_style='fg=250'
 
 # Setup syntax highlighting
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets line)
-FAST_HIGHLIGHT_STYLES[variable]=none
-FAST_HIGHLIGHT_STYLES[default]=none
-FAST_HIGHLIGHT_STYLES[unknown-token]=none
-FAST_HIGHLIGHT_STYLES[reserved-word]=none
-FAST_HIGHLIGHT_STYLES[alias]=none
-FAST_HIGHLIGHT_STYLES[suffix-alias]=none
-FAST_HIGHLIGHT_STYLES[builtin]=none
-FAST_HIGHLIGHT_STYLES[function]=none
-FAST_HIGHLIGHT_STYLES[command]=none
-FAST_HIGHLIGHT_STYLES[precommand]=none
-FAST_HIGHLIGHT_STYLES[commandseparator]=none
-FAST_HIGHLIGHT_STYLES[hashed-command]=none
-FAST_HIGHLIGHT_STYLES[path]=none
-FAST_HIGHLIGHT_STYLES[path_pathseparator]=none
-FAST_HIGHLIGHT_STYLES[globbing]=none
-FAST_HIGHLIGHT_STYLES[history-expansion]=none
-FAST_HIGHLIGHT_STYLES[single-hyphen-option]=none
-FAST_HIGHLIGHT_STYLES[double-hyphen-option]=none
-FAST_HIGHLIGHT_STYLES[back-quoted-argument]=$string_style
-FAST_HIGHLIGHT_STYLES[single-quoted-argument]=$string_style
-FAST_HIGHLIGHT_STYLES[double-quoted-argument]=$string_style
-FAST_HIGHLIGHT_STYLES[dollar-quoted-argument]=$string_style
-FAST_HIGHLIGHT_STYLES[back-or-dollar-double-quoted-argument]=$string_style
-FAST_HIGHLIGHT_STYLES[back-dollar-quoted-argument]=$string_style
-FAST_HIGHLIGHT_STYLES[assign]=none
-FAST_HIGHLIGHT_STYLES[redirection]=none
-FAST_HIGHLIGHT_STYLES[comment]='fg=black,bold'
+# ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets line)
+# FAST_HIGHLIGHT_STYLES[variable]=none
+# FAST_HIGHLIGHT_STYLES[default]=none
+# FAST_HIGHLIGHT_STYLES[unknown-token]=none
+# FAST_HIGHLIGHT_STYLES[reserved-word]=none
+# FAST_HIGHLIGHT_STYLES[alias]=none
+# FAST_HIGHLIGHT_STYLES[suffix-alias]=none
+# FAST_HIGHLIGHT_STYLES[builtin]=none
+# FAST_HIGHLIGHT_STYLES[function]=none
+# FAST_HIGHLIGHT_STYLES[command]=none
+# FAST_HIGHLIGHT_STYLES[precommand]=none
+# FAST_HIGHLIGHT_STYLES[commandseparator]=none
+# FAST_HIGHLIGHT_STYLES[hashed-command]=none
+# FAST_HIGHLIGHT_STYLES[path]=none
+# FAST_HIGHLIGHT_STYLES[path_pathseparator]=none
+# FAST_HIGHLIGHT_STYLES[globbing]=none
+# FAST_HIGHLIGHT_STYLES[history-expansion]=none
+# FAST_HIGHLIGHT_STYLES[single-hyphen-option]=none
+# FAST_HIGHLIGHT_STYLES[double-hyphen-option]=none
+# FAST_HIGHLIGHT_STYLES[back-quoted-argument]=$string_style
+# FAST_HIGHLIGHT_STYLES[single-quoted-argument]=$string_style
+# FAST_HIGHLIGHT_STYLES[double-quoted-argument]=$string_style
+# FAST_HIGHLIGHT_STYLES[dollar-quoted-argument]=$string_style
+# FAST_HIGHLIGHT_STYLES[back-or-dollar-double-quoted-argument]=$string_style
+# FAST_HIGHLIGHT_STYLES[back-dollar-quoted-argument]=$string_style
+# FAST_HIGHLIGHT_STYLES[assign]=none
+# FAST_HIGHLIGHT_STYLES[redirection]=none
+# FAST_HIGHLIGHT_STYLES[comment]='fg=black,bold'
 
 HSMW_HIGHLIGHT_STYLES[variable]=none
 HSMW_HIGHLIGHT_STYLES[default]=none
