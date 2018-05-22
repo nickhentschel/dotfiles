@@ -81,7 +81,7 @@ set sidescrolloff=15
 set sidescroll=1
 set scrolljump=10
 set synmaxcol=200              " Stop syntax highlighting after 200 chars
-set breakindent
+" set breakindent
 set showbreak=\\\\\
 
 let g:netrw_banner = 0         " netrw
