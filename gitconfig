@@ -18,6 +18,7 @@
   autocrlf = false
   preloadindex = true
   excludesfile = /Users/nhentschel/.gitignore
+	pager = less -F -X
 [alias]
   st = status
   co = checkout

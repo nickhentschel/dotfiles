@@ -171,7 +171,7 @@ augroup END
 
 augroup formatting
   autocmd!
-  " autocmd BufRead,BufNewFile */templates/*.yaml setlocal ft=helm
+  autocmd BufRead,BufNewFile */templates/*.yaml setlocal ft=helm
   autocmd FileType markdown setlocal textwidth=80
   autocmd Filetype Dockerfile,markdown setlocal ts=4 sts=4 sw=4 expandtab spell
   autocmd Filetype Jenkinsfile setlocal filetype=groovy
@@ -234,7 +234,7 @@ Plug 'vim-scripts/jcommenter.vim', { 'for': 'groovy' }
 Plug 'robertmeta/nofrils'
 Plug 'andreasvc/vim-256noir'
 Plug 'djjcast/mirodark'
-Plug 'erichdongubler/vim-sublime-monokai'
+Plug 'nickhentschel/vim-sublime-monokai'
 Plug 'morhetz/gruvbox'
 Plug 'nlknguyen/papercolor-theme'
 Plug 'w0ng/vim-hybrid'
@@ -264,6 +264,7 @@ let g:ale_fixers = {
 \   'markdown': ['remark', 'remove_trailing_lines', 'trim_whitespace'],
 \   'sh': ['shfmt', 'remove_trailing_lines', 'trim_whitespace'],
 \   'vim': ['remove_trailing_lines', 'trim_whitespace'],
+\   'yaml': ['remove_trailing_lines', 'trim_whitespace'],
 \}
 
 let g:ale_linters = {
@@ -359,15 +360,15 @@ set laststatus=2
 " disable sound on errors
 set noeb vb t_vb=
 
-" let g:nofrils_strbackgrounds=1
-" let g:nofrils_heavycomments=0
-" let g:nofrils_heavylinenumbers=0
+let g:nofrils_strbackgrounds=1
+let g:nofrils_heavycomments=0
+let g:nofrils_heavylinenumbers=0
 
 " Theme
 set background=dark
-colorscheme sublimemonokai
+colorscheme nofrils-dark
 
 " Line at 80 characters
-hi MatchParen cterm=bold ctermbg=none ctermfg=red
-highlight ColorColumn ctermbg=235
+" hi MatchParen cterm=bold ctermbg=none ctermfg=red
+" highlight ColorColumn ctermbg=235
 set colorcolumn=80
