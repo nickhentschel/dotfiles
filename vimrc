@@ -80,7 +80,7 @@ set scrolloff=8                " Start scrolling when we're 8 lines away from ma
 set sidescrolloff=15
 set sidescroll=1
 set scrolljump=10
-set synmaxcol=200              " Stop syntax highlighting after 200 chars
+" set synmaxcol=200              " Stop syntax highlighting after 200 chars
 " set breakindent
 set showbreak=\\\\\
 
@@ -242,6 +242,7 @@ Plug 'endel/vim-github-colorscheme'
 Plug 'owickstrom/vim-colors-paramount'
 Plug 'noahfrederick/vim-noctu'
 Plug 'pbrisbin/vim-colors-off'
+Plug 'jeffkreeftmeijer/vim-dim'
 
 if has('nvim')
   let g:python3_host_prog = '/usr/local/bin/python3'
@@ -360,15 +361,15 @@ set laststatus=2
 " disable sound on errors
 set noeb vb t_vb=
 
-let g:nofrils_strbackgrounds=1
-let g:nofrils_heavycomments=0
-let g:nofrils_heavylinenumbers=0
+set colorcolumn=80
+" let g:nofrils_strbackgrounds=1
+" let g:nofrils_heavycomments=0
+" let g:nofrils_heavylinenumbers=0
 
 " Theme
+colorscheme dim
 set background=dark
-colorscheme nofrils-dark
 
 " Line at 80 characters
 " hi MatchParen cterm=bold ctermbg=none ctermfg=red
 " highlight ColorColumn ctermbg=235
-set colorcolumn=80
