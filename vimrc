@@ -367,9 +367,9 @@ set colorcolumn=80
 " let g:nofrils_heavylinenumbers=0
 
 " Theme
-colorscheme dim
 set background=dark
+colorscheme sublimemonokai
 
 " Line at 80 characters
-" hi MatchParen cterm=bold ctermbg=none ctermfg=red
-" highlight ColorColumn ctermbg=235
+hi MatchParen cterm=bold ctermbg=none ctermfg=red
+highlight ColorColumn ctermbg=235
