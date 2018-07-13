@@ -16,78 +16,67 @@
 " *                                                           *
 " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-set shell=/bin/bash
-filetype plugin indent on
-syntax enable
-
-" * * * * * * * * * * * * * * * * * * *
-" * FUNCTIONS                         *
-" * * * * * * * * * * * * * * * * * * *
-
-" Functions for editing prose/markdown
-function! ProseOn()
-  Goyo 100
-  wincmd w
-  setlocal wrap
-  setlocal spell
-endfunction
-
-function! ProseOff()
-  Goyo!
-  setlocal nowrap
-  setlocal nospell
-endfunction
-
-command! ProseOn call ProseOn()
-command! ProseOff call ProseOff()
-
-" * * * * * * * * * * * * * * * * * * *
-" * VIM SETTINGS                      *
-" * * * * * * * * * * * * * * * * * * *
-
-set autowrite                  " autowrite on build
-set autoread                   " Relaod files after change outside of VIM
-set tags=./tags;,~/.vimtags    " Where to look for tag files
-set splitbelow                 " More natural splitting
-set splitright
-set incsearch                  " Incremental searching
-set ttimeoutlen=50             " Remove insert->normal delay
-set nowrap                     " Disable line wrap by default
-set linebreak
-set title                      " Title
-set showcmd                    " This shows what you are typing as a command
-set autoindent                 " Auto indent
+set autoindent                                            " Auto indent
+set autoread                                              " Relaod files after change outside of VIM
+set autowrite                                             " autowrite on build
+set completeopt=menu,preview
 set expandtab
+set hidden                                                " Allow hidden buffers
+set hlsearch                                              " Highlight search
+set ignorecase                                            " Ignore case
+set incsearch                                             " Incremental searching
+set linebreak
+set mouse=a                                               " Enable mouse support in console
+set nobackup
+set nospell                                               " Don't spell check by default
+set nostartofline                                         " Don't reset cursor to start of line when moving around
+set noswapfile                                            " Disable swap files
+set nowb
+set nowrap                                                " Disable line wrap by default
+set scrolljump=10
+set scrolloff=8                                           " Start scrolling when we're 8 lines away from margins
+set showbreak=\\\\\
+set showcmd                                               " This shows what you are typing as a command
+set sidescroll=1
+set sidescrolloff=15
+set smartcase
 set smarttab
-set ts=2
+set splitbelow                                            " More natural splitting
+set splitright
 set sts=2
 set sw=2
-set spl=en spell               " Set English spell check
-set nospell                    " Don't spell check by default
+set tags=./tags;,~/.vimtags                               " Where to look for tag files
+set title                                                 " Title
+set ts=2
+set ttimeoutlen=50                                        " Remove insert->normal delay
 set wildmenu
-set completeopt=menu,preview
-set wildmode=list:longest,full
-set mouse=a                    " Enable mouse support in console
-set ignorecase                 " Ignore case
-set smartcase
-set hlsearch                   " Highlight search
-set hidden                     " Allow hidden buffers
-set noswapfile                 " Disable swap files
-set nobackup
-set nowb
-set nostartofline              " Don't reset cursor to start of line when moving around
-set scrolloff=8                " Start scrolling when we're 8 lines away from margins
-set sidescrolloff=15
-set sidescroll=1
-set scrolljump=10
-" set synmaxcol=200              " Stop syntax highlighting after 200 chars
-" set breakindent
-set showbreak=\\\\\
+set wildmode=list:longest,list:full
+set textwidth=80
+set colorcolumn=+1
+set noeb vb t_vb=                                         " disable sound on errors
+set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶,nbsp:× " Make tabs, trailing whitespace, and non-breaking spaces visible
+set list
+set laststatus=2
+set ruler
+set backspace=2
+" set clipboard=unnamedplus
 
-let g:netrw_banner = 0         " netrw
+if &compatible
+  set nocompatible
+end
+
+let g:is_posix = 1
+
+" netrw
+let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
 let g:netrw_altv = 1
+
+" Live find/replace
+if has('nvim')
+  set inccommand=nosplit
+endif
 
 " Ignore while searching
 set wildignore=*.o,*.obj,*~,*vim/backups*,*sass-cache*,*DS_Store*,vendor/rails/**,vendor/cache/**,*.gem,log/**,tmp/**,*.png,*.jpg,*.gif,*.pdf,*.psd,*.log,*.git,*.svn,*.hg,*.eyaml,*/.git/*,*/tmp/*,*.swp,*/.pyc*
@@ -134,12 +123,6 @@ nnoremap gt :bnext<CR>
 nnoremap gT :bprevious<CR>
 nnoremap <C-c> :bp\|bd #<CR>
 
-" Make use of the arrow keys
-nnoremap <left>  h
-nnoremap <right> l
-nnoremap <down>  j
-nnoremap <up>    k
-
 " w!! for writing read-only file
 cmap w!! w !sudo tee % >/dev/null
 
@@ -151,32 +134,97 @@ vnoremap <C-q> <C-a>
 nnoremap g= mmgg=G`m
 nnoremap gQ mmgggqG`m
 
-" Better replace
-xnoremap gs y:%s/<C-r>//g<Left><Left>
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
+  syntax on
+endif
 
-autocmd VimResized * wincmd =
+filetype plugin indent on
+
+" * * * * * * * * * * * * * * * * * * *
+" * BUNDLES AND SUCH                  *
+" * * * * * * * * * * * * * * * * * * *
+
+call plug#begin('~/.vim/plugged')
+
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'godlygeek/tabular'
+Plug 'jiangmiao/auto-pairs'
+Plug 'jremmen/vim-ripgrep'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin'  }
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/goyo.vim'
+Plug 'tomtom/tcomment_vim'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'w0rp/ale'
+Plug 'yggdroot/indentline'
+
+" syntax and language related bundles
+Plug 'clones/vim-zsh', { 'for': 'zsh' }
+Plug 'sclo/haproxy.vim', { 'for': 'haproxy' }
+Plug 'sheerun/vim-polyglot'
+Plug 'towolf/vim-helm'
+Plug 'vim-scripts/groovyindent-unix', { 'for': 'groovy' }
+Plug 'vim-scripts/jcommenter.vim', { 'for': 'groovy' }
+
+" colorscheme bundles
+Plug 'robertmeta/nofrils'
+Plug 'djjcast/mirodark'
+Plug 'nickhentschel/vim-sublime-monokai'
+
+if has('nvim')
+  let g:python3_host_prog = '/usr/local/bin/python3'
+
+  Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+  Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'shougo/neco-syntax'
+  " Plug 'sirver/ultisnips'
+  Plug 'zchee/deoplete-go', { 'do': 'make'}
+endif
+
+call plug#end()
 
 " quickfix not listed in buffer lists
-augroup quit_qf_help
+augroup vimEx
   autocmd!
+
+  autocmd BufReadPost *
+        \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
+        \   exe "normal g`\"" |
+        \ endif
+
+  let g:has_async = v:version >= 800 || has('nvim')
+
+  " ALE linting events
+  if g:has_async
+    set updatetime=1000
+    let g:ale_lint_on_text_changed = 0
+    autocmd CursorHold * call ale#Lint()
+    autocmd CursorHoldI * call ale#Lint()
+    autocmd InsertEnter * call ale#Lint()
+    autocmd InsertLeave * call ale#Lint()
+  else
+    echoerr "This vimrc requires NeoVim or Vim 8"
+  endif
+
   autocmd FileType qf set nobuflisted
   autocmd FileType qf nnoremap <silent><buffer> q :q<CR>
   autocmd FileType help nnoremap <silent><buffer> q :q<CR>
-augroup END
 
-augroup ColorChg
-  au!
-  au ColorScheme nofrils-light hi ibTplString term=italic cterm=italic gui=italic
-augroup END
+  autocmd ColorScheme * highlight! Normal ctermbg=NONE guibg=NONE
+  autocmd VimResized * wincmd =
 
-augroup formatting
-  autocmd!
   autocmd BufRead,BufNewFile */templates/*.yaml setlocal ft=helm
-  autocmd FileType markdown setlocal textwidth=80
   autocmd Filetype Dockerfile,markdown setlocal ts=4 sts=4 sw=4 expandtab spell
   autocmd Filetype Jenkinsfile setlocal filetype=groovy
   autocmd BufNewFile,BufRead *.dockerfile setlocal filetype=Dockerfile
   autocmd BufNewFile,BufRead *.jenkinsfile setlocal filetype=groovy
+  autocmd BufNewFile,BufRead .{jscs,jshint,eslint}rc set filetype=json
 augroup END
 
 augroup go
@@ -193,68 +241,6 @@ augroup go
   autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
   autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 augroup END
-
-" * * * * * * * * * * * * * * * * * * *
-" * BUNDLES AND SUCH                  *
-" * * * * * * * * * * * * * * * * * * *
-
-call plug#begin('~/.vim/plugged')
-
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'godlygeek/tabular'
-Plug 'jiangmiao/auto-pairs'
-Plug 'jremmen/vim-ripgrep'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin'  }
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/goyo.vim'
-Plug 'tomtom/tcomment_vim'
-Plug 'tpope/vim-endwise', { 'for': ['eruby', 'ruby', 'bash'] }
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'w0rp/ale'
-Plug 'yggdroot/indentline'
-Plug 'severin-lemaignan/vim-minimap'
-
-" syntax and language related bundles
-Plug 'avakhov/vim-yaml', { 'for': 'yaml' }
-Plug 'clones/vim-zsh', { 'for': 'zsh' }
-Plug 'rdolgushin/groovy.vim', { 'for': 'groovy' }
-Plug 'saltstack/salt-vim'
-Plug 'sclo/haproxy.vim', { 'for': 'haproxy' }
-Plug 'sheerun/vim-polyglot'
-Plug 'sukima/xmledit',
-Plug 'towolf/vim-helm', { 'do': 'rm ftplugin/html.vim && ln -s ftplugin/xml.vim ftplugin/html.vim' }
-Plug 'vim-scripts/groovyindent-unix', { 'for': 'groovy' }
-Plug 'vim-scripts/jcommenter.vim', { 'for': 'groovy' }
-
-" colorscheme bundles
-Plug 'robertmeta/nofrils'
-Plug 'andreasvc/vim-256noir'
-Plug 'djjcast/mirodark'
-Plug 'nickhentschel/vim-sublime-monokai'
-Plug 'morhetz/gruvbox'
-Plug 'nlknguyen/papercolor-theme'
-Plug 'w0ng/vim-hybrid'
-Plug 'endel/vim-github-colorscheme'
-Plug 'owickstrom/vim-colors-paramount'
-Plug 'noahfrederick/vim-noctu'
-Plug 'pbrisbin/vim-colors-off'
-Plug 'jeffkreeftmeijer/vim-dim'
-
-if has('nvim')
-  let g:python3_host_prog = '/usr/local/bin/python3'
-
-  Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-  Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  Plug 'shougo/neco-syntax'
-  " Plug 'sirver/ultisnips'
-  Plug 'zchee/deoplete-go', { 'do': 'make'}
-endif
-
-call plug#end()
 
 " * * * * * * * * * * * * * * * * * * *
 " * PLUGIN SETTINGS AND MAPPINGS      *
@@ -288,6 +274,18 @@ let g:go_highlight_generate_tags = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_types = 1
 let g:go_list_type = 'quickfix'
+
+" Vim Airline
+let g:airline_detect_paste = 1
+let g:airline_left_sep = ''
+let g:airline_powerline_fonts = 0
+let g:airline_right_sep = ''
+let g:airline_theme = 'minimalist'
+let g:airline#extensions#branch#empty_message = ''
+let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#bufferline#enabled = 0
+let g:airline#extensions#bufferline#overwrite_variables = 0
+let g:airline#extensions#ale#enabled = 1
 
 " deoplete
 let g:deoplete#enable_at_startup = 1
@@ -329,18 +327,6 @@ if executable('rg')
   set grepprg=rg\ --vimgrep\ --color=never
 endif
 
-" Vim Airline
-let g:airline_detect_paste = 1
-let g:airline_left_sep = ''
-let g:airline_powerline_fonts = 0
-let g:airline_right_sep = ''
-let g:airline_theme = 'minimalist'
-let g:airline#extensions#branch#empty_message = ''
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#bufferline#enabled = 0
-let g:airline#extensions#bufferline#overwrite_variables = 0
-let g:airline#extensions#ale#enabled = 1
-
 " Tabular mappings
 nnoremap <Leader>= :Tabularize /=<CR>
 vnoremap <Leader>= :Tabularize /=<CR>
@@ -348,28 +334,35 @@ nnoremap <Leader>> :Tabularize /=><CR>
 vnoremap <Leader>> :Tabularize /=><CR>
 
 " * * * * * * * * * * * * * * * * * * *
-" * LOOK AND FEEL                     *
+" * FUNCTIONS                         *
 " * * * * * * * * * * * * * * * * * * *
 
-" Make tabs, trailing whitespace, and non-breaking spaces visible
-set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶,nbsp:×
-set list
+" Functions for editing prose/markdown
+function! ProseOn()
+  Goyo 100
+  wincmd w
+  setlocal wrap
+  setlocal spell
+endfunction
 
-" fixes airline on vim
-set laststatus=2
+function! ProseOff()
+  Goyo!
+  setlocal nowrap
+  setlocal nospell
+endfunction
 
-" disable sound on errors
-set noeb vb t_vb=
+command! ProseOn call ProseOn()
+command! ProseOff call ProseOff()
 
-set colorcolumn=80
-" let g:nofrils_strbackgrounds=1
-" let g:nofrils_heavycomments=0
-" let g:nofrils_heavylinenumbers=0
+
+" * * * * * * * * * * * * * * * * * * *
+" * LOOK AND FEEL                     *
+" * * * * * * * * * * * * * * * * * * *
 
 " Theme
 set background=dark
 colorscheme sublimemonokai
 
-" Line at 80 characters
-hi MatchParen cterm=bold ctermbg=none ctermfg=red
-highlight ColorColumn ctermbg=235
+" let g:nofrils_strbackgrounds=1
+" let g:nofrils_heavycomments=0
+" let g:nofrils_heavylinenumbers=0
