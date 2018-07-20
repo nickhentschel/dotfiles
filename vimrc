@@ -51,7 +51,6 @@ set ts=2
 set ttimeoutlen=50                                        " Remove insert->normal delay
 set wildmenu
 set wildmode=list:longest,list:full
-set textwidth=80
 set colorcolumn=+1
 set noeb vb t_vb=                                         " disable sound on errors
 set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶,nbsp:× " Make tabs, trailing whitespace, and non-breaking spaces visible
@@ -363,6 +362,7 @@ command! ProseOff call ProseOff()
 set background=dark
 colorscheme sublimemonokai
 
+highlight MatchParen ctermbg=blue guibg=lightblue
 " let g:nofrils_strbackgrounds=1
 " let g:nofrils_heavycomments=0
 " let g:nofrils_heavylinenumbers=0
