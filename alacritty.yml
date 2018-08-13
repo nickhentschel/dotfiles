@@ -82,7 +82,7 @@ custom_cursor_colors: false
 colors:
   # Default colors
   primary:
-    background: '0x222222'
+    background: '0x151718'
     foreground: '0xffffff'
 
   # Normal colors

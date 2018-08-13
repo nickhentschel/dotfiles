@@ -33,6 +33,7 @@ set nostartofline                                         " Don't reset cursor t
 set noswapfile                                            " Disable swap files
 set nowb
 set nowrap                                                " Disable line wrap by default
+set number
 set scrolljump=10
 set scrolloff=8                                           " Start scrolling when we're 8 lines away from margins
 set showbreak=\\\\\
@@ -197,20 +198,6 @@ augroup vimEx
         \   exe "normal g`\"" |
         \ endif
 
-  let g:has_async = v:version >= 800 || has('nvim')
-
-  " ALE linting events
-  if g:has_async
-    set updatetime=1000
-    let g:ale_lint_on_text_changed = 0
-    autocmd CursorHold * call ale#Lint()
-    autocmd CursorHoldI * call ale#Lint()
-    autocmd InsertEnter * call ale#Lint()
-    autocmd InsertLeave * call ale#Lint()
-  else
-    echoerr "This vimrc requires NeoVim or Vim 8"
-  endif
-
   autocmd FileType qf set nobuflisted
   autocmd FileType qf nnoremap <silent><buffer> q :q<CR>
   autocmd FileType help nnoremap <silent><buffer> q :q<CR>
@@ -362,6 +349,7 @@ command! ProseOff call ProseOff()
 set background=dark
 colorscheme sublimemonokai
 
+set colorcolumn=80
 highlight MatchParen ctermbg=blue guibg=lightblue
 " let g:nofrils_strbackgrounds=1
 " let g:nofrils_heavycomments=0
