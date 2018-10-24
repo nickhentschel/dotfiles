@@ -176,6 +176,8 @@ Plug 'vim-scripts/jcommenter.vim', { 'for': 'groovy' }
 Plug 'robertmeta/nofrils'
 Plug 'djjcast/mirodark'
 Plug 'nickhentschel/vim-sublime-monokai'
+Plug 'altercation/vim-colors-solarized'
+Plug 'cormacrelf/vim-colors-github'
 
 if has('nvim')
   let g:python3_host_prog = '/usr/local/bin/python3'
@@ -235,7 +237,7 @@ augroup END
 " ALE
 let g:ale_fixers = {
 \   'markdown': ['remark', 'remove_trailing_lines', 'trim_whitespace'],
-\   'sh': ['shfmt', 'remove_trailing_lines', 'trim_whitespace'],
+\   'sh': ['remove_trailing_lines', 'trim_whitespace'],
 \   'vim': ['remove_trailing_lines', 'trim_whitespace'],
 \   'yaml': ['remove_trailing_lines', 'trim_whitespace'],
 \}
