@@ -178,6 +178,7 @@ Plug 'djjcast/mirodark'
 Plug 'nickhentschel/vim-sublime-monokai'
 Plug 'altercation/vim-colors-solarized'
 Plug 'cormacrelf/vim-colors-github'
+Plug 'kamwitsta/flatwhite-vim'
 
 if has('nvim')
   let g:python3_host_prog = '/usr/local/bin/python3'
@@ -204,7 +205,7 @@ augroup vimEx
   autocmd FileType qf nnoremap <silent><buffer> q :q<CR>
   autocmd FileType help nnoremap <silent><buffer> q :q<CR>
 
-  autocmd ColorScheme * highlight! Normal ctermbg=NONE guibg=NONE
+  " autocmd ColorScheme * highlight! Normal ctermbg=NONE guibg=NONE
   autocmd VimResized * wincmd =
 
   autocmd BufRead,BufNewFile */templates/*.yaml setlocal ft=helm
@@ -347,9 +348,11 @@ command! ProseOff call ProseOff()
 " * LOOK AND FEEL                     *
 " * * * * * * * * * * * * * * * * * * *
 
+set termguicolors
+
 " Theme
-set background=dark
-colorscheme sublimemonokai
+set background=light
+colorscheme flatwhite
 
 set colorcolumn=80
 highlight MatchParen ctermbg=blue guibg=lightblue
