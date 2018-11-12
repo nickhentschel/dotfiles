@@ -176,7 +176,7 @@ Plug 'vim-scripts/jcommenter.vim', { 'for': 'groovy' }
 Plug 'robertmeta/nofrils'
 Plug 'djjcast/mirodark'
 Plug 'nickhentschel/vim-sublime-monokai'
-Plug 'altercation/vim-colors-solarized'
+Plug 'lifepillar/vim-solarized8'
 Plug 'cormacrelf/vim-colors-github'
 Plug 'kamwitsta/flatwhite-vim'
 
@@ -205,11 +205,11 @@ augroup vimEx
   autocmd FileType qf nnoremap <silent><buffer> q :q<CR>
   autocmd FileType help nnoremap <silent><buffer> q :q<CR>
 
-  " autocmd ColorScheme * highlight! Normal ctermbg=NONE guibg=NONE
+  autocmd ColorScheme * highlight! Normal ctermbg=NONE guibg=NONE
   autocmd VimResized * wincmd =
 
   autocmd BufRead,BufNewFile */templates/*.yaml setlocal ft=helm
-  autocmd Filetype Dockerfile,markdown setlocal ts=4 sts=4 sw=4 expandtab spell
+  autocmd Filetype Dockerfile,markdown setlocal ts=4 sts=4 sw=4 spell
   autocmd Filetype Jenkinsfile setlocal filetype=groovy
   autocmd BufNewFile,BufRead *.dockerfile setlocal filetype=Dockerfile
   autocmd BufNewFile,BufRead *.jenkinsfile setlocal filetype=groovy
@@ -238,7 +238,7 @@ augroup END
 " ALE
 let g:ale_fixers = {
 \   'markdown': ['remark', 'remove_trailing_lines', 'trim_whitespace'],
-\   'sh': ['remove_trailing_lines', 'trim_whitespace'],
+\   'sh': ['remove_trailing_lines', 'trim_whitespace', 'shfmt'],
 \   'vim': ['remove_trailing_lines', 'trim_whitespace'],
 \   'yaml': ['remove_trailing_lines', 'trim_whitespace'],
 \}
@@ -246,6 +246,7 @@ let g:ale_fixers = {
 let g:ale_linters = {
 \   'puppet': ['puppet-lint'],
 \   'markdown': ['remark-lint'],
+\   'sh': ['shellcheck'],
 \}
 
 let g:ale_fix_on_save = 1
@@ -269,7 +270,7 @@ let g:airline_detect_paste = 1
 let g:airline_left_sep = ''
 let g:airline_powerline_fonts = 0
 let g:airline_right_sep = ''
-let g:airline_theme = 'minimalist'
+" let g:airline_theme = 'minimalist'
 let g:airline#extensions#branch#empty_message = ''
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#bufferline#enabled = 0
@@ -290,7 +291,7 @@ function! s:check_back_space() abort "{{{
 endfunction"}}}
 
 " Indentline
-let g:indentLine_char = '│'
+let g:indentLine_char = '▏'
 let g:indentLine_color_term = 240
 
 " FZF
@@ -351,8 +352,8 @@ command! ProseOff call ProseOff()
 set termguicolors
 
 " Theme
-set background=light
-colorscheme flatwhite
+set background=dark
+colorscheme solarized8
 
 set colorcolumn=80
 highlight MatchParen ctermbg=blue guibg=lightblue
