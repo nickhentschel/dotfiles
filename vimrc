@@ -155,6 +155,7 @@ Plug 'jremmen/vim-ripgrep'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin'  }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
+Plug 'scrooloose/nerdtree'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
@@ -179,6 +180,7 @@ Plug 'nickhentschel/vim-sublime-monokai'
 Plug 'lifepillar/vim-solarized8'
 Plug 'cormacrelf/vim-colors-github'
 Plug 'kamwitsta/flatwhite-vim'
+Plug 'patstockwell/vim-monokai-tasty'
 
 if has('nvim')
   let g:python3_host_prog = '/usr/local/bin/python3'
@@ -209,10 +211,10 @@ augroup vimEx
   autocmd VimResized * wincmd =
 
   autocmd BufRead,BufNewFile */templates/*.yaml setlocal ft=helm
-  autocmd Filetype Dockerfile,markdown setlocal ts=4 sts=4 sw=4 spell
+  autocmd Filetype Dockerfile,markdown setlocal ts=4 sts=4 sw=4
   autocmd Filetype Jenkinsfile setlocal filetype=groovy
   autocmd BufNewFile,BufRead *.dockerfile setlocal filetype=Dockerfile
-  autocmd BufNewFile,BufRead *.jenkinsfile setlocal filetype=groovy
+  autocmd BufNewFile,BufRead *.{jenkinsfile,Jenkinsfile} setlocal filetype=groovy
   autocmd BufNewFile,BufRead .{jscs,jshint,eslint}rc set filetype=json
 augroup END
 
@@ -234,6 +236,9 @@ augroup END
 " * * * * * * * * * * * * * * * * * * *
 " * PLUGIN SETTINGS AND MAPPINGS      *
 " * * * * * * * * * * * * * * * * * * *
+
+" NerdTree
+nnoremap <Leader>t :NERDTreeToggle<CR>
 
 " ALE
 let g:ale_fixers = {
@@ -270,7 +275,8 @@ let g:airline_detect_paste = 1
 let g:airline_left_sep = ''
 let g:airline_powerline_fonts = 0
 let g:airline_right_sep = ''
-" let g:airline_theme = 'minimalist'
+let g:airline_theme = 'minimalist'
+" let g:airline_theme = 'monokai_tasty'
 let g:airline#extensions#branch#empty_message = ''
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#bufferline#enabled = 0
@@ -353,7 +359,7 @@ set termguicolors
 
 " Theme
 set background=dark
-colorscheme solarized8
+colorscheme vim-monokai-tasty
 
 set colorcolumn=80
 highlight MatchParen ctermbg=blue guibg=lightblue
