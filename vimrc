@@ -207,12 +207,11 @@ augroup vimEx
   autocmd FileType qf nnoremap <silent><buffer> q :q<CR>
   autocmd FileType help nnoremap <silent><buffer> q :q<CR>
 
-  autocmd ColorScheme * highlight! Normal ctermbg=NONE guibg=NONE
+  " autocmd ColorScheme * highlight! Normal ctermbg=NONE guibg=NONE
   autocmd VimResized * wincmd =
 
   autocmd BufRead,BufNewFile */templates/*.yaml setlocal ft=helm
   autocmd Filetype Dockerfile,markdown setlocal ts=4 sts=4 sw=4
-  autocmd Filetype Jenkinsfile setlocal filetype=groovy
   autocmd BufNewFile,BufRead *.dockerfile setlocal filetype=Dockerfile
   autocmd BufNewFile,BufRead *.{jenkinsfile,Jenkinsfile} setlocal filetype=groovy
   autocmd BufNewFile,BufRead .{jscs,jshint,eslint}rc set filetype=json
@@ -276,7 +275,6 @@ let g:airline_left_sep = ''
 let g:airline_powerline_fonts = 0
 let g:airline_right_sep = ''
 let g:airline_theme = 'minimalist'
-" let g:airline_theme = 'monokai_tasty'
 let g:airline#extensions#branch#empty_message = ''
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#bufferline#enabled = 0
@@ -298,7 +296,7 @@ endfunction"}}}
 
 " Indentline
 let g:indentLine_char = '▏'
-let g:indentLine_color_term = 240
+" let g:indentLine_color_term = 240
 
 " FZF
 let g:fzf_layout = { 'down': '~40%'  }
@@ -355,11 +353,11 @@ command! ProseOff call ProseOff()
 " * LOOK AND FEEL                     *
 " * * * * * * * * * * * * * * * * * * *
 
-set termguicolors
+" set termguicolors
 
 " Theme
 set background=dark
-colorscheme vim-monokai-tasty
+colorscheme sublimemonokai
 
 set colorcolumn=80
 highlight MatchParen ctermbg=blue guibg=lightblue

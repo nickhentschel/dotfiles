@@ -273,7 +273,7 @@ simplicity_zsh_theme() {
     host=''
   fi
 
-  PROMPT='%{$fg_bold[red]%}%(1j.● .)%f$host$short_path%{$fg_bold[red]%}|%{$reset_color%}$(_git_prompt_info)%{$fg_bold[cyan]%}$(_vi_mode_indicator)%f '
+  PROMPT='%{$fg_bold[red]%}%(1j.● .)%f$host$short_path%{$fg_bold[red]%}|%{$reset_color%}$(_git_prompt_info)%{$fg_bold[cyan]%}$(_vi_mode_indicator)%f%{$reset_color%} '
 }
 
 simplicity_zsh_theme
