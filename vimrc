@@ -52,13 +52,15 @@ set ts=2
 set ttimeoutlen=50                                        " Remove insert->normal delay
 set wildmenu
 set wildmode=list:longest,list:full
-set colorcolumn=+1
+" set colorcolumn=+1
 set noeb vb t_vb=                                         " disable sound on errors
 set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶,nbsp:× " Make tabs, trailing whitespace, and non-breaking spaces visible
 set list
 set laststatus=2
 set ruler
 set backspace=2
+set background=dark
+set colorcolumn=80
 " set clipboard=unnamedplus
 
 if &compatible
@@ -170,8 +172,9 @@ Plug 'clones/vim-zsh', { 'for': 'zsh' }
 Plug 'sclo/haproxy.vim', { 'for': 'haproxy' }
 Plug 'sheerun/vim-polyglot'
 Plug 'towolf/vim-helm'
-Plug 'vim-scripts/groovyindent-unix', { 'for': 'groovy' }
+" Plug 'vim-scripts/groovyindent-unix', { 'for': 'groovy' }
 Plug 'vim-scripts/jcommenter.vim', { 'for': 'groovy' }
+Plug 'endSly/groovy.vim', { 'for': 'groovy' }
 
 " colorscheme bundles
 Plug 'robertmeta/nofrils'
@@ -181,6 +184,7 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'cormacrelf/vim-colors-github'
 Plug 'kamwitsta/flatwhite-vim'
 Plug 'patstockwell/vim-monokai-tasty'
+Plug 'jeffkreeftmeijer/vim-dim'
 
 if has('nvim')
   let g:python3_host_prog = '/usr/local/bin/python3'
@@ -193,6 +197,27 @@ if has('nvim')
 endif
 
 call plug#end()
+
+
+" * * * * * * * * * * * * * * * * * * *
+" * LOOK AND FEEL                     *
+" * * * * * * * * * * * * * * * * * * *
+
+highlight MatchParen ctermbg=blue guibg=lightblue
+
+" set termguicolors
+
+" colorscheme sublimemonokai
+" let g:nofrils_strbackgrounds=1
+" let g:nofrils_heavycomments=0
+" let g:nofrils_heavylinenumbers=0
+let g:vim_monokai_tasty_italic=1                    " allow italics, set this before the colorscheme
+colorscheme vim-monokai-tasty
+
+
+" * * * * * * * * * * * * * * * * * * *
+" * AUGROUPS                          *
+" * * * * * * * * * * * * * * * * * * *
 
 " quickfix not listed in buffer lists
 augroup vimEx
@@ -274,7 +299,8 @@ let g:airline_detect_paste = 1
 let g:airline_left_sep = ''
 let g:airline_powerline_fonts = 0
 let g:airline_right_sep = ''
-let g:airline_theme = 'minimalist'
+" let g:airline_theme = 'minimalist'
+let g:airline_theme='monokai_tasty'
 let g:airline#extensions#branch#empty_message = ''
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#bufferline#enabled = 0
@@ -347,20 +373,3 @@ endfunction
 
 command! ProseOn call ProseOn()
 command! ProseOff call ProseOff()
-
-
-" * * * * * * * * * * * * * * * * * * *
-" * LOOK AND FEEL                     *
-" * * * * * * * * * * * * * * * * * * *
-
-" set termguicolors
-
-" Theme
-set background=dark
-colorscheme sublimemonokai
-
-set colorcolumn=80
-highlight MatchParen ctermbg=blue guibg=lightblue
-" let g:nofrils_strbackgrounds=1
-" let g:nofrils_heavycomments=0
-" let g:nofrils_heavylinenumbers=0
