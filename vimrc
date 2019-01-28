@@ -59,8 +59,6 @@ set list
 set laststatus=2
 set ruler
 set backspace=2
-set background=dark
-set colorcolumn=80
 " set clipboard=unnamedplus
 
 if &compatible
@@ -136,6 +134,19 @@ vnoremap <C-q> <C-a>
 nnoremap g= mmgg=G`m
 nnoremap gQ mmgggqG`m
 
+" Search for selected text, forwards or backwards.
+vnoremap <silent> * :<C-U>
+  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+  \gvy/<C-R><C-R>=substitute(
+  \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+  \gV:call setreg('"', old_reg, old_regtype)<CR>
+
+vnoremap <silent> # :<C-U>
+  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+  \gvy?<C-R><C-R>=substitute(
+  \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+  \gV:call setreg('"', old_reg, old_regtype)<CR>
+
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
@@ -164,7 +175,6 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'w0rp/ale'
 Plug 'yggdroot/indentline'
 
 " syntax and language related bundles
@@ -189,6 +199,8 @@ Plug 'jeffkreeftmeijer/vim-dim'
 if has('nvim')
   let g:python3_host_prog = '/usr/local/bin/python3'
 
+  Plug 'nickhentschel/ale'
+
   Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
   Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'shougo/neco-syntax'
@@ -203,17 +215,19 @@ call plug#end()
 " * LOOK AND FEEL                     *
 " * * * * * * * * * * * * * * * * * * *
 
-highlight MatchParen ctermbg=blue guibg=lightblue
-
-" set termguicolors
+set termguicolors
 
 " colorscheme sublimemonokai
 " let g:nofrils_strbackgrounds=1
 " let g:nofrils_heavycomments=0
 " let g:nofrils_heavylinenumbers=0
-let g:vim_monokai_tasty_italic=1                    " allow italics, set this before the colorscheme
+"
+" allow italics, set this before the colorscheme
+let g:vim_monokai_tasty_italic=1
 colorscheme vim-monokai-tasty
+highlight MatchParen ctermbg=blue guibg=lightblue
 
+set background=dark
 
 " * * * * * * * * * * * * * * * * * * *
 " * AUGROUPS                          *
@@ -232,14 +246,14 @@ augroup vimEx
   autocmd FileType qf nnoremap <silent><buffer> q :q<CR>
   autocmd FileType help nnoremap <silent><buffer> q :q<CR>
 
-  " autocmd ColorScheme * highlight! Normal ctermbg=NONE guibg=NONE
+  autocmd ColorScheme * highlight! Normal ctermbg=NONE guibg=NONE
   autocmd VimResized * wincmd =
 
   autocmd BufRead,BufNewFile */templates/*.yaml setlocal ft=helm
   autocmd Filetype Dockerfile,markdown setlocal ts=4 sts=4 sw=4
   autocmd BufNewFile,BufRead *.dockerfile setlocal filetype=Dockerfile
   autocmd BufNewFile,BufRead *.{jenkinsfile,Jenkinsfile} setlocal filetype=groovy
-  autocmd BufNewFile,BufRead .{jscs,jshint,eslint}rc set filetype=json
+  autocmd BufNewFile,BufRead .{jscs,jshint,eslint,markdownlint,prettier,remark}rc setlocal filetype=json
 augroup END
 
 augroup go
@@ -269,12 +283,14 @@ let g:ale_fixers = {
 \   'markdown': ['remark', 'remove_trailing_lines', 'trim_whitespace'],
 \   'sh': ['remove_trailing_lines', 'trim_whitespace', 'shfmt'],
 \   'vim': ['remove_trailing_lines', 'trim_whitespace'],
-\   'yaml': ['remove_trailing_lines', 'trim_whitespace'],
+\   'yaml': ['prettier','remove_trailing_lines', 'trim_whitespace'],
+\   'json': ['prettier','remove_trailing_lines', 'trim_whitespace'],
+\   'puppet': ['puppetlint'],
 \}
 
 let g:ale_linters = {
-\   'puppet': ['puppet-lint'],
-\   'markdown': ['remark-lint'],
+\   'puppet': ['puppetlint'],
+\   'markdown': ['markdownlint'],
 \   'sh': ['shellcheck'],
 \}
 

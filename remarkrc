@@ -1,13 +1,10 @@
-plugins:
-- preset-lint-markdown-style-guide
-settings:
-  bullet: '-'
-  emphasis: '*'
-  incrementListMarker: false
-  listItemIndent: 1
-  preferUnquoted: true
-  quote: "'"
-  quoteSmart: true
-  rule: '-'
-  strong: '*'
-  verbose: true
+{
+  "settings": {
+    "emphasis": "*",
+    "listItemIndent": "tab",
+    "strong": "*",
+    "rule": "-",
+    "ruleSpaces": false,
+    "setext": true
+  }
+}
