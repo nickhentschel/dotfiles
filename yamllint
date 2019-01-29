@@ -38,7 +38,7 @@ rules:
     max-spaces-after: 1
   indentation:
     spaces: consistent
-    indent-sequences: false
+    indent-sequences: consistent
     check-multi-line-strings: false
   key-duplicates: enable
   key-ordering: disable

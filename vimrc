@@ -182,7 +182,6 @@ Plug 'clones/vim-zsh', { 'for': 'zsh' }
 Plug 'sclo/haproxy.vim', { 'for': 'haproxy' }
 Plug 'sheerun/vim-polyglot'
 Plug 'towolf/vim-helm'
-" Plug 'vim-scripts/groovyindent-unix', { 'for': 'groovy' }
 Plug 'vim-scripts/jcommenter.vim', { 'for': 'groovy' }
 Plug 'endSly/groovy.vim', { 'for': 'groovy' }
 
@@ -250,6 +249,7 @@ augroup vimEx
   autocmd VimResized * wincmd =
 
   autocmd BufRead,BufNewFile */templates/*.yaml setlocal ft=helm
+  autocmd BufNewFile,BufRead */.config/yamllint/config setlocal filetype=yaml
   autocmd Filetype Dockerfile,markdown setlocal ts=4 sts=4 sw=4
   autocmd BufNewFile,BufRead *.dockerfile setlocal filetype=Dockerfile
   autocmd BufNewFile,BufRead *.{jenkinsfile,Jenkinsfile} setlocal filetype=groovy
@@ -280,21 +280,28 @@ nnoremap <Leader>t :NERDTreeToggle<CR>
 
 " ALE
 let g:ale_fixers = {
+\   'json': ['prettier','remove_trailing_lines', 'trim_whitespace'],
 \   'markdown': ['remark', 'remove_trailing_lines', 'trim_whitespace'],
-\   'sh': ['remove_trailing_lines', 'trim_whitespace', 'shfmt'],
+\   'puppet': ['puppetlint'],
+\   'sh': ['shfmt', 'remove_trailing_lines', 'trim_whitespace'],
+\   'terraform': ['terraform'],
 \   'vim': ['remove_trailing_lines', 'trim_whitespace'],
 \   'yaml': ['prettier','remove_trailing_lines', 'trim_whitespace'],
-\   'json': ['prettier','remove_trailing_lines', 'trim_whitespace'],
-\   'puppet': ['puppetlint'],
 \}
 
 let g:ale_linters = {
-\   'puppet': ['puppetlint'],
+\   'dockerfile': ['hadolint'],
 \   'markdown': ['markdownlint'],
+\   'puppet': ['puppetlint'],
 \   'sh': ['shellcheck'],
+\   'yaml': ['yamllint'],
 \}
 
+let g:ale_linters_explicit = 1
 let g:ale_fix_on_save = 1
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+let g:ale_open_list = 1
 
 " Syntax
 let g:vim_markdown_conceal = 0

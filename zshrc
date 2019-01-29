@@ -118,6 +118,7 @@ alias ll="ls -lachp"
 alias ls="ls -ph --color=always"
 alias mounts="cat /proc/mounts | column -t"
 alias timestamp="date +%s"
+alias ds="docker images --format '{{.Size}}\t{{.Repository}}:{{.Tag}}\t{{.ID}}' | sort -hr | column -t"
 
 if type rg > /dev/null 2>&1; then
   alias grep="rg"
@@ -277,3 +278,9 @@ simplicity_zsh_theme() {
 }
 
 simplicity_zsh_theme
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/nhentschel/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/nhentschel/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/nhentschel/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/nhentschel/google-cloud-sdk/completion.zsh.inc'; fi
