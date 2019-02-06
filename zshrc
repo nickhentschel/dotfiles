@@ -236,6 +236,10 @@ bindkey '^u' vi-change-whole-line
 # The next line loads fzf
 if [ -f ~/.fzf.zsh ]; then source ~/.fzf.zsh; fi
 
+if type helm > /dev/null 2>&1; then
+  source <(helm completion zsh)
+fi
+
 #### Prompt
 
 autoload colors && colors
