@@ -194,6 +194,9 @@ Plug 'cormacrelf/vim-colors-github'
 Plug 'kamwitsta/flatwhite-vim'
 Plug 'patstockwell/vim-monokai-tasty'
 Plug 'jeffkreeftmeijer/vim-dim'
+Plug 'rakr/vim-one'
+Plug 'arcticicestudio/nord-vim'
+Plug 'mhartington/oceanic-next'
 
 if has('nvim')
   let g:python3_host_prog = '/usr/local/bin/python3'
@@ -222,11 +225,14 @@ set termguicolors
 " let g:nofrils_heavylinenumbers=0
 "
 " allow italics, set this before the colorscheme
-let g:vim_monokai_tasty_italic=1
-colorscheme vim-monokai-tasty
+" let g:vim_monokai_tasty_italic=1
+" colorscheme vim-monokai-tasty
+let g:one_allow_italics = 1
+colorscheme one
+set background=dark
+
 highlight MatchParen ctermbg=blue guibg=lightblue
 
-set background=dark
 
 " * * * * * * * * * * * * * * * * * * *
 " * AUGROUPS                          *
@@ -245,7 +251,7 @@ augroup vimEx
   autocmd FileType qf nnoremap <silent><buffer> q :q<CR>
   autocmd FileType help nnoremap <silent><buffer> q :q<CR>
 
-  autocmd ColorScheme * highlight! Normal ctermbg=NONE guibg=NONE
+  " autocmd ColorScheme * highlight! Normal ctermbg=NONE guibg=NONE
   autocmd VimResized * wincmd =
 
   autocmd BufRead,BufNewFile */templates/*.yaml setlocal ft=helm
@@ -323,7 +329,7 @@ let g:airline_left_sep = ''
 let g:airline_powerline_fonts = 0
 let g:airline_right_sep = ''
 " let g:airline_theme = 'minimalist'
-let g:airline_theme='monokai_tasty'
+" let g:airline_theme='monokai_tasty'
 let g:airline#extensions#branch#empty_message = ''
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#bufferline#enabled = 0
