@@ -52,14 +52,13 @@ set ts=2
 set ttimeoutlen=50                                        " Remove insert->normal delay
 set wildmenu
 set wildmode=list:longest,list:full
-" set colorcolumn=+1
+set colorcolumn=+1
 set noeb vb t_vb=                                         " disable sound on errors
 set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶,nbsp:× " Make tabs, trailing whitespace, and non-breaking spaces visible
 set list
 set laststatus=2
 set ruler
 set backspace=2
-" set clipboard=unnamedplus
 
 if &compatible
   set nocompatible
@@ -186,14 +185,11 @@ Plug 'vim-scripts/jcommenter.vim', { 'for': 'groovy' }
 Plug 'endSly/groovy.vim', { 'for': 'groovy' }
 
 " colorscheme bundles
-Plug 'robertmeta/nofrils'
 Plug 'djjcast/mirodark'
-Plug 'nickhentschel/vim-sublime-monokai'
 Plug 'lifepillar/vim-solarized8'
 Plug 'cormacrelf/vim-colors-github'
 Plug 'kamwitsta/flatwhite-vim'
 Plug 'patstockwell/vim-monokai-tasty'
-Plug 'jeffkreeftmeijer/vim-dim'
 Plug 'rakr/vim-one'
 Plug 'arcticicestudio/nord-vim'
 Plug 'mhartington/oceanic-next'
@@ -218,15 +214,7 @@ call plug#end()
 " * * * * * * * * * * * * * * * * * * *
 
 set termguicolors
-
-" colorscheme sublimemonokai
-" let g:nofrils_strbackgrounds=1
-" let g:nofrils_heavycomments=0
-" let g:nofrils_heavylinenumbers=0
 "
-" allow italics, set this before the colorscheme
-" let g:vim_monokai_tasty_italic=1
-" colorscheme vim-monokai-tasty
 let g:one_allow_italics = 1
 colorscheme one
 set background=dark
@@ -329,7 +317,6 @@ let g:airline_left_sep = ''
 let g:airline_powerline_fonts = 0
 let g:airline_right_sep = ''
 " let g:airline_theme = 'minimalist'
-" let g:airline_theme='monokai_tasty'
 let g:airline#extensions#branch#empty_message = ''
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#bufferline#enabled = 0
