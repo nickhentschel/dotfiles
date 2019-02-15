@@ -16,6 +16,8 @@
 " *                                                           *
 " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+filetype plugin indent on
+
 set autoindent                                            " Auto indent
 set autoread                                              " Relaod files after change outside of VIM
 set autowrite                                             " autowrite on build
@@ -65,12 +67,6 @@ if &compatible
 end
 
 let g:is_posix = 1
-
-" netrw
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
 
 " Live find/replace
 if has('nvim')
@@ -152,8 +148,6 @@ if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
   syntax on
 endif
 
-filetype plugin indent on
-
 " * * * * * * * * * * * * * * * * * * *
 " * BUNDLES AND SUCH                  *
 " * * * * * * * * * * * * * * * * * * *
@@ -167,7 +161,7 @@ Plug 'jremmen/vim-ripgrep'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin'  }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
-Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
@@ -179,20 +173,19 @@ Plug 'yggdroot/indentline'
 " syntax and language related bundles
 Plug 'clones/vim-zsh', { 'for': 'zsh' }
 Plug 'sclo/haproxy.vim', { 'for': 'haproxy' }
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
 Plug 'towolf/vim-helm'
-Plug 'vim-scripts/jcommenter.vim', { 'for': 'groovy' }
 Plug 'endSly/groovy.vim', { 'for': 'groovy' }
 
 " colorscheme bundles
-Plug 'djjcast/mirodark'
-Plug 'lifepillar/vim-solarized8'
-Plug 'cormacrelf/vim-colors-github'
-Plug 'kamwitsta/flatwhite-vim'
-Plug 'patstockwell/vim-monokai-tasty'
 Plug 'rakr/vim-one'
-Plug 'arcticicestudio/nord-vim'
-Plug 'mhartington/oceanic-next'
+" Plug 'djjcast/mirodark'
+" Plug 'lifepillar/vim-solarized8'
+" Plug 'cormacrelf/vim-colors-github'
+" Plug 'kamwitsta/flatwhite-vim'
+" Plug 'patstockwell/vim-monokai-tasty'
+" Plug 'arcticicestudio/nord-vim'
+" Plug 'mhartington/oceanic-next'
 
 if has('nvim')
   let g:python3_host_prog = '/usr/local/bin/python3'
@@ -203,7 +196,7 @@ if has('nvim')
   Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'shougo/neco-syntax'
   " Plug 'sirver/ultisnips'
-  Plug 'zchee/deoplete-go', { 'do': 'make'}
+  " Plug 'zchee/deoplete-go', { 'do': 'make'}
 endif
 
 call plug#end()
@@ -213,14 +206,15 @@ call plug#end()
 " * LOOK AND FEEL                     *
 " * * * * * * * * * * * * * * * * * * *
 
-set termguicolors
-"
+if has("termguicolors")
+  set termguicolors
+endif
+
 let g:one_allow_italics = 1
 colorscheme one
 set background=dark
 
 highlight MatchParen ctermbg=blue guibg=lightblue
-
 
 " * * * * * * * * * * * * * * * * * * *
 " * AUGROUPS                          *
@@ -230,39 +224,19 @@ highlight MatchParen ctermbg=blue guibg=lightblue
 augroup vimEx
   autocmd!
 
-  autocmd BufReadPost *
-        \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
-        \   exe "normal g`\"" |
-        \ endif
-
   autocmd FileType qf set nobuflisted
   autocmd FileType qf nnoremap <silent><buffer> q :q<CR>
   autocmd FileType help nnoremap <silent><buffer> q :q<CR>
 
-  " autocmd ColorScheme * highlight! Normal ctermbg=NONE guibg=NONE
+  autocmd ColorScheme * highlight! Normal ctermbg=NONE guibg=NONE
   autocmd VimResized * wincmd =
 
-  autocmd BufRead,BufNewFile */templates/*.yaml setlocal ft=helm
+  autocmd BufNewFile,BufRead */templates/*.yaml setlocal ft=helm
   autocmd BufNewFile,BufRead */.config/yamllint/config setlocal filetype=yaml
-  autocmd Filetype Dockerfile,markdown setlocal ts=4 sts=4 sw=4
   autocmd BufNewFile,BufRead *.dockerfile setlocal filetype=Dockerfile
   autocmd BufNewFile,BufRead *.{jenkinsfile,Jenkinsfile} setlocal filetype=groovy
   autocmd BufNewFile,BufRead .{jscs,jshint,eslint,markdownlint,prettier,remark}rc setlocal filetype=json
-augroup END
-
-augroup go
-  autocmd!
-  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
-  autocmd FileType go nmap <leader>b <Plug>(go-build)
-  autocmd FileType go nmap <leader>r <Plug>(go-run)
-  autocmd FileType go nmap <Leader>i <Plug>(go-info)
-  autocmd FileType go nmap <Leader>l <Plug>(go-metalinter)
-
-  " :GoAlternate  commands :A, :AV, :AS and :AT
-  autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
-  autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
-  autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
-  autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+  autocmd Filetype Dockerfile,markdown,groovy set ts=4 sts=4 sw=4
 augroup END
 
 " * * * * * * * * * * * * * * * * * * *
@@ -285,6 +259,7 @@ let g:ale_fixers = {
 
 let g:ale_linters = {
 \   'dockerfile': ['hadolint'],
+\   'Dockerfile': ['hadolint'],
 \   'markdown': ['markdownlint'],
 \   'puppet': ['puppetlint'],
 \   'sh': ['shellcheck'],
@@ -293,23 +268,12 @@ let g:ale_linters = {
 
 let g:ale_linters_explicit = 1
 let g:ale_fix_on_save = 1
-let g:ale_set_loclist = 0
-let g:ale_set_quickfix = 1
-let g:ale_open_list = 1
+let g:ale_set_loclist = 1
+let g:ale_set_quickfix = 0
+let g:ale_open_list = 0
 
 " Syntax
 let g:vim_markdown_conceal = 0
-
-" Go
-let g:go_autodetect_gopath = 1
-let g:go_fmt_command = 'goimports'
-let g:go_highlight_extra_types = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_generate_tags = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_types = 1
-let g:go_list_type = 'quickfix'
 
 " Vim Airline
 let g:airline_detect_paste = 1
