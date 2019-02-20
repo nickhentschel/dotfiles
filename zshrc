@@ -241,12 +241,6 @@ if type helm > /dev/null 2>&1; then
   source <(helm completion zsh)
 fi
 
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/nhentschel/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/nhentschel/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/nhentschel/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/nhentschel/google-cloud-sdk/completion.zsh.inc'; fi
 #### Prompt
 
 autoload colors && colors
@@ -289,3 +283,9 @@ simplicity_zsh_theme() {
 }
 
 simplicity_zsh_theme
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/nhentschel/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/nhentschel/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/nhentschel/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/nhentschel/google-cloud-sdk/completion.zsh.inc'; fi

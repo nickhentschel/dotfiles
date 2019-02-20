@@ -173,7 +173,7 @@ Plug 'yggdroot/indentline'
 " syntax and language related bundles
 Plug 'clones/vim-zsh', { 'for': 'zsh' }
 Plug 'sclo/haproxy.vim', { 'for': 'haproxy' }
-" Plug 'sheerun/vim-polyglot'
+Plug 'sheerun/vim-polyglot'
 Plug 'towolf/vim-helm'
 Plug 'endSly/groovy.vim', { 'for': 'groovy' }
 
@@ -261,7 +261,7 @@ let g:ale_linters = {
 \   'dockerfile': ['hadolint'],
 \   'Dockerfile': ['hadolint'],
 \   'markdown': ['markdownlint'],
-\   'puppet': ['puppetlint'],
+\   'puppet': ['puppetlint', 'puppet'],
 \   'sh': ['shellcheck'],
 \   'yaml': ['yamllint'],
 \}
