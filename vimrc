@@ -33,7 +33,7 @@ set nobackup
 set nospell                                               " Don't spell check by default
 set nostartofline                                         " Don't reset cursor to start of line when moving around
 set noswapfile                                            " Disable swap files
-set nowb
+set nowritebackup
 set nowrap                                                " Disable line wrap by default
 set number
 set scrolljump=10
@@ -46,16 +46,16 @@ set smartcase
 set smarttab
 set splitbelow                                            " More natural splitting
 set splitright
-set sts=2
-set sw=2
+set softtabstop=2
+set shiftwidth=2
 set tags=./tags;,~/.vimtags                               " Where to look for tag files
 set title                                                 " Title
-set ts=2
+set tabstop=2
 set ttimeoutlen=50                                        " Remove insert->normal delay
 set wildmenu
 set wildmode=list:longest,list:full
 set colorcolumn=+1
-set noeb vb t_vb=                                         " disable sound on errors
+set noerrorbells vb t_vb=                                 " disable sound on errors
 set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶,nbsp:× " Make tabs, trailing whitespace, and non-breaking spaces visible
 set list
 set laststatus=2
@@ -68,9 +68,12 @@ end
 
 let g:is_posix = 1
 
-" Live find/replace
 if has('nvim')
+  " Live find/replace
   set inccommand=nosplit
+
+  " Esc from terminal
+  tnoremap <Esc> <C-\><C-n>
 endif
 
 " Ignore while searching
@@ -83,6 +86,14 @@ nnoremap <Space> <nop>
 nnoremap <C-e> 3<C-e>
 nnoremap <C-y> 3<C-y>
 
+" Yank to end of line, like D and C
+noremap Y y$
+
+" Center search result
+noremap n nzz
+noremap N Nzz
+
+" Replace selection, use . to repeat
 nnoremap c* *Ncgn
 nnoremap c# #NcgN
 
@@ -131,16 +142,16 @@ nnoremap gQ mmgggqG`m
 
 " Search for selected text, forwards or backwards.
 vnoremap <silent> * :<C-U>
-  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
-  \gvy/<C-R><C-R>=substitute(
-  \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
-  \gV:call setreg('"', old_reg, old_regtype)<CR>
+      \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+      \gvy/<C-R><C-R>=substitute(
+      \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+      \gV:call setreg('"', old_reg, old_regtype)<CR>
 
 vnoremap <silent> # :<C-U>
-  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
-  \gvy?<C-R><C-R>=substitute(
-  \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
-  \gV:call setreg('"', old_reg, old_regtype)<CR>
+      \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+      \gvy?<C-R><C-R>=substitute(
+      \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+      \gV:call setreg('"', old_reg, old_regtype)<CR>
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
@@ -154,16 +165,18 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
+" Plug 'jiangmiao/auto-pairs'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'godlygeek/tabular'
-Plug 'jiangmiao/auto-pairs'
 Plug 'jremmen/vim-ripgrep'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin'  }
 Plug 'junegunn/fzf.vim'
-Plug 'junegunn/goyo.vim'
+Plug 'rstacruz/vim-closer'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'tomtom/tcomment_vim'
+Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'vim-airline/vim-airline'
@@ -191,30 +204,12 @@ if has('nvim')
   let g:python3_host_prog = '/usr/local/bin/python3'
 
   Plug 'nickhentschel/ale'
-
-  Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
   Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'shougo/neco-syntax'
-  " Plug 'sirver/ultisnips'
-  " Plug 'zchee/deoplete-go', { 'do': 'make'}
 endif
 
 call plug#end()
 
-
-" * * * * * * * * * * * * * * * * * * *
-" * LOOK AND FEEL                     *
-" * * * * * * * * * * * * * * * * * * *
-
-if has("termguicolors")
-  set termguicolors
-endif
-
-let g:one_allow_italics = 1
-colorscheme one
-set background=dark
-
-highlight MatchParen ctermbg=blue guibg=lightblue
 
 " * * * * * * * * * * * * * * * * * * *
 " * AUGROUPS                          *
@@ -231,7 +226,7 @@ augroup vimEx
   autocmd ColorScheme * highlight! Normal ctermbg=NONE guibg=NONE
   autocmd VimResized * wincmd =
 
-  autocmd BufNewFile,BufRead */templates/*.yaml setlocal ft=helm
+  autocmd BufNewFile,BufRead */templates/*.yaml setlocal filetype=helm
   autocmd BufNewFile,BufRead */.config/yamllint/config setlocal filetype=yaml
   autocmd BufNewFile,BufRead *.dockerfile setlocal filetype=Dockerfile
   autocmd BufNewFile,BufRead *.{jenkinsfile,Jenkinsfile} setlocal filetype=groovy
@@ -248,23 +243,23 @@ nnoremap <Leader>t :NERDTreeToggle<CR>
 
 " ALE
 let g:ale_fixers = {
-\   'json': ['prettier','remove_trailing_lines', 'trim_whitespace'],
-\   'markdown': ['remark', 'remove_trailing_lines', 'trim_whitespace'],
-\   'puppet': ['puppetlint'],
-\   'sh': ['shfmt', 'remove_trailing_lines', 'trim_whitespace'],
-\   'terraform': ['terraform'],
-\   'vim': ['remove_trailing_lines', 'trim_whitespace'],
-\   'yaml': ['prettier','remove_trailing_lines', 'trim_whitespace'],
-\}
+      \   'json': ['prettier','remove_trailing_lines', 'trim_whitespace'],
+      \   'markdown': ['remark', 'remove_trailing_lines', 'trim_whitespace'],
+      \   'puppet': ['puppetlint'],
+      \   'sh': ['shfmt', 'remove_trailing_lines', 'trim_whitespace'],
+      \   'terraform': ['terraform'],
+      \   'vim': ['remove_trailing_lines', 'trim_whitespace'],
+      \   'yaml': ['prettier','remove_trailing_lines', 'trim_whitespace'],
+      \}
 
 let g:ale_linters = {
-\   'dockerfile': ['hadolint'],
-\   'Dockerfile': ['hadolint'],
-\   'markdown': ['markdownlint'],
-\   'puppet': ['puppetlint', 'puppet'],
-\   'sh': ['shellcheck'],
-\   'yaml': ['yamllint'],
-\}
+      \   'dockerfile': ['hadolint'],
+      \   'Dockerfile': ['hadolint'],
+      \   'markdown': ['markdownlint'],
+      \   'puppet': ['puppetlint', 'puppet'],
+      \   'sh': ['shellcheck'],
+      \   'yaml': ['yamllint'],
+      \}
 
 let g:ale_linters_explicit = 1
 let g:ale_fix_on_save = 1
@@ -290,7 +285,6 @@ let g:airline#extensions#ale#enabled = 1
 " deoplete
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#disable_auto_complete = 0
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 
 inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
@@ -302,7 +296,7 @@ endfunction"}}}
 
 " Indentline
 let g:indentLine_char = '▏'
-" let g:indentLine_color_term = 240
+let g:indentLine_color_term = 240
 
 " FZF
 let g:fzf_layout = { 'down': '~40%'  }
@@ -334,22 +328,15 @@ nnoremap <Leader>> :Tabularize /=><CR>
 vnoremap <Leader>> :Tabularize /=><CR>
 
 " * * * * * * * * * * * * * * * * * * *
-" * FUNCTIONS                         *
+" * LOOK AND FEEL                     *
 " * * * * * * * * * * * * * * * * * * *
 
-" Functions for editing prose/markdown
-function! ProseOn()
-  Goyo 100
-  wincmd w
-  setlocal wrap
-  setlocal spell
-endfunction
+if has("termguicolors")
+  set termguicolors
+endif
 
-function! ProseOff()
-  Goyo!
-  setlocal nowrap
-  setlocal nospell
-endfunction
+let g:one_allow_italics = 1
+colorscheme one
+set background=dark
 
-command! ProseOn call ProseOn()
-command! ProseOff call ProseOff()
+highlight MatchParen ctermbg=blue guibg=lightblue
