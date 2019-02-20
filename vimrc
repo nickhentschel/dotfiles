@@ -18,6 +18,86 @@
 
 filetype plugin indent on
 
+if &compatible
+  set nocompatible
+end
+
+" * * * * * * * * * * * * * * * * * * *
+" * PLUGINS                           *
+" * * * * * * * * * * * * * * * * * * *
+
+call plug#begin('~/.vim/plugged')
+
+" Plug 'jiangmiao/auto-pairs'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'godlygeek/tabular'
+Plug 'jremmen/vim-ripgrep'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin'  }
+Plug 'junegunn/fzf.vim'
+Plug 'rstacruz/vim-closer'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'yggdroot/indentline'
+
+" syntax and language related bundles
+Plug 'clones/vim-zsh', { 'for': 'zsh' }
+Plug 'sclo/haproxy.vim', { 'for': 'haproxy' }
+Plug 'sheerun/vim-polyglot'
+Plug 'towolf/vim-helm'
+" Plug 'endSly/groovy.vim', { 'for': 'groovy' }
+
+" colorscheme bundles
+Plug 'rakr/vim-one'
+" Plug 'djjcast/mirodark'
+" Plug 'lifepillar/vim-solarized8'
+" Plug 'cormacrelf/vim-colors-github'
+" Plug 'kamwitsta/flatwhite-vim'
+" Plug 'patstockwell/vim-monokai-tasty'
+" Plug 'arcticicestudio/nord-vim'
+" Plug 'mhartington/oceanic-next'
+
+if has('nvim')
+  let g:python3_host_prog = '/usr/local/bin/python3'
+
+  Plug 'nickhentschel/ale'
+  Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'shougo/neco-syntax'
+endif
+
+call plug#end()
+
+" * * * * * * * * * * * * * * * * * * *
+" * LOOK AND FEEL                     *
+" * * * * * * * * * * * * * * * * * * *
+
+if has("termguicolors")
+  set termguicolors
+endif
+
+let g:one_allow_italics = 1
+colorscheme one
+set background=dark
+
+highlight MatchParen ctermbg=blue guibg=lightblue
+
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
+  syntax on
+endif
+
+" * * * * * * * * * * * * * * * * * * *
+" * SETTINGS AND MAPPINGS             *
+" * * * * * * * * * * * * * * * * * * *
+
 set autoindent                                            " Auto indent
 set autoread                                              " Relaod files after change outside of VIM
 set autowrite                                             " autowrite on build
@@ -54,17 +134,13 @@ set tabstop=2
 set ttimeoutlen=50                                        " Remove insert->normal delay
 set wildmenu
 set wildmode=list:longest,list:full
-set colorcolumn=+1
+set colorcolumn=80
 set noerrorbells vb t_vb=                                 " disable sound on errors
 set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶,nbsp:× " Make tabs, trailing whitespace, and non-breaking spaces visible
 set list
 set laststatus=2
 set ruler
 set backspace=2
-
-if &compatible
-  set nocompatible
-end
 
 let g:is_posix = 1
 
@@ -152,63 +228,6 @@ vnoremap <silent> # :<C-U>
       \gvy?<C-R><C-R>=substitute(
       \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
       \gV:call setreg('"', old_reg, old_regtype)<CR>
-
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
-if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
-  syntax on
-endif
-
-" * * * * * * * * * * * * * * * * * * *
-" * BUNDLES AND SUCH                  *
-" * * * * * * * * * * * * * * * * * * *
-
-call plug#begin('~/.vim/plugged')
-
-" Plug 'jiangmiao/auto-pairs'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'godlygeek/tabular'
-Plug 'jremmen/vim-ripgrep'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin'  }
-Plug 'junegunn/fzf.vim'
-Plug 'rstacruz/vim-closer'
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-sleuth'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'yggdroot/indentline'
-
-" syntax and language related bundles
-Plug 'clones/vim-zsh', { 'for': 'zsh' }
-Plug 'sclo/haproxy.vim', { 'for': 'haproxy' }
-Plug 'sheerun/vim-polyglot'
-Plug 'towolf/vim-helm'
-Plug 'endSly/groovy.vim', { 'for': 'groovy' }
-
-" colorscheme bundles
-Plug 'rakr/vim-one'
-" Plug 'djjcast/mirodark'
-" Plug 'lifepillar/vim-solarized8'
-" Plug 'cormacrelf/vim-colors-github'
-" Plug 'kamwitsta/flatwhite-vim'
-" Plug 'patstockwell/vim-monokai-tasty'
-" Plug 'arcticicestudio/nord-vim'
-" Plug 'mhartington/oceanic-next'
-
-if has('nvim')
-  let g:python3_host_prog = '/usr/local/bin/python3'
-
-  Plug 'nickhentschel/ale'
-  Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  Plug 'shougo/neco-syntax'
-endif
-
-call plug#end()
 
 
 " * * * * * * * * * * * * * * * * * * *
@@ -326,17 +345,3 @@ nnoremap <Leader>= :Tabularize /=<CR>
 vnoremap <Leader>= :Tabularize /=<CR>
 nnoremap <Leader>> :Tabularize /=><CR>
 vnoremap <Leader>> :Tabularize /=><CR>
-
-" * * * * * * * * * * * * * * * * * * *
-" * LOOK AND FEEL                     *
-" * * * * * * * * * * * * * * * * * * *
-
-if has("termguicolors")
-  set termguicolors
-endif
-
-let g:one_allow_italics = 1
-colorscheme one
-set background=dark
-
-highlight MatchParen ctermbg=blue guibg=lightblue
