@@ -273,11 +273,16 @@ simplicity_zsh_theme() {
 
   zle -N zle-keymap-select
 
-  if [[ $EUID -eq 0 ]]; then
-    host="%{$fg_bold[red]%}%n@%3m%f "
-  else
-    host="%{$fg_bold[green]%}%n@%3m%f "
+  host=''
+
+  if _is_ssh; then
+    if [[ $EUID -eq 0 ]]; then
+      host="%{$fg_bold[red]%}%n@%3m%f "
+    else
+      host="%{$fg_bold[green]%}%n@%3m%f "
+    fi
   fi
+
 
   PROMPT='%{$fg[red]%}%(1j.● .)%f$host$short_path %{$reset_color%}$(_git_prompt_info)%{$fg_bold[blue]%}$(_vi_mode_indicator)%f%{$reset_color%} '
 }
