@@ -28,13 +28,12 @@ end
 
 call plug#begin('~/.vim/plugged')
 
-" Plug 'jiangmiao/auto-pairs'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'godlygeek/tabular'
+Plug 'jiangmiao/auto-pairs'
 Plug 'jremmen/vim-ripgrep'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin'  }
 Plug 'junegunn/fzf.vim'
-Plug 'rstacruz/vim-closer'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
@@ -48,7 +47,6 @@ Plug 'yggdroot/indentline'
 
 " syntax and language related bundles
 Plug 'clones/vim-zsh', { 'for': 'zsh' }
-Plug 'sclo/haproxy.vim', { 'for': 'haproxy' }
 Plug 'sheerun/vim-polyglot'
 Plug 'towolf/vim-helm'
 " Plug 'endSly/groovy.vim', { 'for': 'groovy' }
@@ -295,10 +293,7 @@ let g:airline_left_sep = ''
 let g:airline_powerline_fonts = 0
 let g:airline_right_sep = ''
 " let g:airline_theme = 'minimalist'
-let g:airline#extensions#branch#empty_message = ''
 let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#bufferline#enabled = 0
-let g:airline#extensions#bufferline#overwrite_variables = 0
 let g:airline#extensions#ale#enabled = 1
 
 " deoplete
@@ -315,7 +310,7 @@ endfunction"}}}
 
 " Indentline
 let g:indentLine_char = '▏'
-let g:indentLine_color_term = 240
+" let g:indentLine_color_term = 240
 
 " FZF
 let g:fzf_layout = { 'down': '~40%'  }

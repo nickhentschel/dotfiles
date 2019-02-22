@@ -5,7 +5,7 @@ is_osx() {
 
 path() {
   echo $PATH | tr ":" "\n" | \
-    awk "{ sub(\"/usr\",   \"$fg_no[green]/usr$reset_color\"); \
+    awk "{ sub(\"/usr\",   \"$fg_no[cyan]/usr$reset_color\"); \
     sub(\"/bin\",   \"$fg_no[blue]/bin$reset_color\"); \
     sub(\"/opt\",   \"$fg_no[magenta,bold]/opt$reset_color\"); \
     sub(\"/sbin\",  \"$fg_no[magenta]/sbin$reset_color\"); \
@@ -254,7 +254,7 @@ zle-keymap-select() {
 # get the name of the branch we are on
 _git_prompt_info() {
   ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-  echo "%{$fg[green]%}${ref#refs/heads/}%f "
+  echo "%{$fg_bold[magenta]%}(${ref#refs/heads/})%f "
 }
 
 _is_ssh() {
@@ -269,17 +269,17 @@ _vi_mode_indicator() {
 }
 
 simplicity_zsh_theme() {
-  short_path="%{$fg[cyan]%}%(5~|%-1~/…/%3~|%4~)%f"
+  short_path="%{$fg_bold[blue]%}%(5~|%-1~/…/%3~|%4~)%f"
 
   zle -N zle-keymap-select
 
-  if _is_ssh || [[ $EUID -eq 0 ]]; then
-    host="%{$fg[red]%}%3m%f "
+  if [[ $EUID -eq 0 ]]; then
+    host="%{$fg_bold[red]%}%n@%3m%f "
   else
-    host=''
+    host="%{$fg_bold[green]%}%n@%3m%f "
   fi
 
-  PROMPT='%{$fg[red]%}%(1j.● .)%f$host$short_path%{$fg[red]%}|%{$reset_color%}$(_git_prompt_info)%{$fg[cyan]%}$(_vi_mode_indicator)%f%{$reset_color%} '
+  PROMPT='%{$fg[red]%}%(1j.● .)%f$host$short_path %{$reset_color%}$(_git_prompt_info)%{$fg_bold[blue]%}$(_vi_mode_indicator)%f%{$reset_color%} '
 }
 
 simplicity_zsh_theme
