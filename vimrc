@@ -32,23 +32,26 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'godlygeek/tabular'
 Plug 'jiangmiao/auto-pairs'
 Plug 'jremmen/vim-ripgrep'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin'  }
-Plug 'junegunn/fzf.vim'
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'yggdroot/indentline'
 
 " syntax and language related bundles
 Plug 'clones/vim-zsh', { 'for': 'zsh' }
-Plug 'sheerun/vim-polyglot'
 Plug 'towolf/vim-helm'
+
+if !exists("g:gui_oni")
+  Plug 'sheerun/vim-polyglot'
+  Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin'  }
+  Plug 'junegunn/fzf.vim'
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
+  Plug 'yggdroot/indentline'
+endif
 " Plug 'endSly/groovy.vim', { 'for': 'groovy' }
 
 " colorscheme bundles
@@ -64,9 +67,9 @@ Plug 'rakr/vim-one'
 if has('nvim')
   let g:python3_host_prog = '/usr/local/bin/python3'
 
-  Plug 'nickhentschel/ale'
   Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'shougo/neco-syntax'
+  Plug 'nickhentschel/ale'
 endif
 
 call plug#end()
@@ -136,7 +139,6 @@ set colorcolumn=80
 set noerrorbells vb t_vb=                                 " disable sound on errors
 set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶,nbsp:× " Make tabs, trailing whitespace, and non-breaking spaces visible
 set list
-set laststatus=2
 set ruler
 set backspace=2
 
@@ -198,11 +200,6 @@ noremap : ;
 vnoremap ; :
 vnoremap : ;
 
-" Tab navigation mappings
-nnoremap gt :bnext<CR>
-nnoremap gT :bprevious<CR>
-nnoremap <C-c> :bp\|bd #<CR>
-
 " w!! for writing read-only file
 cmap w!! w !sudo tee % >/dev/null
 
@@ -240,7 +237,7 @@ augroup vimEx
   autocmd FileType qf nnoremap <silent><buffer> q :q<CR>
   autocmd FileType help nnoremap <silent><buffer> q :q<CR>
 
-  autocmd ColorScheme * highlight! Normal ctermbg=NONE guibg=NONE
+  " autocmd ColorScheme * highlight! Normal ctermbg=NONE guibg=NONE
   autocmd VimResized * wincmd =
 
   autocmd BufNewFile,BufRead */templates/*.yaml setlocal filetype=helm
@@ -248,7 +245,7 @@ augroup vimEx
   autocmd BufNewFile,BufRead *.dockerfile setlocal filetype=Dockerfile
   autocmd BufNewFile,BufRead *.{jenkinsfile,Jenkinsfile} setlocal filetype=groovy
   autocmd BufNewFile,BufRead .{jscs,jshint,eslint,markdownlint,prettier,remark}rc setlocal filetype=json
-  autocmd Filetype Dockerfile,markdown,groovy set ts=4 sts=4 sw=4
+  autocmd Filetype markdown,groovy set ts=4 sts=4 sw=4
 augroup END
 
 " * * * * * * * * * * * * * * * * * * *
@@ -287,15 +284,6 @@ let g:ale_open_list = 0
 " Syntax
 let g:vim_markdown_conceal = 0
 
-" Vim Airline
-let g:airline_detect_paste = 1
-let g:airline_left_sep = ''
-let g:airline_powerline_fonts = 0
-let g:airline_right_sep = ''
-" let g:airline_theme = 'minimalist'
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#ale#enabled = 1
-
 " deoplete
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#disable_auto_complete = 0
@@ -308,28 +296,49 @@ function! s:check_back_space() abort "{{{
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction"}}}
 
-" Indentline
-let g:indentLine_char = '▏'
-" let g:indentLine_color_term = 240
+if !exists("g:gui_oni")
+  " Vim Airline
+  let g:airline_detect_paste = 1
+  let g:airline_left_sep = ''
+  let g:airline_powerline_fonts = 0
+  let g:airline_right_sep = ''
+  " let g:airline_theme = 'minimalist'
+  let g:airline#extensions#branch#enabled = 1
+  let g:airline#extensions#ale#enabled = 1
 
-" FZF
-let g:fzf_layout = { 'down': '~40%'  }
-let g:fzf_buffers_jump = 1
-let g:fzf_action = {
-      \ 'ctrl-s': 'split',
-      \ 'ctrl-v': 'vsplit'
-      \ }
+  " Indentline
+  let g:indentLine_char = '|'
+  let g:indentLine_color_term = 240
 
-command! -bang -nargs=* Find
-      \ call fzf#vim#grep(
-      \   'rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1,
-      \   <bang>0 ? fzf#vim#with_preview('up:60%')
-      \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-      \   <bang>0)
+  " FZF
+  let g:fzf_layout = { 'down': '~40%'  }
+  let g:fzf_buffers_jump = 1
+  let g:fzf_action = {
+        \ 'ctrl-s': 'split',
+        \ 'ctrl-v': 'vsplit'
+        \ }
 
-nnoremap <c-p> :FZF<cr>
-nnoremap <c-o> :Buffers<cr>
-nnoremap <c-i> :Find<cr>
+  command! -bang -nargs=* Find
+        \ call fzf#vim#grep(
+        \   'rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1,
+        \   <bang>0 ? fzf#vim#with_preview('up:60%')
+        \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+        \   <bang>0)
+
+  nnoremap <c-p> :FZF<cr>
+  nnoremap <c-o> :Buffers<cr>
+  nnoremap <c-i> :Find<cr>
+else
+  let s:hidden_all = 1
+  set laststatus=0
+  set noshowmode
+  set noruler
+
+  " Tab navigation mappings
+  nnoremap gt :bnext<CR>
+  nnoremap gT :bprevious<CR>
+  nnoremap <C-c> :bp\|bd #<CR>
+endif
 
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --color=never
