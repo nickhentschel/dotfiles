@@ -3,6 +3,7 @@
 # Any items in the `env` entry below will be added as
 # environment variables. Some entries may override variables
 # set by alacritty it self.
+---
 env:
   # TERM env customization.
   #
@@ -107,13 +108,42 @@ font:
   # OS X only: use thin stroke font rendering. Thin strokes are suitable
   # for retina displays, but for non-retina you probably want this set to
   # false.
-  use_thin_strokes: false
+  use_thin_strokes: true
 
 # Should display the render timer
 render_timer: false
 
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: true
+
+# Colors (One Dark)
+colors:
+  # Default colors
+  primary:
+    background: "0x272c33"
+    foreground: "0xb9bfca"
+
+  # Normal colors
+  normal:
+    black: "0x272c33"
+    red: "0xe78287"
+    green: "0xa7cb8b"
+    yellow: "0xdaaa78"
+    blue: "0x71bdf2"
+    magenta: "0xd190e3"
+    cyan: "0x65c1cd"
+    white: "0xb9bfca"
+
+  # Bright colors
+  bright:
+    black: "0x6f7683"
+    red: "0xe78287"
+    green: "0xa7cb8b"
+    yellow: "0xdaaa78"
+    blue: "0x71bdf2"
+    magenta: "0xd190e3"
+    cyan: "0x65c1cd"
+    white: "0xfefefe"
 
 # # Colors (Solarized Dark)
 # colors:
@@ -144,63 +174,34 @@ draw_bold_text_with_bright_colors: true
 #     cyan:    '0x93a1a1'
 #     white:   '0xfdf6e3'
 
-# # Molokai
+# # Google Colors
 # colors:
 #   # Default colors
 #   primary:
-#     background: '0x121212'
-#     foreground: '0xbbbbbb'
-#
+#     background: '0x262626'
+#     foreground: '0xffffff'
+
 #   # Normal colors
 #   normal:
-#     black:   '0x121212'
-#     red:     '0xfa2573'
-#     green:   '0x98e123'
-#     yellow:  '0xdfd460'
-#     blue:    '0x1080d0'
-#     magenta: '0x8700ff'
-#     cyan:    '0x43a8d0'
-#     white:   '0xbbbbbb'
-#
+#     black:   '0x000000'
+#     red:     '0xca0813'
+#     green:   '0x50981c'
+#     yellow:  '0xc39f22'
+#     blue:    '0x3766a2'
+#     magenta: '0x74517a'
+#     cyan:    '0x199899'
+#     white:   '0xd3d7d0'
+
 #   # Bright colors
 #   bright:
-#     black:   '0x555555'
-#     red:     '0xf6669d'
-#     green:   '0xb1e05f'
-#     yellow:  '0xfff26d'
-#     blue:    '0x00afff'
-#     magenta: '0xaf87ff'
-#     cyan:    '0x51ceff'
-#     white:   '0xffffff'
-
-# Google Colors
-colors:
-  # Default colors
-  primary:
-    background: '0x262626'
-    foreground: '0xffffff'
-
-  # Normal colors
-  normal:
-    black:   '0x000000'
-    red:     '0xca0813'
-    green:   '0x50981c'
-    yellow:  '0xc39f22'
-    blue:    '0x3766a2'
-    magenta: '0x74517a'
-    cyan:    '0x199899'
-    white:   '0xd3d7d0'
-
-  # Bright colors
-  bright:
-    black:   '0x555753'
-    red:     '0xec2d32'
-    green:   '0x1bb827'
-    yellow:  '0xfbe85c'
-    blue:    '0x73a0cd'
-    magenta: '0xf020c9'
-    cyan:    '0x1db5bc'
-    white:   '0xeeeeec'
+#     black:   '0x555753'
+#     red:     '0xec2d32'
+#     green:   '0x1bb827'
+#     yellow:  '0xfbe85c'
+#     blue:    '0x73a0cd'
+#     magenta: '0xf020c9'
+#     cyan:    '0x1db5bc'
+#     white:   '0xeeeeec'
 
 # Visual Bell
 #
@@ -254,10 +255,10 @@ mouse:
     #
     # These are the modifiers that need to be held down for opening URLs when clicking
     # on them. The available modifiers are documented in the key binding section.
-    #modifiers: Control|Shift
+    # modifiers: Control|Shift
 
 selection:
-  semantic_escape_chars: ",│`|:\"' ()[]{}<>"
+  semantic_escape_chars: ',│`|:"'' ()[]{}<>'
 
   # When set to `true`, selected text will be copied to the primary clipboard.
   save_to_clipboard: false
@@ -325,60 +326,60 @@ live_config_reload: true
 # (e.g. "\x1b[5~") is? Open another terminal (like xterm) without tmux,
 # then run `showkey -a` to get the sequence associated to a key combination.
 key_bindings:
-- { key: V,        mods: Control|Shift,    action: Paste               }
-- { key: C,        mods: Control|Shift,    action: Copy                }
-- { key: V,        mods: Command, action: Paste                        }
-- { key: Q,        mods: Command, action: Quit                         }
-- { key: W,        mods: Command, action: Quit                         }
-- { key: Insert,   mods: Shift,   action: PasteSelection               }
-- { key: Key0,     mods: Control, action: ResetFontSize                }
-- { key: Equals,   mods: Control, action: IncreaseFontSize             }
-# - { key: Subtract, mods: Shift,   action: DecreaseFontSize             }
-- { key: Space,    mods: Control, chars: "\x00"                        }
-- { key: Home,                    chars: "\x1bOH",   mode: AppCursor   }
-- { key: Home,                    chars: "\x1b[1~",  mode: ~AppCursor  }
-- { key: End,                     chars: "\x1bOF",   mode: AppCursor   }
-- { key: End,                     chars: "\x1b[4~",  mode: ~AppCursor  }
-- { key: PageUp,   mods: Shift,   chars: "\x1b[5;2~"                   }
-- { key: PageUp,   mods: Control, chars: "\x1b[5;5~"                   }
-- { key: PageUp,                  chars: "\x1b[5~"                     }
-- { key: PageDown, mods: Shift,   chars: "\x1b[6;2~"                   }
-- { key: PageDown, mods: Control, chars: "\x1b[6;5~"                   }
-- { key: PageDown,                chars: "\x1b[6~"                     }
-- { key: Left,     mods: Shift,   chars: "\x1b[1;2D"                   }
-- { key: Left,     mods: Control, chars: "\x1b[1;5D"                   }
-- { key: Left,     mods: Alt,     chars: "\x1b[1;3D"                   }
-- { key: Left,                    chars: "\x1b[D",   mode: ~AppCursor  }
-- { key: Left,                    chars: "\x1bOD",   mode: AppCursor   }
-- { key: Right,    mods: Shift,   chars: "\x1b[1;2C"                   }
-- { key: Right,    mods: Control, chars: "\x1b[1;5C"                   }
-- { key: Right,    mods: Alt,     chars: "\x1b[1;3C"                   }
-- { key: Right,                   chars: "\x1b[C",   mode: ~AppCursor  }
-- { key: Right,                   chars: "\x1bOC",   mode: AppCursor   }
-- { key: Up,       mods: Shift,   chars: "\x1b[1;2A"                   }
-- { key: Up,       mods: Control, chars: "\x1b[1;5A"                   }
-- { key: Up,       mods: Alt,     chars: "\x1b[1;3A"                   }
-- { key: Up,                      chars: "\x1b[A",   mode: ~AppCursor  }
-- { key: Up,                      chars: "\x1bOA",   mode: AppCursor   }
-- { key: Down,     mods: Shift,   chars: "\x1b[1;2B"                   }
-- { key: Down,     mods: Control, chars: "\x1b[1;5B"                   }
-- { key: Down,     mods: Alt,     chars: "\x1b[1;3B"                   }
-- { key: Down,                    chars: "\x1b[B",   mode: ~AppCursor  }
-- { key: Down,                    chars: "\x1bOB",   mode: AppCursor   }
-- { key: Tab,      mods: Shift,   chars: "\x1b[Z"                      }
-- { key: F1,                      chars: "\x1bOP"                      }
-- { key: F2,                      chars: "\x1bOQ"                      }
-- { key: F3,                      chars: "\x1bOR"                      }
-- { key: F4,                      chars: "\x1bOS"                      }
-- { key: F5,                      chars: "\x1b[15~"                    }
-- { key: F6,                      chars: "\x1b[17~"                    }
-- { key: F7,                      chars: "\x1b[18~"                    }
-- { key: F8,                      chars: "\x1b[19~"                    }
-- { key: F9,                      chars: "\x1b[20~"                    }
-- { key: F10,                     chars: "\x1b[21~"                    }
-- { key: F11,                     chars: "\x1b[23~"                    }
-- { key: F12,                     chars: "\x1b[24~"                    }
-- { key: Back,                    chars: "\x7f"                        }
-- { key: Back,     mods: Alt,     chars: "\x1b\x7f"                    }
-- { key: Insert,                  chars: "\x1b[2~"                     }
-- { key: Delete,                  chars: "\x1b[3~"                     }
+  - { key: V, mods: Control|Shift, action: Paste }
+  - { key: C, mods: Control|Shift, action: Copy }
+  - { key: V, mods: Command, action: Paste }
+  - { key: Q, mods: Command, action: Quit }
+  - { key: W, mods: Command, action: Quit }
+  - { key: Insert, mods: Shift, action: PasteSelection }
+  - { key: Key0, mods: Control, action: ResetFontSize }
+  - { key: Equals, mods: Control, action: IncreaseFontSize }
+  # - { key: Subtract, mods: Shift,   action: DecreaseFontSize             }
+  - { key: Space, mods: Control, chars: "\x00" }
+  - { key: Home, chars: "\x1bOH", mode: AppCursor }
+  - { key: Home, chars: "\x1b[1~", mode: ~AppCursor }
+  - { key: End, chars: "\x1bOF", mode: AppCursor }
+  - { key: End, chars: "\x1b[4~", mode: ~AppCursor }
+  - { key: PageUp, mods: Shift, chars: "\x1b[5;2~" }
+  - { key: PageUp, mods: Control, chars: "\x1b[5;5~" }
+  - { key: PageUp, chars: "\x1b[5~" }
+  - { key: PageDown, mods: Shift, chars: "\x1b[6;2~" }
+  - { key: PageDown, mods: Control, chars: "\x1b[6;5~" }
+  - { key: PageDown, chars: "\x1b[6~" }
+  - { key: Left, mods: Shift, chars: "\x1b[1;2D" }
+  - { key: Left, mods: Control, chars: "\x1b[1;5D" }
+  - { key: Left, mods: Alt, chars: "\x1b[1;3D" }
+  - { key: Left, chars: "\x1b[D", mode: ~AppCursor }
+  - { key: Left, chars: "\x1bOD", mode: AppCursor }
+  - { key: Right, mods: Shift, chars: "\x1b[1;2C" }
+  - { key: Right, mods: Control, chars: "\x1b[1;5C" }
+  - { key: Right, mods: Alt, chars: "\x1b[1;3C" }
+  - { key: Right, chars: "\x1b[C", mode: ~AppCursor }
+  - { key: Right, chars: "\x1bOC", mode: AppCursor }
+  - { key: Up, mods: Shift, chars: "\x1b[1;2A" }
+  - { key: Up, mods: Control, chars: "\x1b[1;5A" }
+  - { key: Up, mods: Alt, chars: "\x1b[1;3A" }
+  - { key: Up, chars: "\x1b[A", mode: ~AppCursor }
+  - { key: Up, chars: "\x1bOA", mode: AppCursor }
+  - { key: Down, mods: Shift, chars: "\x1b[1;2B" }
+  - { key: Down, mods: Control, chars: "\x1b[1;5B" }
+  - { key: Down, mods: Alt, chars: "\x1b[1;3B" }
+  - { key: Down, chars: "\x1b[B", mode: ~AppCursor }
+  - { key: Down, chars: "\x1bOB", mode: AppCursor }
+  - { key: Tab, mods: Shift, chars: "\x1b[Z" }
+  - { key: F1, chars: "\x1bOP" }
+  - { key: F2, chars: "\x1bOQ" }
+  - { key: F3, chars: "\x1bOR" }
+  - { key: F4, chars: "\x1bOS" }
+  - { key: F5, chars: "\x1b[15~" }
+  - { key: F6, chars: "\x1b[17~" }
+  - { key: F7, chars: "\x1b[18~" }
+  - { key: F8, chars: "\x1b[19~" }
+  - { key: F9, chars: "\x1b[20~" }
+  - { key: F10, chars: "\x1b[21~" }
+  - { key: F11, chars: "\x1b[23~" }
+  - { key: F12, chars: "\x1b[24~" }
+  - { key: Back, chars: "\x7f" }
+  - { key: Back, mods: Alt, chars: "\x1b\x7f" }
+  - { key: Insert, chars: "\x1b[2~" }
+  - { key: Delete, chars: "\x1b[3~" }

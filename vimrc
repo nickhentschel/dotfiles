@@ -42,20 +42,26 @@ Plug 'tpope/vim-unimpaired'
 " syntax and language related bundles
 Plug 'clones/vim-zsh', { 'for': 'zsh' }
 Plug 'towolf/vim-helm'
+Plug 'hashivim/vim-terraform'
+Plug 'plasticboy/vim-markdown'
+Plug 'elzr/vim-json'
+" Plug 'modille/groovy.vim'
+Plug 'endSly/groovy.vim', { 'for': 'groovy' }
+Plug 'rodjek/vim-puppet', { 'for': 'puppet' }
+" Plug 'stephpy/vim-yaml'
 
-if !exists("g:gui_oni")
-  Plug 'sheerun/vim-polyglot'
-  Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin'  }
-  Plug 'junegunn/fzf.vim'
-  Plug 'vim-airline/vim-airline'
-  Plug 'vim-airline/vim-airline-themes'
-  Plug 'yggdroot/indentline'
-endif
-" Plug 'endSly/groovy.vim', { 'for': 'groovy' }
+" Plug 'sheerun/vim-polyglot'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin'  }
+Plug 'junegunn/fzf.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'yggdroot/indentline'
 
 " colorscheme bundles
 Plug 'rakr/vim-one'
+Plug 'tomasiser/vim-code-dark'
+Plug 'mhartington/oceanic-next'
 " Plug 'djjcast/mirodark'
 " Plug 'lifepillar/vim-solarized8'
 " Plug 'cormacrelf/vim-colors-github'
@@ -83,11 +89,13 @@ if has("termguicolors")
 endif
 
 let g:one_allow_italics = 1
-colorscheme one
+" colorscheme codedark
+colorscheme OceanicNext
 set background=dark
 
-highlight MatchParen ctermbg=blue guibg=lightblue
+set guifont=Consolas:h12
 
+highlight MatchParen ctermbg=blue guibg=lightblue
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
@@ -141,6 +149,9 @@ set listchars=tab:→\ ,trail:·,extends:↷,precedes:↶,nbsp:× " Make tabs, t
 set list
 set ruler
 set backspace=2
+set re=1
+set cursorline
+set encoding=UTF-8
 
 let g:is_posix = 1
 
@@ -149,7 +160,7 @@ if has('nvim')
   set inccommand=nosplit
 
   " Esc from terminal
-  tnoremap <Esc> <C-\><C-n>
+  " tnoremap <Esc> <C-\><C-n>
 endif
 
 " Ignore while searching
@@ -206,6 +217,11 @@ cmap w!! w !sudo tee % >/dev/null
 " Map ctrl+a to ctrl+q to get around tmux bindings
 nnoremap <C-q> <C-a>
 vnoremap <C-q> <C-a>
+
+" Tab navigation mappings
+nnoremap gt :bnext<CR>
+nnoremap gT :bprevious<CR>
+nnoremap <C-c> :bp\|bd #<CR>
 
 " Formatting commands that will remember cursor position
 nnoremap g= mmgg=G`m
@@ -296,53 +312,50 @@ function! s:check_back_space() abort "{{{
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction"}}}
 
-if !exists("g:gui_oni")
-  " Vim Airline
-  let g:airline_detect_paste = 1
-  let g:airline_left_sep = ''
-  let g:airline_powerline_fonts = 0
-  let g:airline_right_sep = ''
-  " let g:airline_theme = 'minimalist'
-  let g:airline#extensions#branch#enabled = 1
-  let g:airline#extensions#ale#enabled = 1
+" Vim Airline
+let g:airline_detect_paste = 1
+let g:airline_left_sep = ''
+let g:airline_powerline_fonts = 0
+let g:airline_right_sep = ''
+" let g:airline_theme = 'minimalist'
+let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#ale#enabled = 1
 
-  " Indentline
-  let g:indentLine_char = '|'
-  let g:indentLine_color_term = 240
+" Indentline
+let g:indentLine_char = '▏'
+let g:indentLine_color_term = 240
+let g:indentLine_concealcursor=""
 
-  " FZF
-  let g:fzf_layout = { 'down': '~40%'  }
-  let g:fzf_buffers_jump = 1
-  let g:fzf_action = {
-        \ 'ctrl-s': 'split',
-        \ 'ctrl-v': 'vsplit'
-        \ }
+" FZF
+let g:fzf_layout = { 'down': '~40%'  }
+let g:fzf_buffers_jump = 1
+let g:fzf_action = {
+      \ 'ctrl-s': 'split',
+      \ 'ctrl-v': 'vsplit'
+      \ }
 
-  command! -bang -nargs=* Find
-        \ call fzf#vim#grep(
-        \   'rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1,
-        \   <bang>0 ? fzf#vim#with_preview('up:60%')
-        \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-        \   <bang>0)
+command! -bang -nargs=* Find
+      \ call fzf#vim#grep(
+      \   'rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1,
+      \   <bang>0 ? fzf#vim#with_preview('up:60%')
+      \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+      \   <bang>0)
 
-  nnoremap <c-p> :FZF<cr>
-  nnoremap <c-o> :Buffers<cr>
-  nnoremap <c-i> :Find<cr>
-else
-  let s:hidden_all = 1
-  set laststatus=0
-  set noshowmode
-  set noruler
-
-  " Tab navigation mappings
-  nnoremap gt :bnext<CR>
-  nnoremap gT :bprevious<CR>
-  nnoremap <C-c> :bp\|bd #<CR>
-endif
+nnoremap <c-p> :FZF<cr>
+nnoremap <c-o> :Buffers<cr>
+nnoremap <c-i> :Find<cr>
 
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --color=never
 endif
+
+" Markdown
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal_code_blocks = 0
+
+" json
+let g:vim_json_syntax_conceal = 0
 
 " Tabular mappings
 nnoremap <Leader>= :Tabularize /=<CR>
