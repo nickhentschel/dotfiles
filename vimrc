@@ -61,7 +61,6 @@ Plug 'yggdroot/indentline'
 " colorscheme bundles
 Plug 'rakr/vim-one'
 Plug 'tomasiser/vim-code-dark'
-Plug 'mhartington/oceanic-next'
 " Plug 'djjcast/mirodark'
 " Plug 'lifepillar/vim-solarized8'
 " Plug 'cormacrelf/vim-colors-github'
@@ -89,8 +88,7 @@ if has("termguicolors")
 endif
 
 let g:one_allow_italics = 1
-" colorscheme codedark
-colorscheme OceanicNext
+colorscheme one
 set background=dark
 
 set guifont=Consolas:h12

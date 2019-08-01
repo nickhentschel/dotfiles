@@ -168,6 +168,7 @@ fi
 alias c="clear"
 alias d="dirs -v"
 alias k="$HOME/Development/kubernetes-tools/shell-scripts/kubectl"
+alias h="$HOME/Development/kubernetes-tools/shell-scripts/helm"
 alias fab="/wayfair/app/fabric/bin/fab"
 alias grep="grep --color=always"
 alias jenkinscli="java -jar /wayfair/pkg/jenkins/latest/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
@@ -231,7 +232,7 @@ zle-keymap-select() {
 # get the name of the branch we are on
 _git_prompt_info() {
   ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-  echo "%{$fg_bold[magenta]%}(${ref#refs/heads/})%f "
+  echo "%{$fg[green]%}(${ref#refs/heads/})%f "
 }
 
 _is_ssh() {
