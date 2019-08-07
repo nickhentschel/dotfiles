@@ -61,6 +61,7 @@ Plug 'yggdroot/indentline'
 " colorscheme bundles
 Plug 'rakr/vim-one'
 Plug 'tomasiser/vim-code-dark'
+Plug 'rishikanthc/skyfall-vim'
 " Plug 'djjcast/mirodark'
 " Plug 'lifepillar/vim-solarized8'
 " Plug 'cormacrelf/vim-colors-github'
@@ -87,9 +88,9 @@ if has("termguicolors")
   set termguicolors
 endif
 
-let g:one_allow_italics = 1
-colorscheme one
+" let g:one_allow_italics = 1
 set background=dark
+colorscheme one
 
 set guifont=Consolas:h12
 
