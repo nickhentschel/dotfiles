@@ -35,7 +35,7 @@ if is_osx; then
   if [ -x /usr/libexec/path_helper ]; then
     eval `/usr/libexec/path_helper -s`
   fi
-  export PATH=/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin:$HOME/.rbenv/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/sbin:$HOME/go/bin:"${KREW_ROOT:-$HOME/.krew}/bin:$PATH":$PATH
+  export PATH=/usr/local/opt/ruby/bin:/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin:$HOME/.rbenv/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/sbin:$HOME/go/bin:"${KREW_ROOT:-$HOME/.krew}/bin:$PATH":$PATH
 fi
 
 export WORDCHARS=''
@@ -167,8 +167,8 @@ fi
 
 alias c="clear"
 alias d="dirs -v"
-alias k="$HOME/Development/kubernetes-tools/shell-scripts/kubectl"
-alias h="$HOME/Development/kubernetes-tools/shell-scripts/helm"
+alias k="kubectl"
+alias h="helm"
 alias fab="/wayfair/app/fabric/bin/fab"
 alias grep="grep --color=always"
 alias jenkinscli="java -jar /wayfair/pkg/jenkins/latest/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
@@ -193,7 +193,7 @@ zmodload zsh/complist
 
 bindkey -v
 autoload -Uz edit-command-line
-bindkey -M menuselect '^[[Z' reverse-menu-complete
+# bindkey -M menuselect '^[[Z' reverse-menu-complete
 
 bindkey -M vicmd 'u' undo
 bindkey -M vicmd '~' vi-swap-case
@@ -201,12 +201,6 @@ bindkey '^u' vi-change-whole-line
 
 # The next line loads fzf
 if [ -f ~/.fzf.zsh ]; then source ~/.fzf.zsh; fi
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/nhentschel/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/nhentschel/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/nhentschel/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/nhentschel/google-cloud-sdk/completion.zsh.inc'; fi
 
 #### FZF
 
@@ -266,3 +260,11 @@ simplicity_zsh_theme() {
 }
 
 simplicity_zsh_theme
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/nhentschel/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/nhentschel/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/nhentschel/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/nhentschel/google-cloud-sdk/completion.zsh.inc'; fi
+
+source /Users/nhentschel/Library/Preferences/org.dystroy.broot/launcher/bash/br

@@ -38,6 +38,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
+Plug 'Chiel92/vim-autoformat'
 
 " syntax and language related bundles
 Plug 'clones/vim-zsh', { 'for': 'zsh' }
@@ -45,6 +46,7 @@ Plug 'towolf/vim-helm'
 Plug 'hashivim/vim-terraform'
 Plug 'plasticboy/vim-markdown'
 Plug 'elzr/vim-json'
+Plug 'tsandall/vim-rego'
 " Plug 'modille/groovy.vim'
 Plug 'endSly/groovy.vim', { 'for': 'groovy' }
 Plug 'rodjek/vim-puppet', { 'for': 'puppet' }
@@ -61,7 +63,6 @@ Plug 'yggdroot/indentline'
 " colorscheme bundles
 Plug 'rakr/vim-one'
 Plug 'tomasiser/vim-code-dark'
-Plug 'rishikanthc/skyfall-vim'
 " Plug 'djjcast/mirodark'
 " Plug 'lifepillar/vim-solarized8'
 " Plug 'cormacrelf/vim-colors-github'
@@ -90,7 +91,7 @@ endif
 
 " let g:one_allow_italics = 1
 set background=dark
-colorscheme one
+colorscheme codedark
 
 set guifont=Consolas:h12
 
@@ -273,7 +274,7 @@ nnoremap <Leader>t :NERDTreeToggle<CR>
 " ALE
 let g:ale_fixers = {
       \   'json': ['prettier','remove_trailing_lines', 'trim_whitespace'],
-      \   'markdown': ['remark', 'remove_trailing_lines', 'trim_whitespace'],
+      \   'markdown': ['prettier', 'remove_trailing_lines', 'trim_whitespace'],
       \   'puppet': ['puppetlint'],
       \   'sh': ['shfmt', 'remove_trailing_lines', 'trim_whitespace'],
       \   'terraform': ['terraform'],
@@ -291,7 +292,7 @@ let g:ale_linters = {
       \}
 
 let g:ale_linters_explicit = 1
-let g:ale_fix_on_save = 1
+let g:ale_fix_on_save = 0
 let g:ale_set_loclist = 1
 let g:ale_set_quickfix = 0
 let g:ale_open_list = 0
@@ -361,3 +362,11 @@ nnoremap <Leader>= :Tabularize /=<CR>
 vnoremap <Leader>= :Tabularize /=<CR>
 nnoremap <Leader>> :Tabularize /=><CR>
 vnoremap <Leader>> :Tabularize /=><CR>
+
+" Autoformat
+let g:formatdef_rego = '"opa fmt"'
+let g:formatters_rego = ['rego']
+let g:autoformat_autoindent = 0
+let g:autoformat_retab = 0
+au BufWritePre *.{rego} Autoformat
+noremap <leader>f :Autoformat<CR>
