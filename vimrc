@@ -59,6 +59,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'yggdroot/indentline'
+Plug 'fatih/vim-go'
 
 " colorscheme bundles
 Plug 'rakr/vim-one'
@@ -76,7 +77,7 @@ if has('nvim')
 
   Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'shougo/neco-syntax'
-  Plug 'nickhentschel/ale'
+  Plug 'dense-analysis/ale'
 endif
 
 call plug#end()
@@ -135,11 +136,11 @@ set smartcase
 set smarttab
 set splitbelow                                            " More natural splitting
 set splitright
-set softtabstop=2
-set shiftwidth=2
+set softtabstop=4
+set shiftwidth=4
 set tags=./tags;,~/.vimtags                               " Where to look for tag files
 set title                                                 " Title
-set tabstop=2
+set tabstop=4
 set ttimeoutlen=50                                        " Remove insert->normal delay
 set wildmenu
 set wildmode=list:longest,list:full
@@ -272,30 +273,32 @@ augroup END
 nnoremap <Leader>t :NERDTreeToggle<CR>
 
 " ALE
-let g:ale_fixers = {
-      \   'json': ['prettier','remove_trailing_lines', 'trim_whitespace'],
-      \   'markdown': ['prettier', 'remove_trailing_lines', 'trim_whitespace'],
-      \   'puppet': ['puppetlint'],
-      \   'sh': ['shfmt', 'remove_trailing_lines', 'trim_whitespace'],
-      \   'terraform': ['terraform'],
-      \   'vim': ['remove_trailing_lines', 'trim_whitespace'],
-      \   'yaml': ['prettier','remove_trailing_lines', 'trim_whitespace'],
-      \}
+" let g:ale_fixers = {
+"       \   'json': ['prettier','remove_trailing_lines', 'trim_whitespace'],
+"       \   'markdown': ['prettier', 'remove_trailing_lines', 'trim_whitespace'],
+"       \   'puppet': ['puppetlint'],
+"       \   'sh': ['shfmt', 'remove_trailing_lines', 'trim_whitespace'],
+"       \   'terraform': ['terraform'],
+"       \   'vim': ['remove_trailing_lines', 'trim_whitespace'],
+"       \   'yaml': ['prettier','remove_trailing_lines', 'trim_whitespace'],
+"       \   'go': ['gofmt'],
+"       \}
 
-let g:ale_linters = {
-      \   'dockerfile': ['hadolint'],
-      \   'Dockerfile': ['hadolint'],
-      \   'markdown': ['markdownlint'],
-      \   'puppet': ['puppetlint', 'puppet'],
-      \   'sh': ['shellcheck'],
-      \   'yaml': ['yamllint'],
-      \}
+"let g:ale_linters = {
+"      \   'dockerfile': ['hadolint'],
+"      \   'Dockerfile': ['hadolint'],
+"      \   'markdown': ['markdownlint'],
+"      \   'puppet': ['puppetlint', 'puppet'],
+"      \   'sh': ['shellcheck'],
+"      \   'yaml': ['yamllint'],
+"      \   'go': ['golint'],
+"      \}
 
-let g:ale_linters_explicit = 1
-let g:ale_fix_on_save = 0
-let g:ale_set_loclist = 1
-let g:ale_set_quickfix = 0
-let g:ale_open_list = 0
+" let g:ale_linters_explicit = 1
+" let g:ale_fix_on_save = 0
+" let g:ale_set_loclist = 1
+" let g:ale_set_quickfix = 0
+" let g:ale_open_list = 0
 
 " Syntax
 let g:vim_markdown_conceal = 0
@@ -364,9 +367,9 @@ nnoremap <Leader>> :Tabularize /=><CR>
 vnoremap <Leader>> :Tabularize /=><CR>
 
 " Autoformat
-let g:formatdef_rego = '"opa fmt"'
-let g:formatters_rego = ['rego']
-let g:autoformat_autoindent = 0
-let g:autoformat_retab = 0
-au BufWritePre *.{rego} Autoformat
-noremap <leader>f :Autoformat<CR>
+" let g:formatdef_rego = '"opa fmt"'
+" let g:formatters_rego = ['rego']
+" let g:autoformat_autoindent = 0
+" let g:autoformat_retab = 0
+" au BufWritePre *.{rego,go} Autoformat
+" noremap <leader>f :Autoformat<CR>
