@@ -367,9 +367,9 @@ nnoremap <Leader>> :Tabularize /=><CR>
 vnoremap <Leader>> :Tabularize /=><CR>
 
 " Autoformat
-" let g:formatdef_rego = '"opa fmt"'
-" let g:formatters_rego = ['rego']
-" let g:autoformat_autoindent = 0
-" let g:autoformat_retab = 0
-" au BufWritePre *.{rego,go} Autoformat
-" noremap <leader>f :Autoformat<CR>
+let g:formatdef_rego = '"opa fmt"'
+let g:formatters_rego = ['rego']
+let g:autoformat_autoindent = 0
+let g:autoformat_retab = 0
+au BufWritePre *.{rego,go} Autoformat
+noremap <leader>f :Autoformat<CR>
