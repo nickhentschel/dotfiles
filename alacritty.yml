@@ -56,38 +56,18 @@ scrolling:
   # scrollback is enabled (history > 1).
   multiplier: 3
 
-  # Faux Scrolling
-  #
-  # The `faux_multiplier` setting controls the number of lines the terminal
-  # should scroll when the alternate screen buffer is active. This is used
-  # to allow mouse scrolling for applications like `man`.
-  #
-  # Specifying `0` will disable faux scrolling.
-  # faux_multiplier: 3
-
-  # Scroll to the bottom when new text is written to the terminal.
-  auto_scroll: false
-
-# Spaces per Tab (changes require restart)
-#
-# This setting defines the width of a tab in cells.
-#
-# Some applications, like Emacs, rely on knowing about the width of a tab.
-# To prevent unexpected behavior in these applications, it's also required to
-# change the `it` value in terminfo when altering this setting.
-tabspaces: 8
-
+# Font configuration
 font:
   normal:
-    family: Consolas
+    family: JetBrains Mono
     style: Regular
 
   bold:
-    family: Consolas
+    family: JetBrains Mono
     style: Regular
 
   italic:
-    family: Consolas
+    family: JetBrains Mono
     style: Regular
 
   size: 14.0
@@ -95,8 +75,8 @@ font:
   # Offset is the extra space around each character. offset.y can be thought of
   # as modifying the linespacing, and offset.x as modifying the letter spacing.
   offset:
-    x: 1
-    y: 0
+    x: 0
+    y: 1
 
   # Glyph offset determines the locations of the glyphs within their cells with
   # the default being at the bottom. Increase the x offset to move the glyph to
@@ -105,45 +85,82 @@ font:
   #   x: 0
   #   y: 0
 
-  # OS X only: use thin stroke font rendering. Thin strokes are suitable
-  # for retina displays, but for non-retina you probably want this set to
-  # false.
+  # Thin stroke font rendering (macOS only)
+  #
+  # Thin strokes are suitable for retina displays, but for non-retina screens
+  # it is recommended to set `use_thin_strokes` to `false`
+  #
+  # macOS >= 10.14.x:
+  #
+  # If the font quality on non-retina display looks bad then set
+  # `use_thin_strokes` to `true` and enable font smoothing by running the
+  # following command:
+  #   `defaults write -g CGFontRenderingFontSmoothingDisabled -bool NO`
+  #
+  # This is a global setting and will require a log out or restart to take
+  # effect.
   use_thin_strokes: true
 
-# Should display the render timer
-render_timer: false
-
 # If `true`, bold text is drawn using the bright color variants.
-draw_bold_text_with_bright_colors: true
+# draw_bold_text_with_bright_colors: true
 
-# Colors (One Dark)
 colors:
   # Default colors
   primary:
-    background: "0x272c33"
-    foreground: "0xb9bfca"
+    background: '0x1e1e1e'
+    foreground: '0xdcdcdc'
 
   # Normal colors
   normal:
-    black: "0x272c33"
-    red: "0xe78287"
-    green: "0xa7cb8b"
-    yellow: "0xdaaa78"
-    blue: "0x71bdf2"
-    magenta: "0xd190e3"
-    cyan: "0x65c1cd"
-    white: "0xb9bfca"
+    black:   '0x000000'
+    red:     '0xf6645e'
+    green:   '0x00c58c'
+    yellow:  '0xeae70e'
+    blue:    '0x67adde'
+    magenta: '0xe08ade'
+    cyan:    '0x2bc4e2'
+    white:   '0xeaeaea'
 
   # Bright colors
   bright:
-    black: "0x6f7683"
-    red: "0xe78287"
-    green: "0xa7cb8b"
-    yellow: "0xdaaa78"
-    blue: "0x71bdf2"
-    magenta: "0xd190e3"
-    cyan: "0x65c1cd"
-    white: "0xfefefe"
+    black:   '0x666666'
+    red:     '0xf6645e'
+    green:   '0x00c58c'
+    yellow:  '0xeae70e'
+    blue:    '0x67adde'
+    magenta: '0xe08ade'
+    cyan:    '0x2bc4e2'
+    white:   '0xeaeaea'
+
+
+# # Colors (One Dark)
+# colors:
+#   # Default colors
+#   primary:
+#     background: "0x272c33"
+#     foreground: "0xb9bfca"
+# 
+#   # Normal colors
+#   normal:
+#     black: "0x272c33"
+#     red: "0xe78287"
+#     green: "0xa7cb8b"
+#     yellow: "0xdaaa78"
+#     blue: "0x71bdf2"
+#     magenta: "0xd190e3"
+#     cyan: "0x65c1cd"
+#     white: "0xb9bfca"
+# 
+#   # Bright colors
+#   bright:
+#     black: "0x6f7683"
+#     red: "0xe78287"
+#     green: "0xa7cb8b"
+#     yellow: "0xdaaa78"
+#     blue: "0x71bdf2"
+#     magenta: "0xd190e3"
+#     cyan: "0x65c1cd"
+#     white: "0xfefefe"
 
 # # Colors (Solarized Dark)
 # colors:

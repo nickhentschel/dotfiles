@@ -89,4 +89,7 @@
         "<C-f>": false
     },
     "vim.visualstar": true,
+    "[yaml]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
 }
