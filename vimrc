@@ -44,7 +44,7 @@ Plug 'Chiel92/vim-autoformat'
 Plug 'clones/vim-zsh', { 'for': 'zsh' }
 Plug 'towolf/vim-helm'
 Plug 'hashivim/vim-terraform'
-Plug 'plasticboy/vim-markdown'
+Plug 'gabrielelana/vim-markdown'
 Plug 'elzr/vim-json'
 Plug 'tsandall/vim-rego'
 " Plug 'modille/groovy.vim'
