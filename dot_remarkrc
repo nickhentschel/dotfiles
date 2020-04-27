@@ -1,0 +1,10 @@
+{
+  "settings": {
+    "emphasis": "*",
+    "listItemIndent": "tab",
+    "strong": "*",
+    "rule": "-",
+    "ruleSpaces": false,
+    "setext": true
+  }
+}

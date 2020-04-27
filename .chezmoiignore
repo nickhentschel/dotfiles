@@ -1,0 +1,10 @@
+README.md
+Makefile
+*.deb
+*.tar.gz
+.vscode
+settings.json
+{{- if ne .chezmoi.os "darwin" }}
+.hammerspoon
+Library
+{{- end }}

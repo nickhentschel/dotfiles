@@ -1,0 +1,23 @@
+{
+  "default": true,
+  "no-hard-tabs": true,
+  "MD003": {
+    "style": "setext_with_atx"
+  },
+  "MD007": {
+    "indent": 4
+  },
+  "MD013": {
+    "line_length": 160,
+    "code_blocks": false,
+    "tables": false
+  },
+  "MD024": {
+    "allow_different_nesting": true
+  },
+  "MD026": {
+    "punctuation": ".,;"
+  },
+  "MD036": false,
+  "MD030": false
+}

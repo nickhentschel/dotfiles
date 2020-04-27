@@ -1,0 +1,52 @@
+[user]
+  name = Nick Hentschel
+  email = nhentschel@wayfair.com
+[github]
+  user = nickhentschel
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+  interactive = auto
+  ui = true
+[credential]
+  helper = cache
+[push]
+  default = current
+[core]
+  editor = nvim
+  autocrlf = false
+  preloadindex = true
+  excludesfile = {{ .chezmoi.homedir }}/.gitignore
+  pager = less -F -X
+[alias]
+  st = status
+  co = checkout
+  di = diff
+  aa = add --all
+  pf = push --force
+  ca = commit --amend --no-edit
+  br = branch -vv
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+  logall = log --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+  l = log --graph --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset'
+  leaderboard = shortlog -sn
+[pull]
+  rebase = true
+[status]
+  showUntrackedFiles = all
+[fetch]
+  prune = true
+[log]
+  decorate = short
+[http]
+  sslverify = true
+  sslCAPath = /etc/pki/tls/certs
+[rerere]
+  enabled = true
+[url "https://github.com"]
+  insteadOf = git://github.com
+[url "https://github.com/"]
+  insteadOf = git@github.com:
+[hub]
+  host = github.csnzoo.com
