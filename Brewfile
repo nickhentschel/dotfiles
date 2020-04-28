@@ -4,7 +4,6 @@ tap "homebrew/core"
 cask_args appdir: "/Applications"
 
 brew "coreutils"
-brew "fzf"
 brew "gcc"
 brew "git"
 brew "htop"
