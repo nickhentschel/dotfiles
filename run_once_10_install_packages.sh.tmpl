@@ -16,7 +16,7 @@ brew bundle --file {{ .chezmoi.sourceDir }}/Brewfile
 sudo apt update
 
 # install packages with apt
-sudo apt install \
+sudo apt -y install \
   neovim \
   gcc \
   git \
