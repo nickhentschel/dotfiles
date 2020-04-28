@@ -2,8 +2,34 @@
 
 {{ if eq .chezmoi.os "darwin" -}}
 # install homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+if ! [ -x "$(command -v brew)" ]; then
+  echo "installing homebrew"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+fi
+
+# install homebrew packages
+brew bundle --file {{ .chezmoi.sourceDir }}/Brewfile
 {{ end }}
 
-{{ if eq .chezmoi.os "linux" -}}
+{{ if eq .chezmoi.osRelease.id "ubuntu" -}}
+# run apt update
+sudo apt update
+
+# install packages with apt
+sudo apt install \
+  neovim \
+  gcc \
+  git \
+  htop \
+  ripgrep \
+  fzf \
+  tmux \
+  tree \
+  wget \
+  zsh
+
+# install vscode if on a snap-enabled system
+if [ -x "$(command -v snap)" ]; then
+  sudo snap install code --classic
+fi
 {{ end }}

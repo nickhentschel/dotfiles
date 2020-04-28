@@ -4,6 +4,8 @@ Makefile
 *.tar.gz
 .vscode
 settings.json
+Brewfile
+Brewfile.lock.json
 {{- if ne .chezmoi.os "darwin" }}
 .hammerspoon
 Library
