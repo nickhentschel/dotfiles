@@ -11,7 +11,7 @@ fi
 brew bundle --file {{ .chezmoi.sourceDir }}/Brewfile
 {{ end }}
 
-{{ if eq .chezmoi.osRelease.id "ubuntu" -}}
+{{ if eq .chezmoi.os "linux" -}}
 # run apt update
 sudo apt update
 
