@@ -73,7 +73,7 @@ Plug 'tomasiser/vim-code-dark'
 " Plug 'mhartington/oceanic-next'
 
 if has('nvim')
-  let g:python3_host_prog = '/usr/bin/python3'
+  let g:python3_host_prog = '/usr/local/bin/python3'
 
   Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'shougo/neco-syntax'
