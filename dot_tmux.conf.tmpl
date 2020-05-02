@@ -63,8 +63,11 @@ set -g mouse on
 # send the prefix to client inside window
 bind-key a send-prefix
 
-# bind-key -T copy-mode-vi y send -X copy-pipe-and-cancel 'xsel -ip'
+{{- if eq .chezmoi.os "linux" }}
+bind-key -T copy-mode-vi y send -X copy-pipe-and-cancel 'xclip -sel clip -i'
+{{- else }}
 bind-key -T copy-mode-vi y send -X copy-pipe-and-cancel 'pbcopy'
+{{- end }}
 bind-key -T copy-mode-vi v send -X begin-selection
 bind-key -T copy-mode-vi V send -X rectangle-toggle
 bind-key -T copy-mode-vi Escape send -X cancel
