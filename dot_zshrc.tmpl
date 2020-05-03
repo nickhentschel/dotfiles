@@ -224,10 +224,6 @@ _git_prompt_info() {
   echo "%{$fg[green]%}(${ref#refs/heads/})%f "
 }
 
-_is_ssh() {
-  [[ -n "${SSH_CONNECTION-}${SSH_CLIENT}${SSH_TTY}" ]]
-}
-
 _vi_mode_indicator() {
   case $KEYMAP in
     vicmd) print -n ':' ;;
@@ -242,16 +238,14 @@ simplicity_zsh_theme() {
 
   host=''
 
-  if _is_ssh; then
-    if [[ $EUID -eq 0 ]]; then
-      host="%{$fg_bold[red]%}%n@%3m%f "
-    else
-      host="%{$fg_bold[green]%}%n@%3m%f "
-    fi
+  if [[ $EUID -eq 0 ]]; then
+    host="%{$fg_bold[red]%}%n@%3m%f"
+  else
+    host="%{$fg_bold[green]%}%n@%3m%f"
   fi
 
 
-  PROMPT='%{$fg[red]%}%(1j.● .)%f$host$short_path %{$reset_color%}$(_git_prompt_info)%{$fg_bold[blue]%}$(_vi_mode_indicator)%f%{$reset_color%} '
+  PROMPT='%{$fg[red]%}%(1j.● .)%f$host:$short_path%{$reset_color%}$(_git_prompt_info)%{$fg_bold[blue]%}%{$reset_color%}$(_vi_mode_indicator)%f '
 }
 
 simplicity_zsh_theme
