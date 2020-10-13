@@ -92,4 +92,5 @@
     "[yaml]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
+    "python.pythonPath": "/usr/local/bin/python3",
 }

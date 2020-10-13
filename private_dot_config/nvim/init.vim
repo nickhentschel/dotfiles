@@ -92,7 +92,7 @@ endif
 
 " let g:one_allow_italics = 1
 set background=dark
-colorscheme codedark
+colorscheme one
 
 set guifont=Consolas:h12
 
