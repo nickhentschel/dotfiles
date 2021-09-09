@@ -4,6 +4,7 @@
     "editor.tabCompletion": "on",
     "editor.cursorBlinking": "smooth",
     "editor.minimap.enabled": false,
+    "editor.formatOnSave": false,
     "workbench.startupEditor": "none",
     "editor.fontSize": 14,
     "workbench.editor.highlightModifiedTabs": true,
@@ -17,80 +18,32 @@
     "terminal.external.osxExec": "iTerm.app",
     "terminal.integrated.fontSize": 14,
     "terminal.integrated.fontFamily": "JetBrains Mono",
-    "terminal.integrated.rendererType": "canvas",
-    "vim.easymotion": true,
-    "vim.sneak": true,
-    "vim.incsearch": true,
-    "vim.useSystemClipboard": true,
-    "vim.useCtrlKeys": true,
-    "vim.hlsearch": true,
-    "vim.visualModeKeyBindingsNonRecursive": [
-        {
-            "before": [
-                ">"
-            ],
-            "commands": [
-                "editor.action.indentLines"
-            ]
-        },
-        {
-            "before": [
-                "<"
-            ],
-            "commands": [
-                "editor.action.outdentLines"
-            ]
-        },
-    ],
-    "vim.insertModeKeyBindings": [
-        {
-            "before": [
-                "j",
-                "k"
-            ],
-            "after": [
-                "<Esc>"
-            ]
-        }
-    ],
-    "vim.normalModeKeyBindingsNonRecursive": [
-        {
-            "before": [
-                "<leader>",
-                "d"
-            ],
-            "after": [
-                "d",
-                "d"
-            ]
-        },
-        {
-            "before": [
-                "<C-n>"
-            ],
-            "commands": [
-                ":nohl"
-            ]
-        }
-    ],
-    "vim.normalModeKeyBindings": [
-        {
-            "before": [
-                ";"
-            ],
-            "after": [
-                ":"
-            ]
-        }
-    ],
-    "vim.leader": "<space>",
-    "vim.handleKeys": {
-        "<C-a>": false,
-        "<C-f>": false
-    },
-    "vim.visualstar": true,
     "[yaml]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "python.pythonPath": "/usr/local/bin/python3",
+    "window.zoomLevel": 0,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python"
+    },
+    "vs-kubernetes": {
+        "vs-kubernetes.minikube-path.mac": "/Users/nhentschel/.vs-kubernetes/tools/minikube/darwin-amd64/minikube",
+        "vscode-kubernetes.minikube-path.mac": "/Users/nhentschel/.vs-kubernetes/tools/minikube/darwin-amd64/minikube"
+    },
+    "explorer.confirmDelete": false,
+    "[markdown]": {
+        "editor.defaultFormatter": "mrmlnc.vscode-remark"
+    },
+    "git.autofetch": true,
+    "cSpell.userWords": [
+        "Burstable",
+        "Kubernetes",
+        "Wayfair",
+        "performant"
+    ],
+    "vscode-neovim.neovimExecutablePaths.darwin": "/opt/local/bin/nvim",
+    "workbench.colorTheme": "Solarized Dark",
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "terminal.integrated.gpuAcceleration": "on",
+    "python.showStartPage": false,
+    "go.toolsManagement.autoUpdate": true
 }
