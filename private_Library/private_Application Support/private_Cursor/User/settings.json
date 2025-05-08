@@ -39,7 +39,7 @@
         "Kubernetes",
         "Wayfair",
         "performant",
-        "Zillow",
+        "Zillow"
     ],
     "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
     "workbench.colorTheme": "One Dark Pro",

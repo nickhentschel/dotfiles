@@ -19,11 +19,11 @@
     "terminal.integrated.fontSize": 14,
     "terminal.integrated.fontFamily": "JetBrains Mono",
     "[yaml]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
+        "editor.defaultFormatter": "redhat.vscode-yaml"
     },
     "window.zoomLevel": 0,
     "[python]": {
-        "editor.defaultFormatter": "ms-python.python"
+        "editor.defaultFormatter": null
     },
     "vs-kubernetes": {
         "vs-kubernetes.minikube-path.mac": "/Users/nhentschel/.vs-kubernetes/tools/minikube/darwin-amd64/minikube",
@@ -31,17 +31,18 @@
     },
     "explorer.confirmDelete": false,
     "[markdown]": {
-        "editor.defaultFormatter": "mrmlnc.vscode-remark"
+        "editor.defaultFormatter": "vscode.markdown-language-features"
     },
     "git.autofetch": true,
     "cSpell.userWords": [
         "Burstable",
         "Kubernetes",
         "Wayfair",
-        "performant"
+        "performant",
+        "Zillow"
     ],
-    "vscode-neovim.neovimExecutablePaths.darwin": "/opt/local/bin/nvim",
-    "workbench.colorTheme": "Solarized Dark",
+    "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
+    "workbench.colorTheme": "One Dark Pro",
     "terminal.integrated.defaultProfile.osx": "zsh",
     "terminal.integrated.gpuAcceleration": "on",
     "python.showStartPage": false,
