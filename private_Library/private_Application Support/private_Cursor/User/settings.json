@@ -1,0 +1,98 @@
+{
+    "editor.fontFamily": "JetBrains Mono, Menlo, Monaco, 'Courier New', monospace",
+    "editor.cursorStyle": "block",
+    "editor.tabCompletion": "on",
+    "editor.cursorBlinking": "smooth",
+    "editor.minimap.enabled": false,
+    "editor.formatOnSave": false,
+    "workbench.startupEditor": "none",
+    "editor.fontSize": 14,
+    "workbench.editor.highlightModifiedTabs": true,
+    "workbench.settings.useSplitJSON": true,
+    "zenMode.fullScreen": false,
+    "window.titleBarStyle": "native",
+    "explorer.confirmDragAndDrop": false,
+    "explorer.incrementalNaming": "smart",
+    "debug.console.fontFamily": "JetBrains Mono",
+    "debug.console.fontSize": 14,
+    "terminal.external.osxExec": "iTerm.app",
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.fontFamily": "JetBrains Mono",
+    "[yaml]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "window.zoomLevel": 0,
+    "[python]": {
+        "editor.defaultFormatter": null
+    },
+    "vs-kubernetes": {
+        "vs-kubernetes.minikube-path.mac": "/Users/nhentschel/.vs-kubernetes/tools/minikube/darwin-amd64/minikube",
+        "vscode-kubernetes.minikube-path.mac": "/Users/nhentschel/.vs-kubernetes/tools/minikube/darwin-amd64/minikube"
+    },
+    "explorer.confirmDelete": false,
+    "[markdown]": {
+        "editor.defaultFormatter": "vscode.markdown-language-features"
+    },
+    "git.autofetch": true,
+    "cSpell.userWords": [
+        "Burstable",
+        "Kubernetes",
+        "Wayfair",
+        "performant"
+    ],
+    "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
+    "workbench.colorTheme": "Default Dark+",
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "terminal.integrated.gpuAcceleration": "on",
+    "python.showStartPage": false,
+    "go.toolsManagement.autoUpdate": true,
+    "yaml.schemas": {
+        "./context.schema.json": "context.yaml"
+    },
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
+    "redhat.telemetry.enabled": false,
+    "vscode-neovim.neovimInitVimPaths.darwin": "/Users/nickhe/.config/nvim/vscode.vim",
+    "vscode-neovim.compositeKeys": {
+        "jk": {
+            "command": "vscode-neovim.escape"
+        },
+        "gq": {
+            "command": "rewrap.rewrapComment",
+            "modes": ["visual"]
+        }
+    },
+    "vscode-neovim.normalModeKeyBindings": [
+        {
+            "before": [";"],
+            "after": [":"]
+        },
+        {
+            "before": [":"],
+            "after": [";"]
+        }
+    ],
+    "vscode-neovim.visualModeKeyBindings": [
+        {
+            "before": [";"],
+            "after": [":"]
+        },
+        {
+            "before": [":"],
+            "after": [";"]
+        }
+    ],
+    "vscode-neovim.compositeTimeout": 100,
+    "npm.exclude": "",
+    "editor.lineNumbers": "on",
+    "editor.rulers": [80],
+    "editor.scrollBeyondLastLine": false,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.renderWhitespace": "all",
+    "editor.renderControlCharacters": true,
+    "editor.autoIndent": "full",
+    "files.trimTrailingWhitespace": true,
+    "editor.wordWrap": "off"
+}

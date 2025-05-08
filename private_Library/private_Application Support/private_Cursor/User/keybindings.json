@@ -1,0 +1,50 @@
+// Place your key bindings in this file to override the defaults
+[
+    {
+        "key": "cmd+i",
+        "command": "composerMode.agent"
+    },
+    // Add Neovim-like keybindings
+    {
+        "key": "ctrl+s",
+        "command": "workbench.action.files.save",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+p",
+        "command": "workbench.action.quickOpen",
+        "when": "!inQuickOpen"
+    },
+    {
+        "key": "ctrl+o",
+        "command": "workbench.action.showAllEditorsByMostRecentlyUsed",
+        "when": "!inQuickOpen"
+    },
+    {
+        "key": "ctrl+i",
+        "command": "workbench.action.findInFiles",
+        "when": "!inQuickOpen"
+    },
+    {
+        "key": "space t",
+        "command": "workbench.view.explorer",
+        "when": "!inputFocus && neovim.mode == 'normal'"
+    },
+    {
+        "key": "ctrl+c",
+        "command": "workbench.action.closeActiveEditor",
+        "when": "!inputFocus && neovim.mode == 'normal'"
+    },
+    {
+        "key": "alt+e",
+        "command": "scrollLineDown",
+        "when": "editorTextFocus && neovim.mode == 'normal'",
+        "args": 3
+    },
+    {
+        "key": "alt+y",
+        "command": "scrollLineUp",
+        "when": "editorTextFocus && neovim.mode == 'normal'",
+        "args": 3
+    }
+]
