@@ -10,20 +10,6 @@ path() {
     print }"
 }
 
-gendiff() {
-  if [ -d .git ] || git rev-parse --git-dir > /dev/null 2>&1; then
-    branch=$(git rev-parse --abbrev-ref HEAD)
-    diff_name=${branch#nhentschel_}
-    git diff -M --full-index origin/master >| ~/Development/diffs/${diff_name}.diff
-  else
-    echo 'Not in git directory'
-  fi;
-}
-
-gcloud_ssh() {
-  gcloud beta compute ssh "${1}" --internal-ip --project "${2}"
-}
-
 ######## EXPORTS AND OTHER SETTINGS #######
 
 
@@ -50,8 +36,16 @@ export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;
 if [ -x /usr/libexec/path_helper ]; then
   eval `/usr/libexec/path_helper -s`
 fi
-export PATH=/opt/homebrew/bin:/opt/homebrew/sbin:/opt/local/bin:/opt/local/sbin:/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin:/opt/local/libexec/gnubin:/usr/local/sbin:$HOME/go/bin:"${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-export PATH=$NPM_PACKAGES/bin:$PYENV_ROOT/bin:$GOPATH/bin:$HOME/.fzf/bin:$HOME/.local/bin:$PATH
+
+# Build PATH
+PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/opt/local/bin:/opt/local/sbin:/opt/local/libexec/gnubin:/usr/local/sbin:$PATH"
+
+# Add Cursor to PATH if it exists
+[ -d "/Applications/Cursor.app" ] && PATH="$PATH:/Applications/Cursor.app/Contents/Resources/app/bin"
+
+# Add user-specific paths
+PATH="$HOME/go/bin:${KREW_ROOT:-$HOME/.krew}/bin:$NPM_PACKAGES/bin:$PYENV_ROOT/bin:$GOPATH/bin:$HOME/.fzf/bin:$HOME/.local/bin:$PATH"
+export PATH
 
 setopt share_history append_history extended_history hist_no_store hist_ignore_all_dups hist_ignore_space
 
@@ -164,9 +158,7 @@ alias c="clear"
 alias d="dirs -v"
 alias k="kubectl"
 alias h="helm"
-alias fab="/wayfair/app/fabric/bin/fab"
 alias grep="grep --color=always"
-alias jenkinscli="java -jar /wayfair/pkg/jenkins/latest/bin/jenkins-cli.jar -noKeyAuth -s http://localhost/jenkins"
 alias ll="ls -lachp"
 alias ls="ls -ph --color=always"
 alias mounts="cat /proc/mounts | column -t"
