@@ -1,3 +1,5 @@
 Brewfile.lock.json
-# SpecStory explanation file
+# SpecStory files and directories
+.specstory/
+.specstory/**
 .specstory/.what-is-this.md
