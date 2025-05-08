@@ -1,1 +1,6 @@
 Brewfile.lock.json
+# SpecStory files and directories
+.specstory/
+.specstory/**
+.specstory/.what-is-this.md
+.cursorindexingignore
