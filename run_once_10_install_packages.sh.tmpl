@@ -10,27 +10,3 @@ fi
 # install homebrew packages
 brew bundle --file {{ .chezmoi.sourceDir }}/Brewfile
 {{ end }}
-
-{{ if eq .chezmoi.os "linux" -}}
-# run apt update
-sudo apt update
-
-# install packages with apt
-sudo apt -y install \
-  neovim \
-  gcc \
-  git \
-  htop \
-  ripgrep \
-  tmux \
-  tree \
-  wget \
-  xsel \
-  xclip \
-  zsh
-
-# install vscode if on a snap-enabled system
-if [ -x "$(command -v snap)" ]; then
-  sudo snap install code --classic
-fi
-{{ end }}
