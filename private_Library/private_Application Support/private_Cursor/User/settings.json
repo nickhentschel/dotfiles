@@ -38,10 +38,11 @@
         "Burstable",
         "Kubernetes",
         "Wayfair",
-        "performant"
+        "performant",
+        "Zillow",
     ],
     "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
-    "workbench.colorTheme": "Default Dark+",
+    "workbench.colorTheme": "One Dark Pro",
     "terminal.integrated.defaultProfile.osx": "zsh",
     "terminal.integrated.gpuAcceleration": "on",
     "python.showStartPage": false,
@@ -60,33 +61,53 @@
         },
         "gq": {
             "command": "rewrap.rewrapComment",
-            "modes": ["visual"]
+            "modes": [
+                "visual"
+            ]
         }
     },
     "vscode-neovim.normalModeKeyBindings": [
         {
-            "before": [";"],
-            "after": [":"]
+            "before": [
+                ";"
+            ],
+            "after": [
+                ":"
+            ]
         },
         {
-            "before": [":"],
-            "after": [";"]
+            "before": [
+                ":"
+            ],
+            "after": [
+                ";"
+            ]
         }
     ],
     "vscode-neovim.visualModeKeyBindings": [
         {
-            "before": [";"],
-            "after": [":"]
+            "before": [
+                ";"
+            ],
+            "after": [
+                ":"
+            ]
         },
         {
-            "before": [":"],
-            "after": [";"]
+            "before": [
+                ":"
+            ],
+            "after": [
+                ";"
+            ]
         }
     ],
     "vscode-neovim.compositeTimeout": 100,
     "npm.exclude": "",
     "editor.lineNumbers": "on",
-    "editor.rulers": [80],
+    "editor.rulers": [
+        80
+    ],
     "editor.scrollBeyondLastLine": false,
     "editor.tabSize": 4,
     "editor.insertSpaces": true,
@@ -94,5 +115,30 @@
     "editor.renderControlCharacters": true,
     "editor.autoIndent": "full",
     "files.trimTrailingWhitespace": true,
-    "editor.wordWrap": "off"
+    "editor.wordWrap": "off",
+    "workbench.iconTheme": "material-icon-theme",
+    "indentRainbow.colors": [
+        "rgba(16,16,16,0.1)",
+        "rgba(16,16,16,0.2)",
+        "rgba(16,16,16,0.3)",
+        "rgba(16,16,16,0.4)",
+        "rgba(16,16,16,0.5)",
+        "rgba(16,16,16,0.6)",
+        "rgba(16,16,16,0.7)",
+        "rgba(16,16,16,0.8)",
+        "rgba(16,16,16,0.9)",
+        "rgba(16,16,16,1.0)"
+    ],
+    "indentRainbow.errorColor": "rgba(128,32,32,0.6)",
+    "tabout.triggers": [
+        ")",
+        "]",
+        "}",
+        ">",
+        "'",
+        "\"",
+        "`",
+        ";"
+    ],
+    "json.format.enable": true
 }
