@@ -53,8 +53,8 @@ cask "docker", args: { appdir: "/Applications" }
 cask "notunes"
 # Virtualiser for x86 hardware
 cask "virtualbox"
-# Open-source code editor
-cask "visual-studio-code", args: { appdir: "/Applications" }
+# AI-powered IDE based on VSCode
+cask "cursor", args: { appdir: "/Applications" }
 vscode "albert.tabout"
 vscode "asvetliakov.vscode-neovim"
 vscode "dnut.rewrap-revived"
