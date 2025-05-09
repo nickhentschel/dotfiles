@@ -8,5 +8,39 @@ if ! [ -x "$(command -v brew)" ]; then
 fi
 
 # install homebrew packages
+echo "Installing Homebrew packages..."
 brew bundle --file {{ .chezmoi.sourceDir }}/Brewfile
+
+# Install Cursor extensions if Cursor.app exists
+if [ -d "/Applications/Cursor.app" ]; then
+  echo "Installing Cursor extensions..."
+
+  # Ensure cursor command is in PATH
+  CURSOR_CMD="/Applications/Cursor.app/Contents/Resources/app/bin/cursor"
+
+  # Install extensions
+  echo "Installing Cursor extensions..."
+  $CURSOR_CMD --install-extension asvetliakov.vscode-neovim
+  $CURSOR_CMD --install-extension davidanson.vscode-markdownlint
+  $CURSOR_CMD --install-extension dnut.rewrap-revived
+  $CURSOR_CMD --install-extension docker.docker
+  $CURSOR_CMD --install-extension dunstontc.viml
+  $CURSOR_CMD --install-extension eriklynd.json-tools
+  $CURSOR_CMD --install-extension golang.go
+  $CURSOR_CMD --install-extension hashicorp.terraform
+  $CURSOR_CMD --install-extension ms-azuretools.vscode-docker
+  $CURSOR_CMD --install-extension ms-kubernetes-tools.vscode-kubernetes-tools
+  $CURSOR_CMD --install-extension ms-vscode-remote.remote-containers
+  $CURSOR_CMD --install-extension ms-vscode.makefile-tools
+  $CURSOR_CMD --install-extension oderwat.indent-rainbow
+  $CURSOR_CMD --install-extension pkief.material-icon-theme
+  $CURSOR_CMD --install-extension redhat.vscode-yaml
+  $CURSOR_CMD --install-extension specstory.specstory-vscode
+  $CURSOR_CMD --install-extension tsandall.opa
+  $CURSOR_CMD --install-extension yzhang.markdown-all-in-one
+  $CURSOR_CMD --install-extension zhuangtongfa.material-theme
+  echo "Cursor extensions installed!"
+else
+  echo "Cursor.app not found in /Applications. Skipping extension installation."
+fi
 {{ end }}
