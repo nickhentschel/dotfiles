@@ -47,3 +47,5 @@ cask "docker", args: { appdir: "/Applications" }
 cask "notunes"
 # AI-powered IDE based on VSCode
 cask "cursor", args: { appdir: "/Applications" }
+# Caffeine replacement
+cask "caffeine", args: { appdir: "/Applications" }
