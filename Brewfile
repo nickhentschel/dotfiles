@@ -56,25 +56,25 @@ cask "virtualbox"
 # AI-powered IDE based on VSCode
 cask "cursor", args: { appdir: "/Applications" }
 
-# Cursor extensions
-vscode "asvetliakov.vscode-neovim"
-vscode "davidanson.vscode-markdownlint"
-vscode "dnut.rewrap-revived"
-vscode "docker.docker"
-vscode "dunstontc.viml"
-vscode "eriklynd.json-tools"
-vscode "golang.go"
-vscode "hashicorp.terraform"
-vscode "ms-azuretools.vscode-docker"
-vscode "ms-kubernetes-tools.vscode-kubernetes-tools"
-vscode "ms-vscode-remote.remote-containers"
-vscode "ms-vscode.makefile-tools"
-vscode "oderwat.indent-rainbow"
-vscode "pkief.material-icon-theme"
-vscode "redhat.vscode-yaml"
-vscode "specstory.specstory-vscode"
-vscode "tsandall.opa"
-vscode "yzhang.markdown-all-in-one"
-vscode "zhuangtongfa.material-theme"
-# Organization-specific extension, excluded as it may not be publicly available
-# vscode "zillow.zillow-cursor-mcp-plugin"
+# Note: Cursor extensions need to be installed manually through Cursor itself
+# as Homebrew's vscode directive only works with Visual Studio Code, not Cursor.
+# Current extensions include:
+# - asvetliakov.vscode-neovim
+# - davidanson.vscode-markdownlint
+# - dnut.rewrap-revived
+# - docker.docker
+# - dunstontc.viml
+# - eriklynd.json-tools
+# - golang.go
+# - hashicorp.terraform
+# - ms-azuretools.vscode-docker
+# - ms-kubernetes-tools.vscode-kubernetes-tools
+# - ms-vscode-remote.remote-containers
+# - ms-vscode.makefile-tools
+# - oderwat.indent-rainbow
+# - pkief.material-icon-theme
+# - redhat.vscode-yaml
+# - specstory.specstory-vscode
+# - tsandall.opa
+# - yzhang.markdown-all-in-one
+# - zhuangtongfa.material-theme
