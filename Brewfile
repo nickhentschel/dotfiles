@@ -55,13 +55,14 @@ cask "notunes"
 cask "virtualbox"
 # AI-powered IDE based on VSCode
 cask "cursor", args: { appdir: "/Applications" }
-vscode "albert.tabout"
+
+# Cursor extensions
 vscode "asvetliakov.vscode-neovim"
+vscode "davidanson.vscode-markdownlint"
 vscode "dnut.rewrap-revived"
 vscode "docker.docker"
+vscode "dunstontc.viml"
 vscode "eriklynd.json-tools"
-vscode "github.copilot"
-vscode "github.copilot-chat"
 vscode "golang.go"
 vscode "hashicorp.terraform"
 vscode "ms-azuretools.vscode-docker"
@@ -75,3 +76,5 @@ vscode "specstory.specstory-vscode"
 vscode "tsandall.opa"
 vscode "yzhang.markdown-all-in-one"
 vscode "zhuangtongfa.material-theme"
+# Organization-specific extension, excluded as it may not be publicly available
+# vscode "zillow.zillow-cursor-mcp-plugin"
