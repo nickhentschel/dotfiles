@@ -26,25 +26,8 @@
         "when": "!inQuickOpen"
     },
     {
-        "key": "space t",
-        "command": "workbench.view.explorer",
-        "when": "!inputFocus && neovim.mode == 'normal'"
-    },
-    {
         "key": "ctrl+c",
         "command": "workbench.action.closeActiveEditor",
         "when": "!inputFocus && neovim.mode == 'normal'"
-    },
-    {
-        "key": "alt+e",
-        "command": "scrollLineDown",
-        "when": "editorTextFocus && neovim.mode == 'normal'",
-        "args": 3
-    },
-    {
-        "key": "alt+y",
-        "command": "scrollLineUp",
-        "when": "editorTextFocus && neovim.mode == 'normal'",
-        "args": 3
     }
 ]
