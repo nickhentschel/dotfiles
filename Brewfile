@@ -1,4 +1,3 @@
-tap "homebrew/bundle"
 # Manage your dotfiles across multiple diverse machines, securely
 brew "chezmoi"
 # GNU File, Shell, and Text utilities
@@ -41,8 +40,8 @@ brew "watch"
 brew "wget"
 # UNIX shell (command interpreter)
 brew "zsh"
-# App to build and share containerised applications and microservices
-cask "docker", args: { appdir: "/Applications" }
+# Command-line fuzzy finder written in Go
+brew "fzf"
 # Simple application that will prevent iTunes or Apple Music from launching
 cask "notunes"
 # AI-powered IDE based on VSCode

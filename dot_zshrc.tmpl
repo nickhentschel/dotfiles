@@ -249,3 +249,15 @@ simplicity_zsh_theme() {
 }
 
 simplicity_zsh_theme
+
+# Function to use fzf for searching history
+fzf_history_search() {
+  local selected_command
+  selected_command=$(fc -ln 1 | fzf --tac --tiebreak=index --height=40% --border --ansi)
+  LBUFFER="$selected_command"
+  zle redisplay
+}
+
+# Bind Ctrl+R to fzf history search
+zle -N fzf_history_search
+bindkey '^R' fzf_history_search
