@@ -1,13 +1,15 @@
+# shellcheck disable=SC2148
+# shellcheck disable=SC2154
+
 ######## FUNCTIONS ########
 
 path() {
-  echo $PATH | tr ":" "\n" | \
-    awk "{ sub(\"/usr\",   \"$fg_no[cyan]/usr$reset_color\"); \
-    sub(\"/bin\",   \"$fg_no[blue]/bin$reset_color\"); \
-    sub(\"/opt\",   \"$fg_no[magenta,bold]/opt$reset_color\"); \
-    sub(\"/sbin\",  \"$fg_no[magenta]/sbin$reset_color\"); \
-    sub(\"/local\", \"$fg_no[yellow]/local$reset_color\"); \
-    print }"
+  print -P "$(echo "$PATH" | tr ":" "\n" | sed -E \
+    -e 's|/usr|%F{cyan}/usr%f|g' \
+    -e 's|/bin|%F{blue}/bin%f|g' \
+    -e 's|/opt|%B%F{magenta}/opt%f%b|g' \
+    -e 's|/sbin|%F{magenta}/sbin%f|g' \
+    -e 's|/local|%F{yellow}/local%f|g')"
 }
 
 ######## EXPORTS AND OTHER SETTINGS #######
@@ -35,7 +37,7 @@ export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;
 
 # Initialize PATH with system paths
 if [ -x /usr/libexec/path_helper ]; then
-  eval "`/usr/libexec/path_helper -s`"
+  eval "$(/usr/libexec/path_helper -s)"
 fi
 
 # System paths
@@ -76,7 +78,7 @@ setopt prompt_subst
 
 # Load completions system
 zmodload -i zsh/complist
-zstyle :compinstall filename '~/.zshrc'
+zstyle :compinstall filename "$HOME/.zshrc"
 autoload -Uz compinit && compinit
 
 # Auto rehash commands
@@ -90,10 +92,10 @@ zstyle ':completion:*' menu select=1
 zstyle ':completion:*' group-name ''
 
 # For all completions: color
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-colors "${LS_COLORS}"
 
 # For all completions: selected item
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} ma=0\;47
+zstyle ':completion:*' list-colors "${LS_COLORS}" ma=0\;47
 
 # Completion of .. directories
 zstyle ':completion:*' special-dirs true
@@ -101,7 +103,7 @@ zstyle ':completion:*' special-dirs true
 # Fault tolerance
 zstyle ':completion:*' completer _complete _correct _approximate
 # (1 error on 3 characters)
-zstyle -e ':completion:*:approximate:*' max-errors 'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric )'
+zstyle -e ':completion:*:approximate:*' max-errors "reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric )"
 
 # Case insensitivity
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
@@ -139,6 +141,7 @@ zstyle ':completion::*:vi:*:*' file-patterns 'Makefile|*(rc|log)|*.(php|tex|bib|
 
 # Application-specific completions
 if type helm > /dev/null 2>&1; then
+  # shellcheck disable=SC1090
   source <(helm completion zsh)
 fi
 
@@ -180,6 +183,7 @@ bindkey '^u' vi-change-whole-line
 ######## FZF CONFIGURATION ########
 
 # Load fzf
+# shellcheck disable=SC1090
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Use fd for path generation if available
@@ -194,7 +198,8 @@ _fzf_compgen_dir() {
 
 ######## PROMPT CONFIGURATION ########
 
-autoload colors && colors
+# Load colors
+autoload -U colors && colors
 
 # Updates editor information when the keymap changes.
 zle-keymap-select() {
@@ -205,12 +210,17 @@ zle-keymap-select() {
 # Cache git info to improve performance
 function _git_prompt_info() {
   # Only check for git info every 5 seconds to avoid slowdowns
-  if [[ -z "$_CACHED_GIT_INFO" || $(( $(date +%s) - $_CACHED_GIT_TIMESTAMP )) -gt 5 ]]; then
-    ref=$(git symbolic-ref HEAD 2> /dev/null)
-    if [[ $? -eq 0 ]]; then
-      _CACHED_GIT_INFO="%{$fg[green]%}(${ref#refs/heads/})%f "
+  if [[ -z "$_CACHED_GIT_INFO" || $(( $(date +%s) - _CACHED_GIT_TIMESTAMP )) -gt 5 ]]; then
+    if git symbolic-ref HEAD > /dev/null 2>&1; then
+      ref=$(git symbolic-ref HEAD 2> /dev/null)
+      _CACHED_GIT_INFO="%F{green}(${ref#refs/heads/})%f "
     else
-      _CACHED_GIT_INFO=""
+      # Check if we're in a git repo but not on a branch (detached HEAD)
+      if git rev-parse --git-dir > /dev/null 2>&1; then
+        _CACHED_GIT_INFO="%F{yellow}(detached)%f "
+      else
+        _CACHED_GIT_INFO=""
+      fi
     fi
     _CACHED_GIT_TIMESTAMP=$(date +%s)
   fi
@@ -220,40 +230,36 @@ function _git_prompt_info() {
 
 _vi_mode_indicator() {
   case $KEYMAP in
-    vicmd) print -n ':' ;;
-    *) print -n '%#' ;;
+    vicmd) print -n "%F{red}:%f" ;;
+    *) print -n "%F{blue}%#%f" ;;
   esac
 }
 
-# Precalculate static prompt elements
-function precmd() {
-  # Pre-compute the shortened path
-  _SHORT_PATH="%{$fg_bold[blue]%}%(5~|%-1~/…/%3~|%4~)%f"
+# Calculate once at startup instead of every prompt
+_setup_prompt_elements() {
+  _SHORT_PATH="%B%F{blue}%(5~|%-1~/…/%3~|%4~)%f%b"
 
-  # Pre-compute the host part
-  if [[ $EUID -eq 0 ]]; then
-    _HOST="%{$fg_bold[red]%}%n@%3m%f"
+  if [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" || -n "$SSH_CONNECTION" ]]; then
+    _SSH_INDICATOR="%K{red}%B%F{white}[SSH]%f%b%k "
+    _HOST="%B%F{green}%n%f%b@%B%K{red}%F{white}%m%f%k%b"
   else
-    _HOST="%{$fg_bold[green]%}%n@%3m%f"
+    _SSH_INDICATOR=""
+    _HOST="%B%F{green}%n@%m%f%b"
   fi
 }
+_setup_prompt_elements
 
-# Initialize static variables
-precmd
+# Set prompt directly instead of through a function
+# shellcheck disable=SC2034
+PROMPT='${_SSH_INDICATOR}%F{red}%(1j.● .)%f${_HOST}:${_SHORT_PATH}$(_git_prompt_info)$(_vi_mode_indicator) '
 
-simplicity_zsh_theme() {
-  # Use pre-computed values
-  PROMPT='%{$fg[red]%}%(1j.● .)%f$_HOST:$_SHORT_PATH%{$reset_color%}$(_git_prompt_info)%{$fg_bold[blue]%}%{$reset_color%}$(_vi_mode_indicator)%f '
-
-  zle -N zle-keymap-select
-}
-
-simplicity_zsh_theme
+zle -N zle-keymap-select
 
 # Function to use fzf for searching history
 fzf_history_search() {
   local selected_command
   selected_command=$(fc -ln 1 | fzf --tac --tiebreak=index --height=40% --border --ansi)
+  # shellcheck disable=SC2034
   LBUFFER="$selected_command"
   zle redisplay
 }
@@ -261,3 +267,10 @@ fzf_history_search() {
 # Bind Ctrl+R to fzf history search
 zle -N fzf_history_search
 bindkey '^R' fzf_history_search
+
+# Install via:
+# git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.zsh/zsh-syntax-highlighting
+# git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+
+[ -f ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+[ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
