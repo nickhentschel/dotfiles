@@ -41,7 +41,10 @@ if [ -d "/Applications/Cursor.app" ]; then
   $CURSOR_CMD --install-extension tsandall.opa
   $CURSOR_CMD --install-extension yzhang.markdown-all-in-one
   $CURSOR_CMD --install-extension zhuangtongfa.material-theme
+  {{ if eq .email "nickhe@zillowgroup.com" -}}
+  echo "Installing Zillow-specific extensions..."
   $CURSOR_CMD --install-extension zillow.zillow-cursor-mcp-plugin
+  {{ end -}}
   echo "Cursor extensions installed!"
 else
   echo "Cursor.app not found in /Applications. Skipping extension installation."
