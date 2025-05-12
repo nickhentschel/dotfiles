@@ -26,8 +26,8 @@
         "editor.defaultFormatter": null
     },
     "vs-kubernetes": {
-        "vs-kubernetes.minikube-path.mac": "${userHome}/.vs-kubernetes/tools/minikube/darwin-amd64/minikube",
-        "vscode-kubernetes.minikube-path.mac": "${userHome}/.vs-kubernetes/tools/minikube/darwin-amd64/minikube"
+        "vs-kubernetes.minikube-path.mac": "~/.vs-kubernetes/tools/minikube/darwin-amd64/minikube",
+        "vscode-kubernetes.minikube-path.mac": "~/.vs-kubernetes/tools/minikube/darwin-amd64/minikube"
     },
     "explorer.confirmDelete": false,
     "[markdown]": {
@@ -46,7 +46,7 @@
         "asvetliakov.vscode-neovim": 1
     },
     "redhat.telemetry.enabled": false,
-    "vscode-neovim.neovimInitVimPaths.darwin": "${userHome}/.config/nvim/vscode.vim",
+    "vscode-neovim.neovimInitVimPaths.darwin": "~/.config/nvim/vscode.vim",
     "vscode-neovim.compositeKeys": {
         "jk": {
             "command": "vscode-neovim.escape"
