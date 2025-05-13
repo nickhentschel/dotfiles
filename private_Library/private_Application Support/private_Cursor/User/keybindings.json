@@ -29,5 +29,10 @@
         "key": "ctrl+c",
         "command": "workbench.action.closeActiveEditor",
         "when": "!inputFocus && neovim.mode == 'normal'"
+    },
+    {
+        "key": "shift+alt+q",
+        "command": "rewrap.rewrapComment",
+        "when": "editorTextFocus && !editorReadonly && editorHasSelection"
     }
 ]

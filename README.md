@@ -59,8 +59,9 @@ What's Included
 Cursor/VSCode Settings
 ----------------------
 
-Cursor settings are stored in `private_Library/private_Application Support/private_Cursor/User/settings.json`
-for macOS and will be applied automatically when using chezmoi.
+Cursor settings are stored in `private_Library/private_Application
+Support/private_Cursor/User/settings.json` for macOS and will be applied
+automatically when using chezmoi.
 
 The setup ensures that:
 

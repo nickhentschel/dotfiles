@@ -58,7 +58,7 @@
             ]
         }
     },
-    "vscode-neovim.compositeTimeout": 100,
+    "vscode-neovim.compositeTimeout": 200,
     "npm.exclude": "",
     "editor.lineNumbers": "on",
     "editor.rulers": [
