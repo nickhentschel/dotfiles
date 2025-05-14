@@ -12,6 +12,59 @@ path() {
     -e 's|/local|%F{yellow}/local%f|g')"
 }
 
+# Configure colors for ls and completion
+setup_colors() {
+  # Apply current LS_COLORS to completion system
+  zstyle ':completion:*' list-colors "${LS_COLORS}"
+
+  # Ensure specific file types get proper colors
+  zstyle ':completion:*:*:*:*:directories' list-colors "di=01;34"
+  zstyle ':completion:*:*:*:*:links' list-colors "ln=01;36"
+  zstyle ':completion:*:*:*:*:executables' list-colors "ex=01;32"
+}
+
+# Set up the ls command and LS_COLORS based on available utilities
+setup_ls_command() {
+  # Check if GNU ls from coreutils is available (as gls on macOS)
+  if command -v gls >/dev/null 2>&1; then
+    # Use GNU ls dircolors if available
+    if command -v gdircolors >/dev/null 2>&1; then
+      if [[ -f "$HOME/.dircolors" ]]; then
+        eval "$(gdircolors -b "$HOME/.dircolors")"
+      else
+        eval "$(gdircolors -b)"
+      fi
+    fi
+
+    # Define aliases using GNU ls
+    alias ls='gls -ph --color=always'
+    alias ll='gls -lachp --color=always'
+  # Check for GNU coreutils ls directly (Linux systems)
+  elif command -v ls >/dev/null 2>&1; then
+    # Test if ls supports --version and returns GNU
+    if ls --version >/dev/null 2>&1; then
+      if ls --version | command grep -q 'GNU coreutils'; then
+        # Use dircolors on Linux
+        if command -v dircolors >/dev/null 2>&1; then
+          if [[ -f "$HOME/.dircolors" ]]; then
+            eval "$(dircolors -b "$HOME/.dircolors")"
+          else
+            eval "$(dircolors -b)"
+          fi
+        fi
+        alias ls='ls -ph --color=always'
+        alias ll='ls -lachp --color=always'
+      fi
+    fi
+  else
+    # macOS default ls
+    export CLICOLOR=1
+    export LSCOLORS="ExGxFxdaCxDaDahbadacec"
+    alias ls='ls -phG'
+    alias ll='ls -lachpG'
+  fi
+}
+
 ######## EXPORTS AND OTHER SETTINGS #######
 
 export WORDCHARS=''
@@ -63,6 +116,9 @@ setopt NOMATCH
 setopt NO_BEEP
 setopt TRANSIENT_RPROMPT
 setopt COMPLETE_IN_WORD
+setopt ALWAYS_TO_END
+setopt AUTO_MENU
+setopt LIST_PACKED
 
 # Directory options
 setopt AUTO_PUSHD
@@ -79,7 +135,8 @@ setopt prompt_subst
 # Load completions system
 zmodload -i zsh/complist
 zstyle :compinstall filename "${HOME}/.zshrc"
-autoload -Uz compinit && compinit
+autoload -Uz compinit
+compinit -u  # Force rebuilding of completion system
 
 # Auto rehash commands
 # http://www.zsh.org/mla/users/2011/msg00531.html
@@ -101,12 +158,26 @@ zstyle ':completion:*' list-colors "${LS_COLORS}" ma=0\;47
 zstyle ':completion:*' special-dirs true
 
 # Fault tolerance
-zstyle ':completion:*' completer _complete _correct _approximate
-# (1 error on 3 characters)
-zstyle -e ':completion:*:approximate:*' max-errors "reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric )"
+zstyle ':completion:*' completer _match _complete _approximate
 
-# Case insensitivity
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+# Fuzzy matching of completions
+zstyle ':completion:*' completer _extensions _complete _approximate
+zstyle ':completion:*:approximate:*' max-errors 2 numeric
+zstyle ':completion:*:approximate:*:*' insert-unambiguous true
+
+# Partial word completion
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+
+# Completion behavior
+zstyle ':completion:*' menu yes select
+# Use same colors for completion as ls
+zstyle ':completion:*' list-colors "$LS_COLORS"
+zstyle ':completion:*:default' list-colors "$LS_COLORS"
+zstyle ':completion:*:*:*:*:directories' list-colors 'di=01;34'
+zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+
+# Directory completion priority
+zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
 
 # For all completions: grouping / headline / ...
 zstyle ':completion:*:messages' format $'\e[01;35m -- %d -- \e[00;00m'
@@ -119,9 +190,6 @@ zstyle ':completion:*:default' select-prompt $'\e[01;35m -- Match %M    %P -- \e
 
 # For all completions: show comments when present
 zstyle ':completion:*' verbose yes
-
-# Case-insensitive -> partial-word (cs) -> substring completion:
-zstyle ':completion:*' matcher-list 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
 # Caching of completion stuff
 zstyle ':completion:*' use-cache on
@@ -152,10 +220,10 @@ alias d="dirs -v"
 alias k="kubectl"
 alias h="helm"
 alias grep="grep --color=always"
-alias ll="ls -lachp"
-alias ls="ls -ph --color=always"
 alias mounts="cat /proc/mounts | column -t"
 alias timestamp="date +%s"
+
+# ls aliases will be set by setup_colors function
 
 # Use ripgrep instead of grep if available
 if type rg > /dev/null 2>&1; then
@@ -175,9 +243,18 @@ zmodload zsh/complist
 bindkey -v
 autoload -Uz edit-command-line
 
+# Menu completion key bindings
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+bindkey '^i' complete-word        # Tab to complete
+bindkey '^[[Z' menu-complete      # Shift+Tab to show menu
+
 bindkey -M vicmd 'u' undo
 bindkey -M vicmd '~' vi-swap-case
 bindkey '^u' vi-change-whole-line
+bindkey '\e[Z' reverse-menu-complete
 
 ######## FZF CONFIGURATION ########
 
@@ -274,3 +351,9 @@ bindkey '^R' fzf_history_search
 
 [ -f ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 [ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# Set up ls command with proper colors first
+setup_ls_command
+
+# Then configure completion colors to match
+setup_colors
