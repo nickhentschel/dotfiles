@@ -1,8 +1,107 @@
-# shellcheck disable=SC2148
-# shellcheck disable=SC2154
+# shellcheck disable=SC2148,SC2154
+
+# Skip all this for non-interactive shells
+[[ -z "$PS1" ]] && return
+
+######## EXPORTS AND ENVIRONMENT ########
+
+# Security: Auto logout after 8 hours of inactivity
+export TMOUT=28800
+
+# Basic environment settings
+export WORDCHARS=''
+export CASE_SENSITIVE="true"
+export ZSH_CACHE_DIR="${HOME}/.zsh"
+export GOPATH="${HOME}/go"
+export PYENV_ROOT="${HOME}/.pyenv"
+export NPM_PACKAGES="${HOME}/.npm-packages"
+export EDITOR=vim
+export REPORTTIME=5
+export TIMEFMT="%U user %S system %P cpu %*Es total"
+export LESS="ij.5KMRX"
+export MANWIDTH=80
+export PAGER=less
+
+# History settings
+export HISTSIZE=100000
+export SAVEHIST=100000
+export HISTFILE="${HOME}/.zsh_history"
+export HISTIGNORE="ls:cd:cd -:pwd:exit:* --help:clear"
+export KEYTIMEOUT=1
+
+# Define LS_COLORS
+export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.cfg=00;32:*.conf=00;32:*.diff=00;32:*.doc=00;32:*.ini=00;32:*.log=00;32:*.patch=00;32:*.pdf=00;32:*.ps=00;32:*.tex=00;32:*.txt=00;32:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'
+
+######## PATH CONFIGURATION ########
+
+# Initialize PATH with system paths
+if [ -x /usr/libexec/path_helper ]; then
+  eval "$(/usr/libexec/path_helper -s)"
+fi
+
+# Build PATH in priority order
+PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/opt/local/bin:/opt/local/sbin:/opt/local/libexec/gnubin:/usr/local/sbin:$PATH"
+
+# Add application paths
+[ -d "/Applications/Cursor.app" ] && PATH="$PATH:/Applications/Cursor.app/Contents/Resources/app/bin"
+
+# Add user-specific paths
+PATH="$HOME/go/bin:${KREW_ROOT:-$HOME/.krew}/bin:$NPM_PACKAGES/bin:$PYENV_ROOT/bin:$GOPATH/bin:$HOME/.fzf/bin:$HOME/.local/bin:$PATH"
+export PATH
+
+######## ZSH OPTIONS ########
+
+# History options
+setopt share_history append_history extended_history hist_no_store hist_ignore_all_dups hist_ignore_space
+
+# Globbing and pattern matching
+setopt EXTENDED_GLOB NOMATCH
+
+# Directory options
+setopt AUTO_PUSHD PUSHD_IGNORE_DUPS
+
+# User experience options
+setopt NO_BEEP TRANSIENT_RPROMPT COMPLETE_IN_WORD ALWAYS_TO_END AUTO_MENU LIST_PACKED
+
+# Redirection and prompt options
+setopt no_clobber prompt_subst
+
+# Performance options
+setopt HASH_CMDS HASH_DIRS
 
 ######## FUNCTIONS ########
 
+# Safely load external files with error handling
+safe_source() {
+  [[ -f "$1" ]] && source "$1" || return 1
+}
+
+# Create a symlink for Cursor rules from home to current directory
+setup_cursor_rules() {
+  local home_rules_dir="$HOME/.cursor/rules"
+  local local_cursor_dir=".cursor"
+  local local_rules_dir="$local_cursor_dir/rules"
+
+  if [[ ! -d "$home_rules_dir" ]]; then
+    echo "Error: Home rules directory $home_rules_dir does not exist"
+    return 1
+  fi
+
+  if [[ ! -d "$local_cursor_dir" ]]; then
+    mkdir -p "$local_cursor_dir"
+    echo "Created $local_cursor_dir in $(pwd)"
+  fi
+
+  if [[ ! -L "$local_rules_dir" || ! -e "$local_rules_dir" ]]; then
+    [[ -L "$local_rules_dir" ]] && rm "$local_rules_dir"
+    ln -s "$home_rules_dir" "$local_rules_dir"
+    echo "Created symlink from $local_rules_dir to $home_rules_dir"
+  else
+    echo "Symlink already exists at $local_rules_dir"
+  fi
+}
+
+# Display PATH with colors
 path() {
   print -P "$(echo "$PATH" | tr ":" "\n" | sed -E \
     -e 's|/usr|%F{cyan}/usr%f|g' \
@@ -14,20 +113,15 @@ path() {
 
 # Configure colors for ls and completion
 setup_colors() {
-  # Apply current LS_COLORS to completion system
   zstyle ':completion:*' list-colors "${LS_COLORS}"
-
-  # Ensure specific file types get proper colors
   zstyle ':completion:*:*:*:*:directories' list-colors "di=01;34"
   zstyle ':completion:*:*:*:*:links' list-colors "ln=01;36"
   zstyle ':completion:*:*:*:*:executables' list-colors "ex=01;32"
 }
 
-# Set up the ls command and LS_COLORS based on available utilities
+# Set up ls command based on available utilities
 setup_ls_command() {
-  # Check if GNU ls from coreutils is available (as gls on macOS)
   if command -v gls >/dev/null 2>&1; then
-    # Use GNU ls dircolors if available
     if command -v gdircolors >/dev/null 2>&1; then
       if [[ -f "$HOME/.dircolors" ]]; then
         eval "$(gdircolors -b "$HOME/.dircolors")"
@@ -35,182 +129,85 @@ setup_ls_command() {
         eval "$(gdircolors -b)"
       fi
     fi
-
-    # Define aliases using GNU ls
-    alias ls='gls -ph --color=always'
-    alias ll='gls -lachp --color=always'
-  # Check for GNU coreutils ls directly (Linux systems)
+    # Use functions instead of aliases to avoid parsing issues
+    ls() { gls -ph --color=always "$@"; }
+    ll() { gls -lachp --color=always "$@"; }
   elif command -v ls >/dev/null 2>&1; then
-    # Test if ls supports --version and returns GNU
-    if ls --version >/dev/null 2>&1; then
-      if ls --version | command grep -q 'GNU coreutils'; then
-        # Use dircolors on Linux
-        if command -v dircolors >/dev/null 2>&1; then
-          if [[ -f "$HOME/.dircolors" ]]; then
-            eval "$(dircolors -b "$HOME/.dircolors")"
-          else
-            eval "$(dircolors -b)"
-          fi
+    if ls --version >/dev/null 2>&1 && ls --version | command grep -q 'GNU coreutils'; then
+      if command -v dircolors >/dev/null 2>&1; then
+        if [[ -f "$HOME/.dircolors" ]]; then
+          eval "$(dircolors -b "$HOME/.dircolors")"
+        else
+          eval "$(dircolors -b)"
         fi
-        alias ls='ls -ph --color=always'
-        alias ll='ls -lachp --color=always'
       fi
+      ls() { command ls -ph --color=always "$@"; }
+      ll() { command ls -lachp --color=always "$@"; }
     fi
   else
-    # macOS default ls
     export CLICOLOR=1
     export LSCOLORS="ExGxFxdaCxDaDahbadacec"
-    alias ls='ls -phG'
-    alias ll='ls -lachpG'
+    ls() { command ls -phG "$@"; }
+    ll() { command ls -lachpG "$@"; }
   fi
 }
-
-######## EXPORTS AND OTHER SETTINGS #######
-
-export WORDCHARS=''
-export CASE_SENSITIVE="true"
-export ZSH_CACHE_DIR="{$HOME}/.zsh"
-export GOPATH="${HOME}/go"
-export PYENV_ROOT="${HOME}/.pyenv"
-export NPM_PACKAGES="${HOME}/.npm-packages"
-export EDITOR=vim
-export REPORTTIME=5
-export TIMEFMT="%U user %S system %P cpu %*Es total"
-export LESS="ij.5KMRX"
-export MANWIDTH=80
-export PAGER=less
-export HISTSIZE=100000
-export SAVEHIST=100000
-export HISTFILE="${HOME}/.zsh_history"
-export HISTIGNORE="ls:cd:cd -:pwd:exit:* --help:clear"
-export KEYTIMEOUT=1
-export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.cfg=00;32:*.conf=00;32:*.diff=00;32:*.doc=00;32:*.ini=00;32:*.log=00;32:*.patch=00;32:*.pdf=00;32:*.ps=00;32:*.tex=00;32:*.txt=00;32:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'
-
-######## PATH CONFIGURATION ########
-
-# Initialize PATH with system paths
-if [ -x /usr/libexec/path_helper ]; then
-  eval "$(/usr/libexec/path_helper -s)"
-fi
-
-# System paths
-PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/opt/local/bin:/opt/local/sbin:/opt/local/libexec/gnubin:/usr/local/sbin:$PATH"
-
-# Application paths
-[ -d "/Applications/Cursor.app" ] && PATH="$PATH:/Applications/Cursor.app/Contents/Resources/app/bin"
-
-# User-specific paths
-PATH="$HOME/go/bin:${KREW_ROOT:-$HOME/.krew}/bin:$NPM_PACKAGES/bin:$PYENV_ROOT/bin:$GOPATH/bin:$HOME/.fzf/bin:$HOME/.local/bin:$PATH"
-export PATH
-
-######## ZSH OPTIONS ########
-
-# History options
-setopt share_history append_history extended_history hist_no_store hist_ignore_all_dups hist_ignore_space
-
-# Globbing and pattern matching
-setopt EXTENDED_GLOB
-setopt NOMATCH
-
-# User experience options
-setopt NO_BEEP
-setopt TRANSIENT_RPROMPT
-setopt COMPLETE_IN_WORD
-setopt ALWAYS_TO_END
-setopt AUTO_MENU
-setopt LIST_PACKED
-
-# Directory options
-setopt AUTO_PUSHD
-setopt PUSHD_IGNORE_DUPS
-
-# Redirection options
-setopt no_clobber
-
-# Prompt options
-setopt prompt_subst
 
 ######## COMPLETIONS ########
 
 # Load completions system
 zmodload -i zsh/complist
 zstyle :compinstall filename "${HOME}/.zshrc"
+
 autoload -Uz compinit
-compinit -u  # Force rebuilding of completion system
 
-# Auto rehash commands
-# http://www.zsh.org/mla/users/2011/msg00531.html
+# Optimize completion loading with caching
+if [ -f "${ZDOTDIR:-$HOME}/.zcompdump" ]; then
+  if [[ $(find "${ZDOTDIR:-$HOME}/.zcompdump" -mtime +1) ]]; then
+    compinit
+  else
+    compinit -C
+  fi
+else
+  compinit
+fi
+
+# Completion behavior
 zstyle ':completion:*' rehash true
-
-# For all completions: menuselection
 zstyle ':completion:*' menu select=1
-
-# For all completions: grouping the output
 zstyle ':completion:*' group-name ''
-
-# For all completions: color
 zstyle ':completion:*' list-colors "${LS_COLORS}"
-
-# For all completions: selected item
 zstyle ':completion:*' list-colors "${LS_COLORS}" ma=0\;47
-
-# Completion of .. directories
 zstyle ':completion:*' special-dirs true
-
-# Fault tolerance
 zstyle ':completion:*' completer _match _complete _approximate
-
-# Fuzzy matching of completions
 zstyle ':completion:*' completer _extensions _complete _approximate
 zstyle ':completion:*:approximate:*' max-errors 2 numeric
 zstyle ':completion:*:approximate:*:*' insert-unambiguous true
-
-# Partial word completion
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
-
-# Completion behavior
 zstyle ':completion:*' menu yes select
-# Use same colors for completion as ls
-zstyle ':completion:*' list-colors "$LS_COLORS"
-zstyle ':completion:*:default' list-colors "$LS_COLORS"
-zstyle ':completion:*:*:*:*:directories' list-colors 'di=01;34'
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-
-# Directory completion priority
 zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
 
-# For all completions: grouping / headline / ...
+# Completion formatting
 zstyle ':completion:*:messages' format $'\e[01;35m -- %d -- \e[00;00m'
 zstyle ':completion:*:warnings' format $'\e[01;31m -- No Matches Found -- \e[00;00m'
 zstyle ':completion:*:descriptions' format $'\e[01;33m -- %d -- \e[00;00m'
 zstyle ':completion:*:corrections' format $'\e[01;33m -- %d -- \e[00;00m'
-
-# Statusline for many hits
 zstyle ':completion:*:default' select-prompt $'\e[01;35m -- Match %M    %P -- \e[00;00m'
-
-# For all completions: show comments when present
 zstyle ':completion:*' verbose yes
 
-# Caching of completion stuff
+# Caching and ordering
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "${ZSH_CACHE_DIR}"
-
-# ~dirs: reorder output sorting: named dirs over userdirs
 zstyle ':completion::*:-tilde-:*:*' group-order named-directories users
-
-# ssh: reorder output sorting: user over hosts
 zstyle ':completion::**:ssh:*:*' tag-order "users hosts"
 
-# rm: advanced completion (e.g. bak files first)
+# File type completions
 zstyle ':completion::*:rm:*:*' file-patterns '*.o:object-files:object\ file *(~|.(old|bak|BAK)):backup-files:backup\ files *~*(~|.(o|old|bak|BAK)):all-files:all\ files'
-
-# vi: advanced completion (e.g. tex and rc files first)
 zstyle ':completion::*:vi:*:*' file-patterns 'Makefile|*(rc|log)|*.(php|tex|bib|sql|zsh|ini|sh|vim|rb|sh|js|tpl|csv|rdf|txt|phtml|tex|py|n3):vi-files:vim\ likes\ these\ files *~(Makefile|*(rc|log)|*.(log|rc|php|tex|bib|sql|zsh|ini|sh|vim|rb|sh|js|tpl|csv|rdf|txt|phtml|tex|py|n3)):all-files:other\ files'
 
 # Application-specific completions
 if type helm > /dev/null 2>&1; then
-  # shellcheck disable=SC1090
-  source <(helm completion zsh)
+  source <(helm completion zsh 2>/dev/null)
 fi
 
 ######## ALIASES #######
@@ -222,35 +219,37 @@ alias h="helm"
 alias grep="grep --color=always"
 alias mounts="cat /proc/mounts | column -t"
 alias timestamp="date +%s"
+alias time='/usr/bin/time -p'
 
-# ls aliases will be set by setup_colors function
-
-# Use ripgrep instead of grep if available
+# Use ripgrep if available
 if type rg > /dev/null 2>&1; then
   alias grep="rg"
 fi
 
-# Use neovim instead of vim if available
+# Use neovim if available
 if type nvim > /dev/null 2>&1; then
   alias vim="nvim"
   export EDITOR="nvim"
 fi
 
 ######## KEY BINDINGS ########
+
 stty -ixon
 zmodload zsh/complist
 
+# Vi mode
 bindkey -v
 autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
 
-# Menu completion key bindings
+# Menu completion bindings
 bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
-bindkey '^i' complete-word        # Tab to complete
-bindkey '^[[Z' menu-complete      # Shift+Tab to show menu
-
+bindkey '^i' complete-word
+bindkey '^[[Z' menu-complete
 bindkey -M vicmd 'u' undo
 bindkey -M vicmd '~' vi-swap-case
 bindkey '^u' vi-change-whole-line
@@ -258,26 +257,34 @@ bindkey '\e[Z' reverse-menu-complete
 
 ######## FZF CONFIGURATION ########
 
-# Load fzf
-# shellcheck disable=SC1090
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+safe_source ~/.fzf.zsh
 
 # Use fd for path generation if available
 _fzf_compgen_path() {
-  fd --hidden --follow --exclude ".git" . "$1"
+  fd --hidden --follow --exclude ".git" . "$1" 2>/dev/null
 }
 
-# Use fd to generate the list for directory completion
 _fzf_compgen_dir() {
-  fd --type d --hidden --follow --exclude ".git" . "$1"
+  fd --type d --hidden --follow --exclude ".git" . "$1" 2>/dev/null
 }
+
+# Function to use fzf for searching history
+fzf_history_search() {
+  local selected_command
+  selected_command=$(fc -ln 1 | fzf --tac --tiebreak=index --height=40% --border --ansi)
+  LBUFFER="${selected_command}"
+  zle redisplay
+}
+
+# Bind Ctrl+R to fzf history search
+zle -N fzf_history_search
+bindkey '^R' fzf_history_search
 
 ######## PROMPT CONFIGURATION ########
 
-# Load colors
 autoload -U colors && colors
 
-# Updates editor information when the keymap changes.
+# Updates editor information when the keymap changes
 zle-keymap-select() {
   zle reset-prompt
   zle -R
@@ -285,13 +292,11 @@ zle-keymap-select() {
 
 # Cache git info to improve performance
 function _git_prompt_info() {
-  # Only check for git info every 5 seconds to avoid slowdowns
   if [[ -z "$_CACHED_GIT_INFO" || $(( $(date +%s) - _CACHED_GIT_TIMESTAMP )) -gt 5 ]]; then
     if git symbolic-ref HEAD > /dev/null 2>&1; then
       ref=$(git symbolic-ref HEAD 2> /dev/null)
       _CACHED_GIT_INFO="%F{green}(${ref#refs/heads/})%f "
     else
-      # Check if we're in a git repo but not on a branch (detached HEAD)
       if git rev-parse --git-dir > /dev/null 2>&1; then
         _CACHED_GIT_INFO="%F{yellow}(detached)%f "
       else
@@ -325,35 +330,18 @@ _setup_prompt_elements() {
 }
 _setup_prompt_elements
 
-# Set prompt directly instead of through a function
-# shellcheck disable=SC2034
-# shellcheck disable=SC2016
 PROMPT='${_SSH_INDICATOR}%F{red}%(1j.● .)%f${_HOST}:${_SHORT_PATH}$(_git_prompt_info)$(_vi_mode_indicator) '
 
 zle -N zle-keymap-select
 
-# Function to use fzf for searching history
-fzf_history_search() {
-  local selected_command
-  selected_command=$(fc -ln 1 | fzf --tac --tiebreak=index --height=40% --border --ansi)
-  # shellcheck disable=SC2034
-  LBUFFER="${selected_command}"
-  zle redisplay
-}
+######## PLUGINS AND FINAL SETUP ########
 
-# Bind Ctrl+R to fzf history search
-zle -N fzf_history_search
-bindkey '^R' fzf_history_search
+# Load plugins with error handling
+safe_source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+safe_source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-# Install via:
-# git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.zsh/zsh-syntax-highlighting
-# git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
-
-[ -f ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-[ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-# Set up ls command with proper colors first
+# Set up ls command with proper colors
 setup_ls_command
 
-# Then configure completion colors to match
+# Configure completion colors to match
 setup_colors
