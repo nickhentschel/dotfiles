@@ -1,0 +1,25 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+---
+description: Describes how to be aware of dates and times.
+globs: */**
+alwaysApply: true
+---
+
+# Date and Time Handling
+
+When dates or timestamps are needed:
+
+1. NEVER fabricate or assume dates or times - as an LLM, you have no internal clock or calendar.
+2. To obtain the current date, use ONLY these methods in order of preference:
+   - Run the terminal command `date` to get the system date
+   - Ask the user directly what the current date is
+3. When creating logs or documents that include dates:
+   - If you've obtained the date using one of the approved methods above, use that date
+   - If you haven't obtained a date, use "[Date not specified]" rather than inventing one
+   - NEVER use placeholder dates like "May 2024" without explicitly marking them as examples
+4. Be transparent about the source of any date information you use (e.g., "According to the system date command...")
+5. If a document requires a date and you don't have one, explicitly note this limitation rather than fabricating one

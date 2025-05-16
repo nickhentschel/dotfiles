@@ -1,0 +1,67 @@
+{
+  "mcpServers": {
+    "kubernetes": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--network=minikube",
+        "-v",
+        "/Users/nickhe/.kube:/home/appuser/.kube",
+        "-v",
+        "/Users/nickhe/.minikube:/home/appuser/.minikube:ro",
+        "-e",
+        "K8S_CONTEXT=minikube",
+        "-e",
+        "KUBECONFIG=/home/appuser/.kube/config.docker",
+        "ghcr.io/alexei-led/k8s-mcp-server:latest"
+      ]
+    },
+    "Zillow Documentation": {
+      "url": "https://constellation-mcp-dev.int.velocity-nonprod.zg-int.net/sse"
+    },
+    "googledocs": {
+      "command": "node",
+      "args": [
+        "/Users/nickhe/Development/MCP-Google-Doc/build/server.js"
+      ]
+    },
+    "Сontext7": {
+      "autoApprove": [],
+      "disabled": false,
+      "timeout": 60,
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "context7-mcp"
+      ],
+      "transportType": "stdio"
+    },
+    "mem0 Docs": {
+      "url": "https://gitmcp.io/mem0ai/mem0"
+    },
+    "Cursor Docs": {
+      "url": "https://gitmcp.io/getcursor/docs"
+    },
+    "mac-mini-mem0": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "supergateway",
+        "--sse",
+        "http://192.168.1.51:8765/mcp/cursor/sse/nhentschel"
+      ]
+    },
+    "atlassian": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.atlassian.com/v1/sse"
+      ]
+    }
+  }
+}
