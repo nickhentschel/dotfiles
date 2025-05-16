@@ -31,7 +31,9 @@
     },
     "explorer.confirmDelete": false,
     "[markdown]": {
-        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+        "editor.wordWrap": "wordWrapColumn",
+        "editor.wordWrapColumn": 100
     },
     "git.autofetch": true,
     "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
@@ -81,5 +83,8 @@
     "zillowMcp.recheckVersion": false,
     "zillowMcp.enableZillowDocsMCP": true,
     "zillowMcp.enableAtlassianMCP": true,
-    "cursor.cpp.disabledLanguages": []
+    "cursor.cpp.disabledLanguages": [],
+    "cursor.terminal.usePreviewBox": true,
+    "update.releaseTrack": "prerelease",
+    "makefile.configureOnOpen": false
 }
