@@ -19,7 +19,7 @@ return {
         component_separators = '',
         section_separators = '',
       },
-      extensions = { 'nvim-tree', 'fzf', 'ale' },
+      extensions = { 'nvim-tree', 'fzf' },
     },
   },
 
