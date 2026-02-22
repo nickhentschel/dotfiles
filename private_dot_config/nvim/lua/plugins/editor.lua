@@ -21,7 +21,7 @@ return {
     'sheerun/vim-polyglot',
     init = function()
       -- Disable polyglot for filetypes handled by dedicated plugins
-      vim.g.polyglot_disabled = { 'go', 'markdown' }
+      vim.g.polyglot_disabled = { 'go', 'markdown', 'autoindent' }
     end,
   },
 
