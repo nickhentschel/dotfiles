@@ -6,7 +6,7 @@ return {
     priority = 1000,
     config = function()
       vim.cmd('colorscheme codedark')
-      vim.api.nvim_set_hl(0, 'MatchParen', { ctermbg = 'blue', guibg = 'lightblue' })
+      vim.api.nvim_set_hl(0, 'MatchParen', { ctermbg = 4, bg = 'lightblue' })
     end,
   },
 
