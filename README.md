@@ -47,7 +47,7 @@ What's Included
   - Custom aliases and functions
   - Performance-optimized configuration
 - **Editor settings**:
-  - Neovim configuration
+  - Neovim: Lua config with lazy.nvim, lualine, nvim-tree, ALE, vim-go, vim-polyglot, and Claude AI via codecompanion.nvim — see `private_dot_config/nvim/README.md`
   - Cursor (VSCode-based) setup with extensions
 - **Package management**:
   - Brewfile for macOS dependencies

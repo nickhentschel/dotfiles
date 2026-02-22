@@ -1,58 +1,151 @@
-# Neovim Setup for VSCode/Cursor
+# Neovim Configuration
 
-This directory contains configuration files for using Neovim with VSCode/Cursor.
+Lua-based Neovim config using [lazy.nvim](https://github.com/folke/lazy.nvim) for plugin management.
+Plugins install automatically on first launch — no manual setup script needed.
 
-## Files
+## File Structure
 
-- `init.vim`: Main Neovim configuration file
-- `vscode.vim`: Configuration specifically for VSCode Neovim integration
-- `setup_plugins.sh`: Script to install vim-plug and all required plugins
-
-## Setup Instructions
-
-### 1. Install Neovim
-
-```bash
-# macOS
-brew install neovim
-
-# Ubuntu/Debian
-sudo apt update
-sudo apt install neovim
-
-# Other platforms
-# See https://github.com/neovim/neovim/wiki/Installing-Neovim
+```
+~/.config/nvim/
+├── init.lua                  # Entry point: lazy.nvim bootstrap + module imports
+├── vscode.vim                # Separate config for VSCode/Cursor Neovim extension
+└── lua/
+    ├── settings.lua          # All vim.opt.* options and autocommands
+    ├── keymaps.lua           # All key mappings
+    └── plugins/
+        ├── core.lua          # tpope suite, vim-tmux-navigator, tabular, fzf
+        ├── ui.lua            # lualine, nvim-tree, indent-blankline, codedark theme
+        ├── editor.lua        # nvim-autopairs, vim-go, vim-polyglot, ALE
+        └── claude.lua        # codecompanion.nvim (Claude AI integration)
 ```
 
-### 2. Install VSCode Neovim Extension
+## Bootstrap
 
-1. Open VSCode/Cursor
-2. Go to Extensions (Ctrl+Shift+X or Cmd+Shift+X)
-3. Search for "Neovim" and install the extension by asvetliakov
+Open `nvim` — lazy.nvim clones itself on first run, then installs all plugins automatically.
+After the initial sync completes, restart nvim.
 
-### 3. Install Plugins
+To manually manage plugins:
 
-Run the setup script to install vim-plug and all plugins defined in vscode.vim:
-
-```bash
-~/.config/nvim/setup_plugins.sh
+```
+:Lazy          # open plugin manager UI
+:Lazy sync     # update all plugins
+:Lazy clean    # remove unused plugins
 ```
 
-### 4. Configure VSCode Settings
+## Plugins
 
-Add these settings to your VSCode/Cursor settings.json:
+### Core
 
-```json
-"vscode-neovim.neovimInitVimPaths.darwin": "~/.config/nvim/vscode.vim",
-"vscode-neovim.neovimInitVimPaths.linux": "~/.config/nvim/vscode.vim",
-"vscode-neovim.neovimInitVimPaths.win32": "~/.config/nvim/vscode.vim",
+| Plugin | Purpose |
+|---|---|
+| `tpope/vim-commentary` | `gc` to toggle comments |
+| `tpope/vim-endwise` | Auto-close `end`/`endif`/etc. |
+| `tpope/vim-repeat` | Repeat plugin actions with `.` |
+| `tpope/vim-sleuth` | Auto-detect indentation from file |
+| `tpope/vim-surround` | `cs`, `ds`, `ys` to change/delete/add surrounds |
+| `tpope/vim-unimpaired` | `[`/`]` pairs for common navigation |
+| `christoomey/vim-tmux-navigator` | `<C-h/j/k/l>` seamless pane navigation |
+| `godlygeek/tabular` | Align text on a delimiter |
+| `junegunn/fzf` + `fzf.vim` | Fuzzy finder for files, buffers, grep |
+
+### UI
+
+| Plugin | Purpose |
+|---|---|
+| `tomasiser/vim-code-dark` | Active colorscheme (GitHub dark-style) |
+| `nvim-lualine/lualine.nvim` | Status bar |
+| `nvim-tree/nvim-tree.lua` | File explorer sidebar |
+| `lukas-reineke/indent-blankline.nvim` | Indent guide lines |
+| `nvim-tree/nvim-web-devicons` | Icons for nvim-tree and lualine |
+
+### Editor
+
+| Plugin | Purpose |
+|---|---|
+| `windwp/nvim-autopairs` | Auto-close brackets/quotes |
+| `fatih/vim-go` | Go tooling (lazy-loaded on `.go` files); handles `gofmt` on save |
+| `sheerun/vim-polyglot` | Syntax for 100+ languages (replaces 9 individual plugins) |
+| `dense-analysis/ale` | Async linting (see ALE section below) |
+
+### AI
+
+| Plugin | Purpose |
+|---|---|
+| `olimorris/codecompanion.nvim` | Claude AI chat and inline assist |
+
+## Key Mappings
+
+Leader key: `<Space>`
+
+### Navigation
+
+| Key | Action |
+|---|---|
+| `<C-p>` | FZF file finder |
+| `<C-o>` | FZF buffer list |
+| `<C-i>` | FZF ripgrep search (`:Find`) |
+| `<C-h/j/k/l>` | Navigate vim splits and tmux panes |
+| `gt` / `gT` | Next / previous buffer |
+| `<C-c>` | Close current buffer |
+
+### Editing
+
+| Key | Action |
+|---|---|
+| `jk` | Exit insert mode |
+| `<C-s>` | Save (insert, normal, visual) |
+| `<Leader>=` | Tabularize on `=` |
+| `<Leader>>` | Tabularize on `=>` |
+| `Y` | Yank to end of line |
+| `c*` / `c#` | Change word under cursor (repeatable with `.`) |
+| `zj` / `zk` | Insert blank line below/above without entering insert |
+| `g=` | Re-indent entire file, restore cursor |
+| `gQ` | Hard-wrap entire file, restore cursor |
+
+### Tools
+
+| Key | Action |
+|---|---|
+| `<Leader>t` | Toggle nvim-tree file explorer |
+| `<Leader>f` | ALEFix (format current file) |
+| `<Leader>cc` | Toggle CodeCompanion chat panel |
+| `<Leader>ca` | CodeCompanion actions menu |
+
+### Misc
+
+| Key | Action |
+|---|---|
+| `;` / `:` | Swapped — `;` opens command line |
+| `n` / `N` | Search next/prev, centered |
+| `<C-q>` | `<C-a>` increment (frees `<C-a>` for tmux) |
+| `w!!` | Write file as sudo |
+
+## ALE (Linting)
+
+Linters are explicit — ALE only runs what's listed:
+
+| Filetype | Linter | Install |
+|---|---|---|
+| `sh` | shellcheck | `brew install shellcheck` |
+| `yaml` | yamllint | `pip install yamllint` |
+| `dockerfile` | hadolint | `brew install hadolint` |
+
+Errors appear in the location list (`:lopen`). Quickfix is disabled.
+
+## CodeCompanion (Claude)
+
+Requires `ANTHROPIC_API_KEY` in the environment. Add to `~/.zshenv`:
+
+```zsh
+export ANTHROPIC_API_KEY="sk-ant-..."
 ```
 
-## Starting from Scratch
+Note: this is separate from Claude Code CLI auth, which manages its own credentials.
 
-If you're setting up on a new machine:
+- `<Leader>cc` — open/close chat panel
+- `<Leader>ca` — action menu (explain, refactor, generate tests, etc.)
 
-1. Clone this repository or copy these configuration files to `~/.config/nvim/`
-2. Make the setup script executable: `chmod +x ~/.config/nvim/setup_plugins.sh`
-3. Run the setup script: `~/.config/nvim/setup_plugins.sh`
-4. Configure VSCode/Cursor as described above
+## VSCode / Cursor
+
+`vscode.vim` is loaded instead of `init.lua` when running inside the VSCode Neovim extension.
+It has its own minimal plugin set managed separately via `setup_plugins.sh`.
