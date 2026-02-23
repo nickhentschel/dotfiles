@@ -161,14 +161,15 @@ zstyle :compinstall filename "${HOME}/.zshrc"
 autoload -Uz compinit
 
 # Optimize completion loading with caching
+# Use -u flag to skip insecure directory checks (for Homebrew-installed completions)
 if [ -f "${ZDOTDIR:-$HOME}/.zcompdump" ]; then
   if [[ $(find "${ZDOTDIR:-$HOME}/.zcompdump" -mtime +1) ]]; then
-    compinit
+    compinit -u
   else
-    compinit -C
+    compinit -C -u
   fi
 else
-  compinit
+  compinit -u
 fi
 
 # Completion behavior
