@@ -48,3 +48,5 @@ cask "notunes"
 cask "cursor", args: { appdir: "/Applications" }
 # Caffeine replacement
 cask "caffeine", args: { appdir: "/Applications" }
+# Obsidian note-taking app
+cask "obsidian", args: { appdir: "/Applications" }

@@ -45,6 +45,31 @@ set-option -g repeat-time 250
 # Make mouse useful in copy mode
 set -g mouse on
 
+# Enable mouse selection to automatically copy to system clipboard
+{{- if eq .chezmoi.os "linux" }}
+bind-key -T copy-mode-vi MouseDragEnd1Pane send -X copy-pipe-and-cancel 'xclip -sel clip -i'
+{{- else }}
+bind-key -T copy-mode-vi MouseDragEnd1Pane send -X copy-pipe-and-cancel 'pbcopy'
+{{- end }}
+
+# Double-click to select word and copy
+{{- if eq .chezmoi.os "linux" }}
+bind-key -T copy-mode-vi DoubleClick1Pane select-pane \; send -X select-word \; send -X copy-pipe-and-cancel 'xclip -sel clip -i'
+bind-key -n DoubleClick1Pane select-pane \; copy-mode -M \; send -X select-word \; send -X copy-pipe-and-cancel 'xclip -sel clip -i'
+{{- else }}
+bind-key -T copy-mode-vi DoubleClick1Pane select-pane \; send -X select-word \; send -X copy-pipe-and-cancel 'pbcopy'
+bind-key -n DoubleClick1Pane select-pane \; copy-mode -M \; send -X select-word \; send -X copy-pipe-and-cancel 'pbcopy'
+{{- end }}
+
+# Triple-click to select line and copy
+{{- if eq .chezmoi.os "linux" }}
+bind-key -T copy-mode-vi TripleClick1Pane select-pane \; send -X select-line \; send -X copy-pipe-and-cancel 'xclip -sel clip -i'
+bind-key -n TripleClick1Pane select-pane \; copy-mode -M \; send -X select-line \; send -X copy-pipe-and-cancel 'xclip -sel clip -i'
+{{- else }}
+bind-key -T copy-mode-vi TripleClick1Pane select-pane \; send -X select-line \; send -X copy-pipe-and-cancel 'pbcopy'
+bind-key -n TripleClick1Pane select-pane \; copy-mode -M \; send -X select-line \; send -X copy-pipe-and-cancel 'pbcopy'
+{{- end }}
+
 #-----------------------------------------------
 # BINDINGS
 #-----------------------------------------------
