@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# claude.tmux - Display Claude Code agent status in tmux status bar
+# Shows: 🤖 <total> <working>⚡ <waiting>⏸
+
+set -euo pipefail
+
+STATE_FILE="${HOME}/.claude/agent-state.json"
+MAX_AGE=60  # Don't display if state file is older than 60 seconds
+
+# Check if state file exists and is recent
+if [ ! -f "$STATE_FILE" ]; then
+    exit 0
+fi
+
+# Check file age (platform-aware)
+{{- if eq .chezmoi.os "darwin" }}
+# macOS stat syntax
+file_age=$(( $(date +%s) - $(stat -f %m "$STATE_FILE" 2>/dev/null || echo 0) ))
+{{- else }}
+# Linux stat syntax
+file_age=$(( $(date +%s) - $(stat -c %Y "$STATE_FILE" 2>/dev/null || echo 0) ))
+{{- end }}
+
+if [ "$file_age" -gt "$MAX_AGE" ]; then
+    exit 0
+fi
+
+# Check if jq is available
+if ! command -v jq >/dev/null 2>&1; then
+    exit 0
+fi
+
+# Read state
+total=$(jq -r '.summary.total' "$STATE_FILE" 2>/dev/null || echo 0)
+working=$(jq -r '.summary.working' "$STATE_FILE" 2>/dev/null || echo 0)
+waiting=$(jq -r '.summary.waiting' "$STATE_FILE" 2>/dev/null || echo 0)
+idle=$(jq -r '.summary.idle' "$STATE_FILE" 2>/dev/null || echo 0)
+
+# Only display if there are active agents
+if [ "$total" -eq 0 ]; then
+    exit 0
+fi
+
+# Build output
+output="#[fg=colour39]🤖#[fg=white] ${total}"
+
+if [ "$working" -gt 0 ]; then
+    output="${output} #[fg=colour46]${working}⚡"
+fi
+
+if [ "$waiting" -gt 0 ]; then
+    output="${output} #[fg=colour226]${waiting}⏸"
+fi
+
+if [ "$idle" -gt 0 ] && [ "$working" -eq 0 ] && [ "$waiting" -eq 0 ]; then
+    output="${output} #[fg=colour243]${idle}💤"
+fi
+
+echo "$output"

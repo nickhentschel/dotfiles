@@ -126,3 +126,16 @@ setw -g window-status-current-format "#[fg=white,bold] #W "
 # session name on left, time on right
 set -g status-left "#[fg=colour243]#S "
 set -g status-right "#[fg=colour243]%H:%M"
+
+#-----------------------------------------------
+# CLAUDE CODE INTEGRATION
+#-----------------------------------------------
+
+# Status bar integration - show active Claude agents
+set -g status-right-length 100
+set -g status-right "#(~/.config/tmux/claude.tmux) #[fg=colour243]%H:%M"
+
+# Key bindings for agent navigation (non-conflicting)
+bind g run-shell "~/.config/tmux/claude-agent-list.sh"     # Go to agent (fzf selector)
+bind n run-shell "~/.config/tmux/claude-agent-next.sh"     # Next waiting agent
+bind s run-shell "~/.config/tmux/claude-agent-summary.sh"  # Summary popup

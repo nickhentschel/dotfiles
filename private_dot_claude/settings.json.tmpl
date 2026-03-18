@@ -1,0 +1,87 @@
+{
+  "awsAuthRefresh": "aws sso login --profile zillow-sandbox",
+  "env": {
+    "AWS_PROFILE": "zillow-sandbox",
+    "CLAUDE_CODE_USE_BEDROCK": "1",
+    "AWS_REGION": "us-west-2",
+    "DISABLE_PROMPT_CACHING": "0",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "global.anthropic.claude-opus-4-5-20251101-v1:0"
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+{{- if eq .chezmoi.os "darwin" }}
+            "command": "CLAUDE_SESSION_ID=\"${CLAUDE_SESSION_ID}\" CLAUDE_NOTIFICATION_TYPE=\"${CLAUDE_NOTIFICATION_TYPE}\" CLAUDE_TOOL_NAME=\"${CLAUDE_TOOL_NAME}\" ~/.config/tmux/claude-notify.sh"
+{{- else }}
+            "command": "CLAUDE_SESSION_ID=\"${CLAUDE_SESSION_ID}\" CLAUDE_NOTIFICATION_TYPE=\"${CLAUDE_NOTIFICATION_TYPE}\" CLAUDE_TOOL_NAME=\"${CLAUDE_TOOL_NAME}\" ~/.config/tmux/claude-notify.sh"
+{{- end }}
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CLAUDE_SESSION_ID=\"${CLAUDE_SESSION_ID}\" CLAUDE_TOOL_NAME=\"${CLAUDE_TOOL_NAME}\" CLAUDE_HOOK_TYPE=PreToolUse ~/.config/tmux/claude-tool-track.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CLAUDE_SESSION_ID=\"${CLAUDE_SESSION_ID}\" CLAUDE_TOOL_NAME=\"${CLAUDE_TOOL_NAME}\" CLAUDE_HOOK_TYPE=PostToolUse ~/.config/tmux/claude-tool-track.sh"
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CLAUDE_SESSION_ID=\"${CLAUDE_SESSION_ID}\" ~/.config/tmux/claude-agent-start.sh"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CLAUDE_SESSION_ID=\"${CLAUDE_SESSION_ID}\" ~/.config/tmux/claude-agent-stop.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CLAUDE_SESSION_ID=\"${CLAUDE_SESSION_ID}\" ~/.config/tmux/claude-agent-stop.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "atlassian@claude-plugins-official": true
+  }
+}
