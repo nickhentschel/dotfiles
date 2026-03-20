@@ -136,4 +136,57 @@ Routes determine write targets. Unlisted projects share the main MEMORY.md.
 
 ---
 
+## Tmux Multi-Agent Integration
+
+When running in tmux, Claude Code has native integration for multi-agent workflows.
+
+### State Management
+
+Agent state is stored in tmux pane options (auto-cleans when pane closes):
+```bash
+# Check current pane state
+~/.config/tmux/claude-tmux.sh state get
+
+# View all agents
+~/.config/tmux/claude-tmux.sh list
+
+# Status bar format: C<total> <working>w <waiting>!
+~/.config/tmux/claude-tmux.sh status
+```
+
+### Spawning Parallel Agents
+
+For independent parallel tasks, spawn additional Claude panes:
+```bash
+# Split and start new Claude agent
+tmux split-window -h -c '#{pane_current_path}' claude
+
+# Or use prefix+N binding
+```
+
+### Agent Navigation
+
+| Command | Action |
+|---------|--------|
+| `~/.config/tmux/claude-tmux.sh menu` | Show agent selector (prefix+g) |
+| `~/.config/tmux/claude-tmux.sh next` | Jump to waiting agent (prefix+n) |
+| `~/.config/tmux/claude-tmux.sh summary` | Show agent summary (prefix+s) |
+
+### When to Use Multiple Agents
+
+- **Parallel research**: Spawn agent for docs/API research while main agent codes
+- **Long-running tasks**: Background agent for builds/tests while continuing work
+- **Independent subtasks**: Split work that doesn't have dependencies
+
+### Pane Border Indicators
+
+| Color | State |
+|-------|-------|
+| Gray | Idle |
+| Green | Working on tool |
+| Yellow (bold) | Waiting for permission |
+| Red (bold) | Error |
+
+---
+
 *Last updated: 2026-03-20*
