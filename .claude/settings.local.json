@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:wezfurlong.org)",
+      "WebFetch(domain:news.ycombinator.com)",
+      "Bash(grep -r \"status-right\\\\|status-left\\\\|display-pane\\\\|#\\(\\)\" /Users/nickhe/.local/share/chezmoi --include=*.tmpl --include=*.conf --include=*.sh)",
+      "WebFetch(domain:medium.com)",
+      "WebFetch(domain:gist.github.com)",
+      "Bash(find /Users/nickhe/.claude -name *.json -o -name *.sh -o -name *.tmux)",
+      "Bash(find /Users/nickhe -name *claude* -type f)",
+      "Bash(grep -E \"\\\\.\\(sh|bash|zsh\\)$\")",
+      "Bash(echo $PATH)",
+      "Bash(chezmoi cd:*)",
+      "Bash(chezmoi apply:*)",
+      "Bash(~/.config/tmux/claude-state.sh init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
+    ]
+  }
+}
