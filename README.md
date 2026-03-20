@@ -63,10 +63,11 @@ AI Command Generation
 Generate shell commands from natural language descriptions using AWS Bedrock + Claude.
 
 **Usage:**
-1. Type a description on the command line: `find python files changed this week`
-2. Press `Ctrl+X`
-3. Select from fzf menu (preview pane shows explanations)
-4. Command is inserted ready to edit/execute
+1. Press `Ctrl+X` from anywhere on the command line
+2. Type your request in the popup: `find python files changed this week`
+3. Press Enter - AI generates ranked suggestions
+4. Select from fzf menu (preview pane shows explanations)
+5. Press Enter - command is inserted at your cursor, ready to edit/run
 
 **Keybindings:**
 - `Ctrl+X` - Trigger AI command generation

@@ -288,33 +288,56 @@ export AI_CMD_MODEL="${AI_CMD_MODEL:-us.anthropic.claude-sonnet-4-20250514-v1:0}
 export AI_CMD_MAX_SUGGESTIONS="${AI_CMD_MAX_SUGGESTIONS:-5}"
 export AI_CMD_AWS_PROFILE="${AI_CMD_AWS_PROFILE:-zillow-sandbox}"
 export AI_CMD_AWS_REGION="${AI_CMD_AWS_REGION:-us-west-2}"
+export AI_CMD_CONFIDENCE_THRESHOLD="${AI_CMD_CONFIDENCE_THRESHOLD:-90}"
 
 # ZLE widget: Generate commands from natural language
 ai_command_generate() {
-  local input="$LBUFFER"
-  [[ -z "$input" ]] && { zle -M "Type a description first"; return 1; }
+  local query suggestions selected line_count confidence cmd first_line
 
-  zle -M "Generating commands..."
-  local suggestions
-  suggestions=$("$HOME/.local/bin/ai-cmd-gen" "$input" 2>/dev/null)
+  # Stage 1: Popup prompt for natural language input
+  query=$(printf '' | fzf --print-query --prompt="Describe command > " \
+    --header="Type what you want to do, then press Enter" \
+    --height=6 --border --info=hidden | head -1)
+
+  [[ -z "$query" ]] && { zle redisplay; return; }
+
+  # Stage 2: Call AI with spinner
+  zle -M "Generating..."
+  suggestions=$("$HOME/.local/bin/ai-cmd-gen" "$query" 2>/dev/null)
 
   if [[ -z "$suggestions" ]]; then
-    zle -M "Generation failed - check AWS credentials"
-    return 1
+    zle -M "Generation failed"
+    zle redisplay
+    return
   fi
 
-  # fzf selection: command ### explanation format
-  # --with-nth=1 shows only the command, preview shows the explanation
-  local selected
-  selected=$(echo "$suggestions" | fzf --height=50% --border \
-    --prompt="Select command > " --header="AI suggestions (ESC to cancel)" \
-    --delimiter=' ### ' --with-nth=1 \
-    --preview='echo {2}' --preview-window=down:3:wrap \
-    --bind='ctrl-y:execute-silent(echo -n {1} | pbcopy)+abort')
+  # Parse first line to check confidence (format: CONFIDENCE|command ### explanation)
+  first_line=$(printf '%s' "$suggestions" | head -1)
+  confidence=$(printf '%s' "$first_line" | cut -d'|' -f1)
 
+  # If high confidence, skip selection and use top result directly
+  if [[ "$confidence" =~ ^[0-9]+$ ]] && (( confidence >= AI_CMD_CONFIDENCE_THRESHOLD )); then
+    cmd=$(printf '%s' "$first_line" | cut -d'|' -f2- | cut -d'#' -f1 | sed 's/ *$//')
+    LBUFFER="$cmd"
+    zle -M "Auto-selected (${confidence}%% confidence)"
+    zle redisplay
+    return
+  fi
+
+  # Stage 3: Select from suggestions - strip confidence prefix for display
+  # Format for fzf: command ### explanation (without confidence prefix)
+  line_count=$(printf '%s\n' "$suggestions" | wc -l | tr -d ' ')
+  local fzf_height=$((line_count + 4))
+  (( fzf_height > 15 )) && fzf_height=15
+
+  selected=$(printf '%s\n' "$suggestions" | sed 's/^[0-9]*|//' | fzf --height=${fzf_height} --border \
+    --prompt="Select > " --header="[$query]" \
+    --delimiter=' ### ' --with-nth=1 \
+    --preview='echo {2}' --preview-window=down:3:wrap)
+
+  # Insert selected command (strip explanation)
   if [[ -n "$selected" ]]; then
-    # Extract command part (before ###)
-    LBUFFER="${selected%% ###*}"
+    LBUFFER=$(printf '%s' "$selected" | cut -d'#' -f1 | sed 's/ *$//')
   fi
   zle redisplay
 }
