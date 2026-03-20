@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# claude-notify.sh - Tmux-native attention handler
-# Primary: tmux visual indicators (border color, bell)
-# Secondary: OS notification (optional)
+# claude-notify.sh - Attention handler for Claude Code
+# 1. OS notification (always - for when away from terminal)
+# 2. Tmux visual indicators (when in tmux)
 
 set -euo pipefail
 
@@ -10,49 +10,51 @@ PANE="${TMUX_PANE:-}"
 TOOL="${CLAUDE_TOOL_NAME:-}"
 SHORT_ID="${CLAUDE_SESSION_ID: -8}"
 
-# Skip if not in tmux
-[ -z "$TMUX" ] && exit 0
-[ -z "$PANE" ] && exit 0
+# Build context string
+CONTEXT=""
+[ -n "$TOOL" ] && CONTEXT=" ($TOOL)"
+[ -n "$PANE" ] && CONTEXT="${CONTEXT} in pane ${PANE##%}"
 
-# Update state to waiting for permission prompts
-case "$TYPE" in
-    permission_prompt)
-        ~/.config/tmux/claude-tmux.sh state set waiting "$TOOL" 2>/dev/null || true
-        # Yellow border + bell
-        tmux set-option -p -t "$PANE" pane-border-style 'fg=colour226,bold' 2>/dev/null || true
-        printf '\a'  # Bell character triggers tmux visual-bell
-        ;;
-    error)
-        # Red border
-        tmux set-option -p -t "$PANE" pane-border-style 'fg=colour196,bold' 2>/dev/null || true
-        ;;
-    *)
-        # Default attention - flash border briefly
-        tmux set-option -p -t "$PANE" pane-border-style 'fg=colour39' 2>/dev/null || true
-        ;;
-esac
-
-# OS notification (secondary - for when tmux isn't visible)
+#-----------------------------------------------
+# OS NOTIFICATION (always fires)
+#-----------------------------------------------
 {{- if eq .chezmoi.os "darwin" }}
 case "$TYPE" in
     permission_prompt)
-        osascript -e 'display notification "Claude needs permission" with title "Claude Code" sound name "Submarine"' 2>/dev/null &
+        osascript -e "display notification \"Needs permission${CONTEXT}\" with title \"Claude Code\" sound name \"Submarine\"" 2>/dev/null &
         ;;
     error)
-        osascript -e 'display notification "Claude encountered an error" with title "Claude Code" sound name "Basso"' 2>/dev/null &
+        osascript -e "display notification \"Error${CONTEXT}\" with title \"Claude Code\" sound name \"Basso\"" 2>/dev/null &
         ;;
 esac
 {{- else }}
 if command -v notify-send >/dev/null 2>&1; then
     case "$TYPE" in
         permission_prompt)
-            notify-send -u critical "Claude Code" "Claude needs permission" 2>/dev/null &
+            notify-send -u critical "Claude Code" "Needs permission${CONTEXT}" 2>/dev/null &
             ;;
         error)
-            notify-send -u critical "Claude Code" "Claude encountered an error" 2>/dev/null &
+            notify-send -u critical "Claude Code" "Error${CONTEXT}" 2>/dev/null &
             ;;
     esac
 fi
 {{- end }}
+
+#-----------------------------------------------
+# TMUX VISUAL INDICATORS (when in tmux)
+#-----------------------------------------------
+if [ -n "$TMUX" ] && [ -n "$PANE" ]; then
+    case "$TYPE" in
+        permission_prompt)
+            ~/.config/tmux/claude-tmux.sh state set waiting "$TOOL" 2>/dev/null || true
+            tmux set-option -p -t "$PANE" pane-border-style 'fg=colour226,bold' 2>/dev/null || true
+            printf '\a'  # Bell
+            ;;
+        error)
+            tmux set-option -p -t "$PANE" pane-border-style 'fg=colour196,bold' 2>/dev/null || true
+            printf '\a'  # Bell for errors too
+            ;;
+    esac
+fi
 
 exit 0
