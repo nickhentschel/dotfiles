@@ -46,6 +46,7 @@ What's Included
   - ZSH with optimized prompt (git status caching for performance)
   - Custom aliases and functions
   - Performance-optimized configuration
+  - AI command generation (Ctrl+X) - see below
 - **Editor settings**:
   - Neovim: Lua config with lazy.nvim, lualine, nvim-tree, ALE, vim-go, vim-polyglot, and Claude AI via codecompanion.nvim — see `private_dot_config/nvim/README.md`
   - Cursor (VSCode-based) setup with extensions
@@ -55,6 +56,37 @@ What's Included
 - **Git configuration**:
   - Global gitconfig and gitignore
   - Optimized settings
+
+AI Command Generation
+---------------------
+
+Generate shell commands from natural language descriptions using AWS Bedrock + Claude.
+
+**Usage:**
+1. Type a description on the command line: `find python files changed this week`
+2. Press `Ctrl+X`
+3. Select from fzf menu (preview pane shows explanations)
+4. Command is inserted ready to edit/execute
+
+**Keybindings:**
+- `Ctrl+X` - Trigger AI command generation
+- `Ctrl+Y` (in fzf) - Copy selected command to clipboard
+
+**Requirements:**
+- AWS CLI configured with Bedrock access
+- Default profile: `zillow-sandbox` (override with `AI_CMD_AWS_PROFILE`)
+
+**Configuration (env vars):**
+```bash
+AI_CMD_MODEL="us.anthropic.claude-sonnet-4-20250514-v1:0"  # Claude model
+AI_CMD_MAX_SUGGESTIONS=5                                    # Number of suggestions
+AI_CMD_AWS_PROFILE="zillow-sandbox"                         # AWS profile
+AI_CMD_AWS_REGION="us-west-2"                               # AWS region
+```
+
+**Files:**
+- `~/.local/bin/ai-cmd-gen` - Backend script calling Bedrock API
+- `~/.zshrc` - ZLE widget and keybinding
 
 Cursor/VSCode Settings
 ----------------------

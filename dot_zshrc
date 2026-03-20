@@ -281,6 +281,47 @@ fzf_history_search() {
 zle -N fzf_history_search
 bindkey '^R' fzf_history_search
 
+######## AI COMMAND GENERATION ########
+
+# Configuration (override via env vars)
+export AI_CMD_MODEL="${AI_CMD_MODEL:-us.anthropic.claude-sonnet-4-20250514-v1:0}"
+export AI_CMD_MAX_SUGGESTIONS="${AI_CMD_MAX_SUGGESTIONS:-5}"
+export AI_CMD_AWS_PROFILE="${AI_CMD_AWS_PROFILE:-zillow-sandbox}"
+export AI_CMD_AWS_REGION="${AI_CMD_AWS_REGION:-us-west-2}"
+
+# ZLE widget: Generate commands from natural language
+ai_command_generate() {
+  local input="$LBUFFER"
+  [[ -z "$input" ]] && { zle -M "Type a description first"; return 1; }
+
+  zle -M "Generating commands..."
+  local suggestions
+  suggestions=$("$HOME/.local/bin/ai-cmd-gen" "$input" 2>/dev/null)
+
+  if [[ -z "$suggestions" ]]; then
+    zle -M "Generation failed - check AWS credentials"
+    return 1
+  fi
+
+  # fzf selection: command ### explanation format
+  # --with-nth=1 shows only the command, preview shows the explanation
+  local selected
+  selected=$(echo "$suggestions" | fzf --height=50% --border \
+    --prompt="Select command > " --header="AI suggestions (ESC to cancel)" \
+    --delimiter=' ### ' --with-nth=1 \
+    --preview='echo {2}' --preview-window=down:3:wrap \
+    --bind='ctrl-y:execute-silent(echo -n {1} | pbcopy)+abort')
+
+  if [[ -n "$selected" ]]; then
+    # Extract command part (before ###)
+    LBUFFER="${selected%% ###*}"
+  fi
+  zle redisplay
+}
+
+zle -N ai_command_generate
+bindkey '^X' ai_command_generate
+
 ######## PROMPT CONFIGURATION ########
 
 autoload -U colors && colors

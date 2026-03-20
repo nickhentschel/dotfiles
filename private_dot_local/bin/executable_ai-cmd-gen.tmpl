@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+# AI Command Generator - Converts natural language to shell commands
+# Uses AWS Bedrock with Claude to generate command suggestions
+
+set -euo pipefail
+
+# Configuration
+AI_CMD_MODEL="${AI_CMD_MODEL:-us.anthropic.claude-sonnet-4-20250514-v1:0}"
+AI_CMD_MAX_SUGGESTIONS="${AI_CMD_MAX_SUGGESTIONS:-5}"
+AI_CMD_AWS_PROFILE="${AI_CMD_AWS_PROFILE:-zillow-sandbox}"
+AI_CMD_AWS_REGION="${AI_CMD_AWS_REGION:-us-west-2}"
+
+# Gather context
+{{- if eq .chezmoi.os "darwin" }}
+OS_INFO="macOS $(sw_vers -productVersion 2>/dev/null || echo 'unknown')"
+{{- else }}
+OS_INFO="Linux $(uname -r)"
+{{- end }}
+SHELL_INFO="zsh"
+CWD="$(pwd)"
+
+# Check for git repo context
+GIT_CONTEXT=""
+if git rev-parse --is-inside-work-tree &>/dev/null; then
+    GIT_BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo "detached")
+    GIT_CONTEXT="Git repo on branch: $GIT_BRANCH"
+fi
+
+# Build the prompt
+INPUT="$*"
+if [[ -z "$INPUT" ]]; then
+    echo "Usage: ai-cmd-gen <natural language description>" >&2
+    exit 1
+fi
+
+SYSTEM_PROMPT="You are a shell command expert. Generate ${AI_CMD_MAX_SUGGESTIONS} safe, practical command suggestions.
+
+Context:
+- OS: ${OS_INFO}
+- Shell: ${SHELL_INFO}
+- Current directory: ${CWD}
+${GIT_CONTEXT:+- $GIT_CONTEXT}
+
+Rules:
+1. Output ONLY commands, one per line
+2. Format each line as: command ### brief explanation
+3. Use common tools (prefer standard unix tools, but use modern alternatives like fd, rg if appropriate)
+4. Never suggest destructive commands without safeguards (no rm -rf /, no dd without confirmation)
+5. Prefer readable, maintainable commands over clever one-liners
+6. If the request is ambiguous, provide variations covering likely interpretations"
+
+USER_PROMPT="Generate shell commands for: ${INPUT}"
+
+# Build the request payload
+REQUEST_BODY=$(jq -n \
+    --arg model "$AI_CMD_MODEL" \
+    --arg system "$SYSTEM_PROMPT" \
+    --arg user "$USER_PROMPT" \
+    --argjson max_tokens 1024 \
+    '{
+        "anthropic_version": "bedrock-2023-05-31",
+        "max_tokens": $max_tokens,
+        "system": $system,
+        "messages": [
+            {"role": "user", "content": $user}
+        ]
+    }')
+
+# Create temp file for response
+RESPONSE_FILE=$(mktemp)
+trap 'rm -f "$RESPONSE_FILE"' EXIT
+
+# Call AWS Bedrock (suppress metadata output, body goes to file)
+if ! aws bedrock-runtime invoke-model \
+    --model-id "$AI_CMD_MODEL" \
+    --body "$REQUEST_BODY" \
+    --profile "$AI_CMD_AWS_PROFILE" \
+    --region "$AI_CMD_AWS_REGION" \
+    --cli-binary-format raw-in-base64-out \
+    "$RESPONSE_FILE" >/dev/null 2>&1; then
+    echo "Error: Failed to call AWS Bedrock API" >&2
+    exit 1
+fi
+
+# Extract and output the response text
+jq -r '.content[0].text' "$RESPONSE_FILE" 2>/dev/null || {
+    echo "Error: Failed to parse API response" >&2
+    exit 1
+}
