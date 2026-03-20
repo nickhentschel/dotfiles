@@ -2,20 +2,21 @@
 # GENERAL SETTINGS
 #-----------------------------------------------
 
-# loud or quiet?
+# Activity/bell settings - enable for Claude attention system
 set-option -g visual-activity on
-set-option -g visual-bell off
-set-option -g visual-silence on
-set-window-option -g monitor-activity off
-set-option -g bell-action none
+set-option -g visual-bell on
+set-option -g visual-silence off
+set-window-option -g monitor-activity on
+set-option -g bell-action current
 
 set -g extended-keys on
 
 # Bind C-b to C-a, its just easier
 set-option -g prefix C-a
 
-set -g default-terminal "screen-256color"
-set -ga terminal-overrides ",xterm-256color:Tc"
+# Terminal optimization for Claude Code
+set -g default-terminal "tmux-256color"
+set -ga terminal-overrides ",*256col*:Tc,xterm-256color:RGB"
 
 # set window and pane index to 1 (0 by default)
 set-option -g base-index 1
@@ -33,14 +34,17 @@ setw -g automatic-rename on
 # wm window title string (uses statusbar variables)
 set -g set-titles-string "#W"
 
-# Scroll History
-set -g history-limit 30000
+# Scroll History - increased for Claude output
+set -g history-limit 50000
 
-# Lower escape timing from 500ms to 50ms for quicker response to scroll-buffer access.
-set-option -s escape-time 10
+# Zero escape time for faster response
+set-option -sg escape-time 0
 
 # decrease repeat-time (default is 500ms)
 set-option -g repeat-time 250
+
+# Focus events for better terminal integration
+set -g focus-events on
 
 # Make mouse useful in copy mode
 set -g mouse on
@@ -128,14 +132,24 @@ set -g status-left "#[fg=colour243]#S "
 set -g status-right "#[fg=colour243]%H:%M"
 
 #-----------------------------------------------
-# CLAUDE CODE INTEGRATION
+# CLAUDE CODE INTEGRATION (Tmux-Native)
 #-----------------------------------------------
 
-# Status bar integration - show active Claude agents
-set -g status-right-length 100
-set -g status-right "#(~/.config/tmux/claude.tmux) #[fg=colour243]%H:%M"
+# Pane borders show Claude state
+set -g pane-border-status top
+set -g pane-border-format ' #{pane_index}#{?#{@claude_state}, [#{@claude_state}],}#{?#{@claude_tool}, #{@claude_tool},} '
 
-# Key bindings for agent navigation (non-conflicting)
-bind g run-shell "~/.config/tmux/claude-agent-list.sh"     # Go to agent (fzf selector)
-bind n run-shell "~/.config/tmux/claude-agent-next.sh"     # Next waiting agent
-bind s run-shell "~/.config/tmux/claude-agent-summary.sh"  # Summary popup
+# Border styles (claude-tmux.sh updates per-pane)
+set -g pane-border-style 'fg=colour238'
+set -g pane-active-border-style 'fg=colour39'
+
+# Status bar with agent count
+set -g status-right-length 60
+set -g status-right "#(~/.config/tmux/claude-tmux.sh status)#[fg=colour243]%H:%M"
+
+# Key bindings for Claude agent navigation
+bind g run-shell "~/.config/tmux/claude-tmux.sh menu"      # Go to agent (native menu)
+bind n run-shell "~/.config/tmux/claude-tmux.sh next"      # Next waiting agent
+bind s run-shell "~/.config/tmux/claude-tmux.sh summary"   # Summary message
+bind C run-shell "~/.config/tmux/claude-tmux.sh capture"   # Capture pane to clipboard
+bind N split-window -h -c '#{pane_current_path}' claude    # New Claude pane

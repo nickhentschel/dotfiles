@@ -1,59 +1,58 @@
 #!/usr/bin/env bash
-# claude-notify.sh - Enhanced notifications with agent context
-# Shows agent ID, state, tool, and pane information
+# claude-notify.sh - Tmux-native attention handler
+# Primary: tmux visual indicators (border color, bell)
+# Secondary: OS notification (optional)
 
 set -euo pipefail
 
-AGENT_ID="${CLAUDE_SESSION_ID:-unknown}"
-NOTIF_TYPE="${CLAUDE_NOTIFICATION_TYPE:-general}"
+TYPE="${1:-${CLAUDE_NOTIFICATION_TYPE:-general}}"
+PANE="${TMUX_PANE:-}"
 TOOL="${CLAUDE_TOOL_NAME:-}"
-PANE="${TMUX_PANE:-unknown}"
-SHORT_ID="${AGENT_ID: -8}"
+SHORT_ID="${CLAUDE_SESSION_ID: -8}"
 
-# Build notification message
-case "$NOTIF_TYPE" in
+# Skip if not in tmux
+[ -z "$TMUX" ] && exit 0
+[ -z "$PANE" ] && exit 0
+
+# Update state to waiting for permission prompts
+case "$TYPE" in
     permission_prompt)
-        TITLE="Claude Code - Permission Required"
-        MESSAGE="Agent ${SHORT_ID} in pane ${PANE} needs permission"
-        SOUND="Submarine"
+        ~/.config/tmux/claude-tmux.sh state set waiting "$TOOL" 2>/dev/null || true
+        # Yellow border + bell
+        tmux set-option -p -t "$PANE" pane-border-style 'fg=colour226,bold' 2>/dev/null || true
+        printf '\a'  # Bell character triggers tmux visual-bell
         ;;
     error)
-        TITLE="Claude Code - Error"
-        MESSAGE="Agent ${SHORT_ID} in pane ${PANE} encountered an error"
-        SOUND="Basso"
-        ;;
-    tool_complete)
-        TITLE="Claude Code - Tool Complete"
-        MESSAGE="Agent ${SHORT_ID} in pane ${PANE} completed ${TOOL}"
-        SOUND="Ping"
+        # Red border
+        tmux set-option -p -t "$PANE" pane-border-style 'fg=colour196,bold' 2>/dev/null || true
         ;;
     *)
-        TITLE="Claude Code"
-        MESSAGE="Agent ${SHORT_ID} in pane ${PANE} needs attention"
-        SOUND="Ping"
+        # Default attention - flash border briefly
+        tmux set-option -p -t "$PANE" pane-border-style 'fg=colour39' 2>/dev/null || true
         ;;
 esac
 
-# Add tool info if available
-if [ -n "$TOOL" ] && [ "$NOTIF_TYPE" != "tool_complete" ]; then
-    MESSAGE="${MESSAGE} (${TOOL})"
-fi
-
-# Send OS-specific notification
+# OS notification (secondary - for when tmux isn't visible)
 {{- if eq .chezmoi.os "darwin" }}
-# macOS notification
-osascript -e "display notification \"${MESSAGE}\" with title \"${TITLE}\" sound name \"${SOUND}\""
+case "$TYPE" in
+    permission_prompt)
+        osascript -e 'display notification "Claude needs permission" with title "Claude Code" sound name "Submarine"' 2>/dev/null &
+        ;;
+    error)
+        osascript -e 'display notification "Claude encountered an error" with title "Claude Code" sound name "Basso"' 2>/dev/null &
+        ;;
+esac
 {{- else }}
-# Linux notification
 if command -v notify-send >/dev/null 2>&1; then
-    notify-send -u normal "${TITLE}" "${MESSAGE}"
+    case "$TYPE" in
+        permission_prompt)
+            notify-send -u critical "Claude Code" "Claude needs permission" 2>/dev/null &
+            ;;
+        error)
+            notify-send -u critical "Claude Code" "Claude encountered an error" 2>/dev/null &
+            ;;
+    esac
 fi
 {{- end }}
 
-# Optional: Highlight pane border (commented out by default)
-# Uncomment the following lines to enable pane border highlighting
-# if [ -n "$TMUX" ] && [ "$PANE" != "unknown" ]; then
-#     tmux select-pane -t "$PANE" -P 'bg=colour235,fg=colour46'
-#     # Reset after 3 seconds
-#     (sleep 3 && tmux select-pane -t "$PANE" -P 'bg=default,fg=default') &
-# fi
+exit 0
