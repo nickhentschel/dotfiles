@@ -46,7 +46,7 @@ PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/opt/local/bin:/opt/local/sbin:/opt/l
 [ -d "/Applications/Cursor.app" ] && PATH="$PATH:/Applications/Cursor.app/Contents/Resources/app/bin"
 
 # Add user-specific paths
-PATH="$HOME/go/bin:${KREW_ROOT:-$HOME/.krew}/bin:$NPM_PACKAGES/bin:$PYENV_ROOT/bin:$GOPATH/bin:$HOME/.fzf/bin:$HOME/.local/bin:$PATH"
+PATH="$HOME/go/bin:${KREW_ROOT:-$HOME/.krew}/bin:$NPM_PACKAGES/bin:$PYENV_ROOT/bin:$GOPATH/bin:$HOME/.fzf/bin:$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 export PATH
 
 ######## ZSH OPTIONS ########
