@@ -2,11 +2,23 @@
 
 return {
   {
-    'tomasiser/vim-code-dark',
+    'rose-pine/neovim',
+    name = 'rose-pine',
     priority = 1000,
     config = function()
-      vim.cmd('colorscheme codedark')
-      vim.api.nvim_set_hl(0, 'MatchParen', { ctermbg = 4, bg = 'lightblue' })
+      require('rose-pine').setup({
+        variant = 'auto', -- auto, main, moon, dawn
+        dark_variant = 'main',
+        dim_inactive_windows = false,
+        extend_background_behind_borders = true,
+        enable = {
+          terminal = true,
+        },
+        styles = {
+          transparency = false,
+        },
+      })
+      vim.cmd('colorscheme rose-pine')
     end,
   },
 
@@ -15,7 +27,7 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = {
       options = {
-        theme = 'codedark',
+        theme = 'rose-pine',
         component_separators = '',
         section_separators = '',
       },

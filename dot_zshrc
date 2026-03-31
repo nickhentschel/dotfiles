@@ -29,8 +29,57 @@ export HISTFILE="${HOME}/.zsh_history"
 export HISTIGNORE="ls:cd:cd -:pwd:exit:* --help:clear"
 export KEYTIMEOUT=1
 
-# Define LS_COLORS
-export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.cfg=00;32:*.conf=00;32:*.diff=00;32:*.doc=00;32:*.ini=00;32:*.log=00;32:*.patch=00;32:*.pdf=00;32:*.ps=00;32:*.tex=00;32:*.txt=00;32:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'
+######## THEME DETECTION ########
+
+# Detect and set theme mode based on system appearance or manual override
+detect_theme_mode() {
+  # Check for manual override first
+  if [[ -n "${THEME_MODE:-}" ]]; then
+    export CURRENT_THEME_MODE="$THEME_MODE"
+    return
+  fi
+
+  # Detect macOS appearance
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    local appearance
+    appearance=$(defaults read -g AppleInterfaceStyle 2>/dev/null || echo "Light")
+    if [[ "$appearance" == "Dark" ]]; then
+      export CURRENT_THEME_MODE="dark"
+    else
+      export CURRENT_THEME_MODE="light"
+    fi
+  else
+    # Default to dark on non-macOS
+    export CURRENT_THEME_MODE="dark"
+  fi
+}
+
+# Detect theme mode
+detect_theme_mode
+
+# Set COLORFGBG for applications (like Claude Code) to detect terminal background
+# Format: foreground;background (0=dark, 15=light)
+if [[ "$CURRENT_THEME_MODE" == "light" ]]; then
+  export COLORFGBG="0;15"  # Dark text on light background
+else
+  export COLORFGBG="15;0"  # Light text on dark background
+fi
+
+# Load LS_COLORS from Rose Pine dircolors based on theme
+if [[ "$CURRENT_THEME_MODE" == "light" ]]; then
+  if [[ -f "${HOME}/.local/share/themes/rose-pine-dawn.dircolors" ]]; then
+    eval "$(gdircolors -b "${HOME}/.local/share/themes/rose-pine-dawn.dircolors")"
+  fi
+else
+  if [[ -f "${HOME}/.local/share/themes/rose-pine.dircolors" ]]; then
+    eval "$(gdircolors -b "${HOME}/.local/share/themes/rose-pine.dircolors")"
+  fi
+fi
+
+# Fallback to default LS_COLORS if dircolors files don't exist
+if [[ -z "${LS_COLORS:-}" ]]; then
+  export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.cfg=00;32:*.conf=00;32:*.diff=00;32:*.doc=00;32:*.ini=00;32:*.log=00;32:*.patch=00;32:*.pdf=00;32:*.ps=00;32:*.tex=00;32:*.txt=00;32:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'
+fi
 
 ######## PATH CONFIGURATION ########
 
@@ -113,6 +162,14 @@ path() {
 
 # Configure colors for ls and completion
 setup_colors() {
+  # Load theme-specific colors (prompt and completion colors)
+  if [[ "$CURRENT_THEME_MODE" == "light" ]]; then
+    safe_source "${HOME}/.local/share/themes/rose-pine-dawn.zsh"
+  else
+    safe_source "${HOME}/.local/share/themes/rose-pine.zsh"
+  fi
+
+  # Apply completion list colors from LS_COLORS
   zstyle ':completion:*' list-colors "${LS_COLORS}"
   zstyle ':completion:*:*:*:*:directories' list-colors "di=01;34"
   zstyle ':completion:*:*:*:*:links' list-colors "ln=01;36"
@@ -188,12 +245,7 @@ zstyle ':completion:*' menu yes select
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
 zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
 
-# Completion formatting
-zstyle ':completion:*:messages' format $'\e[01;35m -- %d -- \e[00;00m'
-zstyle ':completion:*:warnings' format $'\e[01;31m -- No Matches Found -- \e[00;00m'
-zstyle ':completion:*:descriptions' format $'\e[00;37m -- %d -- \e[00;00m'
-zstyle ':completion:*:corrections' format $'\e[00;37m -- %d -- \e[00;00m'
-zstyle ':completion:*:default' select-prompt $'\e[01;35m -- Match %M    %P -- \e[00;00m'
+# Completion formatting (loaded from theme files in setup_colors())
 zstyle ':completion:*' verbose yes
 
 # Caching and ordering
@@ -221,6 +273,11 @@ alias grep="grep --color=always"
 alias mounts="cat /proc/mounts | column -t"
 alias timestamp="date +%s"
 alias time='/usr/bin/time -p'
+
+# Theme switching aliases
+alias theme-toggle='toggle-theme'
+alias theme-light='THEME_MODE=light exec zsh'
+alias theme-dark='THEME_MODE=dark exec zsh'
 
 # Use ripgrep if available
 if type rg > /dev/null 2>&1; then
@@ -360,10 +417,10 @@ function _git_prompt_info() {
   if [[ -z "$_CACHED_GIT_INFO" || $(( $(date +%s) - _CACHED_GIT_TIMESTAMP )) -gt 5 ]]; then
     if git symbolic-ref HEAD > /dev/null 2>&1; then
       ref=$(git symbolic-ref HEAD 2> /dev/null)
-      _CACHED_GIT_INFO="%F{green}(${ref#refs/heads/})%f "
+      _CACHED_GIT_INFO="%F{${THEME_COLOR_GIT_BRANCH:-green}}(${ref#refs/heads/})%f "
     else
       if git rev-parse --git-dir > /dev/null 2>&1; then
-        _CACHED_GIT_INFO="%F{white}(detached)%f "
+        _CACHED_GIT_INFO="%F{${THEME_COLOR_GIT_DETACHED:-white}}(detached)%f "
       else
         _CACHED_GIT_INFO=""
       fi
@@ -376,26 +433,26 @@ function _git_prompt_info() {
 
 _vi_mode_indicator() {
   case $KEYMAP in
-    vicmd) print -n "%F{red}:%f" ;;
-    *) print -n "%F{blue}%#%f" ;;
+    vicmd) print -n "%F{${THEME_COLOR_VI_CMD:-red}}:%f" ;;
+    *) print -n "%F{${THEME_COLOR_VI_INS:-blue}}%#%f" ;;
   esac
 }
 
 # Calculate once at startup instead of every prompt
 _setup_prompt_elements() {
-  _SHORT_PATH="%B%F{blue}%(5~|%-1~/…/%3~|%4~)%f%b"
+  _SHORT_PATH="%B%F{${THEME_COLOR_DIR:-blue}}%(5~|%-1~/…/%3~|%4~)%f%b"
 
   if [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" || -n "$SSH_CONNECTION" ]]; then
-    _SSH_INDICATOR="%F{white}[SSH]%f "
-    _HOST="%B%F{green}%n%f%b@%B%F{250}%m%f%b"
+    _SSH_INDICATOR="%F{${THEME_COLOR_SSH:-white}}[SSH]%f "
+    _HOST="%B%F{${THEME_COLOR_HOST:-green}}%n%f%b@%B%F{${THEME_COLOR_HOST_REMOTE:-250}}%m%f%b"
   else
     _SSH_INDICATOR=""
-    _HOST="%B%F{green}%n@%m%f%b"
+    _HOST="%B%F{${THEME_COLOR_HOST:-green}}%n@%m%f%b"
   fi
 }
 _setup_prompt_elements
 
-PROMPT='${_SSH_INDICATOR}%F{red}%(1j.● .)%f${_HOST}:${_SHORT_PATH}$(_git_prompt_info)$(_vi_mode_indicator) '
+PROMPT='${_SSH_INDICATOR}%F{${THEME_COLOR_JOBS:-red}}%(1j.● .)%f${_HOST}:${_SHORT_PATH}$(_git_prompt_info)$(_vi_mode_indicator) '
 
 zle -N zle-keymap-select
 

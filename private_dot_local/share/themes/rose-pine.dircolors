@@ -1,0 +1,203 @@
+# Rose Pine (Dark) theme for dircolors
+# Based on Rose Pine palette - https://rosepinetheme.com
+
+# Terminal filters
+COLORTERM ?*
+TERM *256color*
+TERM alacritty
+TERM gnome*
+TERM kitty
+TERM konsole*
+TERM screen*
+TERM terminator
+TERM tmux*
+TERM xterm*
+TERM iTerm.app
+
+# Basic file attributes - Rose Pine colors optimized for readability
+RESET 0
+DIR 01;38;5;109          # directory - pine (#31748f) brightened for visibility
+LINK 01;38;5;152         # symbolic link - foam (#9ccfd8)
+MULTIHARDLINK 00
+FIFO 38;5;216;48;5;234   # pipe - gold on base
+SOCK 01;38;5;217         # socket - rose (#ebbcba)
+DOOR 01;38;5;217
+BLK 38;5;216;48;5;234    # block device - gold on base
+CHR 38;5;216;48;5;234    # character device
+ORPHAN 01;38;5;204       # orphaned symlink - love (#eb6f92)
+MISSING 00
+SETUID 37;41             # setuid
+SETGID 30;43             # setgid
+CAPABILITY 00
+STICKY_OTHER_WRITABLE 30;42
+OTHER_WRITABLE 38;5;109;48;5;234
+STICKY 37;44
+EXEC 01;38;5;152         # executable - foam for distinction from dirs
+
+# Archives - love (#eb6f92)
+.7z 01;38;5;204
+.ace 01;38;5;204
+.alz 01;38;5;204
+.apk 01;38;5;204
+.arc 01;38;5;204
+.arj 01;38;5;204
+.bz 01;38;5;204
+.bz2 01;38;5;204
+.cab 01;38;5;204
+.cpio 01;38;5;204
+.deb 01;38;5;204
+.dmg 01;38;5;204
+.dz 01;38;5;204
+.ear 01;38;5;204
+.gz 01;38;5;204
+.jar 01;38;5;204
+.lha 01;38;5;204
+.lrz 01;38;5;204
+.lz 01;38;5;204
+.lz4 01;38;5;204
+.lzh 01;38;5;204
+.lzma 01;38;5;204
+.lzo 01;38;5;204
+.rar 01;38;5;204
+.rpm 01;38;5;204
+.rz 01;38;5;204
+.sar 01;38;5;204
+.t7z 01;38;5;204
+.tar 01;38;5;204
+.taz 01;38;5;204
+.tbz 01;38;5;204
+.tbz2 01;38;5;204
+.tgz 01;38;5;204
+.tlz 01;38;5;204
+.txz 01;38;5;204
+.tz 01;38;5;204
+.tzo 01;38;5;204
+.tzst 01;38;5;204
+.war 01;38;5;204
+.xz 01;38;5;204
+.z 01;38;5;204
+.Z 01;38;5;204
+.zip 01;38;5;204
+.zoo 01;38;5;204
+.zst 01;38;5;204
+
+# Image formats - rose (#ebbcba)
+.avif 01;38;5;217
+.bmp 01;38;5;217
+.cgm 01;38;5;217
+.dl 01;38;5;217
+.emf 01;38;5;217
+.eps 01;38;5;217
+.gif 01;38;5;217
+.jpeg 01;38;5;217
+.jpg 01;38;5;217
+.JPG 01;38;5;217
+.mng 01;38;5;217
+.pbm 01;38;5;217
+.pcx 01;38;5;217
+.pgm 01;38;5;217
+.png 01;38;5;217
+.PNG 01;38;5;217
+.ppm 01;38;5;217
+.pps 01;38;5;217
+.ppsx 01;38;5;217
+.svg 01;38;5;217
+.svgz 01;38;5;217
+.tga 01;38;5;217
+.tif 01;38;5;217
+.tiff 01;38;5;217
+.webp 01;38;5;217
+.xbm 01;38;5;217
+.xcf 01;38;5;217
+.xpm 01;38;5;217
+.xwd 01;38;5;217
+
+# Audio - iris (#c4a7e7)
+.aac 00;38;5;183
+.au 00;38;5;183
+.flac 00;38;5;183
+.m4a 00;38;5;183
+.mid 00;38;5;183
+.midi 00;38;5;183
+.mka 00;38;5;183
+.mp3 00;38;5;183
+.mpc 00;38;5;183
+.oga 00;38;5;183
+.ogg 00;38;5;183
+.opus 00;38;5;183
+.ra 00;38;5;183
+.wav 00;38;5;183
+
+# Video - iris (#c4a7e7)
+.anx 01;38;5;183
+.asf 01;38;5;183
+.avi 01;38;5;183
+.axv 01;38;5;183
+.flc 01;38;5;183
+.fli 01;38;5;183
+.flv 01;38;5;183
+.gl 01;38;5;183
+.m2v 01;38;5;183
+.m4v 01;38;5;183
+.mkv 01;38;5;183
+.mov 01;38;5;183
+.MOV 01;38;5;183
+.mp4 01;38;5;183
+.mp4v 01;38;5;183
+.mpeg 01;38;5;183
+.mpg 01;38;5;183
+.nuv 01;38;5;183
+.ogm 01;38;5;183
+.ogv 01;38;5;183
+.ogx 01;38;5;183
+.qt 01;38;5;183
+.rm 01;38;5;183
+.rmvb 01;38;5;183
+.vob 01;38;5;183
+.webm 01;38;5;183
+.wmv 01;38;5;183
+
+# Documents - gold (#f6c177)
+.doc 00;38;5;216
+.docx 00;38;5;216
+.odt 00;38;5;216
+.pdf 00;38;5;216
+.PDF 00;38;5;216
+.ppt 00;38;5;216
+.pptx 00;38;5;216
+.xls 00;38;5;216
+.xlsx 00;38;5;216
+
+# Source code - pine (#31748f) brightened
+.c 00;38;5;109
+.cc 00;38;5;109
+.cpp 00;38;5;109
+.go 00;38;5;109
+.h 00;38;5;109
+.hpp 00;38;5;109
+.java 00;38;5;109
+.js 00;38;5;109
+.jsx 00;38;5;109
+.py 00;38;5;109
+.rb 00;38;5;109
+.rs 00;38;5;109
+.sh 00;38;5;109
+.ts 00;38;5;109
+.tsx 00;38;5;109
+
+# Config files - foam (#9ccfd8)
+.cfg 00;38;5;152
+.conf 00;38;5;152
+.config 00;38;5;152
+.ini 00;38;5;152
+.json 00;38;5;152
+.toml 00;38;5;152
+.yaml 00;38;5;152
+.yml 00;38;5;152
+
+# Special files - gold (#f6c177)
+*Dockerfile 00;38;5;216
+*Makefile 00;38;5;216
+*README 00;38;5;216
+*README.md 00;38;5;216
+*LICENSE 00;38;5;216
