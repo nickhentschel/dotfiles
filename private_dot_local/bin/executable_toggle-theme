@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+# toggle-theme - Manual theme mode toggle for light/dark mode switching
+
+set -euo pipefail
+
+current_mode="${THEME_MODE:-auto}"
+zshenv_file="${HOME}/.zshenv"
+chezmoi_config="${HOME}/.config/chezmoi/chezmoi.toml"
+
+# Determine new mode
+if [[ "$current_mode" == "light" ]]; then
+  new_mode="dark"
+elif [[ "$current_mode" == "dark" ]]; then
+  new_mode="light"
+else
+  # Auto mode, detect current and toggle
+  appearance=$(defaults read -g AppleInterfaceStyle 2>/dev/null || echo "Light")
+  if [[ "$appearance" == "Dark" ]]; then
+    new_mode="light"
+  else
+    new_mode="dark"
+  fi
+fi
+
+# Update zshenv
+if grep -q "^export THEME_MODE=" "$zshenv_file" 2>/dev/null; then
+  # Update existing line
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i '' "s/^export THEME_MODE=.*/export THEME_MODE=$new_mode/" "$zshenv_file"
+  else
+    sed -i "s/^export THEME_MODE=.*/export THEME_MODE=$new_mode/" "$zshenv_file"
+  fi
+elif grep -q "^# export THEME_MODE=" "$zshenv_file" 2>/dev/null; then
+  # Uncomment and update
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i '' "s/^# export THEME_MODE=.*/export THEME_MODE=$new_mode/" "$zshenv_file"
+  else
+    sed -i "s/^# export THEME_MODE=.*/export THEME_MODE=$new_mode/" "$zshenv_file"
+  fi
+else
+  # Add new line
+  echo "export THEME_MODE=$new_mode" >> "$zshenv_file"
+fi
+
+# Update chezmoi config to regenerate tmux with correct colors
+if [[ -f "$chezmoi_config" ]]; then
+  if grep -q "^  appearance_mode" "$chezmoi_config"; then
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+      sed -i '' "s/^  appearance_mode = .*/  appearance_mode = \"$new_mode\"/" "$chezmoi_config"
+    else
+      sed -i "s/^  appearance_mode = .*/  appearance_mode = \"$new_mode\"/" "$chezmoi_config"
+    fi
+  fi
+fi
+
+# Reload tmux if running
+if [[ -n "${TMUX:-}" ]]; then
+  # Apply chezmoi changes to regenerate tmux config with new theme
+  chezmoi apply ~/.tmux.conf 2>/dev/null || true
+  # Source the updated config
+  tmux source-file ~/.tmux.conf 2>/dev/null || true
+  tmux display-message "Theme toggled to $new_mode (run 'exec zsh' to update shell)"
+else
+  echo "Theme toggled to $new_mode"
+  echo "Run 'exec zsh' to apply all changes"
+fi

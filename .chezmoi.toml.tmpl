@@ -1,4 +1,16 @@
 {{- $email := promptString "email" -}}
+{{- /* Detect macOS appearance mode */ -}}
+{{- $appearance := "dark" -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $appleStyle := output "defaults" "read" "-g" "AppleInterfaceStyle" | trim -}}
+{{-   if eq $appleStyle "Dark" -}}
+{{-     $appearance = "dark" -}}
+{{-   else -}}
+{{-     $appearance = "light" -}}
+{{-   end -}}
+{{- end -}}
+
 [data]
   email = "{{ $email }}"
   name = "Nick Hentschel"
+  appearance_mode = "{{ $appearance }}"
