@@ -29,6 +29,9 @@ export HISTFILE="${HOME}/.zsh_history"
 export HISTIGNORE="ls:cd:cd -:pwd:exit:* --help:clear"
 export KEYTIMEOUT=1
 
+# Tool specific settings
+CLAUDE_CODE_NO_FLICKER=1
+
 ######## THEME DETECTION ########
 
 # Detect and set theme mode based on system appearance or manual override
@@ -39,14 +42,24 @@ detect_theme_mode() {
     return
   fi
 
-  # Detect macOS appearance
+  # Detect macOS appearance with caching
   if [[ "$OSTYPE" == "darwin"* ]]; then
-    local appearance
-    appearance=$(defaults read -g AppleInterfaceStyle 2>/dev/null || echo "Light")
-    if [[ "$appearance" == "Dark" ]]; then
-      export CURRENT_THEME_MODE="dark"
+    local cache_file="${ZSH_CACHE_DIR}/.theme_mode_cache"
+    local pref_file="$HOME/Library/Preferences/.GlobalPreferences.plist"
+
+    # Use cache if it exists and is newer than the preference file
+    if [[ -f "$cache_file" && "$cache_file" -nt "$pref_file" ]]; then
+      export CURRENT_THEME_MODE="$(cat "$cache_file")"
     else
-      export CURRENT_THEME_MODE="light"
+      # Cache miss or stale - detect and update cache
+      local appearance
+      appearance=$(defaults read -g AppleInterfaceStyle 2>/dev/null || echo "Light")
+      if [[ "$appearance" == "Dark" ]]; then
+        export CURRENT_THEME_MODE="dark"
+      else
+        export CURRENT_THEME_MODE="light"
+      fi
+      echo "$CURRENT_THEME_MODE" > "$cache_file"
     fi
   else
     # Default to dark on non-macOS
@@ -63,22 +76,6 @@ if [[ "$CURRENT_THEME_MODE" == "light" ]]; then
   export COLORFGBG="0;15"  # Dark text on light background
 else
   export COLORFGBG="15;0"  # Light text on dark background
-fi
-
-# Load LS_COLORS from Rose Pine dircolors based on theme
-if [[ "$CURRENT_THEME_MODE" == "light" ]]; then
-  if [[ -f "${HOME}/.local/share/themes/rose-pine-dawn.dircolors" ]]; then
-    eval "$(gdircolors -b "${HOME}/.local/share/themes/rose-pine-dawn.dircolors")"
-  fi
-else
-  if [[ -f "${HOME}/.local/share/themes/rose-pine.dircolors" ]]; then
-    eval "$(gdircolors -b "${HOME}/.local/share/themes/rose-pine.dircolors")"
-  fi
-fi
-
-# Fallback to default LS_COLORS if dircolors files don't exist
-if [[ -z "${LS_COLORS:-}" ]]; then
-  export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.cfg=00;32:*.conf=00;32:*.diff=00;32:*.doc=00;32:*.ini=00;32:*.log=00;32:*.patch=00;32:*.pdf=00;32:*.ps=00;32:*.tex=00;32:*.txt=00;32:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'
 fi
 
 ######## PATH CONFIGURATION ########
@@ -160,9 +157,22 @@ path() {
     -e 's|/local|%F{yellow}/local%f|g')"
 }
 
-# Configure colors for ls and completion
+# Configure colors for ls and completion (single source of truth)
 setup_colors() {
-  # Load theme-specific colors (prompt and completion colors)
+  # Load LS_COLORS from Rose Pine dircolors based on theme
+  if command -v gdircolors >/dev/null 2>&1; then
+    if [[ "$CURRENT_THEME_MODE" == "light" ]]; then
+      if [[ -f "${HOME}/.local/share/themes/rose-pine-dawn.dircolors" ]]; then
+        eval "$(gdircolors -b "${HOME}/.local/share/themes/rose-pine-dawn.dircolors")"
+      fi
+    else
+      if [[ -f "${HOME}/.local/share/themes/rose-pine.dircolors" ]]; then
+        eval "$(gdircolors -b "${HOME}/.local/share/themes/rose-pine.dircolors")"
+      fi
+    fi
+  fi
+
+  # Load theme-specific prompt colors
   if [[ "$CURRENT_THEME_MODE" == "light" ]]; then
     safe_source "${HOME}/.local/share/themes/rose-pine-dawn.zsh"
   else
@@ -179,29 +189,15 @@ setup_colors() {
 # Set up ls command based on available utilities
 setup_ls_command() {
   if command -v gls >/dev/null 2>&1; then
-    if command -v gdircolors >/dev/null 2>&1; then
-      if [[ -f "$HOME/.dircolors" ]]; then
-        eval "$(gdircolors -b "$HOME/.dircolors")"
-      else
-        eval "$(gdircolors -b)"
-      fi
-    fi
-    # Use functions instead of aliases to avoid parsing issues
+    # Use GNU ls (gls) if available
     ls() { gls -ph --color=always "$@"; }
     ll() { gls -lachp --color=always "$@"; }
-  elif command -v ls >/dev/null 2>&1; then
-    if ls --version >/dev/null 2>&1 && ls --version | command grep -q 'GNU coreutils'; then
-      if command -v dircolors >/dev/null 2>&1; then
-        if [[ -f "$HOME/.dircolors" ]]; then
-          eval "$(dircolors -b "$HOME/.dircolors")"
-        else
-          eval "$(dircolors -b)"
-        fi
-      fi
-      ls() { command ls -ph --color=always "$@"; }
-      ll() { command ls -lachp --color=always "$@"; }
-    fi
+  elif ls --version >/dev/null 2>&1 && ls --version | command grep -q 'GNU coreutils' 2>/dev/null; then
+    # GNU ls is native
+    ls() { command ls -ph --color=always "$@"; }
+    ll() { command ls -lachp --color=always "$@"; }
   else
+    # BSD ls (macOS default)
     export CLICOLOR=1
     export LSCOLORS="ExGxFxdaCxDaDahbadacec"
     ls() { command ls -phG "$@"; }
@@ -258,9 +254,17 @@ zstyle ':completion::**:ssh:*:*' tag-order "users hosts"
 zstyle ':completion::*:rm:*:*' file-patterns '*.o:object-files:object\ file *(~|.(old|bak|BAK)):backup-files:backup\ files *~*(~|.(o|old|bak|BAK)):all-files:all\ files'
 zstyle ':completion::*:vi:*:*' file-patterns 'Makefile|*(rc|log)|*.(php|tex|bib|sql|zsh|ini|sh|vim|rb|sh|js|tpl|csv|rdf|txt|phtml|tex|py|n3):vi-files:vim\ likes\ these\ files *~(Makefile|*(rc|log)|*.(log|rc|php|tex|bib|sql|zsh|ini|sh|vim|rb|sh|js|tpl|csv|rdf|txt|phtml|tex|py|n3)):all-files:other\ files'
 
-# Application-specific completions
+# Application-specific completions (cached)
 if type helm > /dev/null 2>&1; then
-  source <(helm completion zsh 2>/dev/null)
+  local helm_completion_cache="${ZSH_CACHE_DIR}/helm_completion.zsh"
+  local helm_bin=$(command -v helm)
+
+  # Regenerate if cache missing or helm binary is newer
+  if [[ ! -f "$helm_completion_cache" || "$helm_bin" -nt "$helm_completion_cache" ]]; then
+    helm completion zsh > "$helm_completion_cache" 2>/dev/null
+  fi
+
+  safe_source "$helm_completion_cache"
 fi
 
 ######## ALIASES #######
@@ -338,70 +342,6 @@ fzf_history_search() {
 zle -N fzf_history_search
 bindkey '^R' fzf_history_search
 
-######## AI COMMAND GENERATION ########
-
-# Configuration (override via env vars)
-export AI_CMD_MODEL="${AI_CMD_MODEL:-us.anthropic.claude-sonnet-4-20250514-v1:0}"
-export AI_CMD_MAX_SUGGESTIONS="${AI_CMD_MAX_SUGGESTIONS:-5}"
-export AI_CMD_AWS_PROFILE="${AI_CMD_AWS_PROFILE:-zillow-sandbox}"
-export AI_CMD_AWS_REGION="${AI_CMD_AWS_REGION:-us-west-2}"
-export AI_CMD_CONFIDENCE_THRESHOLD="${AI_CMD_CONFIDENCE_THRESHOLD:-90}"
-
-# ZLE widget: Generate commands from natural language
-ai_command_generate() {
-  local query suggestions selected line_count confidence cmd first_line
-
-  # Stage 1: Popup prompt for natural language input
-  query=$(printf '' | fzf --print-query --prompt="Describe command > " \
-    --header="Type what you want to do, then press Enter" \
-    --height=6 --border --info=hidden | head -1)
-
-  [[ -z "$query" ]] && { zle redisplay; return; }
-
-  # Stage 2: Call AI with spinner
-  zle -M "Generating..."
-  suggestions=$("$HOME/.local/bin/ai-cmd-gen" "$query" 2>/dev/null)
-
-  if [[ -z "$suggestions" ]]; then
-    zle -M "Generation failed"
-    zle redisplay
-    return
-  fi
-
-  # Parse first line to check confidence (format: CONFIDENCE|command ### explanation)
-  first_line=$(printf '%s' "$suggestions" | head -1)
-  confidence=$(printf '%s' "$first_line" | cut -d'|' -f1)
-
-  # If high confidence, skip selection and use top result directly
-  if [[ "$confidence" =~ ^[0-9]+$ ]] && (( confidence >= AI_CMD_CONFIDENCE_THRESHOLD )); then
-    cmd=$(printf '%s' "$first_line" | cut -d'|' -f2- | cut -d'#' -f1 | sed 's/ *$//')
-    LBUFFER="$cmd"
-    zle -M "Auto-selected (${confidence}%% confidence)"
-    zle redisplay
-    return
-  fi
-
-  # Stage 3: Select from suggestions - strip confidence prefix for display
-  # Format for fzf: command ### explanation (without confidence prefix)
-  line_count=$(printf '%s\n' "$suggestions" | wc -l | tr -d ' ')
-  local fzf_height=$((line_count + 4))
-  (( fzf_height > 15 )) && fzf_height=15
-
-  selected=$(printf '%s\n' "$suggestions" | sed 's/^[0-9]*|//' | fzf --height=${fzf_height} --border \
-    --prompt="Select > " --header="[$query]" \
-    --delimiter=' ### ' --with-nth=1 \
-    --preview='echo {2}' --preview-window=down:3:wrap)
-
-  # Insert selected command (strip explanation)
-  if [[ -n "$selected" ]]; then
-    LBUFFER=$(printf '%s' "$selected" | cut -d'#' -f1 | sed 's/ *$//')
-  fi
-  zle redisplay
-}
-
-zle -N ai_command_generate
-bindkey '^X' ai_command_generate
-
 ######## PROMPT CONFIGURATION ########
 
 autoload -U colors && colors
@@ -462,8 +402,8 @@ zle -N zle-keymap-select
 safe_source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 safe_source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-# Set up ls command with proper colors
-setup_ls_command
-
-# Configure completion colors to match
+# Configure colors (LS_COLORS, prompt, completion)
 setup_colors
+
+# Set up ls command
+setup_ls_command

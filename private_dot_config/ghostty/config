@@ -33,6 +33,12 @@ scrollback-limit = 10000
 window-vsync = true
 command = /bin/zsh --login
 
+# Font rendering optimization (thin strokes, clear rendering)
+font-thicken = false
+font-hinting = slight
+font-antialiasing = subpixel
+macos-non-native-fullscreen = false
+
 # Keybindings (avoid tmux conflicts)
 keybind = cmd+k=ignore
 keybind = cmd+t=ignore
