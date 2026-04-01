@@ -1,16 +1,16 @@
-# Rose Pine (Dark) theme for ZSH
-# Prompt and completion colors
+# Rose Pine Moon theme for ZSH
+# Prompt colors optimized for visibility without being garish
 
-# Prompt colors - Rose Pine palette optimized for readability
-export THEME_COLOR_DIR="109"              # pine (#31748f) - slightly brighter for visibility
-export THEME_COLOR_GIT_BRANCH="152"       # foam (#9ccfd8)
-export THEME_COLOR_GIT_DETACHED="248"     # subtle (#908caa) - brighter for visibility
-export THEME_COLOR_VI_CMD="204"           # love (#eb6f92)
-export THEME_COLOR_VI_INS="109"           # pine
-export THEME_COLOR_SSH="248"              # subtle
-export THEME_COLOR_HOST="152"             # foam
-export THEME_COLOR_HOST_REMOTE="248"      # subtle
-export THEME_COLOR_JOBS="204"             # love
+# Prompt colors - Clear distinction from LS colors and Claude output
+export THEME_COLOR_DIR="183"              # iris (#c4a7e7) - purple, stands out clearly
+export THEME_COLOR_GIT_BRANCH="152"       # foam (#9ccfd8) - distinct teal
+export THEME_COLOR_GIT_DETACHED="248"     # subtle (#908caa) - muted gray
+export THEME_COLOR_VI_CMD="204"           # love (#eb6f92) - pink for command mode
+export THEME_COLOR_VI_INS="180"           # gold (#f6c177) - warm orange for insert
+export THEME_COLOR_SSH="217"              # rose (#ea9a97) - light pink for SSH warning
+export THEME_COLOR_HOST="217"             # rose (#ea9a97) - softer than foam
+export THEME_COLOR_HOST_REMOTE="248"      # subtle - muted for remote host
+export THEME_COLOR_JOBS="204"             # love - attention-grabbing for jobs
 
 # Completion menu colors (ANSI escape codes for zstyle)
 export THEME_COMP_MESSAGES=$'\e[01;38;5;183m'     # iris (#c4a7e7) bold

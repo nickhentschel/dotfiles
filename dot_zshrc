@@ -32,51 +32,9 @@ export KEYTIMEOUT=1
 # Tool specific settings
 CLAUDE_CODE_NO_FLICKER=1
 
-######## THEME DETECTION ########
-
-# Detect and set theme mode based on system appearance or manual override
-detect_theme_mode() {
-  # Check for manual override first
-  if [[ -n "${THEME_MODE:-}" ]]; then
-    export CURRENT_THEME_MODE="$THEME_MODE"
-    return
-  fi
-
-  # Detect macOS appearance with caching
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-    local cache_file="${ZSH_CACHE_DIR}/.theme_mode_cache"
-    local pref_file="$HOME/Library/Preferences/.GlobalPreferences.plist"
-
-    # Use cache if it exists and is newer than the preference file
-    if [[ -f "$cache_file" && "$cache_file" -nt "$pref_file" ]]; then
-      export CURRENT_THEME_MODE="$(cat "$cache_file")"
-    else
-      # Cache miss or stale - detect and update cache
-      local appearance
-      appearance=$(defaults read -g AppleInterfaceStyle 2>/dev/null || echo "Light")
-      if [[ "$appearance" == "Dark" ]]; then
-        export CURRENT_THEME_MODE="dark"
-      else
-        export CURRENT_THEME_MODE="light"
-      fi
-      echo "$CURRENT_THEME_MODE" > "$cache_file"
-    fi
-  else
-    # Default to dark on non-macOS
-    export CURRENT_THEME_MODE="dark"
-  fi
-}
-
-# Detect theme mode
-detect_theme_mode
-
 # Set COLORFGBG for applications (like Claude Code) to detect terminal background
 # Format: foreground;background (0=dark, 15=light)
-if [[ "$CURRENT_THEME_MODE" == "light" ]]; then
-  export COLORFGBG="0;15"  # Dark text on light background
-else
-  export COLORFGBG="15;0"  # Light text on dark background
-fi
+export COLORFGBG="15;0"  # Light text on dark background (Rose Pine Moon)
 
 ######## PATH CONFIGURATION ########
 
@@ -157,27 +115,17 @@ path() {
     -e 's|/local|%F{yellow}/local%f|g')"
 }
 
-# Configure colors for ls and completion (single source of truth)
+# Configure colors for ls and completion (Rose Pine Moon)
 setup_colors() {
-  # Load LS_COLORS from Rose Pine dircolors based on theme
+  # Load LS_COLORS from Rose Pine dircolors
   if command -v gdircolors >/dev/null 2>&1; then
-    if [[ "$CURRENT_THEME_MODE" == "light" ]]; then
-      if [[ -f "${HOME}/.local/share/themes/rose-pine-dawn.dircolors" ]]; then
-        eval "$(gdircolors -b "${HOME}/.local/share/themes/rose-pine-dawn.dircolors")"
-      fi
-    else
-      if [[ -f "${HOME}/.local/share/themes/rose-pine.dircolors" ]]; then
-        eval "$(gdircolors -b "${HOME}/.local/share/themes/rose-pine.dircolors")"
-      fi
+    if [[ -f "${HOME}/.local/share/themes/rose-pine.dircolors" ]]; then
+      eval "$(gdircolors -b "${HOME}/.local/share/themes/rose-pine.dircolors")"
     fi
   fi
 
-  # Load theme-specific prompt colors
-  if [[ "$CURRENT_THEME_MODE" == "light" ]]; then
-    safe_source "${HOME}/.local/share/themes/rose-pine-dawn.zsh"
-  else
-    safe_source "${HOME}/.local/share/themes/rose-pine.zsh"
-  fi
+  # Load Rose Pine Moon prompt colors
+  safe_source "${HOME}/.local/share/themes/rose-pine.zsh"
 
   # Apply completion list colors from LS_COLORS
   zstyle ':completion:*' list-colors "${LS_COLORS}"
@@ -277,11 +225,6 @@ alias grep="grep --color=always"
 alias mounts="cat /proc/mounts | column -t"
 alias timestamp="date +%s"
 alias time='/usr/bin/time -p'
-
-# Theme switching aliases
-alias theme-toggle='toggle-theme'
-alias theme-light='THEME_MODE=light exec zsh'
-alias theme-dark='THEME_MODE=dark exec zsh'
 
 # Use ripgrep if available
 if type rg > /dev/null 2>&1; then
