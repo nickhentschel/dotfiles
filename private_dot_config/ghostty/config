@@ -35,8 +35,6 @@ command = /bin/zsh --login
 
 # Font rendering optimization (thin strokes, clear rendering)
 font-thicken = false
-font-hinting = slight
-font-antialiasing = subpixel
 macos-non-native-fullscreen = false
 
 # Keybindings (avoid tmux conflicts)
