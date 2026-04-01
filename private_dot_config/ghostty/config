@@ -1,0 +1,38 @@
+# Ghostty Terminal Configuration
+# Managed by chezmoi
+
+# Font
+font-family = Berkeley Mono
+font-size = 13
+
+# Theme - Built-in Rose Pine with automatic light/dark switching
+# Ghostty automatically switches based on macOS system appearance
+theme = dark:Rose Pine,light:Rose Pine Dawn
+
+# Terminal compatibility (tmux)
+term = xterm-256color
+
+# Shell integration
+shell-integration = true
+shell-integration-features = cursor,sudo,title
+
+# Clipboard
+clipboard-read = allow
+clipboard-write = allow
+copy-on-select = false
+
+# Window
+window-padding-x = 4
+window-padding-y = 4
+window-decoration = true
+
+# Scrollback
+scrollback-limit = 10000
+
+# Performance
+window-vsync = true
+command = /bin/zsh --login
+
+# Keybindings (avoid tmux conflicts)
+keybind = cmd+k=ignore
+keybind = cmd+t=ignore
