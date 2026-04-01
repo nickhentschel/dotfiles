@@ -13,7 +13,7 @@ theme = dark:Rose Pine,light:Rose Pine Dawn
 term = xterm-256color
 
 # Shell integration
-shell-integration = true
+shell-integration = zsh
 shell-integration-features = cursor,sudo,title
 
 # Clipboard
