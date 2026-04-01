@@ -3,9 +3,11 @@ Makefile
 *.deb
 *.tar.gz
 .vscode
-settings.json
 Brewfile
 Brewfile.lock.json
+.claude/settings.json
+.claude/settings.local.json
+.claude/settings.*.json
 {{- if ne .chezmoi.os "darwin" }}
 Library
 {{- end }}
