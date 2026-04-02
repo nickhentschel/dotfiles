@@ -152,28 +152,36 @@ show_menu() {
     tmux display-menu -T "Claude Agents" "${menu_args[@]}"
 }
 
-jump_next() {
+jump_window() {
     [ -z "$TMUX" ] && return 0
 
-    # Try waiting first, then working
+    local direction="${1:-next}"  # next or prev
+    local current_window
+    current_window=$(tmux display -p '#{window_id}')
+
+    # Find Claude agents waiting for input (excluding current window)
     local target
-    target=$(list_agents "waiting" | head -n1)
+    target=$(list_agents "waiting" | while IFS=$'\t' read -r pane_id pane_idx state tool id; do
+        local win_id
+        win_id=$(tmux display -p -t "$pane_id" '#{window_id}' 2>/dev/null || true)
+        [ "$win_id" != "$current_window" ] && echo "$pane_id	$pane_idx	$state" && break
+    done)
 
-    if [ -z "$target" ]; then
-        target=$(list_agents "working" | head -n1)
-    fi
-
-    if [ -z "$target" ]; then
-        tmux display-message "No agents waiting or working"
+    if [ -n "$target" ]; then
+        local pane_id
+        pane_id=$(echo "$target" | cut -f1)
+        tmux select-window -t "$pane_id"
+        tmux select-pane -t "$pane_id"
+        tmux display-message "Jumped to waiting agent"
         return 0
     fi
 
-    local pane_id state
-    pane_id=$(echo "$target" | cut -f1)
-    state=$(echo "$target" | cut -f3)
-
-    tmux select-pane -t "$pane_id"
-    tmux display-message "Jumped to $state agent"
+    # No waiting agents - just move to next/prev window
+    if [ "$direction" = "prev" ]; then
+        tmux previous-window
+    else
+        tmux next-window
+    fi
 }
 
 #-----------------------------------------------
@@ -263,7 +271,10 @@ case "${1:-help}" in
         show_menu
         ;;
     next)
-        jump_next
+        jump_window "next"
+        ;;
+    prev)
+        jump_window "prev"
         ;;
     summary)
         show_summary
@@ -286,7 +297,8 @@ Commands:
   state get [pane]          - Get pane state
   state clear [pane]        - Clear pane state
   menu                      - Show agent selector (display-menu)
-  next                      - Jump to next waiting/working agent
+  next                      - Jump to waiting agent or next window
+  prev                      - Jump to waiting agent or previous window
   summary                   - Show summary as tmux message
   status                    - Output for status bar
   capture [lines]           - Capture pane content to clipboard

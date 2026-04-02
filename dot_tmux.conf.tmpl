@@ -183,10 +183,8 @@ set -g pane-active-border-style 'fg=colour183'
 
 # Key bindings for Claude agent navigation
 bind-key g run-shell "~/.config/tmux/claude-tmux.sh menu"      # prefix+g: Go to agent (native menu)
-bind-key n run-shell "~/.config/tmux/claude-tmux.sh next"      # prefix+n: Next waiting agent
+bind-key n run-shell "~/.config/tmux/claude-tmux.sh next"      # prefix+n: Next window (or waiting agent)
+bind-key p run-shell "~/.config/tmux/claude-tmux.sh prev"      # prefix+p: Prev window (or waiting agent)
 bind-key s run-shell "~/.config/tmux/claude-tmux.sh summary"   # prefix+s: Summary message
 bind-key C run-shell "~/.config/tmux/claude-tmux.sh capture"   # prefix+C: Capture pane to clipboard
 bind-key N split-window -h -c '#{pane_current_path}' claude    # prefix+N: New Claude pane
-
-# Standard pane navigation
-bind-key -n M-n select-pane -t :.+                              # meta+n: Next pane
