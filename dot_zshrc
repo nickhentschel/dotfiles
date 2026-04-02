@@ -5,9 +5,6 @@
 
 ######## EXPORTS AND ENVIRONMENT ########
 
-# Security: Auto logout after 8 hours of inactivity
-export TMOUT=28800
-
 # Basic environment settings
 export WORDCHARS=''
 export CASE_SENSITIVE="true"
@@ -30,7 +27,7 @@ export HISTIGNORE="ls:cd:cd -:pwd:exit:* --help:clear"
 export KEYTIMEOUT=1
 
 # Tool specific settings
-CLAUDE_CODE_NO_FLICKER=1
+export CLAUDE_CODE_NO_FLICKER=1
 
 # Set COLORFGBG for applications (like Claude Code) to detect terminal background
 # Format: foreground;background (0=dark, 15=light)
@@ -78,31 +75,6 @@ setopt HASH_CMDS HASH_DIRS
 # Safely load external files with error handling
 safe_source() {
   [[ -f "$1" ]] && source "$1" || return 1
-}
-
-# Create a symlink for Cursor rules from home to current directory
-setup_cursor_rules() {
-  local home_rules_dir="$HOME/.cursor/rules"
-  local local_cursor_dir=".cursor"
-  local local_rules_dir="$local_cursor_dir/rules"
-
-  if [[ ! -d "$home_rules_dir" ]]; then
-    echo "Error: Home rules directory $home_rules_dir does not exist"
-    return 1
-  fi
-
-  if [[ ! -d "$local_cursor_dir" ]]; then
-    mkdir -p "$local_cursor_dir"
-    echo "Created $local_cursor_dir in $(pwd)"
-  fi
-
-  if [[ ! -L "$local_rules_dir" || ! -e "$local_rules_dir" ]]; then
-    [[ -L "$local_rules_dir" ]] && rm "$local_rules_dir"
-    ln -s "$home_rules_dir" "$local_rules_dir"
-    echo "Created symlink from $local_rules_dir to $home_rules_dir"
-  else
-    echo "Symlink already exists at $local_rules_dir"
-  fi
 }
 
 # Display PATH with colors
@@ -177,7 +149,6 @@ fi
 zstyle ':completion:*' rehash true
 zstyle ':completion:*' menu select=1
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*' list-colors "${LS_COLORS}"
 zstyle ':completion:*' list-colors "${LS_COLORS}" ma=0\;47
 zstyle ':completion:*' special-dirs true
 zstyle ':completion:*' completer _match _complete _approximate
@@ -202,28 +173,12 @@ zstyle ':completion::**:ssh:*:*' tag-order "users hosts"
 zstyle ':completion::*:rm:*:*' file-patterns '*.o:object-files:object\ file *(~|.(old|bak|BAK)):backup-files:backup\ files *~*(~|.(o|old|bak|BAK)):all-files:all\ files'
 zstyle ':completion::*:vi:*:*' file-patterns 'Makefile|*(rc|log)|*.(php|tex|bib|sql|zsh|ini|sh|vim|rb|sh|js|tpl|csv|rdf|txt|phtml|tex|py|n3):vi-files:vim\ likes\ these\ files *~(Makefile|*(rc|log)|*.(log|rc|php|tex|bib|sql|zsh|ini|sh|vim|rb|sh|js|tpl|csv|rdf|txt|phtml|tex|py|n3)):all-files:other\ files'
 
-# Application-specific completions (cached)
-if type helm > /dev/null 2>&1; then
-  local helm_completion_cache="${ZSH_CACHE_DIR}/helm_completion.zsh"
-  local helm_bin=$(command -v helm)
-
-  # Regenerate if cache missing or helm binary is newer
-  if [[ ! -f "$helm_completion_cache" || "$helm_bin" -nt "$helm_completion_cache" ]]; then
-    helm completion zsh > "$helm_completion_cache" 2>/dev/null
-  fi
-
-  safe_source "$helm_completion_cache"
-fi
-
 ######## ALIASES #######
 
 alias c="clear"
 alias d="dirs -v"
 alias k="kubectl"
-alias h="helm"
 alias grep="grep --color=always"
-alias mounts="cat /proc/mounts | column -t"
-alias timestamp="date +%s"
 alias time='/usr/bin/time -p'
 
 # Use ripgrep if available
@@ -263,15 +218,6 @@ bindkey '\e[Z' reverse-menu-complete
 ######## FZF CONFIGURATION ########
 
 safe_source ~/.fzf.zsh
-
-# Use fd for path generation if available
-_fzf_compgen_path() {
-  fd --hidden --follow --exclude ".git" . "$1" 2>/dev/null
-}
-
-_fzf_compgen_dir() {
-  fd --type d --hidden --follow --exclude ".git" . "$1" 2>/dev/null
-}
 
 # Function to use fzf for searching history
 fzf_history_search() {
