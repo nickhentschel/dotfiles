@@ -121,23 +121,24 @@ bind-key C-x set-window-option synchronize-panes\; display-message "synchronize-
 set -g status-justify left
 set -g status-interval 2
 
-{{- if eq .appearance_mode "light" }}
-# Rose Pine Dawn (Light) colors
-set -g status-bg colour230
-set -g status-fg colour60
+# OneDark colors
+# bg0: #282c34, bg1: #31353f, fg: #abb2bf, grey: #5c6370
+# blue: #61afef, purple: #c678dd, green: #98c379, yellow: #e5c07b, cyan: #56b6c2
+set -g status-bg '#282c34'
+set -g status-fg '#abb2bf'
 
-# Window list (center)
-setw -g window-status-format         "#[fg=colour247] #I:#W "
-setw -g window-status-current-format "#[fg=colour97,bold] #I:#W "
-setw -g window-status-activity-style "fg=colour172"
+# Window list
+setw -g window-status-format         "#[fg=#5c6370] #I:#W "
+setw -g window-status-current-format "#[fg=#61afef,bold] #I:#W "
+setw -g window-status-activity-style "fg=#e5c07b"
 
 # Left: session name
 set -g status-left-length 30
-set -g status-left "#[fg=colour97,bold]#S #[fg=colour247]| "
+set -g status-left "#[fg=#61afef,bold]#S #[fg=#5c6370]| "
 
 # Right: git branch, Claude agents, directory, time
 set -g status-right-length 120
-set -g status-right "#[fg=colour247]#(cd #{pane_current_path}; git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '')#[fg=colour247] #(~/.config/tmux/claude-tmux.sh status)#[fg=colour60]#{=50:pane_current_path} #[fg=colour247]%H:%M"
+set -g status-right "#[fg=#c678dd]#(cd #{pane_current_path}; git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '')#[fg=#5c6370] #(~/.config/tmux/claude-tmux.sh status)#[fg=#abb2bf]#{=50:pane_current_path} #[fg=#5c6370]%H:%M"
 
 #-----------------------------------------------
 # CLAUDE CODE INTEGRATION (Tmux-Native)
@@ -148,38 +149,8 @@ set -g pane-border-status top
 set -g pane-border-format ' #{pane_index}#{?#{@claude_state}, [#{@claude_state}],}#{?#{@claude_tool}, #{@claude_tool},} '
 
 # Border styles (claude-tmux.sh updates per-pane)
-set -g pane-border-style 'fg=colour252'
-set -g pane-active-border-style 'fg=colour97'
-{{- else }}
-# Rose Pine (Dark) colors
-set -g status-bg colour234
-set -g status-fg colour255
-
-# Window list (center)
-setw -g window-status-format         "#[fg=colour248] #I:#W "
-setw -g window-status-current-format "#[fg=colour183,bold] #I:#W "
-setw -g window-status-activity-style "fg=colour216"
-
-# Left: session name
-set -g status-left-length 30
-set -g status-left "#[fg=colour183,bold]#S #[fg=colour248]| "
-
-# Right: git branch, Claude agents, directory, time
-set -g status-right-length 120
-set -g status-right "#[fg=colour248]#(cd #{pane_current_path}; git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '')#[fg=colour248] #(~/.config/tmux/claude-tmux.sh status)#[fg=colour255]#{=50:pane_current_path} #[fg=colour248]%H:%M"
-
-#-----------------------------------------------
-# CLAUDE CODE INTEGRATION (Tmux-Native)
-#-----------------------------------------------
-
-# Pane borders show Claude state
-set -g pane-border-status top
-set -g pane-border-format ' #{pane_index}#{?#{@claude_state}, [#{@claude_state}],}#{?#{@claude_tool}, #{@claude_tool},} '
-
-# Border styles (claude-tmux.sh updates per-pane)
-set -g pane-border-style 'fg=colour238'
-set -g pane-active-border-style 'fg=colour183'
-{{- end }}
+set -g pane-border-style 'fg=#3b3f4c'
+set -g pane-active-border-style 'fg=#61afef'
 
 # Key bindings for Claude agent navigation
 bind-key g run-shell "~/.config/tmux/claude-tmux.sh menu"      # prefix+g: Go to agent (native menu)

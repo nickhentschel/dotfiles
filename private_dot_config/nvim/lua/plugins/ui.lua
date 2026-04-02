@@ -2,23 +2,27 @@
 
 return {
   {
-    'rose-pine/neovim',
-    name = 'rose-pine',
+    'navarasu/onedark.nvim',
     priority = 1000,
     config = function()
-      require('rose-pine').setup({
-        variant = 'auto', -- auto, main, moon, dawn
-        dark_variant = 'main',
-        dim_inactive_windows = false,
-        extend_background_behind_borders = true,
-        enable = {
-          terminal = true,
+      require('onedark').setup({
+        style = 'dark', -- dark, darker, cool, deep, warm, warmer, light
+        transparent = false,
+        term_colors = true,
+        code_style = {
+          comments = 'italic',
+          keywords = 'none',
+          functions = 'none',
+          strings = 'none',
+          variables = 'none',
         },
-        styles = {
-          transparency = false,
+        diagnostics = {
+          darker = true,
+          undercurl = true,
+          background = true,
         },
       })
-      vim.cmd('colorscheme rose-pine')
+      require('onedark').load()
     end,
   },
 
@@ -27,7 +31,7 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = {
       options = {
-        theme = 'rose-pine',
+        theme = 'onedark',
         component_separators = '',
         section_separators = '',
       },

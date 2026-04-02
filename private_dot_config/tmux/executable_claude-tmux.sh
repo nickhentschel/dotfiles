@@ -9,12 +9,12 @@
 
 set -euo pipefail
 
-# Colors for status bar
-COLOR_WORKING="#[fg=colour46]"   # Green
-COLOR_WAITING="#[fg=colour226]"  # Yellow
-COLOR_IDLE="#[fg=colour243]"     # Gray
-COLOR_ICON="#[fg=colour39]"      # Blue
-COLOR_RESET="#[fg=white]"
+# OneDark colors for status bar
+COLOR_WORKING="#[fg=#98c379]"    # Green
+COLOR_WAITING="#[fg=#e5c07b]"    # Yellow
+COLOR_IDLE="#[fg=#5c6370]"       # Grey
+COLOR_ICON="#[fg=#61afef]"       # Blue
+COLOR_RESET="#[fg=#abb2bf]"      # Foreground
 
 #-----------------------------------------------
 # STATE MANAGEMENT (via tmux pane options)
@@ -42,16 +42,16 @@ state_set() {
         tmux set-option -p -t "$pane" @claude_id "${session_id: -8}" 2>/dev/null || true
     fi
 
-    # Update pane border based on state
+    # Update pane border based on state (OneDark colors)
     case "$state" in
         working)
-            tmux set-option -p -t "$pane" pane-border-style 'fg=colour46' 2>/dev/null || true
+            tmux set-option -p -t "$pane" pane-border-style 'fg=#98c379' 2>/dev/null || true
             ;;
         waiting)
-            tmux set-option -p -t "$pane" pane-border-style 'fg=colour226,bold' 2>/dev/null || true
+            tmux set-option -p -t "$pane" pane-border-style 'fg=#e5c07b,bold' 2>/dev/null || true
             ;;
         *)
-            tmux set-option -p -t "$pane" pane-border-style 'fg=colour238' 2>/dev/null || true
+            tmux set-option -p -t "$pane" pane-border-style 'fg=#3b3f4c' 2>/dev/null || true
             ;;
     esac
 }
@@ -77,7 +77,7 @@ state_clear() {
     tmux set-option -p -t "$pane" -u @claude_state 2>/dev/null || true
     tmux set-option -p -t "$pane" -u @claude_tool 2>/dev/null || true
     tmux set-option -p -t "$pane" -u @claude_id 2>/dev/null || true
-    tmux set-option -p -t "$pane" pane-border-style 'fg=colour238' 2>/dev/null || true
+    tmux set-option -p -t "$pane" pane-border-style 'fg=#3b3f4c' 2>/dev/null || true
 }
 
 #-----------------------------------------------

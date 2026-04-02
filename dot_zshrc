@@ -89,21 +89,21 @@ path() {
 
 # Configure colors for ls and completion (Rose Pine Moon)
 setup_colors() {
-  # Load LS_COLORS from Rose Pine dircolors
+  # Load LS_COLORS from OneDark dircolors
   if command -v gdircolors >/dev/null 2>&1; then
-    if [[ -f "${HOME}/.local/share/themes/rose-pine.dircolors" ]]; then
-      eval "$(gdircolors -b "${HOME}/.local/share/themes/rose-pine.dircolors")"
+    if [[ -f "${HOME}/.local/share/themes/onedark.dircolors" ]]; then
+      eval "$(gdircolors -b "${HOME}/.local/share/themes/onedark.dircolors")"
     fi
   fi
 
-  # Load Rose Pine Moon prompt colors
-  safe_source "${HOME}/.local/share/themes/rose-pine.zsh"
+  # Load OneDark prompt colors
+  safe_source "${HOME}/.local/share/themes/onedark.zsh"
 
   # Apply completion list colors from LS_COLORS
   zstyle ':completion:*' list-colors "${LS_COLORS}"
-  zstyle ':completion:*:*:*:*:directories' list-colors "di=01;34"
-  zstyle ':completion:*:*:*:*:links' list-colors "ln=01;36"
-  zstyle ':completion:*:*:*:*:executables' list-colors "ex=01;32"
+  zstyle ':completion:*:*:*:*:directories' list-colors "di=01;38;5;75"
+  zstyle ':completion:*:*:*:*:links' list-colors "ln=01;38;5;73"
+  zstyle ':completion:*:*:*:*:executables' list-colors "ex=01;38;5;114"
 }
 
 # Set up ls command based on available utilities

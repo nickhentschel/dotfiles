@@ -1,0 +1,206 @@
+# OneDark theme for dircolors
+# Based on OneDark palette - https://github.com/navarasu/onedark.nvim
+# blue: 75, purple: 176, green: 114, yellow: 180, cyan: 73
+# red: 204, orange: 173, grey: 243, light_grey: 245
+
+# Terminal filters
+COLORTERM ?*
+TERM *256color*
+TERM alacritty
+TERM gnome*
+TERM kitty
+TERM konsole*
+TERM screen*
+TERM terminator
+TERM tmux*
+TERM xterm*
+TERM iTerm.app
+
+# Basic file attributes
+RESET 0
+DIR 01;38;5;75            # directory - blue (#61afef)
+LINK 01;38;5;73           # symbolic link - cyan (#56b6c2)
+MULTIHARDLINK 00
+FIFO 38;5;180;48;5;236    # pipe - yellow on dark bg
+SOCK 01;38;5;176          # socket - purple (#c678dd)
+DOOR 01;38;5;176
+BLK 38;5;180;48;5;236     # block device - yellow on dark bg
+CHR 38;5;180;48;5;236     # character device
+ORPHAN 01;38;5;204        # orphaned symlink - red (#e86671)
+MISSING 00
+SETUID 37;41              # setuid
+SETGID 30;43              # setgid
+CAPABILITY 00
+STICKY_OTHER_WRITABLE 30;42
+OTHER_WRITABLE 38;5;75;48;5;236
+STICKY 37;44
+EXEC 01;38;5;114          # executable - green (#98c379)
+
+# Archives - red (#e86671)
+.7z 01;38;5;204
+.ace 01;38;5;204
+.alz 01;38;5;204
+.apk 01;38;5;204
+.arc 01;38;5;204
+.arj 01;38;5;204
+.bz 01;38;5;204
+.bz2 01;38;5;204
+.cab 01;38;5;204
+.cpio 01;38;5;204
+.deb 01;38;5;204
+.dmg 01;38;5;204
+.dz 01;38;5;204
+.ear 01;38;5;204
+.gz 01;38;5;204
+.jar 01;38;5;204
+.lha 01;38;5;204
+.lrz 01;38;5;204
+.lz 01;38;5;204
+.lz4 01;38;5;204
+.lzh 01;38;5;204
+.lzma 01;38;5;204
+.lzo 01;38;5;204
+.rar 01;38;5;204
+.rpm 01;38;5;204
+.rz 01;38;5;204
+.sar 01;38;5;204
+.t7z 01;38;5;204
+.tar 01;38;5;204
+.taz 01;38;5;204
+.tbz 01;38;5;204
+.tbz2 01;38;5;204
+.tgz 01;38;5;204
+.tlz 01;38;5;204
+.txz 01;38;5;204
+.tz 01;38;5;204
+.tzo 01;38;5;204
+.tzst 01;38;5;204
+.war 01;38;5;204
+.xz 01;38;5;204
+.z 01;38;5;204
+.Z 01;38;5;204
+.zip 01;38;5;204
+.zoo 01;38;5;204
+.zst 01;38;5;204
+
+# Image formats - purple (#c678dd)
+.avif 01;38;5;176
+.bmp 01;38;5;176
+.cgm 01;38;5;176
+.dl 01;38;5;176
+.emf 01;38;5;176
+.eps 01;38;5;176
+.gif 01;38;5;176
+.jpeg 01;38;5;176
+.jpg 01;38;5;176
+.JPG 01;38;5;176
+.mng 01;38;5;176
+.pbm 01;38;5;176
+.pcx 01;38;5;176
+.pgm 01;38;5;176
+.png 01;38;5;176
+.PNG 01;38;5;176
+.ppm 01;38;5;176
+.pps 01;38;5;176
+.ppsx 01;38;5;176
+.svg 01;38;5;176
+.svgz 01;38;5;176
+.tga 01;38;5;176
+.tif 01;38;5;176
+.tiff 01;38;5;176
+.webp 01;38;5;176
+.xbm 01;38;5;176
+.xcf 01;38;5;176
+.xpm 01;38;5;176
+.xwd 01;38;5;176
+
+# Audio - cyan (#56b6c2)
+.aac 00;38;5;73
+.au 00;38;5;73
+.flac 00;38;5;73
+.m4a 00;38;5;73
+.mid 00;38;5;73
+.midi 00;38;5;73
+.mka 00;38;5;73
+.mp3 00;38;5;73
+.mpc 00;38;5;73
+.oga 00;38;5;73
+.ogg 00;38;5;73
+.opus 00;38;5;73
+.ra 00;38;5;73
+.wav 00;38;5;73
+
+# Video - cyan (#56b6c2)
+.anx 01;38;5;73
+.asf 01;38;5;73
+.avi 01;38;5;73
+.axv 01;38;5;73
+.flc 01;38;5;73
+.fli 01;38;5;73
+.flv 01;38;5;73
+.gl 01;38;5;73
+.m2v 01;38;5;73
+.m4v 01;38;5;73
+.mkv 01;38;5;73
+.mov 01;38;5;73
+.MOV 01;38;5;73
+.mp4 01;38;5;73
+.mp4v 01;38;5;73
+.mpeg 01;38;5;73
+.mpg 01;38;5;73
+.nuv 01;38;5;73
+.ogm 01;38;5;73
+.ogv 01;38;5;73
+.ogx 01;38;5;73
+.qt 01;38;5;73
+.rm 01;38;5;73
+.rmvb 01;38;5;73
+.vob 01;38;5;73
+.webm 01;38;5;73
+.wmv 01;38;5;73
+
+# Documents - orange (#d19a66)
+.doc 00;38;5;173
+.docx 00;38;5;173
+.odt 00;38;5;173
+.pdf 00;38;5;173
+.PDF 00;38;5;173
+.ppt 00;38;5;173
+.pptx 00;38;5;173
+.xls 00;38;5;173
+.xlsx 00;38;5;173
+
+# Source code - blue (#61afef)
+.c 00;38;5;75
+.cc 00;38;5;75
+.cpp 00;38;5;75
+.go 00;38;5;75
+.h 00;38;5;75
+.hpp 00;38;5;75
+.java 00;38;5;75
+.js 00;38;5;75
+.jsx 00;38;5;75
+.lua 00;38;5;75
+.py 00;38;5;75
+.rb 00;38;5;75
+.rs 00;38;5;75
+.sh 00;38;5;75
+.ts 00;38;5;75
+.tsx 00;38;5;75
+
+# Config files - yellow (#e5c07b)
+.cfg 00;38;5;180
+.conf 00;38;5;180
+.config 00;38;5;180
+.ini 00;38;5;180
+.json 00;38;5;180
+.toml 00;38;5;180
+.yaml 00;38;5;180
+.yml 00;38;5;180
+
+# Special files - orange (#d19a66)
+*Dockerfile 00;38;5;173
+*Makefile 00;38;5;173
+*README 00;38;5;173
+*README.md 00;38;5;173
+*LICENSE 00;38;5;173
