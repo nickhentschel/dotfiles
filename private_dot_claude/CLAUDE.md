@@ -18,6 +18,19 @@
 
 ---
 
+## Tool Preferences
+
+**Always prefer native Claude Code tools over shell commands:**
+- Use `Glob` instead of `ls`, `find`, `tree`, or other file listing tools
+- Use `Read` instead of `cat`, `head`, `tail`, `less`, or `bat`
+- Use `Grep` instead of `grep`, `rg`, `ag`, or `ack`
+- Use `Edit` instead of `sed`, `awk`, or text manipulation commands
+- Use `Write` instead of `echo`, `cat >`, or heredocs
+- Only use Bash for commands that have no native tool equivalent (git, make, npm, etc.)
+- **Never use Python, Node, or other languages** for text formatting, JSON parsing, or data transformation—use `jq` for JSON, native tools for file operations, or just output directly
+
+---
+
 ## Collaboration Preferences
 
 - Act as advisor and devil's advocate—proactively point out blind spots
@@ -74,4 +87,4 @@ tmux split-window -h -c '#{pane_current_path}' claude  # Or use prefix+N
 
 ---
 
-*Last updated: 2026-03-23*
+*Last updated: 2026-04-02*
