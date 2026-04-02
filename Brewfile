@@ -29,7 +29,6 @@ cask "claude-code"
 cask "docker-desktop", args: { appdir: "/Applications" }
 cask "gcloud-cli"
 cask "obsidian"
-cask "virtualbox"
 go "golang.org/x/tools/gopls"
 go "honnef.co/go/tools/cmd/staticcheck"
 cargo "curl-ai"
