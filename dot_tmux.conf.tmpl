@@ -137,7 +137,7 @@ set -g status-left "#[fg=colour97,bold]#S #[fg=colour247]| "
 
 # Right: git branch, Claude agents, directory, time
 set -g status-right-length 120
-set -g status-right "#[fg=colour247]#(cd #{pane_current_path}; git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '')#[fg=colour247] #(~/.config/tmux/claude-tmux.sh status)#[fg=colour60]#{=20:pane_current_path} #[fg=colour247]%H:%M"
+set -g status-right "#[fg=colour247]#(cd #{pane_current_path}; git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '')#[fg=colour247] #(~/.config/tmux/claude-tmux.sh status)#[fg=colour60]#{=50:pane_current_path} #[fg=colour247]%H:%M"
 
 #-----------------------------------------------
 # CLAUDE CODE INTEGRATION (Tmux-Native)
@@ -166,7 +166,7 @@ set -g status-left "#[fg=colour183,bold]#S #[fg=colour248]| "
 
 # Right: git branch, Claude agents, directory, time
 set -g status-right-length 120
-set -g status-right "#[fg=colour248]#(cd #{pane_current_path}; git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '')#[fg=colour248] #(~/.config/tmux/claude-tmux.sh status)#[fg=colour255]#{=20:pane_current_path} #[fg=colour248]%H:%M"
+set -g status-right "#[fg=colour248]#(cd #{pane_current_path}; git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '')#[fg=colour248] #(~/.config/tmux/claude-tmux.sh status)#[fg=colour255]#{=50:pane_current_path} #[fg=colour248]%H:%M"
 
 #-----------------------------------------------
 # CLAUDE CODE INTEGRATION (Tmux-Native)
@@ -183,7 +183,10 @@ set -g pane-active-border-style 'fg=colour183'
 
 # Key bindings for Claude agent navigation
 bind-key g run-shell "~/.config/tmux/claude-tmux.sh menu"      # prefix+g: Go to agent (native menu)
-bind-key -n M-n run-shell "~/.config/tmux/claude-tmux.sh next" # meta+n: Next waiting agent
+bind-key n run-shell "~/.config/tmux/claude-tmux.sh next"      # prefix+n: Next waiting agent
 bind-key s run-shell "~/.config/tmux/claude-tmux.sh summary"   # prefix+s: Summary message
 bind-key C run-shell "~/.config/tmux/claude-tmux.sh capture"   # prefix+C: Capture pane to clipboard
 bind-key N split-window -h -c '#{pane_current_path}' claude    # prefix+N: New Claude pane
+
+# Standard pane navigation
+bind-key -n M-n select-pane -t :.+                              # meta+n: Next pane

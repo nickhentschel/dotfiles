@@ -235,6 +235,9 @@ bindkey '^R' fzf_history_search
 
 autoload -U colors && colors
 
+# Configure colors (LS_COLORS, prompt, completion) - must load before prompt setup
+setup_colors
+
 # Updates editor information when the keymap changes
 zle-keymap-select() {
   zle reset-prompt
@@ -246,10 +249,10 @@ function _git_prompt_info() {
   if [[ -z "$_CACHED_GIT_INFO" || $(( $(date +%s) - _CACHED_GIT_TIMESTAMP )) -gt 5 ]]; then
     if git symbolic-ref HEAD > /dev/null 2>&1; then
       ref=$(git symbolic-ref HEAD 2> /dev/null)
-      _CACHED_GIT_INFO="%F{${THEME_COLOR_GIT_BRANCH:-green}}(${ref#refs/heads/})%f "
+      _CACHED_GIT_INFO="%F{${THEME_COLOR_GIT_BRANCH:-green}}(${ref#refs/heads/})%f"
     else
       if git rev-parse --git-dir > /dev/null 2>&1; then
-        _CACHED_GIT_INFO="%F{${THEME_COLOR_GIT_DETACHED:-white}}(detached)%f "
+        _CACHED_GIT_INFO="%F{${THEME_COLOR_GIT_DETACHED:-white}}(detached)%f"
       else
         _CACHED_GIT_INFO=""
       fi
@@ -281,7 +284,7 @@ _setup_prompt_elements() {
 }
 _setup_prompt_elements
 
-PROMPT='${_SSH_INDICATOR}%F{${THEME_COLOR_JOBS:-red}}%(1j.● .)%f${_HOST}:${_SHORT_PATH}$(_git_prompt_info)$(_vi_mode_indicator) '
+PROMPT='${_SSH_INDICATOR}%F{${THEME_COLOR_JOBS:-red}}%(1j.● .)%f${_HOST}:${_SHORT_PATH}$(_git_prompt_info) $(_vi_mode_indicator) '
 
 zle -N zle-keymap-select
 
@@ -290,9 +293,6 @@ zle -N zle-keymap-select
 # Load plugins with error handling
 safe_source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 safe_source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-# Configure colors (LS_COLORS, prompt, completion)
-setup_colors
 
 # Set up ls command
 setup_ls_command
