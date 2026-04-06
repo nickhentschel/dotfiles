@@ -61,7 +61,76 @@ Files ending in `.tmpl` are processed as Go templates. Access chezmoi data with:
 - `executable_claude-notify.sh.tmpl` - macOS vs Linux notification systems
 - `executable_ai-cmd-gen.tmpl` - AWS profile configuration
 
+## Skills
+
+### Chezmoi Dotfiles Safety (`/chezmoi`)
+
+**Purpose**: Prevent editing target files directly instead of their chezmoi source files. Auto-redirect to source and guide proper workflows.
+
+**Triggers automatically when:**
+- User asks to edit a dotfile path in home directory (`~/.zshrc`, `~/.tmux.conf`, etc.)
+- After editing source files (suggests `chezmoi apply`)
+- Working with template files (offers to preview/diff)
+
+**What it does:**
+- Redirects `~/.zshrc` → `dot_zshrc` edits automatically
+- Suggests apply commands after source changes
+- Guides template testing workflow (`execute-template`, `diff`, `apply`)
+- Translates chezmoi file naming conventions
+
+**When to invoke manually:**
+```bash
+# If you need chezmoi workflow guidance
+/chezmoi
+```
+
+**Key Files:**
+- `private_dot_claude/skills/chezmoi.md` - Skill definition
+
 ## Architecture
+
+### Permission System
+
+**How it works**: Claude Code settings define pre-approved commands and patterns that bypass permission prompts. This enables fluid workflows for common operations while maintaining security for risky actions.
+
+**Permission Types** (`private_dot_claude/settings.json.tmpl`):
+- `permissions.allow[]` - Pre-approved tool calls (Read paths, specific Bash commands)
+- `permissions.bash.alwaysAllowCommands[]` - Simple utilities that never need approval
+- `permissions.bash.alwaysAllowPatterns[]` - Regex patterns for read-only operations
+
+**Pre-approved Operations**:
+- Read access to this repository and `/tmp`
+- Git commands (status, diff, log, add, commit, push, branch, show)
+- Chezmoi commands (cd, apply, diff, data)
+- Tmux integration scripts (state management, navigation)
+- Brew read operations (list, search, info, install)
+- Development tools (npm, yarn, make, nvim headless)
+- Simple utilities (echo, wc, sort, date, pwd, etc.)
+
+**Workflow Integration**: Glean MCP search and Atlassian plugin are enabled. Permission prompts are skipped when matched by allow rules (`skipAutoPermissionPrompt: true`).
+
+**Key Files**:
+- `private_dot_claude/settings.json.tmpl` - Permission rules and patterns
+
+### Tool Usage Validation
+
+**How it works**: A PreToolUse hook intercepts Bash tool calls and blocks patterns that should use native Claude Code tools instead. This enforces the tool preferences defined in the global CLAUDE.md.
+
+**Validation Rules** (`private_dot_claude/hooks/executable_validate-tool-usage.sh.tmpl`):
+- Blocks `cat >`, `echo >`, heredocs → Use Write tool
+- Blocks inline scripts (`python <<`, `ruby <<`) → Use Write then Bash
+- Blocks `cat`, `head`, `tail`, `less`, `bat` → Use Read tool
+- Blocks `grep`, `rg`, `ag`, `ack` → Use Grep tool
+- Blocks `find`, `ls -R`, `tree` → Use Glob tool
+- Blocks `sed -i`, `awk -i` → Use Edit tool
+- Blocks `cat *.json | jq` → Use Read + native parsing
+- Blocks complex multi-stage jq pipelines → Use Read + native parsing
+
+**Why**: Native tools provide better user experience, easier review, and avoid permission prompts. The hook runs before every tool execution and exits with code 1 to block disallowed patterns.
+
+**Key Files**:
+- `private_dot_claude/hooks/executable_validate-tool-usage.sh.tmpl` - Validation hook
+- `private_dot_claude/settings.json.tmpl` - Hook configuration (PreToolUse section)
 
 ### Tmux + Claude Code Integration
 
@@ -169,6 +238,21 @@ chezmoi apply
 chezmoi execute-template < dot_gitconfig.tmpl
 ```
 
+### Hook Changes
+
+After modifying hooks in `private_dot_claude/hooks/`:
+
+```bash
+# Apply hook changes
+chezmoi apply ~/.claude/hooks/
+
+# Test validation hook directly (should exit 0 for allowed, 1 for blocked)
+~/.claude/hooks/validate-tool-usage.sh "Bash" '{"command":"cat file.txt"}'
+~/.claude/hooks/validate-tool-usage.sh "Bash" '{"command":"git status"}'
+
+# Restart Claude Code session to reload hooks
+```
+
 ## Common Tasks
 
 ### Add New Dotfile to Repository
@@ -247,6 +331,10 @@ brew bundle
 │   └── bin/
 │       └── executable_ai-cmd-gen.tmpl  # AI command generation backend
 └── private_dot_claude/
-    ├── settings.json.tmpl          # Claude Code settings (hooks)
+    ├── settings.json.tmpl          # Claude Code settings (hooks, permissions)
+    ├── hooks/
+    │   └── executable_validate-tool-usage.sh.tmpl  # Tool usage enforcement
+    ├── skills/
+    │   └── chezmoi.md              # Chezmoi dotfiles safety skill
     └── CLAUDE.md                   # Global Claude Code instructions
 ```

@@ -7,7 +7,98 @@
     "DISABLE_PROMPT_CACHING": "0",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "global.anthropic.claude-opus-4-5-20251101-v1:0"
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "global.anthropic.claude-opus-4-5-20251101-v1:0",
+    "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Read(//Users/nickhe/.local/share/chezmoi/**)",
+      "Read(//tmp/**)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:*)",
+      "Bash(git show:*)",
+      "Bash(chezmoi cd:*)",
+      "Bash(chezmoi apply:*)",
+      "Bash(chezmoi diff:*)",
+      "Bash(chezmoi data:*)",
+      "Bash(~/.config/tmux/claude-tmux.sh:*)",
+      "Bash(~/.config/tmux/claude-notify.sh:*)",
+      "Bash(tmux display:*)",
+      "Bash(tmux show-options:*)",
+      "Bash(tmux list-panes:*)",
+      "Bash(tmux capture-pane:*)",
+      "Bash(tmux list-keys:*)",
+      "Bash(tmux source-file:*)",
+      "Bash(tmux split-window:*)",
+      "Bash(tmux set-option:*)",
+      "Bash(tmux kill-pane:*)",
+      "Bash(tmux display-message:*)",
+      "Bash(tmux -V)",
+      "Bash(brew list:*)",
+      "Bash(brew search:*)",
+      "Bash(brew info:*)",
+      "Bash(brew install:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(npm list:*)",
+      "Bash(yarn:*)",
+      "Bash(make:*)",
+      "Bash(defaults read:*)",
+      "Bash(osascript:*)",
+      "Bash(env)",
+      "Bash(nvim --headless:*)",
+      "mcp__glean_default__search",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:gist.github.com)"
+    ],
+    "defaultMode": "default",
+    "bash": {
+      "alwaysAllowCommands": [
+        "echo",
+        "wc",
+        "sort",
+        "uniq",
+        "cut",
+        "tr",
+        "which",
+        "date",
+        "pwd",
+        "whoami",
+        "basename",
+        "dirname"
+      ],
+      "alwaysAllowPatterns": [
+        "^acli jira workitem view .*",
+        "^acli jira workitem search .*",
+        "^acli jira workitem list .*",
+        "^acli jira workitem attachment list .*",
+        "^acli jira workitem comment list .*",
+        "^acli jira workitem link list-types$",
+        "^acli jira project list .*",
+        "^acli jira project view .*",
+        "^git status",
+        "^git diff",
+        "^git log",
+        "^git show",
+        "^git branch($| -[alv])",
+        "^brew list",
+        "^brew search",
+        "^brew info",
+        "^npm list",
+        "^make help",
+        "^make --version",
+        "^docker ps",
+        "^docker images",
+        "^docker logs",
+        "^kubectl get",
+        "^kubectl describe"
+      ]
+    }
   },
   "hooks": {
     "Notification": [
@@ -25,6 +116,10 @@
       {
         "matcher": "",
         "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/validate-tool-usage.sh \"${CLAUDE_TOOL_NAME}\" \"${CLAUDE_TOOL_ARGS}\""
+          },
           {
             "type": "command",
             "command": "CLAUDE_SESSION_ID=\"${CLAUDE_SESSION_ID}\" ~/.config/tmux/claude-tmux.sh state set working \"${CLAUDE_TOOL_NAME}\""
@@ -58,5 +153,6 @@
   "enabledPlugins": {
     "atlassian@claude-plugins-official": true
   },
-  "model": "opus"
+  "syntaxHighlightingDisabled": false,
+  "skipAutoPermissionPrompt": true
 }

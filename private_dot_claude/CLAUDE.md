@@ -26,8 +26,13 @@
 - Use `Grep` instead of `grep`, `rg`, `ag`, or `ack`
 - Use `Edit` instead of `sed`, `awk`, or text manipulation commands
 - Use `Write` instead of `echo`, `cat >`, or heredocs
+- **For JSON data**:
+  * Use `Read` to load JSON files, then parse/filter/transform directly (Claude understands JSON natively)
+  * Avoid complex multi-line `jq` pipelines in Bash—they trigger permission prompts and are harder to review
+  * Only use `jq` for simple one-liners in scripts (e.g., `curl api | jq '.data.id'`)
+  * Output results directly as formatted text/tables instead of piping through jq
 - Only use Bash for commands that have no native tool equivalent (git, make, npm, etc.)
-- **Never use Python, Node, or other languages** for text formatting, JSON parsing, or data transformation—use `jq` for JSON, native tools for file operations, or just output directly
+- **Never use Python, Node, or other languages** for text formatting, JSON parsing, or data transformation
 
 ---
 
