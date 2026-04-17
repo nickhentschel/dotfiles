@@ -18,21 +18,24 @@
 
 ---
 
-## Tool Preferences
+## Tool Rules (enforced by pre-tool hook)
 
-**Always prefer native Claude Code tools over shell commands:**
-- Use `Glob` instead of `ls`, `find`, `tree`, or other file listing tools
-- Use `Read` instead of `cat`, `head`, `tail`, `less`, or `bat`
-- Use `Grep` instead of `grep`, `rg`, `ag`, or `ack`
-- Use `Edit` instead of `sed`, `awk`, or text manipulation commands
-- Use `Write` instead of `echo`, `cat >`, or heredocs
-- **For JSON data**:
-  * Use `Read` to load JSON files, then parse/filter/transform directly (Claude understands JSON natively)
-  * Avoid complex multi-line `jq` pipelines in Bash—they trigger permission prompts and are harder to review
-  * Only use `jq` for simple one-liners in scripts (e.g., `curl api | jq '.data.id'`)
-  * Output results directly as formatted text/tables instead of piping through jq
-- Only use Bash for commands that have no native tool equivalent (git, make, npm, etc.)
-- **Never use Python, Node, or other languages** for text formatting, JSON parsing, or data transformation
+These are **hard rules**, not preferences. A hook blocks violations before execution.
+
+| Task | Required tool | Prohibited Bash equivalents |
+|------|--------------|----------------------------|
+| Read a file | `Read` | `cat`, `head`, `tail`, `less`, `bat` |
+| Search file contents | `Grep` | `grep`, `rg`, `ag`, `ack` |
+| Find / list files | `Glob` | `ls`, `find`, `tree` |
+| Edit a file | `Edit` | `sed -i`, `awk -i` |
+| Create a file | `Write` | `echo >`, `cat >`, heredocs |
+| Bash for everything else | `Bash` | — |
+
+**These apply everywhere** — including inside `$(...)` subshells, `&&` chains, and loop bodies like `for f in $(ls ...); do head ...`. The hook catches all of these.
+
+**JSON**: Use `Read` to load JSON files, then reason over the content directly. Simple `jq '.field'` one-liners are OK in scripts. Multi-stage `jq` pipelines (`select | map | ...`) are blocked.
+
+**Never** use Python/Node/Ruby for text formatting, JSON parsing, or data transformation — output results as formatted text directly.
 
 ---
 
@@ -92,4 +95,29 @@ tmux split-window -h -c '#{pane_current_path}' claude  # Or use prefix+N
 
 ---
 
-*Last updated: 2026-04-02*
+## Skills Reference
+
+Invoke with `/skill-name` syntax. Use these at the described trigger points.
+
+### Daily / Recurring
+- **`/slack:standup`** — Generate standup from Slack activity. Run each morning before standup.
+- **`/program-status-updates`** — Generate status update for a Jira epic or feature. Use before stakeholder reviews and MBRs.
+
+### Backlog & Planning
+- **`/atlassian-groom-backlog`** — Analyze ZNET or INFRA backlog against OKRs, sort into grooming categories. Use before sprint planning.
+- **`/atlassian-classify-tickets`** — Classify Jira tickets by product category. Use for bulk tagging/cleanup.
+
+### Research & Analysis
+- **`/research`** → **`/research-deep`** — For strategic analysis (vendor evals, feasibility studies, benchmarking). Start with `/research` to outline, then `/research-deep` for parallel deep-dives.
+- **`/glean-guard`** — **Always invoke before any Glean MCP call.** Prevents context blowout from large search results.
+
+### Documentation
+- **`/doc-coauthoring`** — Structured workflow for co-authoring docs, proposals, charters, and specs.
+- **`/review`** — PR review with code quality analysis.
+
+### Context Management
+- **`/compact`** — Run when session exceeds ~30 min or context feels heavy. Preserves key decisions while freeing context window.
+
+---
+
+*Last updated: 2026-04-17*

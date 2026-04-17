@@ -1,19 +1,29 @@
 {
+{{- if .isWork }}
   "awsAuthRefresh": "aws sso login --profile zillow-sandbox",
+{{- end }}
   "env": {
+{{- if .isWork }}
     "AWS_PROFILE": "zillow-sandbox",
     "CLAUDE_CODE_USE_BEDROCK": "1",
     "AWS_REGION": "us-west-2",
     "DISABLE_PROMPT_CACHING": "0",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "global.anthropic.claude-opus-4-5-20251101-v1:0",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "global.anthropic.claude-sonnet-4-6",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "global.anthropic.claude-haiku-4-5-20251001",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "global.anthropic.claude-opus-4-6-v1",
+    "ANTHROPIC_CUSTOM_MODEL_OPTION": "global.anthropic.claude-opus-4-7",
+    "ANTHROPIC_CUSTOM_MODEL_OPTION_NAME": "Claude Opus 4.7",
+{{- else }}
+    "ANTHROPIC_CUSTOM_MODEL_OPTION": "claude-opus-4-7-20260115",
+    "ANTHROPIC_CUSTOM_MODEL_OPTION_NAME": "Claude Opus 4.7",
+{{- end }}
     "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1"
   },
   "permissions": {
     "allow": [
-      "Read(//Users/nickhe/.local/share/chezmoi/**)",
-      "Read(//tmp/**)",
+      "Read",
+      "Write(/tmp/*)",
+      "WebFetch",
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git push:*)",
@@ -52,9 +62,21 @@
       "Bash(osascript:*)",
       "Bash(env)",
       "Bash(nvim --headless:*)",
-      "mcp__glean_default__search",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:gist.github.com)"
+{{- if .isWork }},
+      "mcp__glean_default__search",
+      "mcp__glean_default__chat",
+      "mcp__glean_default__employee_search",
+      "mcp__glean_default__read_document",
+      "mcp__glean_default__read_memory",
+      "mcp__plugin_slack_slack__slack_read_user_profile",
+      "mcp__plugin_slack_slack__slack_search_public",
+      "mcp__plugin_slack_slack__slack_read_thread",
+      "mcp__plugin_slack_slack__slack_read_channel",
+      "mcp__plugin_slack_slack__slack_search_channels",
+      "mcp__plugin_slack_slack__slack_search_users"
+{{- end }}
     ],
     "defaultMode": "default",
     "bash": {
@@ -73,6 +95,7 @@
         "dirname"
       ],
       "alwaysAllowPatterns": [
+{{- if .isWork }}
         "^acli jira workitem view .*",
         "^acli jira workitem search .*",
         "^acli jira workitem list .*",
@@ -81,6 +104,7 @@
         "^acli jira workitem link list-types$",
         "^acli jira project list .*",
         "^acli jira project view .*",
+{{- end }}
         "^git status",
         "^git diff",
         "^git log",
@@ -110,6 +134,37 @@
             "command": "CLAUDE_SESSION_ID=\"${CLAUDE_SESSION_ID}\" CLAUDE_NOTIFICATION_TYPE=\"${CLAUDE_NOTIFICATION_TYPE}\" CLAUDE_TOOL_NAME=\"${CLAUDE_TOOL_NAME}\" ~/.config/tmux/claude-notify.sh"
           }
         ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/nickhe/.vibe-island/bin/vibe-island-bridge --source claude"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/nickhe/.vibe-island/bin/vibe-island-bridge --source claude",
+            "timeout": 86400
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/nickhe/.vibe-island/bin/vibe-island-bridge --source claude"
+          }
+        ]
       }
     ],
     "PreToolUse": [
@@ -125,6 +180,15 @@
             "command": "CLAUDE_SESSION_ID=\"${CLAUDE_SESSION_ID}\" ~/.config/tmux/claude-tmux.sh state set working \"${CLAUDE_TOOL_NAME}\""
           }
         ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/nickhe/.vibe-island/bin/vibe-island-bridge --source claude"
+          }
+        ]
       }
     ],
     "PostToolUse": [
@@ -134,6 +198,35 @@
           {
             "type": "command",
             "command": "CLAUDE_SESSION_ID=\"${CLAUDE_SESSION_ID}\" ~/.config/tmux/claude-tmux.sh state set idle"
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/nickhe/.vibe-island/bin/vibe-island-bridge --source claude"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/nickhe/.vibe-island/bin/vibe-island-bridge --source claude"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/nickhe/.vibe-island/bin/vibe-island-bridge --source claude"
           }
         ]
       }
@@ -147,12 +240,61 @@
             "command": "~/.config/tmux/claude-tmux.sh state clear"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/nickhe/.vibe-island/bin/vibe-island-bridge --source claude"
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/nickhe/.vibe-island/bin/vibe-island-bridge --source claude"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/nickhe/.vibe-island/bin/vibe-island-bridge --source claude"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/nickhe/.vibe-island/bin/vibe-island-bridge --source claude"
+          }
+        ]
       }
     ]
   },
-  "enabledPlugins": {
-    "atlassian@claude-plugins-official": true
+  "statusLine": {
+    "type": "command",
+    "command": "/Users/nickhe/.vibe-island/bin/vibe-island-statusline"
   },
+{{- if .isWork }}
+  "enabledPlugins": {
+    "atlassian@claude-plugins-official": true,
+    "slack@claude-plugins-official": true
+  },
+{{- end }}
   "syntaxHighlightingDisabled": false,
-  "skipAutoPermissionPrompt": true
+  "effortLevel": "high",
+  "autoUpdatesChannel": "stable",
+  "minimumVersion": "2.1.89",
+  "skipAutoPermissionPrompt": true,
+  "model": "sonnet"
 }

@@ -14,70 +14,89 @@ fi
 COMMAND=$(echo "$TOOL_ARGS" | jq -r '.command // empty' 2>/dev/null)
 
 if [[ -z "$COMMAND" ]]; then
-    # Fallback if not JSON or jq fails - check raw args
     COMMAND="$TOOL_ARGS"
 fi
 
-# Check for heredoc patterns (file creation)
-if echo "$COMMAND" | grep -qE '(cat[[:space:]]+>|cat.*<<|echo.*>>|echo.*>)'; then
-    echo "❌ BLOCKED: Use Write tool instead of cat/echo with redirects"
-    echo "   Rule: Create files with Write, not heredocs or shell redirects"
+block() {
+    echo "❌ BLOCKED: $1"
+    echo "   $2"
     exit 1
-fi
+}
 
-# Check for inline scripts (Python, Ruby, etc.)
-if echo "$COMMAND" | grep -qE '(python[0-9]?[[:space:]]+<<|ruby[[:space:]]+<<|node[[:space:]]+<<|perl[[:space:]]+<<)'; then
-    echo "❌ BLOCKED: Use Write tool to create script file, then execute it"
-    echo "   Rule: Write → create .py/.rb/.js file, then Bash → run it"
-    exit 1
-fi
-
-# Check for commands that have native tool alternatives
-# Only check at start of command (allowing these in pipes/subcommands is OK)
+# ── File reading ──────────────────────────────────────────────────────────────
+# Block cat/head/tail/less/bat at command start OR inside subshells/loops
 if echo "$COMMAND" | grep -qE '^[[:space:]]*(cat|head|tail|less|bat)[[:space:]]'; then
-    echo "❌ BLOCKED: Use Read tool instead of $BASH_REMATCH"
-    echo "   Rule: Read files with Read tool, not cat/head/tail/less"
-    exit 1
+    block "Use Read tool instead of $(echo "$COMMAND" | grep -oE '(cat|head|tail|less|bat)' | head -1)" \
+          "Read files with the Read tool, not shell commands"
+fi
+if echo "$COMMAND" | grep -qE '\$\((cat|head|tail|less|bat)[[:space:]]'; then
+    block "Use Read tool — blocked cat/head/tail in command substitution \$(...)" \
+          "Read files with the Read tool, not shell commands"
+fi
+if echo "$COMMAND" | grep -qE '(&&|\|\||;|do)[[:space:]]*(cat|head|tail|less|bat)[[:space:]]'; then
+    block "Use Read tool — blocked cat/head/tail in sequential command or loop body" \
+          "Read files with the Read tool, not shell commands"
 fi
 
+# ── File searching ────────────────────────────────────────────────────────────
+# Block grep/rg at command start OR inside subshells/loops
 if echo "$COMMAND" | grep -qE '^[[:space:]]*(grep|rg|ag|ack)[[:space:]]'; then
-    echo "❌ BLOCKED: Use Grep tool instead of grep/rg/ag"
-    echo "   Rule: Search file contents with Grep, not grep commands"
-    exit 1
+    block "Use Grep tool instead of grep/rg/ag" \
+          "Search file contents with the Grep tool"
+fi
+if echo "$COMMAND" | grep -qE '\$\((grep|rg|ag|ack)[[:space:]]'; then
+    block "Use Grep tool — blocked grep/rg in command substitution \$(...)" \
+          "Search file contents with the Grep tool"
+fi
+if echo "$COMMAND" | grep -qE '(&&|\|\||;|do)[[:space:]]*(grep|rg|ag|ack)[[:space:]]'; then
+    block "Use Grep tool — blocked grep/rg in sequential command or loop body" \
+          "Search file contents with the Grep tool"
 fi
 
-if echo "$COMMAND" | grep -qE '^[[:space:]]*(find|ls.*-R|tree)[[:space:]]'; then
-    echo "❌ BLOCKED: Use Glob tool instead of find/ls -R/tree"
-    echo "   Rule: Find files with Glob, not find/ls commands"
-    exit 1
+# ── File listing ──────────────────────────────────────────────────────────────
+# Block ALL ls variants (not just ls -R), find, and tree
+if echo "$COMMAND" | grep -qE '^[[:space:]]*(find|tree)[[:space:]]'; then
+    block "Use Glob tool instead of find/tree" \
+          "Find files with the Glob tool"
+fi
+if echo "$COMMAND" | grep -qE '^[[:space:]]*ls(\s|$)'; then
+    block "Use Glob tool instead of ls" \
+          "List/find files with the Glob tool"
+fi
+if echo "$COMMAND" | grep -qE '\$\((find|ls|tree)(\s|[)])'; then
+    block "Use Glob tool — blocked find/ls/tree in command substitution \$(...)" \
+          "Find files with the Glob tool"
+fi
+if echo "$COMMAND" | grep -qE '(&&|\|\||;|do)[[:space:]]*(find|ls|tree)(\s|$)'; then
+    block "Use Glob tool — blocked find/ls/tree in sequential command or loop body" \
+          "Find files with the Glob tool"
 fi
 
+# ── File editing ──────────────────────────────────────────────────────────────
 if echo "$COMMAND" | grep -qE '^[[:space:]]*(sed|awk)[[:space:]].*-i'; then
-    echo "❌ BLOCKED: Use Edit tool instead of sed/awk for file editing"
-    echo "   Rule: Edit files with Edit tool, not sed/awk"
-    exit 1
+    block "Use Edit tool instead of sed/awk -i" \
+          "Edit files with the Edit tool"
 fi
 
-# Check for JSON processing anti-patterns
-# Block: cat *.json | jq (should use Read tool instead)
+# ── File creation ─────────────────────────────────────────────────────────────
+if echo "$COMMAND" | grep -qE '(cat[[:space:]]+>|cat.*<<|echo[[:space:]].*>>|echo[[:space:]].*>)'; then
+    block "Use Write tool instead of cat/echo with redirects or heredocs" \
+          "Create files with the Write tool"
+fi
+if echo "$COMMAND" | grep -qE '(python[0-9]?[[:space:]]+<<|ruby[[:space:]]+<<|node[[:space:]]+<<|perl[[:space:]]+<<)'; then
+    block "Use Write tool to create the script file, then run it with Bash" \
+          "Write → create .py/.rb/.js file, then Bash → execute it"
+fi
+
+# ── JSON processing ───────────────────────────────────────────────────────────
 if echo "$COMMAND" | grep -qE 'cat[[:space:]]+[^|]+\.json[^|]*\|[[:space:]]*jq'; then
-    echo "❌ BLOCKED: Use Read tool to load JSON, then parse/filter directly"
-    echo "   Rule: Read JSON file → parse natively, don't pipe cat to jq"
-    echo "   Avoid: cat file.json | jq '...'"
-    echo "   Instead: Read file.json → filter/transform → output results"
-    exit 1
+    block "Use Read tool to load JSON, then parse natively" \
+          "Avoid: cat file.json | jq '...'  →  Instead: Read file.json"
 fi
-
-# Block: complex multi-stage jq pipelines with selects/maps (>2 pipes inside jq expression)
-# This catches patterns like: jq '.[] | select(...) | {...}' which should be Read + native parsing
 if echo "$COMMAND" | grep -qE 'jq[[:space:]].*select.*\|.*\{' || \
    echo "$COMMAND" | grep -qE 'jq[[:space:]].*\|.*\|.*\|'; then
-    echo "❌ BLOCKED: Complex jq pipeline detected - use Read tool + native parsing instead"
-    echo "   Rule: Read JSON → parse/filter/transform directly, avoid multi-stage jq"
-    echo "   Complex jq pipelines trigger permission prompts and are harder to review"
-    echo "   Simple jq one-liners (jq '.field') are OK in scripts"
-    exit 1
+    block "Use Read tool + native parsing instead of complex jq pipeline" \
+          "Simple jq one-liners (jq '.field') are OK; multi-stage pipelines are not"
 fi
 
-# Allow the command
 exit 0

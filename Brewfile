@@ -28,6 +28,7 @@ cask "block-goose"
 cask "claude-code"
 cask "docker-desktop", args: { appdir: "/Applications" }
 cask "gcloud-cli"
+cask "notunes"
 cask "obsidian"
 go "golang.org/x/tools/gopls"
 go "honnef.co/go/tools/cmd/staticcheck"
