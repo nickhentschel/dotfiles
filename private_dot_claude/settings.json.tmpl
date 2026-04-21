@@ -134,7 +134,7 @@
             "command": "CLAUDE_SESSION_ID=\"${CLAUDE_SESSION_ID}\" CLAUDE_NOTIFICATION_TYPE=\"${CLAUDE_NOTIFICATION_TYPE}\" CLAUDE_TOOL_NAME=\"${CLAUDE_TOOL_NAME}\" ~/.config/tmux/claude-notify.sh"
           }
         ]
-      },
+      }{{- if .isWork }},
       {
         "matcher": "*",
         "hooks": [
@@ -144,7 +144,9 @@
           }
         ]
       }
+      {{- end }}
     ],
+    {{- if .isWork }}
     "PermissionRequest": [
       {
         "matcher": "*",
@@ -167,6 +169,7 @@
         ]
       }
     ],
+    {{- end }}
     "PreToolUse": [
       {
         "matcher": "",
@@ -180,7 +183,7 @@
             "command": "CLAUDE_SESSION_ID=\"${CLAUDE_SESSION_ID}\" ~/.config/tmux/claude-tmux.sh state set working \"${CLAUDE_TOOL_NAME}\""
           }
         ]
-      },
+      }{{- if .isWork }},
       {
         "matcher": "*",
         "hooks": [
@@ -190,6 +193,7 @@
           }
         ]
       }
+      {{- end }}
     ],
     "PostToolUse": [
       {
@@ -200,7 +204,7 @@
             "command": "CLAUDE_SESSION_ID=\"${CLAUDE_SESSION_ID}\" ~/.config/tmux/claude-tmux.sh state set idle"
           }
         ]
-      },
+      }{{- if .isWork }},
       {
         "matcher": "*",
         "hooks": [
@@ -210,7 +214,9 @@
           }
         ]
       }
+      {{- end }}
     ],
+    {{- if .isWork }}
     "SessionEnd": [
       {
         "hooks": [
@@ -231,6 +237,7 @@
         ]
       }
     ],
+    {{- end }}
     "Stop": [
       {
         "matcher": "",
@@ -240,7 +247,7 @@
             "command": "~/.config/tmux/claude-tmux.sh state clear"
           }
         ]
-      },
+      }{{- if .isWork }},
       {
         "hooks": [
           {
@@ -249,7 +256,8 @@
           }
         ]
       }
-    ],
+      {{- end }}
+    ]{{- if .isWork }},
     "SubagentStart": [
       {
         "hooks": [
@@ -280,12 +288,13 @@
         ]
       }
     ]
+    {{- end }}
   },
+{{- if .isWork }}
   "statusLine": {
     "type": "command",
     "command": "/Users/nickhe/.vibe-island/bin/vibe-island-statusline"
   },
-{{- if .isWork }}
   "enabledPlugins": {
     "atlassian@claude-plugins-official": true,
     "slack@claude-plugins-official": true
