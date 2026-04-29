@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# openclaw-seed-keychain — seed macOS Keychain with OpenClaw secrets.
+#
+# On current machine: extracts secrets directly from ~/.openclaw/ config files.
+# On fresh machine:   prompts interactively for each value.
+#
+# Run this BEFORE chezmoi apply on a fresh system so templates can render.
+
+set -euo pipefail
+
+echo "==> Unlocking login keychain (enter your macOS login password if prompted)..."
+security unlock-keychain ~/Library/Keychains/login.keychain-db
+
+add_secret() {
+  local service="$1" account="$2" value="$3"
+  security add-generic-password -U -s "$service" -a "$account" -w "$value"
+  echo "  ✓ $service / $account"
+}
+
+prompt_secret() {
+  local service="$1" account="$2" prompt_text="$3"
+  read -r -p "  Enter $prompt_text: " value
+  add_secret "$service" "$account" "$value"
+}
+
+CONFIG="$HOME/.openclaw/openclaw.json"
+CLAWDBOT="$HOME/.openclaw/clawdbot.json"
+DEVICE_JSON="$HOME/.openclaw/identity/device.json"
+PAIRED_JSON="$HOME/.openclaw/devices/paired.json"
+
+echo "==> Seeding OpenClaw secrets into macOS Keychain..."
+
+if [ -f "$CONFIG" ]; then
+  echo "--> Extracting from existing openclaw.json"
+  add_secret "openclaw" "gateway_token" \
+    "$(jq -r '.gateway.auth.token' "$CONFIG")"
+  add_secret "openclaw" "telegram_bot_token" \
+    "$(jq -r '.channels.telegram.botToken' "$CONFIG")"
+  add_secret "openclaw" "tailscale_hostname" \
+    "$(jq -r '.gateway.controlUi.allowedOrigins[0]' "$CONFIG" | sed 's|https://||')"
+  add_secret "openclaw" "telegram_group_id" \
+    "$(jq -r '.channels.telegram.groups | keys[0]' "$CONFIG")"
+  add_secret "openclaw" "telegram_allow_from" \
+    "$(jq -r '.channels.telegram.groups | to_entries[0].value.allowFrom[0]' "$CONFIG")"
+else
+  echo "--> openclaw.json not found — entering values manually"
+  prompt_secret "openclaw" "gateway_token"       "gateway auth token"
+  prompt_secret "openclaw" "telegram_bot_token"  "Telegram bot token"
+  prompt_secret "openclaw" "tailscale_hostname"  "Tailscale hostname (e.g. my-mac.tail.ts.net)"
+  prompt_secret "openclaw" "telegram_group_id"   "Telegram group ID (e.g. -1003982690496)"
+  prompt_secret "openclaw" "telegram_allow_from" "Telegram user ID (allowFrom)"
+fi
+
+if [ -f "$CLAWDBOT" ]; then
+  echo "--> Extracting from existing clawdbot.json"
+  add_secret "openclaw" "clawdbot_gateway_token" \
+    "$(jq -r '.gateway.auth.token' "$CLAWDBOT")"
+else
+  echo "--> clawdbot.json not found — entering manually"
+  prompt_secret "openclaw" "clawdbot_gateway_token" "clawdbot gateway token"
+fi
+
+if [ -f "$DEVICE_JSON" ]; then
+  echo "--> Seeding device identity"
+  add_secret "openclaw-identity" "device_json_b64" \
+    "$(openssl base64 -A -in "$DEVICE_JSON")"
+else
+  echo "  ! $DEVICE_JSON not found — skipping device identity (openclaw will generate a new one)"
+fi
+
+if [ -f "$PAIRED_JSON" ]; then
+  echo "--> Seeding paired devices"
+  add_secret "openclaw-devices" "paired_json_b64" \
+    "$(openssl base64 -A -in "$PAIRED_JSON")"
+else
+  echo "  ! $PAIRED_JSON not found — skipping paired devices"
+fi
+
+echo ""
+echo "Done. Run 'chezmoi apply' to generate OpenClaw config files from Keychain."

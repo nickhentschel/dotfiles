@@ -21,16 +21,32 @@ Detailed Setup
    chezmoi init https://github.com/nickhentschel/dotfiles.git
    ```
 
-3. Apply the configuration:
+3. Seed Keychain secrets **before** applying (OpenClaw config templates require them):
+
+   ```bash
+   chezmoi apply ~/.local/bin/openclaw-seed-keychain
+   openclaw-seed-keychain
+   ```
+
+   On a current Mac this extracts secrets automatically from `~/.openclaw/`. On a
+   fresh Mac it prompts interactively for each value.
+
+4. Apply the configuration:
 
    ```bash
    chezmoi apply
    ```
 
-4. Install Homebrew packages:
+5. Install Homebrew packages:
 
    ```bash
    brew bundle
+   ```
+
+6. Restore OpenClaw agent memory and flow definitions from iCloud:
+
+   ```bash
+   openclaw-restore
    ```
 
 The setup script will automatically:
@@ -38,6 +54,7 @@ The setup script will automatically:
 - Install all required Homebrew packages
 - Set up Cursor editor with extensions
 - Configure the optimized ZSH environment
+- Generate OpenClaw config files with secrets from Keychain
 
 What's Included
 ---------------
@@ -56,6 +73,10 @@ What's Included
 - **Git configuration**:
   - Global gitconfig and gitignore
   - Optimized settings
+- **OpenClaw (Claude agent daemon)**:
+  - Config templates with secrets injected from macOS Keychain at apply time
+  - Device identity + paired device registry (enables Clawket iOS app and web UI)
+  - Backup/restore scripts for agent memory and flow definitions (iCloud Drive)
 
 AI Command Generation
 ---------------------

@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# openclaw-restore — restore agent memory and flow definitions from iCloud Drive.
+# Restores the most recent snapshot of each database.
+
+set -euo pipefail
+
+BACKUP_DIR="$HOME/Library/Mobile Documents/com~apple~CloudDocs/openclaw-backup"
+
+if [ ! -d "$BACKUP_DIR" ]; then
+  echo "No backup directory found at: $BACKUP_DIR" >&2
+  echo "Ensure iCloud Drive is signed in and synced." >&2
+  exit 1
+fi
+
+for prefix in memory-main flows-registry; do
+  latest=$(ls -t "$BACKUP_DIR/${prefix}-"*.sqlite 2>/dev/null | head -1)
+  if [ -n "$latest" ]; then
+    case "$prefix" in
+      memory-main)    sub="memory/main" ;;
+      flows-registry) sub="flows/registry" ;;
+    esac
+    target="$HOME/.openclaw/${sub}.sqlite"
+    mkdir -p "$(dirname "$target")"
+    cp "$latest" "$target"
+    echo "Restored: $target  (from $(basename "$latest"))"
+  else
+    echo "No backup found for: $prefix"
+  fi
+done

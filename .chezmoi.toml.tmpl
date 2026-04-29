@@ -11,9 +11,12 @@
 {{- end -}}
 {{- /* Work detection: Zillow email domain or ZG- hostname prefix */ -}}
 {{- $isWork := or (hasSuffix "@zillowgroup.com" $email) (hasPrefix "ZG-" .chezmoi.hostname) -}}
+{{- /* Server detection: Mac Mini running OpenClaw */ -}}
+{{- $isServer := eq .chezmoi.hostname "Nicholass-Mac-mini" -}}
 
 [data]
   email = "{{ $email }}"
   name = "Nick Hentschel"
   appearance_mode = "{{ $appearance }}"
   isWork = {{ $isWork }}
+  isServer = {{ $isServer }}

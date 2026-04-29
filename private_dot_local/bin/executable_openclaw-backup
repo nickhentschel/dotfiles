@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# openclaw-backup — back up agent memory and flow definitions to iCloud Drive.
+# Keeps last 5 snapshots per database. Safe to run while openclaw is running.
+
+set -euo pipefail
+
+BACKUP_DIR="$HOME/Library/Mobile Documents/com~apple~CloudDocs/openclaw-backup"
+mkdir -p "$BACKUP_DIR"
+STAMP=$(date +%Y%m%d-%H%M%S)
+
+for db in memory/main flows/registry; do
+  src="$HOME/.openclaw/${db}.sqlite"
+  if [ -f "$src" ]; then
+    dst="$BACKUP_DIR/${db//\//-}-${STAMP}.sqlite"
+    cp "$src" "$dst"
+    echo "Backed up: $(basename "$dst")"
+  else
+    echo "Skipping $db (not found)"
+  fi
+done
+
+for prefix in memory-main flows-registry; do
+  while IFS= read -r f; do
+    rm -f "$f"
+    echo "Pruned: $(basename "$f")"
+  done < <(ls -t "$BACKUP_DIR/${prefix}-"*.sqlite 2>/dev/null | tail -n +6)
+done
+
+echo "Backup complete: $BACKUP_DIR"

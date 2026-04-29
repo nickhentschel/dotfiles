@@ -1,0 +1,12 @@
+{{- /* paired.json.tmpl — managed by chezmoi
+   Stores paired device records including operator tokens for Clawket (iOS), web UI,
+   and CLI devices. Restoring this file means paired devices reconnect without re-pairing.
+
+   Required Keychain entry (service=openclaw-devices):
+     account=paired_json_b64   full paired.json content, base64-encoded
+
+   Seed on a fresh system (run: openclaw-seed-keychain):
+     security add-generic-password -U -s openclaw-devices -a paired_json_b64 \
+       -w "$(openssl base64 -A -in ~/.openclaw/devices/paired.json)"
+*/ -}}
+{{ (output "sh" "-c" "security find-generic-password -s openclaw-devices -a paired_json_b64 -w | openssl base64 -d") -}}

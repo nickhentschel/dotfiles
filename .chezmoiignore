@@ -10,3 +10,6 @@ Brewfile.lock.json
 {{- if ne .chezmoi.os "darwin" }}
 Library
 {{- end }}
+{{- if ne .chezmoi.hostname "Nicholass-Mac-mini" }}
+private_dot_openclaw
+{{- end }}

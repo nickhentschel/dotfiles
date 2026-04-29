@@ -60,6 +60,11 @@ Files ending in `.tmpl` are processed as Go templates. Access chezmoi data with:
 - `dot_tmux.conf.tmpl` - Uses OS conditionals for clipboard commands
 - `executable_claude-notify.sh.tmpl` - macOS vs Linux notification systems
 - `executable_ai-cmd-gen.tmpl` - AWS profile configuration
+- `private_dot_openclaw/openclaw.json.tmpl` - OpenClaw config, secrets from Keychain
+- `private_dot_openclaw/clawdbot.json.tmpl` - OpenClaw legacy config, secret from Keychain
+- `private_dot_openclaw/identity/device.json.tmpl` - Device keypair, from Keychain base64
+- `private_dot_openclaw/private_devices/paired.json.tmpl` - Paired device tokens, from Keychain base64
+- `private_dot_openclaw/credentials/telegram-default-allowFrom.json.tmpl` - Telegram allowlist
 
 ## Skills
 
@@ -150,6 +155,52 @@ Files ending in `.tmpl` are processed as Go templates. Access chezmoi data with:
 - `dot_tmux.conf.tmpl` - Pane border format, keybindings (prefix+g/n/s), status bar integration
 
 **State storage**: Uses tmux pane options (`@claude_*`) instead of files. Automatically cleaned up when pane closes.
+
+### OpenClaw (Claude Agent Daemon)
+
+**How it works**: OpenClaw is a Claude agent orchestration daemon installed via Homebrew. It runs locally and exposes a gateway for agent interactions via Telegram, web UI (Tailscale serve), and iOS (Clawket app).
+
+**Config managed by chezmoi** (`private_dot_openclaw/`):
+
+| Source file | Target | Contents |
+|---|---|---|
+| `openclaw.json.tmpl` | `~/.openclaw/openclaw.json` | Main config: models, gateway, Telegram channel, MCP servers |
+| `clawdbot.json.tmpl` | `~/.openclaw/clawdbot.json` | Legacy iMessage profile |
+| `identity/device.json.tmpl` | `~/.openclaw/identity/device.json` | ed25519 device keypair |
+| `private_devices/paired.json.tmpl` | `~/.openclaw/devices/paired.json` | Paired device registry + tokens |
+| `credentials/telegram-pairing.json` | `~/.openclaw/credentials/telegram-pairing.json` | Pairing requests (static empty) |
+| `credentials/telegram-default-allowFrom.json.tmpl` | `~/.openclaw/credentials/telegram-default-allowFrom.json` | Telegram allowlist |
+
+**Secrets stored in macOS Keychain** (service=openclaw):
+
+| account | description |
+|---|---|
+| `gateway_token` | Gateway auth token |
+| `telegram_bot_token` | Telegram bot token |
+| `tailscale_hostname` | Machine hostname in Tailscale (update per machine) |
+| `telegram_group_id` | Telegram group ID |
+| `telegram_allow_from` | Telegram user ID allowed to chat |
+| `clawdbot_gateway_token` | Legacy gateway token |
+
+service=openclaw-identity: `device_json_b64` (base64 of device.json)
+service=openclaw-devices: `paired_json_b64` (base64 of paired.json)
+
+**Database backups** (agent memory + flow definitions → iCloud Drive):
+```bash
+openclaw-backup    # Run periodically; keeps last 5 snapshots in ~/Library/Mobile Documents/com~apple~CloudDocs/openclaw-backup/
+openclaw-restore   # Restore most recent snapshot to ~/.openclaw/
+```
+
+**Seeding Keychain** (run once on each machine):
+```bash
+openclaw-seed-keychain   # Extracts from existing config, or prompts interactively
+```
+
+**Key files**:
+- `private_dot_openclaw/` - Source directory (all OpenClaw config templates)
+- `private_dot_local/bin/executable_openclaw-backup` - Database backup script
+- `private_dot_local/bin/executable_openclaw-restore` - Database restore script
+- `private_dot_local/bin/executable_openclaw-seed-keychain` - One-time Keychain seeder
 
 ### AI Command Generation (Ctrl+X)
 
@@ -287,12 +338,31 @@ brew bundle dump --force
 ### Sync to New Machine
 
 ```bash
-# Initialize and apply
+# 1. Prerequisites
+xcode-select --install
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install chezmoi
+
+# 2. Clone dotfiles
 chezmoi init https://github.com/nickhentschel/dotfiles.git
+
+# 3. Seed Keychain BEFORE applying (OpenClaw templates need it)
+#    On current Mac: openclaw-seed-keychain extracts values automatically
+#    On fresh Mac:   it prompts interactively
+chezmoi apply ~/.local/bin/openclaw-seed-keychain
+openclaw-seed-keychain
+
+# 4. Apply all dotfiles
 chezmoi apply
 
-# Install packages
+# 5. Install packages
 brew bundle
+
+# 6. Restore OpenClaw memory + flow definitions from iCloud
+openclaw-restore
+
+# 7. Start OpenClaw and verify
+openclaw
 ```
 
 ### Debug Tmux Integration
@@ -329,7 +399,20 @@ brew bundle
 │       └── executable_claude-notify.sh.tmpl
 ├── private_dot_local/
 │   └── bin/
-│       └── executable_ai-cmd-gen.tmpl  # AI command generation backend
+│       ├── executable_ai-cmd-gen.tmpl        # AI command generation backend
+│       ├── executable_openclaw-backup        # Backup memory + flows to iCloud
+│       ├── executable_openclaw-restore       # Restore memory + flows from iCloud
+│       └── executable_openclaw-seed-keychain # One-time Keychain seeder
+├── private_dot_openclaw/                     # OpenClaw config (Claude agent daemon)
+│   ├── openclaw.json.tmpl                    # Main config (secrets from Keychain)
+│   ├── clawdbot.json.tmpl                    # Legacy iMessage config
+│   ├── identity/
+│   │   └── device.json.tmpl                 # ed25519 keypair (from Keychain base64)
+│   ├── private_devices/
+│   │   └── paired.json.tmpl                 # Paired device tokens (from Keychain base64)
+│   └── credentials/
+│       ├── telegram-pairing.json             # Static (empty pairing requests)
+│       └── telegram-default-allowFrom.json.tmpl
 └── private_dot_claude/
     ├── settings.json.tmpl          # Claude Code settings (hooks, permissions)
     ├── hooks/
