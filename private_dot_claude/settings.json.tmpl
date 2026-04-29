@@ -62,6 +62,42 @@
       "Bash(osascript:*)",
       "Bash(env)",
       "Bash(nvim --headless:*)",
+      "Bash(rtk git add:*)",
+      "Bash(rtk git commit:*)",
+      "Bash(rtk git push:*)",
+      "Bash(rtk git status:*)",
+      "Bash(rtk git diff:*)",
+      "Bash(rtk git log:*)",
+      "Bash(rtk git branch:*)",
+      "Bash(rtk git show:*)",
+      "Bash(rtk chezmoi cd:*)",
+      "Bash(rtk chezmoi apply:*)",
+      "Bash(rtk chezmoi diff:*)",
+      "Bash(rtk chezmoi data:*)",
+      "Bash(rtk tmux display:*)",
+      "Bash(rtk tmux show-options:*)",
+      "Bash(rtk tmux list-panes:*)",
+      "Bash(rtk tmux capture-pane:*)",
+      "Bash(rtk tmux list-keys:*)",
+      "Bash(rtk tmux source-file:*)",
+      "Bash(rtk tmux split-window:*)",
+      "Bash(rtk tmux set-option:*)",
+      "Bash(rtk tmux kill-pane:*)",
+      "Bash(rtk tmux display-message:*)",
+      "Bash(rtk tmux -V)",
+      "Bash(rtk brew list:*)",
+      "Bash(rtk brew search:*)",
+      "Bash(rtk brew info:*)",
+      "Bash(rtk brew install:*)",
+      "Bash(rtk npm install:*)",
+      "Bash(rtk npm run:*)",
+      "Bash(rtk npm list:*)",
+      "Bash(rtk yarn:*)",
+      "Bash(rtk make:*)",
+      "Bash(rtk defaults read:*)",
+      "Bash(rtk osascript:*)",
+      "Bash(rtk env)",
+      "Bash(rtk nvim --headless:*)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:gist.github.com)"
 {{- if .isWork }},
@@ -92,7 +128,8 @@
         "pwd",
         "whoami",
         "basename",
-        "dirname"
+        "dirname",
+        "rtk"
       ],
       "alwaysAllowPatterns": [
 {{- if .isWork }}
@@ -120,7 +157,23 @@
         "^docker images",
         "^docker logs",
         "^kubectl get",
-        "^kubectl describe"
+        "^kubectl describe",
+        "^rtk git status",
+        "^rtk git diff",
+        "^rtk git log",
+        "^rtk git show",
+        "^rtk git branch($| -[alv])",
+        "^rtk brew list",
+        "^rtk brew search",
+        "^rtk brew info",
+        "^rtk npm list",
+        "^rtk make help",
+        "^rtk make --version",
+        "^rtk docker ps",
+        "^rtk docker images",
+        "^rtk docker logs",
+        "^rtk kubectl get",
+        "^rtk kubectl describe"
       ]
     }
   },
@@ -183,7 +236,17 @@
             "command": "CLAUDE_SESSION_ID=\"${CLAUDE_SESSION_ID}\" ~/.config/tmux/claude-tmux.sh state set working \"${CLAUDE_TOOL_NAME}\""
           }
         ]
-      }{{- if .isWork }},
+      }{{- if not .isWork }},
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
+        ]
+      }
+      {{- end }}{{- if .isWork }},
       {
         "matcher": "*",
         "hooks": [

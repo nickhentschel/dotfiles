@@ -13,6 +13,7 @@ export GOPATH="${HOME}/go"
 export PYENV_ROOT="${HOME}/.pyenv"
 export NPM_PACKAGES="${HOME}/.npm-packages"
 export EDITOR=vim
+export GOOGLE_WORKSPACE_CLI_KEYRING_BACKEND=file
 export REPORTTIME=5
 export TIMEFMT="%U user %S system %P cpu %*Es total"
 export LESS="ij.5KMRX"
