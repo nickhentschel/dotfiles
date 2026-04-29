@@ -9,7 +9,7 @@
     "AWS_REGION": "us-west-2",
     "DISABLE_PROMPT_CACHING": "0",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "global.anthropic.claude-sonnet-4-6",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "global.anthropic.claude-haiku-4-5-20251001",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "global.anthropic.claude-haiku-4-5-20251001-v1:0",
     "ANTHROPIC_DEFAULT_OPUS_MODEL": "global.anthropic.claude-opus-4-6-v1",
     "ANTHROPIC_CUSTOM_MODEL_OPTION": "global.anthropic.claude-opus-4-7",
     "ANTHROPIC_CUSTOM_MODEL_OPTION_NAME": "Claude Opus 4.7",
@@ -120,7 +120,8 @@
         "^docker images",
         "^docker logs",
         "^kubectl get",
-        "^kubectl describe"
+        "^kubectl describe",
+        "^gws [a-z]+ (list|search|read|get|show|fetch)"
       ]
     }
   },
@@ -134,7 +135,8 @@
             "command": "CLAUDE_SESSION_ID=\"${CLAUDE_SESSION_ID}\" CLAUDE_NOTIFICATION_TYPE=\"${CLAUDE_NOTIFICATION_TYPE}\" CLAUDE_TOOL_NAME=\"${CLAUDE_TOOL_NAME}\" ~/.config/tmux/claude-notify.sh"
           }
         ]
-      },
+      }
+      {{- if .isWork }},
       {
         "matcher": "*",
         "hooks": [
@@ -144,7 +146,9 @@
           }
         ]
       }
+      {{- end }}
     ],
+    {{- if .isWork }}
     "PermissionRequest": [
       {
         "matcher": "*",
@@ -167,6 +171,7 @@
         ]
       }
     ],
+    {{- end }}
     "PreToolUse": [
       {
         "matcher": "",
@@ -180,7 +185,8 @@
             "command": "CLAUDE_SESSION_ID=\"${CLAUDE_SESSION_ID}\" ~/.config/tmux/claude-tmux.sh state set working \"${CLAUDE_TOOL_NAME}\""
           }
         ]
-      },
+      }
+      {{- if .isWork }},
       {
         "matcher": "*",
         "hooks": [
@@ -190,6 +196,7 @@
           }
         ]
       }
+      {{- end }}
     ],
     "PostToolUse": [
       {
@@ -200,7 +207,8 @@
             "command": "CLAUDE_SESSION_ID=\"${CLAUDE_SESSION_ID}\" ~/.config/tmux/claude-tmux.sh state set idle"
           }
         ]
-      },
+      }
+      {{- if .isWork }},
       {
         "matcher": "*",
         "hooks": [
@@ -210,8 +218,10 @@
           }
         ]
       }
+      {{- end }}
     ],
     "SessionEnd": [
+      {{- if .isWork }}
       {
         "hooks": [
           {
@@ -220,8 +230,10 @@
           }
         ]
       }
+      {{- end }}
     ],
     "SessionStart": [
+      {{- if .isWork }}
       {
         "hooks": [
           {
@@ -230,6 +242,7 @@
           }
         ]
       }
+      {{- end }}
     ],
     "Stop": [
       {
@@ -240,7 +253,8 @@
             "command": "~/.config/tmux/claude-tmux.sh state clear"
           }
         ]
-      },
+      }
+      {{- if .isWork }},
       {
         "hooks": [
           {
@@ -249,8 +263,10 @@
           }
         ]
       }
+      {{- end }}
     ],
     "SubagentStart": [
+      {{- if .isWork }}
       {
         "hooks": [
           {
@@ -259,8 +275,10 @@
           }
         ]
       }
+      {{- end }}
     ],
     "SubagentStop": [
+      {{- if .isWork }}
       {
         "hooks": [
           {
@@ -269,8 +287,10 @@
           }
         ]
       }
+      {{- end }}
     ],
     "UserPromptSubmit": [
+      {{- if .isWork }}
       {
         "hooks": [
           {
@@ -279,12 +299,15 @@
           }
         ]
       }
+      {{- end }}
     ]
   },
+  {{- if .isWork }}
   "statusLine": {
     "type": "command",
     "command": "/Users/nickhe/.vibe-island/bin/vibe-island-statusline"
   },
+  {{- end }}
 {{- if .isWork }}
   "enabledPlugins": {
     "atlassian@claude-plugins-official": true,
