@@ -103,13 +103,23 @@ Invoke with `/skill-name` syntax. Use these at the described trigger points.
 - **`/slack:standup`** — Generate standup from Slack activity. Run each morning before standup.
 - **`/program-status-updates`** — Generate status update for a Jira epic or feature. Use before stakeholder reviews and MBRs.
 
-### Backlog & Planning
+### Jira / Atlassian
+
+**Rule: For ANY Jira task — lookup, search, create, update, transition, comment — invoke `/jira-cli` first. Never use Glean for Jira; it is context-heavy and Jira data is better accessed directly via acli.**
+
+- **`/jira-cli`** — Reference guide for acli (Atlassian CLI): JQL patterns, field limitations, data extraction. **Invoke whenever a task involves Jira tickets, issues, epics, sprints, or boards.**
 - **`/atlassian-groom-backlog`** — Analyze ZNET or INFRA backlog against OKRs, sort into grooming categories. Use before sprint planning.
 - **`/atlassian-classify-tickets`** — Classify Jira tickets by product category. Use for bulk tagging/cleanup.
 
+### Email & Google Workspace
+
+**Rule: For email search and Google Workspace queries, use `/gws-cli` with `gws gmail` commands instead of Glean's `gmail_search` MCP tool. Glean email results are context-heavy; gws returns compact, structured output.**
+
+- **`/gws-cli`** — Reference guide for Google Workspace CLI (gws): Drive, Gmail, Calendar, Sheets, Docs. **Invoke whenever a task involves searching email, finding calendar events, or accessing Google Workspace data.**
+
 ### Research & Analysis
 - **`/research`** → **`/research-deep`** — For strategic analysis (vendor evals, feasibility studies, benchmarking). Start with `/research` to outline, then `/research-deep` for parallel deep-dives.
-- **`/glean-guard`** — **Always invoke before any Glean MCP call.** Prevents context blowout from large search results.
+- **`/glean-guard`** — **Always invoke before any Glean MCP call (except email — use `/gws-cli` instead).** Prevents context blowout from large search results.
 
 ### Documentation
 - **`/doc-coauthoring`** — Structured workflow for co-authoring docs, proposals, charters, and specs.
@@ -120,4 +130,5 @@ Invoke with `/skill-name` syntax. Use these at the described trigger points.
 
 ---
 
-*Last updated: 2026-04-17*
+*Last updated: 2026-04-28*
+

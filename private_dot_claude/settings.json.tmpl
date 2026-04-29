@@ -9,7 +9,7 @@
     "AWS_REGION": "us-west-2",
     "DISABLE_PROMPT_CACHING": "0",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "global.anthropic.claude-sonnet-4-6",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "global.anthropic.claude-haiku-4-5-20251001",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "global.anthropic.claude-haiku-4-5-20251001-v1:0",
     "ANTHROPIC_DEFAULT_OPUS_MODEL": "global.anthropic.claude-opus-4-6-v1",
     "ANTHROPIC_CUSTOM_MODEL_OPTION": "global.anthropic.claude-opus-4-7",
     "ANTHROPIC_CUSTOM_MODEL_OPTION_NAME": "Claude Opus 4.7",
@@ -173,7 +173,8 @@
         "^rtk docker images",
         "^rtk docker logs",
         "^rtk kubectl get",
-        "^rtk kubectl describe"
+        "^rtk kubectl describe",
+        "^gws [a-z]+ (list|search|read|get|show|fetch)"
       ]
     }
   },
