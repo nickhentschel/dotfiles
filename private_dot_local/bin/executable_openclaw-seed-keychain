@@ -24,7 +24,6 @@ prompt_secret() {
 }
 
 CONFIG="$HOME/.openclaw/openclaw.json"
-CLAWDBOT="$HOME/.openclaw/clawdbot.json"
 DEVICE_JSON="$HOME/.openclaw/identity/device.json"
 PAIRED_JSON="$HOME/.openclaw/devices/paired.json"
 
@@ -49,15 +48,6 @@ else
   prompt_secret "openclaw" "tailscale_hostname"  "Tailscale hostname (e.g. my-mac.tail.ts.net)"
   prompt_secret "openclaw" "telegram_group_id"   "Telegram group ID (e.g. -1003982690496)"
   prompt_secret "openclaw" "telegram_allow_from" "Telegram user ID (allowFrom)"
-fi
-
-if [ -f "$CLAWDBOT" ]; then
-  echo "--> Extracting from existing clawdbot.json"
-  add_secret "openclaw" "clawdbot_gateway_token" \
-    "$(jq -r '.gateway.auth.token' "$CLAWDBOT")"
-else
-  echo "--> clawdbot.json not found — entering manually"
-  prompt_secret "openclaw" "clawdbot_gateway_token" "clawdbot gateway token"
 fi
 
 if [ -f "$DEVICE_JSON" ]; then

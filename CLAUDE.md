@@ -61,7 +61,6 @@ Files ending in `.tmpl` are processed as Go templates. Access chezmoi data with:
 - `executable_claude-notify.sh.tmpl` - macOS vs Linux notification systems
 - `executable_ai-cmd-gen.tmpl` - AWS profile configuration
 - `private_dot_openclaw/openclaw.json.tmpl` - OpenClaw config, secrets from Keychain
-- `private_dot_openclaw/clawdbot.json.tmpl` - OpenClaw legacy config, secret from Keychain
 - `private_dot_openclaw/identity/device.json.tmpl` - Device keypair, from Keychain base64
 - `private_dot_openclaw/private_devices/paired.json.tmpl` - Paired device tokens, from Keychain base64
 - `private_dot_openclaw/credentials/telegram-default-allowFrom.json.tmpl` - Telegram allowlist
@@ -165,7 +164,6 @@ Files ending in `.tmpl` are processed as Go templates. Access chezmoi data with:
 | Source file | Target | Contents |
 |---|---|---|
 | `openclaw.json.tmpl` | `~/.openclaw/openclaw.json` | Main config: models, gateway, Telegram channel, MCP servers |
-| `clawdbot.json.tmpl` | `~/.openclaw/clawdbot.json` | Legacy iMessage profile |
 | `identity/device.json.tmpl` | `~/.openclaw/identity/device.json` | ed25519 device keypair |
 | `private_devices/paired.json.tmpl` | `~/.openclaw/devices/paired.json` | Paired device registry + tokens |
 | `credentials/telegram-pairing.json` | `~/.openclaw/credentials/telegram-pairing.json` | Pairing requests (static empty) |
@@ -180,7 +178,6 @@ Files ending in `.tmpl` are processed as Go templates. Access chezmoi data with:
 | `tailscale_hostname` | Machine hostname in Tailscale (update per machine) |
 | `telegram_group_id` | Telegram group ID |
 | `telegram_allow_from` | Telegram user ID allowed to chat |
-| `clawdbot_gateway_token` | Legacy gateway token |
 
 service=openclaw-identity: `device_json_b64` (base64 of device.json)
 service=openclaw-devices: `paired_json_b64` (base64 of paired.json)
@@ -405,7 +402,6 @@ openclaw
 │       └── executable_openclaw-seed-keychain # One-time Keychain seeder
 ├── private_dot_openclaw/                     # OpenClaw config (Claude agent daemon)
 │   ├── openclaw.json.tmpl                    # Main config (secrets from Keychain)
-│   ├── clawdbot.json.tmpl                    # Legacy iMessage config
 │   ├── identity/
 │   │   └── device.json.tmpl                 # ed25519 keypair (from Keychain base64)
 │   ├── private_devices/

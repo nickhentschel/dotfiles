@@ -5,6 +5,7 @@
      account=tailscale_hostname    machine hostname in tailnet (e.g. "my-mac.tail.ts.net")
      account=telegram_group_id     Telegram group ID (negative number, e.g. "-1003982690496")
      account=telegram_allow_from   Telegram user ID allowed to chat
+     account=voyage_api_key        Voyage AI API key (for memory search embeddings)
 
    Seed on a fresh system (run: openclaw-seed-keychain):
      security add-generic-password -U -s openclaw -a gateway_token -w '<value>'
@@ -12,11 +13,12 @@
      security add-generic-password -U -s openclaw -a tailscale_hostname -w '<value>'
      security add-generic-password -U -s openclaw -a telegram_group_id -w '<value>'
      security add-generic-password -U -s openclaw -a telegram_allow_from -w '<value>'
+     security add-generic-password -U -s openclaw -a voyage_api_key -w '<value>'
 */ -}}
 {
   "meta": {
     "lastTouchedVersion": "2026.4.26",
-    "lastTouchedAt": "2026-04-28T22:59:24.082Z"
+    "lastTouchedAt": "2026-04-28T22:59:23.170Z"
   },
   "wizard": {
     "lastRunAt": "2026-04-23T17:47:47.998Z",
@@ -35,13 +37,10 @@
       },
       "workspace": "{{ .chezmoi.homeDir }}/clawd",
       "models": {
-        "anthropic/claude-opus-4-5": {
+        "anthropic/claude-opus-4-7": {
           "alias": "opus"
         },
-        "anthropic/claude-opus-4-7": {},
         "anthropic/claude-sonnet-4-6": {},
-        "anthropic/claude-opus-4-6": {},
-        "anthropic/claude-sonnet-4-5": {},
         "anthropic/claude-haiku-4-5": {}
       },
       "model": {
@@ -52,7 +51,13 @@
       },
       "contextInjection": "always",
       "bootstrapMaxChars": 20000,
-      "bootstrapTotalMaxChars": 150000
+      "bootstrapTotalMaxChars": 150000,
+      "memorySearch": {
+        "provider": "voyage",
+        "remote": {
+          "apiKey": "{{ (output "security" "find-generic-password" "-s" "openclaw" "-a" "voyage_api_key" "-w") | trim }}"
+        }
+      }
     }
   },
   "messages": {
@@ -75,7 +80,7 @@
     ],
     "tailscale": {
       "mode": "serve",
-      "resetOnExit": false
+      "resetOnExit": true
     },
     "controlUi": {
       "allowedOrigins": [
@@ -143,6 +148,7 @@
         }
       },
       "memory-core": {
+        "enabled": true,
         "config": {
           "dreaming": {
             "enabled": true
