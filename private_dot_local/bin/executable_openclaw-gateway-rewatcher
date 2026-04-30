@@ -1,0 +1,53 @@
+#!/bin/zsh
+# openclaw-gateway-rewatcher
+#
+# Re-registers the OpenClaw gateway LaunchAgent after openclaw self-update
+# rewrites the plist. Triggered by launchd WatchPaths.
+#
+# Managed by: ~/Library/LaunchAgents/ai.openclaw.gateway-watcher.plist
+
+PLIST="$HOME/Library/LaunchAgents/ai.openclaw.gateway.plist"
+LOG="$HOME/.openclaw/logs/gateway-watcher.log"
+UID_NUM=$(/usr/bin/id -u)
+
+log() {
+    echo "$(/bin/date '+%Y-%m-%dT%H:%M:%S') [gateway-watcher] $*" >> "$LOG"
+}
+
+log "Plist change detected at $PLIST"
+
+# Wait for the upgrade to finish writing the plist
+sleep 5
+
+# Bail if plist is missing (e.g. deleted, not a rewrite)
+if [[ ! -f "$PLIST" ]]; then
+    log "ERROR: plist not found — skipping re-registration"
+    exit 1
+fi
+
+# Validate the plist is parseable before doing anything destructive
+if ! /usr/bin/plutil -lint "$PLIST" > /dev/null 2>&1; then
+    log "ERROR: plist failed validation — skipping re-registration"
+    exit 1
+fi
+
+# Ensure sharp is present for image processing (openclaw update or Node upgrade may remove it)
+if [[ ! -d "/opt/homebrew/lib/node_modules/sharp" ]]; then
+    log "sharp not found — reinstalling for image processing"
+    /opt/homebrew/bin/npm install -g sharp >> "$LOG" 2>&1 && log "sharp reinstalled" || log "WARNING: sharp install failed — image processing may be degraded"
+fi
+
+# Unload the existing gateway (ignore error if it wasn't loaded)
+/bin/launchctl bootout "gui/${UID_NUM}/ai.openclaw.gateway" 2>/dev/null
+log "Booted out old gateway service (or it was not loaded)"
+
+# Brief pause for clean shutdown
+sleep 2
+
+# Re-register with the new plist
+if /bin/launchctl bootstrap "gui/${UID_NUM}" "$PLIST"; then
+    log "Gateway re-registered successfully"
+else
+    log "ERROR: launchctl bootstrap failed — check $PLIST"
+    exit 1
+fi
